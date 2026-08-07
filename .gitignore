@@ -11,8 +11,10 @@ htmlcov/
 .env.local
 .env.*.local
 
-# 数据库与数据产物（派生库不入库，源数据经 data/ 提供）
-db/
+# 数据库与数据产物（派生库不入库，源数据经 data/ 提供；schema.sql 为建表源码需入库）
+db/*.db
+db/*.db-*
+db/*.bak*
 unified.db
 *.db
 *.sqlite3

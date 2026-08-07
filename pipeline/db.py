@@ -17,6 +17,27 @@ def connect(db_path: Path | None = None) -> sqlite3.Connection:
     return conn
 
 
+# 存量库补列迁移（schema v1.2）：新库由 schema.sql 直接建出新列，
+# 旧库在此幂等补列（列已存在时 ALTER 报错，容忍跳过）
+_MIGRATE_COLUMNS: dict[str, list[str]] = {
+    "job_definitions": [
+        "technology_id TEXT",
+        "job_type TEXT",
+        "scores_json TEXT",
+        "evidence_json TEXT",
+    ],
+}
+
+
+def _migrate_columns(conn: sqlite3.Connection) -> None:
+    for table, columns in _MIGRATE_COLUMNS.items():
+        for column in columns:
+            try:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN {column}")
+            except sqlite3.OperationalError:
+                pass  # duplicate column name：已迁移
+
+
 def init_db(conn: sqlite3.Connection, reset: bool = False) -> None:
     """执行统一建表脚本（唯一建表入口）。reset=True 时先清空全部表。"""
     if reset:
@@ -30,6 +51,7 @@ def init_db(conn: sqlite3.Connection, reset: bool = False) -> None:
         conn.commit()
     schema = config.SCHEMA_PATH.read_text(encoding="utf-8")
     conn.executescript(schema)
+    _migrate_columns(conn)
     conn.commit()
 
 
