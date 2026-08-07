@@ -1,0 +1,7 @@
+# 后端运行时依赖（阶段 6 Docker 部署）
+# sentence-transformers 未安装时匹配引擎透明降级（不伪造语义分），按需可选
+fastapi>=0.115
+uvicorn>=0.30
+pydantic>=2.7
+pypdf>=6.0
+python-multipart>=0.0.9

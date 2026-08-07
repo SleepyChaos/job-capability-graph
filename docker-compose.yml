@@ -1,0 +1,38 @@
+# 岗位能力图谱系统：Docker Compose 部署（阶段 6 交付物）
+# 用法：docker compose up -d --build
+#   - 前端 http://localhost:3000
+#   - 后端 http://localhost:8002（浏览器经宿主端口访问，与开发环境约定一致）
+#   - SQLite 数据卷持久化（unified.db + WAL）
+# LLM：默认 DeepSeek（OpenAI 兼容）；未配置 Key 时自动降级规则方案
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: jcg-backend
+    ports:
+      - "8002:8000"          # 宿主 8002 → 容器 8000
+    volumes:
+      - db-data:/app/db      # 统一库持久化（含 WAL 文件）
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.deepseek.com/v1}
+      - LLM_MODEL=${LLM_MODEL:-deepseek-chat}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_BASE=${NEXT_PUBLIC_API_BASE:-http://localhost:8002}
+    container_name: jcg-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  db-data:

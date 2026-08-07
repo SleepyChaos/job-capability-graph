@@ -1,0 +1,31 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 环境与密钥（含 DeepSeek API Key，严禁入库）
+.env
+.env.local
+.env.*.local
+
+# 数据库与数据产物（派生库不入库，源数据经 data/ 提供）
+db/
+unified.db
+*.db
+*.sqlite3
+*.sqlite
+
+# 前端构建产物
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# 系统与编辑器
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,11 @@
+[run]
+# 单元测试覆盖率统计范围由命令行 --cov=xxx 显式指定（核心逻辑模块）：
+#   --cov=pipeline.extract --cov=pipeline.llm --cov=pipeline.db \
+#   --cov=pipeline.config --cov=pipeline.resume_parse --cov=backend
+# 数据搬运/评测/示例生成脚本为一次性工具，不计入单元测试覆盖率指标。
+
+[report]
+show_missing = True
+exclude_lines =
+    pragma: no cover
+    if __name__ == "__main__":
