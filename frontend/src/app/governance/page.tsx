@@ -240,13 +240,29 @@ export default function GovernancePage() {
                 })()}
                 {queue === 'definition' && (() => {
                   const d = selected as ReviewDefinitionItem;
+                  const evidence = (() => {
+                    try { return d.evidence_json ? JSON.parse(d.evidence_json) : null; } catch { return null; }
+                  })();
                   return (
                     <DetailBlock>
                       <Field label="核心职责" value={d.core_duties} />
                       <Field label="必备技能" value={parseStrList(d.required_skills).join('、')} />
                       <Field label="加分技能" value={parseStrList(d.bonus_skills).join('、') || '—'} />
                       <Field label="应用场景" value={d.industry_scenarios || '—'} />
-                      <Field label="生成来源" value={d.generation_source === 'llm' ? 'LLM 生成' : '启发式（真实聚类数据拼装）'} />
+                      <Field label="生成来源" value={
+                        d.generation_source === 'emerging' ? `技术演化发现（${d.technology_id || '—'} · ${d.job_type || '—'}）`
+                        : d.generation_source === 'llm' ? 'LLM 生成'
+                        : '启发式（真实聚类数据拼装）'
+                      } />
+                      {evidence && (
+                        <Field
+                          label="证据链"
+                          value={[
+                            ...(evidence.milestones || []).map((m: { name: string; event_date: string }) => `里程碑：${m.name}（${m.event_date}）`),
+                            ...(evidence.jobs || []).map((j: { title: string; company: string }) => `JD：《${j.title}》${j.company}`),
+                          ].slice(0, 6).join('；') || '—'}
+                        />
+                      )}
                     </DetailBlock>
                   );
                 })()}

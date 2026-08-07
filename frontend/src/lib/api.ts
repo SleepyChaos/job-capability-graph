@@ -236,11 +236,15 @@ export interface ReviewClusterItem {
 export interface ReviewDefinitionItem {
   target_id: number;
   cluster_id: string;
+  technology_id: string | null;
+  job_type: string | null;
   job_name: string;
   core_duties: string;
   required_skills: string;
   bonus_skills: string;
   industry_scenarios: string;
+  scores_json: string | null;
+  evidence_json: string | null;
   generation_source: string;
   created_at: string;
 }
@@ -384,4 +388,102 @@ export async function searchJobs(keyword: string, limit = 30): Promise<{ job_id:
   return data.jobs
     .filter(j => (j.title || '').toLowerCase().includes(kw) || (j.company || '').toLowerCase().includes(kw))
     .slice(0, limit);
+}
+
+// ---------------------------------------------------------------------------
+// 阶段 6：技术演化驱动的新兴岗位发现（移植自 embodied-job-evolution-lab）
+// ---------------------------------------------------------------------------
+
+export interface EmergingTechnology {
+  technology_id: string;
+  standard_name: string;
+  level: string;
+  domain: string | null;
+  definition: string | null;
+  parent_id: string | null;
+  aliases: string[];
+  link_confidence: number;
+}
+
+export interface EmergingEvidenceJob {
+  job_id: string;
+  title: string;
+  company: string;
+  snippet: string;
+  source_url?: string;
+  confidence: number;
+}
+
+export interface EmergingCandidate {
+  candidate_id: string;
+  job_title: string;
+  job_type: '新兴岗位' | '岗位演化' | '已有岗位';
+  score: number;
+  time_horizon: string;
+  formation_reason: string;
+  responsibilities: string[];
+  required_skills: string[];
+  bonus_skills: string[];
+  application_scenarios: string[];
+  job_definition: string;
+  scores: Record<string, number>;
+  evidence: {
+    milestones: { event_id: string; name: string; event_date: string; source: string; snippet: string; confidence: number }[];
+    jobs: EmergingEvidenceJob[];
+  };
+  evidence_path: { type: string; label: string }[];
+  rank: number;
+}
+
+export interface EmergingRunResult {
+  technology: EmergingTechnology & { maturity_score: number; target_date: string };
+  candidate_jobs: EmergingCandidate[];
+  metrics: {
+    evidence_completeness: number;
+    task_cohesion: number;
+    existing_overlap: number;
+    related_job_count: number;
+    milestone_count: number;
+  };
+  config_id: string;
+  generation_mode: string;
+}
+
+/** 技术实体搜索（标准实体链接，带置信度） */
+export async function searchEmergingTechnologies(q: string): Promise<EmergingTechnology[]> {
+  const data = await getJSON<{ items: EmergingTechnology[] }>(
+    `/api/emerging/technologies/search?q=${encodeURIComponent(q)}`
+  );
+  return data.items;
+}
+
+/** 发起一次新兴岗位预测（同步执行） */
+export async function runEmergingDiscovery(body: {
+  technologyId: string;
+  targetDate?: string;
+  topK?: number;
+  configId?: string;
+  generationMode?: string;
+}): Promise<{ run_id: string; status: string; result: EmergingRunResult }> {
+  const res = await fetch(`${API_BASE}/api/emerging/run`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).detail || `预测失败 ${res.status}`);
+  return res.json();
+}
+
+/** 候选岗位提交审核（写 job_definitions pending，进入 governance 队列） */
+export async function submitEmergingCandidate(
+  runId: string,
+  candidateId: string
+): Promise<{ definitionId: number; reviewStatus: string }> {
+  const res = await fetch(`${API_BASE}/api/emerging/submit`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ runId, candidateId }),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).detail || `提交失败 ${res.status}`);
+  return res.json();
 }
