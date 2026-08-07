@@ -121,9 +121,10 @@ def queue(conn: sqlite3.Connection, target_type: str, limit: int = 50) -> list[d
     if target_type == "definition":
         rows = conn.execute(
             """
-            SELECT definition_id AS target_id, cluster_id, job_name, core_duties,
+            SELECT definition_id AS target_id, cluster_id, technology_id, job_type,
+                   job_name, core_duties,
                    required_skills, bonus_skills, industry_scenarios,
-                   generation_source, created_at
+                   scores_json, evidence_json, generation_source, created_at
             FROM job_definitions WHERE review_status = 'pending'
             ORDER BY created_at DESC LIMIT ?
             """,

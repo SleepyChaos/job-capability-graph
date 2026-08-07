@@ -710,3 +710,83 @@ def evolution_diff(base: int = Query(...), new: int = Query(...)):
         raise HTTPException(404, str(e))
     conn.close()
     return result
+
+
+# -------------------------------------------------------------------------
+# 阶段 6：技术演化驱动的新兴岗位发现（移植自 embodied-job-evolution-lab）
+# 引擎见 pipeline/emerging.py；候选岗位提交后进入 governance 审核闭环
+# -------------------------------------------------------------------------
+from pipeline import emerging as emerging_mod  # noqa: E402
+
+
+class EmergingRunRequest(BaseModel):
+    technologyId: str
+    targetDate: str | None = None
+    topK: int = 5
+    configId: str = "full"  # full / no_maturity（消融）
+    generationMode: str = "rule"  # rule / mock / llm
+
+
+class EmergingSubmitRequest(BaseModel):
+    runId: str
+    candidateId: str
+
+
+@app.get("/api/emerging/technologies/search")
+def emerging_tech_search(q: str = Query(min_length=1, max_length=100)):
+    conn = get_conn()
+    items = emerging_mod.UnifiedRepository(conn).search_technologies(q)
+    conn.close()
+    return {"query": q, "items": items}
+
+
+@app.post("/api/emerging/run")
+def emerging_run(body: EmergingRunRequest):
+    conn = get_conn()
+    try:
+        payload = emerging_mod.run_and_persist(
+            conn, body.technologyId, target_date=body.targetDate,
+            top_k=body.topK, config_id=body.configId,
+            generation_mode=body.generationMode,
+        )
+    except ValueError as e:
+        raise HTTPException(422, str(e))
+    finally:
+        conn.close()
+    return payload
+
+
+@app.get("/api/emerging/runs")
+def emerging_runs(limit: int = Query(20, ge=1, le=100)):
+    conn = get_conn()
+    rows = conn.execute(
+        "SELECT run_id, technology_id, status, request_json, error, created_at, completed_at"
+        " FROM emerging_runs ORDER BY created_at DESC LIMIT ?", (limit,)
+    ).fetchall()
+    conn.close()
+    return {"items": [dict(r) for r in rows]}
+
+
+@app.get("/api/emerging/runs/{run_id}")
+def emerging_run_detail(run_id: str):
+    conn = get_conn()
+    r = conn.execute("SELECT * FROM emerging_runs WHERE run_id = ?", (run_id,)).fetchone()
+    conn.close()
+    if not r:
+        raise HTTPException(404, "运行记录不存在")
+    row = dict(r)
+    row["result"] = json.loads(row.pop("result_json")) if row.get("result_json") else None
+    return row
+
+
+@app.post("/api/emerging/submit")
+def emerging_submit(body: EmergingSubmitRequest):
+    """候选岗位五要素提交审核：写 job_definitions（pending），对接 governance 队列。"""
+    conn = get_conn()
+    try:
+        definition_id = emerging_mod.submit_candidate(conn, body.runId, body.candidateId)
+    except KeyError as e:
+        conn.close()
+        raise HTTPException(404, str(e))
+    conn.close()
+    return {"definitionId": definition_id, "reviewStatus": "pending"}
