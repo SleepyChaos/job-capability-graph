@@ -94,6 +94,69 @@ def test_llm_provider_filters_tasks_without_keywords(monkeypatch):
     assert [t["name"] for t in tasks] == ["有证据任务"]
 
 
+def test_llm_title_and_definition_parse():
+    p = emerging.LLMProvider()
+    title, definition = p._parse_title_and_definition(
+        "岗位名称：柔性触觉感知算法工程师\n岗位定义：负责电子皮肤信号建模与感知算法研发。"
+    )
+    assert title == "柔性触觉感知算法工程师"
+    assert "电子皮肤" in definition
+
+
+def test_llm_title_invalid_falls_back_none():
+    p = emerging.LLMProvider()
+    title, _ = p._parse_title_and_definition("岗位名称：x\n岗位定义：定义文本")  # 名称过短
+    assert title is None
+    title2, _ = p._parse_title_and_definition("没有格式的输出文本")
+    assert title2 is None
+
+
+def test_run_llm_mode_sets_title_alias_and_submit_uses_it(conn, monkeypatch):
+    """llm 模式：候选携带 job_title_alias；提交审核时 job_name 优先用 LLM 主名。"""
+    from pipeline import llm
+
+    seed_emerging(conn)
+    monkeypatch.setattr(llm, "is_available", lambda: True)
+
+    def fake_chat(messages, temperature=0.2, timeout=60):
+        system = messages[0]["content"]
+        if "岗位名称" in system:  # 命名+定义调用
+            return "岗位名称：测试技术智能算法专家\n岗位定义：围绕测试技术的智能算法研发岗位。"
+        return None
+
+    monkeypatch.setattr(llm, "chat", fake_chat)
+    monkeypatch.setattr(llm, "chat_json", lambda *a, **k: None)  # 任务动态生成不可用 → 走知识库
+
+    payload = emerging.run_and_persist(conn, "T9.01", target_date="2026-08-01", generation_mode="llm")
+    assert payload["result"]["generation_mode"] == "llm"
+    cand = payload["result"]["candidate_jobs"][0]
+    assert cand["job_title_alias"] == "测试技术智能算法专家"
+    assert cand["job_definition"]  # 定义非空
+
+    definition_id = emerging.submit_candidate(conn, payload["run_id"], cand["candidate_id"])
+    row = conn.execute("SELECT job_name FROM job_definitions WHERE definition_id = ?", (definition_id,)).fetchone()
+    assert row["job_name"] == "测试技术智能算法专家"  # 主名优先
+
+
+def test_run_llm_mode_naming_failure_falls_back(conn, monkeypatch):
+    """llm 命名解析失败：alias 为 None，提交回退规则组合名。"""
+    from pipeline import llm
+
+    seed_emerging(conn)
+    monkeypatch.setattr(llm, "is_available", lambda: True)
+    monkeypatch.setattr(llm, "chat", lambda *a, **k: "格式错误的输出")
+    monkeypatch.setattr(llm, "chat_json", lambda *a, **k: None)
+
+    payload = emerging.run_and_persist(conn, "T9.01", target_date="2026-08-01", generation_mode="llm")
+    cand = payload["result"]["candidate_jobs"][0]
+    assert cand["job_title_alias"] is None
+    assert cand["job_definition"]  # 定义回退规则模板
+
+    definition_id = emerging.submit_candidate(conn, payload["run_id"], cand["candidate_id"])
+    row = conn.execute("SELECT job_name FROM job_definitions WHERE definition_id = ?", (definition_id,)).fetchone()
+    assert row["job_name"] == cand["job_title"]  # 回退规则名
+
+
 # ---------------------------------------------------------------------------
 # 完整链路：运行 → 持久化 → 提交审核
 # ---------------------------------------------------------------------------

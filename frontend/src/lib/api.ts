@@ -417,6 +417,7 @@ export interface EmergingEvidenceJob {
 export interface EmergingCandidate {
   candidate_id: string;
   job_title: string;
+  job_title_alias: string | null;
   job_type: '新兴岗位' | '岗位演化' | '已有岗位';
   score: number;
   time_horizon: string;
@@ -485,5 +486,41 @@ export async function submitEmergingCandidate(
     body: JSON.stringify({ runId, candidateId }),
   });
   if (!res.ok) throw new Error((await res.json().catch(() => ({}))).detail || `提交失败 ${res.status}`);
+  return res.json();
+}
+
+// ---------------------------------------------------------------------------
+// 设置：LLM 接入配置（设置页）
+// ---------------------------------------------------------------------------
+
+export interface LlmSettings {
+  configured: boolean;
+  keyMasked: string;
+  baseUrl: string;
+  model: string;
+}
+
+export function fetchLlmSettings(): Promise<LlmSettings> {
+  return getJSON<LlmSettings>('/api/settings/llm');
+}
+
+export async function saveLlmSettings(body: {
+  apiKey?: string;
+  baseUrl?: string;
+  model?: string;
+  clear?: boolean;
+}): Promise<LlmSettings & { saved: boolean }> {
+  const res = await fetch(`${API_BASE}/api/settings/llm`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).detail || `保存失败 ${res.status}`);
+  return res.json();
+}
+
+export async function testLlmConnection(): Promise<{ ok: boolean; reply?: string; model?: string; error?: string }> {
+  const res = await fetch(`${API_BASE}/api/settings/llm/test`, { method: 'POST' });
+  if (!res.ok) throw new Error(`测试失败 ${res.status}`);
   return res.json();
 }

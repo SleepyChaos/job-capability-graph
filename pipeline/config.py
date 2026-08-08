@@ -61,6 +61,36 @@ LLM_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 LLM_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
 LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-4o-mini")
 
+
+def apply_llm_overrides(api_key: str | None = None, base_url: str | None = None, model: str | None = None) -> None:
+    """运行时覆盖 LLM 配置（设置页保存时调用，立即生效；llm.py 调用时动态读取本模块属性）。"""
+    global LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
+    if api_key is not None:
+        LLM_API_KEY = api_key
+    if base_url:
+        LLM_BASE_URL = base_url
+    if model:
+        LLM_MODEL = model
+
+
+def persist_env(**pairs: str) -> None:
+    """将配置回写项目根 .env（幂等：已有键更新值，无则追加；不覆盖其他行）。"""
+    env_path = ROOT / ".env"
+    lines = env_path.read_text(encoding="utf-8").splitlines() if env_path.exists() else []
+    remaining = dict(pairs)
+    out: list[str] = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#") and "=" in stripped:
+            k = stripped.partition("=")[0].strip()
+            if k in remaining:
+                out.append(f"{k}={remaining.pop(k)}")
+                continue
+        out.append(line)
+    for k, v in remaining.items():
+        out.append(f"{k}={v}")
+    env_path.write_text("\n".join(out) + "\n", encoding="utf-8")
+
 # 聚类参数（沿用项目二环境变量约定）
 CLUSTER_BATCH_SIZE = int(os.environ.get("CLUSTER_BATCH_SIZE", "500"))
 CLUSTER_THRESHOLD = float(os.environ.get("CLUSTER_THRESHOLD", "0.35"))

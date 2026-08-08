@@ -12,6 +12,7 @@ import {
   Search,
   Bell,
   ChevronDown,
+  Settings,
 } from 'lucide-react';
 
 const navModules = [
@@ -74,6 +75,17 @@ export function TopNavbar() {
           <Bell className="w-4 h-4" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
         </button>
+        <Link
+          href="/settings"
+          className={`p-2 rounded-md transition-colors ${
+            pathname.startsWith('/settings')
+              ? 'text-white bg-white/10'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
+          }`}
+          title="系统设置（LLM 配置）"
+        >
+          <Settings className="w-4 h-4" />
+        </Link>
         <button className="flex items-center gap-2 px-2 py-1 rounded-md text-slate-300 hover:bg-white/5 transition-colors">
           <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-violet-400 flex items-center justify-center text-white text-xs font-medium">
             管

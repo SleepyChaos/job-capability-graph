@@ -31,3 +31,6 @@ frontend/tsconfig.tsbuildinfo
 .DS_Store
 .idea/
 .vscode/
+
+# 运行日志
+*.log

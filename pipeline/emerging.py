@@ -318,6 +318,50 @@ class LLMProvider:
             return text.strip()
         return RuleProvider().generate_definition(candidate)
 
+    def generate_title_and_definition(self, candidate: dict[str, Any]) -> tuple[str | None, str]:
+        """一次模型调用同时生成岗位主标题（LLM 动态命名）与岗位定义（移植自 lab）。
+
+        主从命名：主=LLM 名（job_title_alias），从=规则组合名（job_title 保留作锚点）；
+        名称解析失败/为空 → 返回 None（前端回退规则名）；定义失败 → 回退规则模板。
+        """
+        system = (
+            "你是人力资源专家，为新兴技术岗位命名并撰写简明岗位定义。"
+            "只输出以下两行，不要输出其他内容：\n"
+            "岗位名称：<8-20字的中文岗位名，以「工程师」「专家」等职务词结尾，不要含英文>\n"
+            "岗位定义：<1-2句话，不超过80字>"
+        )
+        user = (
+            f"技术方向：{candidate.get('technology_name', '')}\n"
+            f"规则岗位名（仅作参考）：{candidate.get('job_title', '')}\n"
+            f"核心职责：{'、'.join(candidate.get('responsibilities', [])[:3])}\n"
+            f"必备技能：{'、'.join(candidate.get('required_skills', [])[:3])}\n"
+            "请给出更贴合产业习惯的岗位名称与定位概括。"
+        )
+        text = llm.chat([{"role": "system", "content": system},
+                         {"role": "user", "content": user}], temperature=0.4)
+        if text is None:
+            return None, RuleProvider().generate_definition(candidate)
+        title, definition = self._parse_title_and_definition(text)
+        if not definition:
+            definition = RuleProvider().generate_definition(candidate)
+        return title, definition
+
+    @staticmethod
+    def _parse_title_and_definition(text: str) -> tuple[str | None, str]:
+        """解析模型输出中的「岗位名称」行与正文；名称缺失或不合规返回 None。"""
+        title: str | None = None
+        definition = text.strip()
+        match = re.search(r"岗位名称[：:]\s*(.+?)(?:\n|$)", text)
+        if match:
+            title = match.group(1).strip().strip('\'"“”『』「」')
+            body = text[match.end():].strip()
+            body = re.sub(r"^岗位定义[：:]?\s*", "", body).strip()
+            if body:
+                definition = body
+        if not title or len(title) < 2 or len(title) > 24 or "\n" in title:
+            title = None
+        return title, definition
+
 
 _PROVIDERS: dict[str, type] = {"rule": RuleProvider, "mock": MockProvider, "llm": LLMProvider}
 
@@ -458,12 +502,8 @@ class EmergingJobAlgorithm:
                 "required_skills": self._skills(root, group),
                 "bonus_skills": [],
                 "application_scenarios": sorted({c["scenario"] for c in capabilities if c.get("scenario")})[:4],
-                "job_definition": active_provider.generate_definition(
-                    {"technology_name": standard_name, "job_title": title,
-                     "responsibilities": [t["name"] for t in tasks],
-                     "required_skills": self._skills(root, group),
-                     "time_horizon": "1-3年" if maturity >= 0.55 else "3-5年"}
-                ),
+                "job_definition": "",
+                "job_title_alias": None,
                 "tasks": tasks,
                 "scores": {
                     "technology_relevance": round(technology_relevance, 4),
@@ -482,6 +522,19 @@ class EmergingJobAlgorithm:
                     {"type": "candidate", "label": title},
                 ],
             })
+            # 岗位定义与（llm 模式）主从命名：provider 支持一次调用生成「名称+定义」时用主从名，
+            # 否则（rule/mock）仅生成定义，alias 保持 None（前端展示规则组合名）
+            gen_ctx = {"technology_name": standard_name, "job_title": title,
+                       "responsibilities": [t["name"] for t in tasks],
+                       "required_skills": self._skills(root, group),
+                       "time_horizon": "1-3年" if maturity >= 0.55 else "3-5年"}
+            title_and_definition = getattr(active_provider, "generate_title_and_definition", None)
+            if title_and_definition is not None:
+                alias, definition = title_and_definition(gen_ctx)
+                candidates[-1]["job_title_alias"] = alias
+                candidates[-1]["job_definition"] = definition
+            else:
+                candidates[-1]["job_definition"] = active_provider.generate_definition(gen_ctx)
 
         candidates.sort(key=lambda item: item["score"], reverse=True)
         candidates = candidates[:top_k]
@@ -567,6 +620,8 @@ def submit_candidate(conn: sqlite3.Connection, run_id: str, candidate_id: str) -
                       if c["candidate_id"] == candidate_id), None)
     if candidate is None:
         raise KeyError(f"候选岗位不存在: {candidate_id}")
+    # 岗位名优先用 LLM 主名（job_title_alias），无则回退规则组合名
+    job_name = candidate.get("job_title_alias") or candidate["job_title"]
     cur = conn.execute(
         """
         INSERT INTO job_definitions
@@ -577,7 +632,7 @@ def submit_candidate(conn: sqlite3.Connection, run_id: str, candidate_id: str) -
         (
             result["technology"]["technology_id"],
             candidate["job_type"],
-            candidate["job_title"],
+            job_name,
             "；".join(candidate["responsibilities"]),
             json.dumps(candidate["required_skills"], ensure_ascii=False),
             json.dumps(candidate["bonus_skills"], ensure_ascii=False),

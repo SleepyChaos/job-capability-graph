@@ -5,12 +5,13 @@
 // 数据全部来自 /api/emerging/* 真实接口；候选提交后进入 governance 审核闭环
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import {
   Sparkles, Search, Zap, GitBranch, CheckCircle2, ShieldAlert, ArrowRight,
   Loader2, Info, Send,
 } from 'lucide-react';
 import {
-  searchEmergingTechnologies, runEmergingDiscovery, submitEmergingCandidate,
+  searchEmergingTechnologies, runEmergingDiscovery, submitEmergingCandidate, fetchLlmSettings,
   type EmergingTechnology, type EmergingRunResult, type EmergingCandidate,
 } from '@/lib/api';
 
@@ -56,8 +57,9 @@ export default function DiscoveryPage() {
   const [selectedTech, setSelectedTech] = useState<EmergingTechnology | null>(null);
   const [searching, setSearching] = useState(false);
 
-  // 预测运行
-  const [mode, setMode] = useState<'rule' | 'mock' | 'llm'>('rule');
+  // 预测运行（默认 LLM 模式：动态任务生成 + LLM 岗位命名；未配置 Key 时后端自动降级规则模式）
+  const [mode, setMode] = useState<'rule' | 'mock' | 'llm'>('llm');
+  const [llmConfigured, setLlmConfigured] = useState<boolean | null>(null);
   const [running, setRunning] = useState(false);
   const [runId, setRunId] = useState('');
   const [result, setResult] = useState<EmergingRunResult | null>(null);
@@ -66,6 +68,11 @@ export default function DiscoveryPage() {
   // 提交审核状态
   const [submitted, setSubmitted] = useState<Record<string, boolean>>({});
   const [expanded, setExpanded] = useState<string>('');
+
+  // LLM 配置状态（未配置时提示前往设置页）
+  React.useEffect(() => {
+    fetchLlmSettings().then(s => setLlmConfigured(s.configured)).catch(() => setLlmConfigured(null));
+  }, []);
 
   const doSearch = async () => {
     if (!query.trim()) return;
@@ -204,9 +211,9 @@ export default function DiscoveryPage() {
                   onChange={e => setMode(e.target.value as 'rule' | 'mock' | 'llm')}
                   className="h-9 px-2 rounded-lg border border-slate-200 text-sm bg-white focus:outline-none"
                 >
+                  <option value="llm">LLM 模式（动态生成 + 智能命名，推荐）</option>
                   <option value="rule">规则模式（知识库任务）</option>
                   <option value="mock">Mock 模式（链路联调）</option>
-                  <option value="llm">LLM 模式（动态生成，无 Key 自动降级）</option>
                 </select>
                 <button
                   onClick={doRun}
@@ -217,6 +224,14 @@ export default function DiscoveryPage() {
                   {running ? '预测中…' : '发起新兴岗位预测'}
                 </button>
               </div>
+            </div>
+          )}
+
+          {mode === 'llm' && llmConfigured === false && (
+            <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-xs text-amber-700 flex items-center gap-2">
+              <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
+              未配置 LLM API Key，预测将自动降级为规则模式（岗位名为规则拼装）。
+              <Link href="/settings" className="underline font-medium whitespace-nowrap">前往设置页配置 DeepSeek Key</Link>
             </div>
           )}
         </div>
@@ -255,7 +270,13 @@ export default function DiscoveryPage() {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-base font-semibold text-slate-800">{c.job_title}</h3>
+                        <h3 className="text-base font-semibold text-slate-800">{c.job_title_alias || c.job_title}</h3>
+                        {c.job_title_alias && (
+                          <span className="text-[11px] text-slate-400">规则名：{c.job_title}</span>
+                        )}
+                        {!c.job_title_alias && (
+                          <span className="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-100 text-[11px] text-slate-400">规则命名</span>
+                        )}
                         <span className={`px-2 py-0.5 rounded text-xs font-medium ${jobTypeStyle[c.job_type]}`}>
                           {c.job_type}
                         </span>

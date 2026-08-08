@@ -790,3 +790,67 @@ def emerging_submit(body: EmergingSubmitRequest):
         raise HTTPException(404, str(e))
     conn.close()
     return {"definitionId": definition_id, "reviewStatus": "pending"}
+
+
+# -------------------------------------------------------------------------
+# 设置：LLM 接入配置（设置页；Key 掩码返回，持久化到项目根 .env）
+# -------------------------------------------------------------------------
+from pipeline import config as pipeline_config  # noqa: E402
+from pipeline import llm as pipeline_llm  # noqa: E402
+
+
+def _mask_key(key: str) -> str:
+    if not key:
+        return ""
+    if len(key) <= 8:
+        return key[:2] + "***"
+    return f"{key[:3]}***{key[-2:]}"
+
+
+class LlmSettingsRequest(BaseModel):
+    apiKey: str | None = None  # 空串/None 表示不修改；传空串且 clear=True 时清空
+    baseUrl: str | None = None
+    model: str | None = None
+    clear: bool = False
+
+
+@app.get("/api/settings/llm")
+def llm_settings():
+    return {
+        "configured": pipeline_llm.is_available(),
+        "keyMasked": _mask_key(pipeline_config.LLM_API_KEY),
+        "baseUrl": pipeline_config.LLM_BASE_URL,
+        "model": pipeline_config.LLM_MODEL,
+    }
+
+
+@app.post("/api/settings/llm")
+def llm_settings_save(body: LlmSettingsRequest):
+    """保存 LLM 配置：内存立即生效 + 回写 .env（不入代码库）。"""
+    api_key = "" if body.clear else body.apiKey
+    pipeline_config.apply_llm_overrides(
+        api_key=api_key, base_url=body.baseUrl, model=body.model
+    )
+    updates: dict[str, str] = {}
+    if api_key is not None:
+        updates["OPENAI_API_KEY"] = api_key
+    if body.baseUrl:
+        updates["OPENAI_BASE_URL"] = body.baseUrl
+    if body.model:
+        updates["LLM_MODEL"] = body.model
+    if updates:
+        pipeline_config.persist_env(**updates)
+    return {"saved": True, **llm_settings()}
+
+
+@app.post("/api/settings/llm/test")
+def llm_settings_test():
+    """连接测试：真实调用一次 chat/completions（短提示，低消耗）。"""
+    if not pipeline_llm.is_available():
+        return {"ok": False, "error": "未配置 API Key"}
+    text = pipeline_llm.chat(
+        [{"role": "user", "content": "请用两个字回复：正常"}], temperature=0.1, timeout=20
+    )
+    if text is None:
+        return {"ok": False, "error": "调用失败：请检查 Key/网络/接口地址"}
+    return {"ok": True, "reply": text.strip()[:40], "model": pipeline_config.LLM_MODEL}
