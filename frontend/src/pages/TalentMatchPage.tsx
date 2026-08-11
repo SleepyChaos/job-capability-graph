@@ -1,138 +1,104 @@
-import { ArrowRight, Bot, FileText, Paperclip, RotateCcw, SendHorizontal, Sparkles, UploadCloud, UserRound } from 'lucide-react'
+import { ArrowRight, Bot, FileText, RotateCcw, SendHorizontal, Sparkles, UploadCloud, UserRound } from 'lucide-react'
 import { useRef, useState } from 'react'
+import { talentApi, type ProfileDetail } from '../api/talent'
 import type { PageId } from '../types'
 
-interface ChatMessage {
-  role: 'assistant' | 'user'
-  text: string
-}
-
-const questions = [
-  {
-    text: '你目前最想进入哪类具身智能岗位？如果还不确定，也可以描述更喜欢的工作内容。',
-    replies: ['系统集成与联调', '感知与定位', '运动控制与规划'],
-  },
-  {
-    text: '在已有经历中，哪个项目最能代表你的能力？你具体负责了什么、结果如何？',
-    replies: ['多机协同机器人项目', '室内定位与建图项目', '我想自己描述'],
-  },
-  {
-    text: '你更偏好研究探索、工程交付，还是跨模块协调？这会影响岗位环境与团队角色的匹配。',
-    replies: ['工程交付', '研究探索', '跨模块协调'],
-  },
-  {
-    text: '未来 1–2 年你希望形成怎样的能力组合？有没有明确不考虑的方向或工作条件？',
-    replies: ['成为系统集成骨干', '向算法研发深入', '先看综合建议'],
-  },
-]
+interface ChatMessage { role: 'assistant' | 'user'; text: string }
 
 interface TalentMatchPageProps {
   hasProfiles: boolean
-  onProfileCreated: (sourceFile: string, conversationRounds: number) => void
+  onProfileCreated: (profile: ProfileDetail) => void
   onNavigate: (page: PageId) => void
   notify: (message: string) => void
 }
 
 export function TalentMatchPage({ hasProfiles, onProfileCreated, onNavigate, notify }: TalentMatchPageProps) {
   const fileRef = useRef<HTMLInputElement>(null)
-  const [fileName, setFileName] = useState('')
+  const [sourceName, setSourceName] = useState('粘贴文本简历')
+  const [resumeText, setResumeText] = useState('')
+  const [profile, setProfile] = useState<ProfileDetail | null>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
-  const [questionIndex, setQuestionIndex] = useState(0)
-  const [parsing, setParsing] = useState(false)
-  const [generating, setGenerating] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
 
-  const beginWithFile = (file?: File) => {
-    if (!file) return
-    setFileName(file.name)
-    setParsing(true)
-    window.setTimeout(() => {
-      setParsing(false)
+  const begin = async () => {
+    if (resumeText.trim().length < 30) {
+      setError('请至少提供 30 个有效字符的简历文本。')
+      return
+    }
+    setBusy(true); setError('')
+    try {
+      const next = await talentApi.createProfile({ source_name: sourceName, mime_type: 'text/plain', input_type_code: sourceName.endsWith('.txt') ? 'txt' : 'pasted_text', content_text: resumeText })
+      setProfile(next)
       setMessages([
-        { role: 'assistant', text: `已完成《${file.name}》的文本与结构解析。我识别到教育、项目和技术能力等信息，接下来会用 2–8 轮问题补全仅靠简历无法判断的部分。` },
-        { role: 'assistant', text: questions[0].text },
+        { role: 'assistant', text: `已解析《${sourceName}》，识别到 ${next.skill_count} 项标准技术能力。事实、推断和用户补充会分别保存。` },
+        ...(next.next_question ? [{ role: 'assistant' as const, text: next.next_question.question_text }] : []),
       ])
-    }, 850)
+    } catch (reason) { setError((reason as Error).message) } finally { setBusy(false) }
   }
 
-  const answer = (value: string) => {
+  const answer = async (value: string) => {
     const text = value.trim()
-    if (!text || !fileName) return
-    const nextIndex = questionIndex + 1
-    setMessages((items) => [
-      ...items,
-      { role: 'user', text },
-      { role: 'assistant', text: nextIndex < questions.length ? questions[nextIndex].text : '信息已经足够。我会区分简历事实、你的补充陈述和模型推断，生成一份可确认、可继续修订的求职者画像。' },
-    ])
-    setQuestionIndex(nextIndex)
+    if (!profile || !text || busy) return
+    setBusy(true); setError('')
+    setMessages((items) => [...items, { role: 'user', text }])
     setInput('')
+    try {
+      const next = await talentApi.answer(profile.version_code, text)
+      setProfile(next)
+      setMessages((items) => [...items, { role: 'assistant', text: next.next_question?.question_text ?? '当前信息已达到 P0 建档门槛。你可以确认画像，也可以稍后通过新版本继续补充。' }])
+    } catch (reason) { setError((reason as Error).message) } finally { setBusy(false) }
   }
 
-  const generateProfile = () => {
-    setGenerating(true)
-    window.setTimeout(() => {
-      setGenerating(false)
-      onProfileCreated(fileName, Math.max(questionIndex, 2))
-      notify('求职者画像已解析完成并入库，可在画像库中继续修改')
+  const publish = async () => {
+    if (!profile || busy) return
+    setBusy(true); setError('')
+    try {
+      const confirmed = await talentApi.publish(profile.version_code)
+      onProfileCreated(confirmed)
+      notify('求职者画像已确认并入库')
       onNavigate('resume')
-    }, 900)
+    } catch (reason) { setError((reason as Error).message) } finally { setBusy(false) }
   }
 
-  const reset = () => {
-    setFileName('')
-    setMessages([])
-    setQuestionIndex(0)
-    setInput('')
+  const readTxt = async (file?: File) => {
+    if (!file) return
+    if (!file.name.toLowerCase().endsWith('.txt')) { setError('P0 浏览器入口先支持 TXT 和粘贴文本；PDF/DOCX 文本适配将在后续接入。'); return }
+    setSourceName(file.name); setResumeText(await file.text()); setError('')
   }
 
-  if (!fileName) {
-    return (
-      <section className="talent-entry">
-        <div className="talent-entry-mark"><Sparkles size={25} /></div>
-        <h2>从一场对话开始认识你</h2>
-        <p>上传简历或直接粘贴经历。系统会先解析事实，再通过 2–8 轮追问补全求职目标、偏好与发展意愿。</p>
-        <button className="talent-composer talent-composer--empty" type="button" onClick={() => fileRef.current?.click()}>
-          <span>上传 PDF、DOCX、TXT 或图片简历</span>
-          <span className="talent-upload-action"><UploadCloud size={17} />选择文件</span>
-        </button>
-        <input ref={fileRef} hidden type="file" accept=".pdf,.doc,.docx,.txt,image/*" onChange={(event) => beginWithFile(event.target.files?.[0])} />
-        <div className="talent-entry-notes"><span>事实与推断分层</span><i /><span>每项能力保留证据</span><i /><span>画像由你最终确认</span></div>
-        {hasProfiles ? <button className="link-button talent-history" onClick={() => onNavigate('resume')}>查看历史求职者画像 <ArrowRight size={14} /></button> : null}
-      </section>
-    )
-  }
+  const reset = () => { setProfile(null); setMessages([]); setInput(''); setResumeText(''); setSourceName('粘贴文本简历'); setError('') }
+
+  if (!profile) return (
+    <section className="talent-entry">
+      <div className="talent-entry-mark"><Sparkles size={25} /></div>
+      <h2>从一场对话开始认识你</h2>
+      <p>P0 先打通 TXT / 粘贴文本 → 技术词证据 → 2–8 轮追问 → 画像确认。PDF、DOCX 与 OCR 适配保留接口但暂不在浏览器端伪装完成。</p>
+      <div className="talent-text-entry">
+        <textarea value={resumeText} onChange={(event) => setResumeText(event.target.value)} placeholder="粘贴简历文本，例如：姓名、求职意向、教育经历、项目职责、使用的技术及项目结果……" />
+        <div><span>{sourceName} · {resumeText.length} 字符</span><button className="secondary-button" onClick={() => fileRef.current?.click()}><UploadCloud size={15} />读取 TXT</button><button className="primary-button" onClick={begin} disabled={busy}>{busy ? '正在解析…' : '开始证据建档'}</button></div>
+      </div>
+      <input ref={fileRef} hidden type="file" accept=".txt,text/plain" onChange={(event) => readTxt(event.target.files?.[0])} />
+      {error ? <p className="form-error">{error}</p> : null}
+      <div className="talent-entry-notes"><span>不使用敏感属性</span><i /><span>每项能力保留原文证据</span><i /><span>缺少信息不等于不会</span></div>
+      {hasProfiles ? <button className="link-button talent-history" onClick={() => onNavigate('resume')}>查看历史求职者画像 <ArrowRight size={14} /></button> : null}
+    </section>
+  )
 
   return (
     <div className="talent-chat-page">
-      <header className="talent-chat-head">
-        <div><strong>求职者建档对话</strong><span>{questionIndex >= questions.length ? '信息收集完成' : `第 ${Math.min(questionIndex + 1, questions.length)} 轮 · 最多 8 轮`}</span></div>
-        <button className="secondary-button" onClick={reset}><RotateCcw size={14} />重新开始</button>
-      </header>
+      <header className="talent-chat-head"><div><strong>求职者建档对话</strong><span>已完成 {profile.conversation_round_count} 轮 · 允许 2–8 轮结束</span></div><button className="secondary-button" onClick={reset}><RotateCcw size={14} />重新开始</button></header>
       <main className="talent-chat-stream" aria-live="polite">
-        <div className="chat-file"><FileText size={17} /><div><strong>{fileName}</strong><span>{parsing ? '正在解析文本与版面…' : '解析完成 · 已识别 19 项事实与 12 项标准能力'}</span></div></div>
-        {parsing ? <div className="chat-thinking"><i /><i /><i /><span>正在读取简历并映射技术词标准库</span></div> : null}
-        {messages.map((message, index) => (
-          <div className={`chat-message chat-message--${message.role}`} key={`${message.role}-${index}`}>
-            <span className="chat-avatar">{message.role === 'assistant' ? <Bot size={17} /> : <UserRound size={17} />}</span>
-            <p>{message.text}</p>
-          </div>
-        ))}
-        {!parsing && questionIndex < questions.length ? (
-          <div className="quick-replies">
-            {questions[questionIndex].replies.map((reply) => <button key={reply} onClick={() => answer(reply)}>{reply}</button>)}
-          </div>
-        ) : null}
+        <div className="chat-file"><FileText size={17} /><div><strong>{profile.source_name}</strong><span>{profile.skill_count} 项技术能力 · 完整度 {profile.completeness_score}%</span></div></div>
+        {messages.map((message, index) => <div className={`chat-message chat-message--${message.role}`} key={`${message.role}-${index}`}><span className="chat-avatar">{message.role === 'assistant' ? <Bot size={17} /> : <UserRound size={17} />}</span><p>{message.text}</p></div>)}
+        {busy ? <div className="chat-thinking"><i /><i /><i /><span>正在保存用户补充并检查结束条件</span></div> : null}
       </main>
       <footer className="talent-chat-composer">
-        {questionIndex >= 2 ? <button className="secondary-button" onClick={generateProfile} disabled={generating}>{generating ? '正在生成…' : questionIndex >= questions.length ? '生成求职者画像' : '信息已足够，提前生成画像'}</button> : null}
-        <div className="talent-input-row">
-          <button className="icon-button" aria-label="补充文件" onClick={() => fileRef.current?.click()}><Paperclip size={18} /></button>
-          <textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder={questionIndex >= questions.length ? '还可以继续补充信息，或直接生成画像' : '输入你的回答…'} onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); answer(input) } }} />
-          <button className="chat-send" aria-label="发送" onClick={() => answer(input)} disabled={!input.trim()}><SendHorizontal size={18} /></button>
-        </div>
-        <small>AI 生成内容仅作为画像推断依据，提交匹配前可逐项修改和确认。</small>
+        {profile.can_publish ? <button className="secondary-button" onClick={publish} disabled={busy}>确认并发布画像</button> : null}
+        {profile.next_question ? <div className="talent-input-row"><textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="输入你的回答…" onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); answer(input) } }} /><button className="chat-send" aria-label="发送" onClick={() => answer(input)} disabled={!input.trim() || busy}><SendHorizontal size={18} /></button></div> : null}
+        {error ? <small className="form-error">{error}</small> : <small>每轮回答保存为“用户补充”，不会覆盖简历事实。</small>}
       </footer>
-      <input ref={fileRef} hidden type="file" accept=".pdf,.doc,.docx,.txt,image/*" onChange={(event) => beginWithFile(event.target.files?.[0])} />
     </div>
   )
 }

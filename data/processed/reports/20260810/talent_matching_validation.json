@@ -1,0 +1,274 @@
+{
+  "generated_at": "2026-08-11T19:52:20",
+  "summary": {
+    "profile_version_code": "CPV-588d598609304733ab",
+    "skill_count": 3,
+    "conversation_round_count": 2,
+    "completeness_score": 76.0,
+    "match_run_code": "CMR-a306c770068e4f0aab",
+    "match_result_count": 5,
+    "top_match_title": "slam算法工程师",
+    "top_match_score": 53.86,
+    "top_match_gap_count": 8,
+    "learning_path_code": "CLP-94054ffdd24246429b",
+    "learning_step_count": 5,
+    "elapsed_ms": 346.0,
+    "invariants": {
+      "profile_has_traceable_skill_evidence": true,
+      "dialogue_finishes_inside_two_to_eight_rounds": true,
+      "profile_requires_user_confirmation_before_matching": true,
+      "match_score_has_replayable_dimensions": true,
+      "missing_resume_skill_is_not_claimed_as_absent": true,
+      "learning_steps_reference_match_gaps": true,
+      "profile_edit_creates_new_version_without_overwrite": true
+    }
+  },
+  "database_counts": {
+    "profile_versions": 2,
+    "skill_evidence": 6,
+    "match_runs": 1,
+    "match_results": 5,
+    "match_gaps": 21,
+    "learning_paths": 1
+  },
+  "top_match": {
+    "result_code": "CMRSLT-1aaccc2cd5aa4efe",
+    "rank_no": 1,
+    "overall_score": 53.86,
+    "confidence_score": 75.0,
+    "cluster_code": "JC-d123f3c410a6b153",
+    "job_title": "slam算法工程师",
+    "representative_jd": {
+      "job_code": "job_bec455404a329b5bfe87cef4",
+      "company": "智元机器人",
+      "region": null,
+      "job_level": "middle"
+    },
+    "dimensions": [
+      {
+        "code": "required_skill_coverage",
+        "label": "必需能力覆盖",
+        "score": 71.8,
+        "weight": 0.4
+      },
+      {
+        "code": "transferability",
+        "label": "可迁移能力",
+        "score": 7.69,
+        "weight": 0.1
+      },
+      {
+        "code": "target_semantics",
+        "label": "求职目标语义",
+        "score": 50.0,
+        "weight": 0.45
+      },
+      {
+        "code": "evidence_depth",
+        "label": "个人证据完整度",
+        "score": 37.5,
+        "weight": 0.05
+      }
+    ],
+    "recommendation": {
+      "reasons": [
+        "已有证据覆盖：SLAM、ROS",
+        "存在2项同能力域可迁移技术"
+      ],
+      "warning": "未出现在简历中的技能只标记为证据不足。"
+    },
+    "gaps": [
+      {
+        "gap_id": 3,
+        "technology_node_id": 84,
+        "technology_name": "运动控制(通用)",
+        "gap_type_code": "evidence_insufficient",
+        "importance_score": 14.29,
+        "candidate_evidence": [],
+        "job_evidence": [
+          "job:job_cb693eea159ca3be3227e4cb",
+          "job:job_d62c5f0f29532b67a949e875"
+        ],
+        "explanation": "画像中暂未找到该技术的可核验证据，不等于候选人不会。"
+      },
+      {
+        "gap_id": 1,
+        "technology_node_id": 91,
+        "technology_name": "路径规划与轨迹",
+        "gap_type_code": "transferable",
+        "importance_score": 14.29,
+        "candidate_evidence": [
+          "technology:86"
+        ],
+        "job_evidence": [
+          "job:job_69d3032d98ec2a5403a41e07",
+          "job:job_56bfc8d5569d48fee5eb42e8"
+        ],
+        "explanation": "候选人具备同一L2能力域的相邻技术证据，可作为迁移起点。"
+      },
+      {
+        "gap_id": 2,
+        "technology_node_id": 276,
+        "technology_name": "无人机",
+        "gap_type_code": "evidence_insufficient",
+        "importance_score": 14.29,
+        "candidate_evidence": [],
+        "job_evidence": [
+          "job:job_69d3032d98ec2a5403a41e07",
+          "job:job_56bfc8d5569d48fee5eb42e8"
+        ],
+        "explanation": "画像中暂未找到该技术的可核验证据，不等于候选人不会。"
+      },
+      {
+        "gap_id": 4,
+        "technology_node_id": 132,
+        "technology_name": "激光雷达",
+        "gap_type_code": "evidence_insufficient",
+        "importance_score": 7.14,
+        "candidate_evidence": [],
+        "job_evidence": [
+          "job:job_cb693eea159ca3be3227e4cb"
+        ],
+        "explanation": "画像中暂未找到该技术的可核验证据，不等于候选人不会。"
+      },
+      {
+        "gap_id": 5,
+        "technology_node_id": 141,
+        "technology_name": "机器视觉",
+        "gap_type_code": "transferable",
+        "importance_score": 7.14,
+        "candidate_evidence": [
+          "technology:144"
+        ],
+        "job_evidence": [
+          "job:job_bfa0d9c3c05503431a7e6547"
+        ],
+        "explanation": "候选人具备同一L2能力域的相邻技术证据，可作为迁移起点。"
+      },
+      {
+        "gap_id": 7,
+        "technology_node_id": 174,
+        "technology_name": "工业机械臂",
+        "gap_type_code": "evidence_insufficient",
+        "importance_score": 7.14,
+        "candidate_evidence": [],
+        "job_evidence": [
+          "job:job_cef3701ec349cf43a51c4b23"
+        ],
+        "explanation": "画像中暂未找到该技术的可核验证据，不等于候选人不会。"
+      },
+      {
+        "gap_id": 6,
+        "technology_node_id": 198,
+        "technology_name": "数据采集设备与工具链",
+        "gap_type_code": "evidence_insufficient",
+        "importance_score": 7.14,
+        "candidate_evidence": [],
+        "job_evidence": [
+          "job:job_cb693eea159ca3be3227e4cb"
+        ],
+        "explanation": "画像中暂未找到该技术的可核验证据，不等于候选人不会。"
+      },
+      {
+        "gap_id": 8,
+        "technology_node_id": 264,
+        "technology_name": "农业机器人",
+        "gap_type_code": "evidence_insufficient",
+        "importance_score": 7.14,
+        "candidate_evidence": [],
+        "job_evidence": [
+          "job:job_cef3701ec349cf43a51c4b23"
+        ],
+        "explanation": "画像中暂未找到该技术的可核验证据，不等于候选人不会。"
+      }
+    ]
+  },
+  "learning_path": {
+    "path_code": "CLP-94054ffdd24246429b",
+    "match_result_id": 1,
+    "version_no": 1,
+    "algorithm_version": "gap_path_rules_p0_v1",
+    "summary": "由5项可追溯差距生成，完成后重新提交项目证据并重算匹配。",
+    "steps": [
+      {
+        "step_no": 1,
+        "technology_node_id": 84,
+        "technology_name": "运动控制(通用)",
+        "gap_id": 3,
+        "gap_type_code": "evidence_insufficient",
+        "depends_on": [],
+        "learning_focus": "补齐运动控制(通用)的核心概念、工具链和工程边界",
+        "practice_task": "完成一个可复现的运动控制(通用)具身智能小实验",
+        "verification": "提交代码、实验记录、关键指标和失败复盘",
+        "estimated_weeks": 3,
+        "improves_dimension": "required_skill_coverage",
+        "evidence_reference": "gap:3"
+      },
+      {
+        "step_no": 2,
+        "technology_node_id": 91,
+        "technology_name": "路径规划与轨迹",
+        "gap_id": 1,
+        "gap_type_code": "transferable",
+        "depends_on": [
+          1
+        ],
+        "learning_focus": "补齐路径规划与轨迹的核心概念、工具链和工程边界",
+        "practice_task": "完成一个可复现的路径规划与轨迹具身智能小实验",
+        "verification": "提交代码、实验记录、关键指标和失败复盘",
+        "estimated_weeks": 2,
+        "improves_dimension": "required_skill_coverage",
+        "evidence_reference": "gap:1"
+      },
+      {
+        "step_no": 3,
+        "technology_node_id": 276,
+        "technology_name": "无人机",
+        "gap_id": 2,
+        "gap_type_code": "evidence_insufficient",
+        "depends_on": [
+          2
+        ],
+        "learning_focus": "补齐无人机的核心概念、工具链和工程边界",
+        "practice_task": "完成一个可复现的无人机具身智能小实验",
+        "verification": "提交代码、实验记录、关键指标和失败复盘",
+        "estimated_weeks": 3,
+        "improves_dimension": "required_skill_coverage",
+        "evidence_reference": "gap:2"
+      },
+      {
+        "step_no": 4,
+        "technology_node_id": 132,
+        "technology_name": "激光雷达",
+        "gap_id": 4,
+        "gap_type_code": "evidence_insufficient",
+        "depends_on": [
+          3
+        ],
+        "learning_focus": "补齐激光雷达的核心概念、工具链和工程边界",
+        "practice_task": "完成一个可复现的激光雷达具身智能小实验",
+        "verification": "提交代码、实验记录、关键指标和失败复盘",
+        "estimated_weeks": 3,
+        "improves_dimension": "required_skill_coverage",
+        "evidence_reference": "gap:4"
+      },
+      {
+        "step_no": 5,
+        "technology_node_id": 141,
+        "technology_name": "机器视觉",
+        "gap_id": 5,
+        "gap_type_code": "transferable",
+        "depends_on": [
+          4
+        ],
+        "learning_focus": "补齐机器视觉的核心概念、工具链和工程边界",
+        "practice_task": "完成一个可复现的机器视觉具身智能小实验",
+        "verification": "提交代码、实验记录、关键指标和失败复盘",
+        "estimated_weeks": 2,
+        "improves_dimension": "required_skill_coverage",
+        "evidence_reference": "gap:5"
+      }
+    ],
+    "workflow_status_code": "draft"
+  }
+}

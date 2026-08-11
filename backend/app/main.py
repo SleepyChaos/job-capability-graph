@@ -10,6 +10,7 @@ from app.api.graphs import router as graphs_router
 from app.api.health import router as health_router
 from app.api.job_parsing import router as job_parsing_router
 from app.api.jobs import router as jobs_router
+from app.api.talent import router as talent_router
 from app.api.taxonomy import router as taxonomy_router
 from app.core.config import get_settings
 from app.core.logging import configure_logging
@@ -32,6 +33,7 @@ app.include_router(data_center_router, prefix=settings.api_prefix)
 app.include_router(clustering_router, prefix=settings.api_prefix)
 app.include_router(discovery_router, prefix=settings.api_prefix)
 app.include_router(graphs_router, prefix=settings.api_prefix)
+app.include_router(talent_router, prefix=settings.api_prefix)
 
 
 @app.middleware("http")

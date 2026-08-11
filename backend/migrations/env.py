@@ -10,6 +10,7 @@ from app.modules.data_center import models as data_center_models  # noqa: F401
 from app.modules.discovery import models as discovery_models  # noqa: F401
 from app.modules.ingestion import models as ingestion_models  # noqa: F401
 from app.modules.job import models as job_models  # noqa: F401
+from app.modules.talent import models as talent_models  # noqa: F401
 from app.modules.taxonomy import models as taxonomy_models  # noqa: F401
 
 config = context.config

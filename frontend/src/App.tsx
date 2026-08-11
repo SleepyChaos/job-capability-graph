@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { talentApi, type LearningPath, type MatchResult, type ProfileDetail, type ProfileSummary } from './api/talent'
 import { AppShell } from './components/AppShell'
 import { DataHubPage } from './pages/DataHubPage'
 import { DataManagementPage } from './pages/DataManagementPage'
@@ -18,13 +19,7 @@ import { ReviewPage } from './pages/ReviewPage'
 import { SourcesPage } from './pages/SourcesPage'
 import { TaxonomyPage } from './pages/TaxonomyPage'
 import { TalentMatchPage } from './pages/TalentMatchPage'
-import type { CandidateProfile, PageId } from './types'
-
-const initialProfiles: CandidateProfile[] = [
-  { id: 'lin-v3', name: '林舟', version: 3, sourceFile: '林舟_具身智能方向简历.pdf', createdAt: '2026-08-09 11:18', updatedAt: '今天 11:18', status: '已确认', direction: '具身智能系统集成工程师', education: '硕士 · 控制科学与工程', summary: '系统集成 + 感知定位复合能力，具备跨模块联调和问题闭环证据。', skills: ['ROS 2', 'SLAM', '传感器融合', 'Python', '运动规划'], completeness: 88, factsCount: 19, conversationRounds: 4, matchRuns: 3 },
-  { id: 'lin-v2', name: '林舟', version: 2, sourceFile: '林舟_机器人算法简历_修订版.docx', createdAt: '2026-07-26 16:42', updatedAt: '07-26 16:42', status: '已确认', direction: '机器人感知与定位算法工程师', education: '硕士 · 控制科学与工程', summary: '以定位建图为主，系统集成信息尚不完整。', skills: ['SLAM', '传感器融合', 'Python', 'C++'], completeness: 76, factsCount: 15, conversationRounds: 2, matchRuns: 2 },
-  { id: 'chen-v1', name: '陈岚', version: 1, sourceFile: '陈岚_运动控制方向.txt', createdAt: '2026-06-18 09:30', updatedAt: '06-18 09:30', status: '待确认', direction: '机器人运动控制工程师', education: '本科 · 自动化', summary: '具备控制理论与嵌入式开发基础，项目结果证据仍需补充。', skills: ['C++', '控制理论', '嵌入式开发', 'Linux'], completeness: 64, factsCount: 11, conversationRounds: 3, matchRuns: 0 },
-]
+import type { PageId } from './types'
 
 const pageTitles: Record<PageId, string> = {
   overview: '系统总览',
@@ -57,9 +52,10 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [toast, setToast] = useState('')
-  const [profiles, setProfiles] = useState<CandidateProfile[]>(initialProfiles)
-  const [selectedProfileId, setSelectedProfileId] = useState('lin-v3')
-  const [selectedJob, setSelectedJob] = useState('')
+  const [profiles, setProfiles] = useState<ProfileSummary[]>([])
+  const [selectedVersionCode, setSelectedVersionCode] = useState('')
+  const [selectedMatchResult, setSelectedMatchResult] = useState<MatchResult | null>(null)
+  const [learningPath, setLearningPath] = useState<LearningPath | null>(null)
 
   useEffect(() => {
     window.location.hash = `/${page}`
@@ -78,49 +74,24 @@ export default function App() {
     return () => window.clearTimeout(timer)
   }, [toast])
 
+  useEffect(() => {
+    const controller = new AbortController()
+    talentApi.profiles(controller.signal).then((items) => {
+      setProfiles(items)
+      setSelectedVersionCode((current) => current || items[0]?.version_code || '')
+    }).catch((reason: Error) => { if (reason.name !== 'AbortError') setToast(`画像库加载失败：${reason.message}`) })
+    return () => controller.abort()
+  }, [])
+
   const notify = (message: string) => setToast(message)
-  const selectedProfile = profiles.find((profile) => profile.id === selectedProfileId) ?? profiles[0]
-
-  const createProfile = (sourceFile: string, conversationRounds: number) => {
-    const nextVersion = Math.max(...profiles.filter((profile) => profile.name === initialProfiles[0].name).map((profile) => profile.version), 0) + 1
-    const nextProfile: CandidateProfile = {
-      ...initialProfiles[0],
-      id: `profile-${Date.now()}`,
-      sourceFile,
-      version: nextVersion,
-      createdAt: '刚刚',
-      updatedAt: '刚刚',
-      status: '待确认',
-      conversationRounds,
-      matchRuns: 0,
-    }
-    setProfiles((items) => [nextProfile, ...items])
-    setSelectedProfileId(nextProfile.id)
-    setSelectedJob('')
+  const selectedProfile = profiles.find((profile) => profile.version_code === selectedVersionCode) ?? profiles[0]
+  const upsertProfile = (profile: ProfileSummary | ProfileDetail) => {
+    setProfiles((items) => [profile, ...items.filter((item) => item.version_code !== profile.version_code)])
+    setSelectedVersionCode(profile.version_code)
   }
-
-  const createProfileVersion = (baseId: string, updates: Pick<CandidateProfile, 'name' | 'direction' | 'education' | 'summary' | 'skills'>) => {
-    const base = profiles.find((profile) => profile.id === baseId)
-    if (!base) return
-    const nextVersion = Math.max(...profiles.filter((profile) => profile.name === base.name).map((profile) => profile.version), 0) + 1
-    const nextProfile: CandidateProfile = {
-      ...base,
-      ...updates,
-      id: `profile-${Date.now()}`,
-      version: nextVersion,
-      createdAt: '刚刚',
-      updatedAt: '刚刚',
-      status: '待确认',
-      matchRuns: 0,
-    }
-    setProfiles((items) => [nextProfile, ...items])
-    setSelectedProfileId(nextProfile.id)
-    setSelectedJob('')
-  }
-
-  const useProfileForMatch = (profileId: string) => {
-    setSelectedProfileId(profileId)
-    setSelectedJob('')
+  const useProfileForMatch = (versionCode: string) => {
+    setSelectedVersionCode(versionCode)
+    setSelectedMatchResult(null); setLearningPath(null)
     setPage('match')
   }
 
@@ -138,10 +109,10 @@ export default function App() {
     case 'graph-heatmap': content = <GraphHeatmapPage notify={notify} />; break
     case 'graph-relations': content = <GraphRelationsPage notify={notify} />; break
     case 'graph-clusters': content = <GraphClusterPage notify={notify} />; break
-    case 'talent': content = <TalentMatchPage hasProfiles={profiles.length > 0} onProfileCreated={createProfile} onNavigate={setPage} notify={notify} />; break
-    case 'resume': content = <ResumePage profiles={profiles} selectedProfileId={selectedProfileId} onSelectProfile={setSelectedProfileId} onCreateVersion={createProfileVersion} onUseForMatch={useProfileForMatch} onNavigate={setPage} notify={notify} />; break
-    case 'match': content = <MatchPage profile={selectedProfile} selectedJob={selectedJob} onSelectJob={setSelectedJob} onNavigate={setPage} notify={notify} />; break
-    case 'learning': content = <LearningPage profile={selectedProfile} selectedJob={selectedJob} onNavigate={setPage} notify={notify} />; break
+    case 'talent': content = <TalentMatchPage hasProfiles={profiles.length > 0} onProfileCreated={upsertProfile} onNavigate={setPage} notify={notify} />; break
+    case 'resume': content = <ResumePage profiles={profiles} selectedVersionCode={selectedVersionCode} onSelectProfile={setSelectedVersionCode} onProfilesChanged={upsertProfile} onUseForMatch={useProfileForMatch} onNavigate={setPage} notify={notify} />; break
+    case 'match': content = selectedProfile ? <MatchPage profile={selectedProfile} onPathGenerated={(result, path) => { setSelectedMatchResult(result); setLearningPath(path) }} onNavigate={setPage} notify={notify} /> : <ResumePage profiles={profiles} selectedVersionCode={selectedVersionCode} onSelectProfile={setSelectedVersionCode} onProfilesChanged={upsertProfile} onUseForMatch={useProfileForMatch} onNavigate={setPage} notify={notify} />; break
+    case 'learning': content = selectedProfile ? <LearningPage profile={selectedProfile} result={selectedMatchResult} path={learningPath} onNavigate={setPage} notify={notify} /> : <OverviewPage onNavigate={setPage} />; break
     case 'review': content = <ReviewPage notify={notify} />; break
     default: content = <OverviewPage onNavigate={setPage} />
   }

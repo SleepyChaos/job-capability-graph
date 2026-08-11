@@ -414,6 +414,12 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .graph-data-warning strong { margin-bottom: 3px; font-size: 10px; }
 .graph-data-warning span { font-size: 9px; line-height: 1.5; }
 
+.talent-text-entry { width: min(760px, 100%); overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 14px 36px rgba(18, 47, 75, .08); }
+.talent-text-entry textarea { width: 100%; min-height: 210px; display: block; padding: 18px; color: var(--ink); background: #fff; border: 0; border-bottom: 1px solid var(--soft-line); resize: vertical; font: inherit; font-size: 11px; line-height: 1.75; }
+.talent-text-entry > div { min-height: 58px; display: flex; align-items: center; gap: 9px; padding: 9px 12px; }
+.talent-text-entry > div > span { flex: 1; color: var(--muted); font-size: 9px; text-align: left; }
+.form-error { color: #b33b3b !important; font-size: 10px; line-height: 1.5; }
+
 /* P0 图谱：长聚类列表独立滚动，避免把径向画布纵向撑开。 */
 .cluster-graph-workspace { height: 590px; min-height: 0; }
 .cluster-list { overflow-y: auto; }

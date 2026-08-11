@@ -80,6 +80,15 @@ def test_initial_migration_upgrades_and_downgrades(tmp_path: Path) -> None:
         "biz_candidate_score_component",
         "rel_candidate_technology",
         "biz_standard_job_description",
+        "raw_resume_document",
+        "biz_candidate_profile",
+        "biz_candidate_profile_version",
+        "rel_candidate_skill_evidence",
+        "biz_candidate_dialogue_turn",
+        "biz_candidate_match_run",
+        "biz_candidate_match_result",
+        "biz_candidate_match_gap",
+        "biz_candidate_learning_path",
     }.issubset(set(inspector.get_table_names()))
 
     command.downgrade(config, "base")
