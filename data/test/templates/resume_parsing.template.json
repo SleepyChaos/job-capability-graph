@@ -1,0 +1,29 @@
+{
+  "sample_id": "",
+  "dataset_version": "",
+  "split": "test",
+  "input": {
+    "resume_file": "",
+    "file_type": "",
+    "ocr_required": false,
+    "language": "zh-CN",
+    "raw_text_for_fixture": "",
+    "content_hash": "sha256:",
+    "privacy_level": "public_synthetic"
+  },
+  "gold": {
+    "target_job_titles": [],
+    "education": [],
+    "experiences": [],
+    "skills": [],
+    "explicit_preferences": [],
+    "unsupported_inferences": [],
+    "annotation_status": "pending"
+  },
+  "quality": {
+    "layout_type": "single_column",
+    "difficulty": "normal",
+    "adjudication_notes": ""
+  }
+}
+

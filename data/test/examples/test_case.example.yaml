@@ -1,0 +1,41 @@
+case_id: TC-JD-DEMO-0001
+name: JD必备技能与加分技能解析
+requirement_ids:
+  - FR-03
+  - FR-12
+dataset_version: jd_parsing_demo_v1
+sample_ids:
+  - jd_demo_0001
+test_level: evaluation
+preconditions:
+  taxonomy_version: technology_taxonomy_20260727
+  parser_version: jd_parser_demo_v1
+action:
+  operation: parse_jd
+  parameters:
+    return_evidence: true
+expected:
+  job_title_normalized: 机器人感知算法工程师
+  required_term_ids:
+    - tech_ros2
+    - tech_cpp
+    - tech_point_cloud
+  preferred_term_ids:
+    - tech_cuda
+assertions:
+  - 每个技能必须绑定原文证据
+  - CUDA不得被错误标记为必备技能
+  - 不得生成原文中不存在的技能
+metric_contribution:
+  - jd_title_accuracy
+  - required_skill_f1
+  - preferred_skill_f1
+evidence_outputs:
+  - parser_result.json
+  - metric_detail.json
+tags:
+  - jd_parsing
+  - skill_requirement_type
+owner: evaluation_team
+status: demo
+

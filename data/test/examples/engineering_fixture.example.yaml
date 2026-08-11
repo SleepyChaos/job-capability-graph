@@ -1,0 +1,46 @@
+fixture_id: fixture_demo_heatmap_boundary_001
+layer: unit
+component: graph_heatmap_aggregator
+dataset_version: engineering_fixture_demo_v1
+setup:
+  clock: 2026-08-01T23:59:59+08:00
+  timezone: Asia/Shanghai
+  records:
+    - event_date: 2026-06-17
+      term_id: tech_ros2
+      trigger_count: 9
+      is_verified: true
+    - event_date: 2026-06-18
+      term_id: tech_ros2
+      trigger_count: 2
+      is_verified: true
+    - event_date: 2026-08-01
+      term_id: tech_ros2
+      trigger_count: 3
+      is_verified: true
+    - event_date: 2026-08-01
+      term_id: tech_candidate
+      trigger_count: 7
+      is_verified: false
+action:
+  function_or_endpoint: aggregate_skill_heatmap
+  parameters:
+    window_days: 45
+    end_date: 2026-08-01
+    verified_only: true
+expected:
+  result:
+    tech_ros2: 5
+  error_code: null
+  emitted_events: []
+  database_changes: []
+assertions:
+  - 2026-06-17位于窗口外不得计入
+  - 2026-06-18和2026-08-01必须计入
+  - 未验证候选不得计入正式热力
+cleanup_required: false
+tags:
+  - time_boundary
+  - verified_filter
+  - heatmap
+

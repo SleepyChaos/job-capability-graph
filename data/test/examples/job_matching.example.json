@@ -1,0 +1,25 @@
+{
+  "pair_id": "match_demo_0001",
+  "dataset_version": "job_matching_demo_v1",
+  "split": "demo",
+  "profile_version_id": "resume_demo_0001_v1",
+  "job_version_id": "job_robot_perception_demo_v1",
+  "gold": {
+    "label": "B_PARTIAL_FIT",
+    "required_skill_coverage": 0.67,
+    "strength_term_ids": ["tech_cpp", "tech_pcl"],
+    "gap_term_ids": ["tech_ros2", "tech_cuda"],
+    "blocking_gaps": ["tech_ros2"],
+    "transferable_evidence": ["点云分割项目可迁移到机器人三维感知任务"],
+    "seniority_fit": "match",
+    "expert_rationale": "方向和点云基础匹配，但缺少ROS 2项目证据；CUDA属于加分项而非阻断项。",
+    "rank_position": 3,
+    "annotation_status": "demo_adjudicated"
+  },
+  "quality": {
+    "difficulty": "semantic_transfer",
+    "annotator_agreement": "resolved",
+    "adjudication_notes": "示例展示可迁移能力与阻断差距的分离。"
+  }
+}
+

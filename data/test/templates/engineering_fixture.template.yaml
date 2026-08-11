@@ -1,0 +1,20 @@
+fixture_id: ""
+layer: unit
+component: ""
+dataset_version: ""
+setup:
+  clock: null
+  timezone: Asia/Shanghai
+  records: []
+action:
+  function_or_endpoint: ""
+  parameters: {}
+expected:
+  result: null
+  error_code: null
+  emitted_events: []
+  database_changes: []
+assertions: []
+cleanup_required: false
+tags: []
+

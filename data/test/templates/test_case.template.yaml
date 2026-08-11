@@ -1,0 +1,18 @@
+case_id: ""
+name: ""
+requirement_ids: []
+dataset_version: ""
+sample_ids: []
+test_level: evaluation
+preconditions: {}
+action:
+  operation: ""
+  parameters: {}
+expected: {}
+assertions: []
+metric_contribution: []
+evidence_outputs: []
+tags: []
+owner: ""
+status: draft
+

@@ -1,0 +1,69 @@
+{
+  "mapping_code": "technology_taxonomy_20260810",
+  "mapping_version": "1.0.0",
+  "source_workbook": "core/技术词主数据_20260727.xlsx",
+  "taxonomy_version": "technology_taxonomy_v1_1",
+  "principles": [
+    "源文件中的T1-T7虽然位于L1技术域工作表，目标库仍将T领域与L层级分开保存",
+    "L3是图谱默认标准技术点，L4是文本识别表面词/别名",
+    "原始值和标准值分开保存，跨域调整和来源留痕不得丢失"
+  ],
+  "sheets": [
+    {
+      "sheet": "L1技术域",
+      "entity": "technology_domain_and_l1_bridge",
+      "strategy": "TRANSFORM",
+      "fields": {
+        "L1编码": ["md_technology_domain.domain_code", "md_technology_node.node_code"],
+        "技术域": ["md_technology_domain.domain_name", "md_technology_node.node_name"],
+        "定义": ["md_technology_domain.description", "md_technology_node.description"],
+        "对应产业链层级": ["md_technology_node.source_metadata_json.industry_chain_levels"]
+      }
+    },
+    {
+      "sheet": "L2技术类",
+      "entity": "technology_node_l2",
+      "strategy": "TRANSFORM",
+      "fields": {
+        "L2编码": ["md_technology_node.node_code"],
+        "技术类": ["md_technology_node.node_name"],
+        "所属L1": ["md_technology_node.parent_node_code"],
+        "所属技术域": ["rel_technology_node_domain.domain_name_source"],
+        "归类别名正则": ["md_technology_alias.match_pattern"],
+        "定义": ["md_technology_node.description"],
+        "L3数量(v1.1)": ["import_validation.expected_child_count"],
+        "L4成员数(v1.1)": ["import_validation.expected_surface_term_count"]
+      }
+    },
+    {
+      "sheet": "L3技术点",
+      "entity": "technology_node_l3",
+      "strategy": "TRANSFORM",
+      "fields": {
+        "L3编码": ["md_technology_node.node_code"],
+        "L3标准名": ["md_technology_node.node_name"],
+        "L2编码": ["md_technology_node.parent_node_code"],
+        "L1编码": ["rel_technology_node_domain.domain_code"],
+        "L4成员数": ["import_validation.expected_surface_term_count"],
+        "簇类型": ["md_technology_node.source_metadata_json.cluster_type"],
+        "备注": ["md_technology_node.source_metadata_json.notes"]
+      }
+    },
+    {
+      "sheet": "L4技术词",
+      "entity": "technology_surface_term",
+      "strategy": "TRANSFORM",
+      "fields": {
+        "技术词": ["md_technology_alias.alias_text"],
+        "L4类型": ["md_technology_alias.alias_type_code"],
+        "挂载L3编码": ["md_technology_alias.technology_node_code"],
+        "L2编码": ["import_validation.expected_l2_code"],
+        "L1编码": ["rel_technology_node_domain.domain_code"],
+        "原层级(留痕)": ["md_technology_alias.source_metadata_json.original_level"],
+        "跨域调整": ["rel_technology_node_domain.evidence_note"],
+        "命中来源": ["md_technology_alias.source_metadata_json.source_hit"],
+        "来源明细(留痕)": ["md_technology_alias.source_metadata_json.source_detail"]
+      }
+    }
+  ]
+}

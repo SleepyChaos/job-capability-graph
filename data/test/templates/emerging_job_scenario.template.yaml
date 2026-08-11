@@ -1,0 +1,41 @@
+scenario_id: ""
+scenario_type: emerging_job
+name: ""
+as_of_date: null
+dataset_version: ""
+taxonomy_version: ""
+inputs:
+  source_ids: []
+  milestone_ids: []
+  technology_term_ids: []
+  related_jd_ids: []
+  existing_job_version_ids: []
+  parameters:
+    target_date: null
+    minimum_independent_sources: 0
+    candidate_threshold: 0.0
+expected_intermediate:
+  independent_source_groups: []
+  verified_milestone_ids: []
+  jd_coverage_rate: null
+  scores:
+    technology_signal: null
+    milestone_signal: null
+    jd_gap_signal: null
+    evidence_quality: null
+    total: null
+expected_output:
+  candidate_generated: false
+  title: ""
+  job_card:
+    core_responsibilities: []
+    required_term_ids: []
+    preferred_term_ids: []
+    application_scenarios: []
+  review_status: pending
+  publish_allowed: false
+  graph_node_expected: false
+assertions: []
+negative_controls: []
+notes: ""
+

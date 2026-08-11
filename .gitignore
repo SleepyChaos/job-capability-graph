@@ -2,3 +2,12 @@ frontend/node_modules/
 frontend/dist/
 frontend/*.tsbuildinfo
 .pnpm-store/
+backend/.venv/
+backend/.uv-cache/
+backend/.local/
+backend/.pytest_cache/
+backend/.ruff_cache/
+backend/.coverage
+backend/htmlcov/
+__pycache__/
+*.py[cod]

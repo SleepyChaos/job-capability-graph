@@ -1,0 +1,4274 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-11T14:03:09.205221+08:00",
+  "source_root": "data/source/20260810",
+  "workbooks": [
+    {
+      "relative_path": "core/具身智能岗位_清洗后_v3(1).xlsx",
+      "file_name": "具身智能岗位_清洗后_v3(1).xlsx",
+      "size_bytes": 2435587,
+      "sha256": "a96bff92a5d28cad4539f4f20c5d09d142fa6f46c4df1410db438d8ea3265646",
+      "modified_at": "2026-07-29T20:16:16+08:00",
+      "access_classification": "project-internal",
+      "schema_fingerprint": "d8c70c23bbedd6239a55dcdddabe808a6d4a4416c3770730fca66b0a4cbfb38e",
+      "sheets": [
+        {
+          "name": "岗位数据",
+          "state": "visible",
+          "row_count": 3718,
+          "column_count": 26,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "序号",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3718,
+              "type_counts": {
+                "number": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "occ_id",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3718,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "group_id",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3718,
+              "type_counts": {
+                "number": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "公司",
+              "non_empty_count": 3715,
+              "empty_count": 3,
+              "unique_count": 93,
+              "type_counts": {
+                "empty": 3,
+                "text": 3715
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "关联公司",
+              "non_empty_count": 3110,
+              "empty_count": 608,
+              "unique_count": 75,
+              "type_counts": {
+                "empty": 608,
+                "text": 3110
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "岗位",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3010,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "城市",
+              "non_empty_count": 1986,
+              "empty_count": 1732,
+              "unique_count": 120,
+              "type_counts": {
+                "empty": 1732,
+                "text": 1986
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "薪资",
+              "non_empty_count": 3492,
+              "empty_count": 226,
+              "unique_count": 552,
+              "type_counts": {
+                "empty": 226,
+                "text": 3492
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "学历(原始)",
+              "non_empty_count": 3525,
+              "empty_count": 193,
+              "unique_count": 56,
+              "type_counts": {
+                "empty": 193,
+                "text": 3525
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "学历(标准化)",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "经验(原始)",
+              "non_empty_count": 1801,
+              "empty_count": 1917,
+              "unique_count": 80,
+              "type_counts": {
+                "empty": 1917,
+                "text": 1801
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 12,
+              "header": "经验(标准化)",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 8,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 13,
+              "header": "能力等级",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 14,
+              "header": "职业方向",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 15,
+              "header": "职业种类",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 17,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 16,
+              "header": "产业链层级",
+              "non_empty_count": 3110,
+              "empty_count": 608,
+              "unique_count": 67,
+              "type_counts": {
+                "empty": 608,
+                "text": 3110
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 17,
+              "header": "公司细分领域",
+              "non_empty_count": 3110,
+              "empty_count": 608,
+              "unique_count": 74,
+              "type_counts": {
+                "empty": 608,
+                "text": 3110
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 18,
+              "header": "融资轮次",
+              "non_empty_count": 3110,
+              "empty_count": 608,
+              "unique_count": 9,
+              "type_counts": {
+                "empty": 608,
+                "text": 3110
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 19,
+              "header": "公司所属地区",
+              "non_empty_count": 3110,
+              "empty_count": 608,
+              "unique_count": 8,
+              "type_counts": {
+                "empty": 608,
+                "text": 3110
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 20,
+              "header": "公司总部城市",
+              "non_empty_count": 3110,
+              "empty_count": 608,
+              "unique_count": 61,
+              "type_counts": {
+                "empty": 608,
+                "text": 3110
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 21,
+              "header": "技能标签",
+              "non_empty_count": 1772,
+              "empty_count": 1946,
+              "unique_count": 838,
+              "type_counts": {
+                "empty": 1946,
+                "text": 1772
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 22,
+              "header": "清洗JD描述",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3391,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 23,
+              "header": "链接",
+              "non_empty_count": 3533,
+              "empty_count": 185,
+              "unique_count": 3533,
+              "type_counts": {
+                "empty": 185,
+                "text": 3533
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 24,
+              "header": "收录时间",
+              "non_empty_count": 1691,
+              "empty_count": 2027,
+              "unique_count": 2,
+              "type_counts": {
+                "empty": 2027,
+                "text": 1691
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 25,
+              "header": "来源列表",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 10,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 26,
+              "header": "是否有有效JD",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 1,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "数据统计",
+          "state": "visible",
+          "row_count": 46,
+          "column_count": 4,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "总体统计",
+              "non_empty_count": 42,
+              "empty_count": 4,
+              "unique_count": 30,
+              "type_counts": {
+                "empty": 4,
+                "text": 42
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "__column_2",
+              "non_empty_count": 38,
+              "empty_count": 8,
+              "unique_count": 38,
+              "type_counts": {
+                "empty": 8,
+                "number": 19,
+                "text": 19
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "__column_3",
+              "non_empty_count": 37,
+              "empty_count": 9,
+              "unique_count": 37,
+              "type_counts": {
+                "empty": 9,
+                "number": 17,
+                "text": 20
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "__column_4",
+              "non_empty_count": 18,
+              "empty_count": 28,
+              "unique_count": 18,
+              "type_counts": {
+                "empty": 28,
+                "text": 18
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "技能树字典",
+          "state": "visible",
+          "row_count": 78,
+          "column_count": 3,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "，",
+              "non_empty_count": 78,
+              "empty_count": 0,
+              "unique_count": 12,
+              "type_counts": {
+                "text": 78
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "子技能",
+              "non_empty_count": 78,
+              "empty_count": 0,
+              "unique_count": 78,
+              "type_counts": {
+                "text": 78
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "岗位命中数",
+              "non_empty_count": 78,
+              "empty_count": 0,
+              "unique_count": 64,
+              "type_counts": {
+                "number": 78
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "职业分类映射",
+          "state": "visible",
+          "row_count": 19,
+          "column_count": 3,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "职业方向",
+              "non_empty_count": 19,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "text": 19
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "职业种类",
+              "non_empty_count": 19,
+              "empty_count": 0,
+              "unique_count": 17,
+              "type_counts": {
+                "text": 19
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "关键词规则(示例)",
+              "non_empty_count": 19,
+              "empty_count": 0,
+              "unique_count": 19,
+              "type_counts": {
+                "text": 19
+              },
+              "formula_count": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_path": "core/技术词主数据_20260727.xlsx",
+      "file_name": "技术词主数据_20260727.xlsx",
+      "size_bytes": 164586,
+      "sha256": "004da7aaaa4dafe8880846d3733dfa9658ad8d2803805b1b235ad674126a844c",
+      "modified_at": "2026-07-28T20:07:24+08:00",
+      "access_classification": "project-internal",
+      "schema_fingerprint": "b60f850f04ce4eedf1c55b2823cba7cff9294477dbef30c07384fd324358ef17",
+      "sheets": [
+        {
+          "name": "L1技术域",
+          "state": "visible",
+          "row_count": 7,
+          "column_count": 4,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "L1编码",
+              "non_empty_count": 7,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 7
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "技术域",
+              "non_empty_count": 7,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 7
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "定义",
+              "non_empty_count": 7,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 7
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "对应产业链层级",
+              "non_empty_count": 7,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 7
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "L2技术类",
+          "state": "visible",
+          "row_count": 43,
+          "column_count": 8,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "L2编码",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "技术类",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "所属L1",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "所属技术域",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "归类别名正则",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "定义",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "L3数量(v1.1)",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 12,
+              "type_counts": {
+                "number": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "L4成员数(v1.1)",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 31,
+              "type_counts": {
+                "number": 43
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "L3技术点",
+          "state": "visible",
+          "row_count": 229,
+          "column_count": 9,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "L3编码",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 229,
+              "type_counts": {
+                "text": 229
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "L3标准名",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 223,
+              "type_counts": {
+                "text": 229
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "L2编码",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 229
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "L2技术类",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 229
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "L1编码",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 229
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "L1技术域",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 229
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "L4成员数",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 33,
+              "type_counts": {
+                "number": 229
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "簇类型",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "text": 229
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "备注",
+              "non_empty_count": 229,
+              "empty_count": 0,
+              "unique_count": 34,
+              "type_counts": {
+                "text": 229
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "L4技术词",
+          "state": "visible",
+          "row_count": 1872,
+          "column_count": 11,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "技术词",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 1872,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "L4类型",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 5,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "挂载L3编码",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 226,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "挂载L3名称",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 220,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "L2编码",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "L2技术类",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "L1编码",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "原层级(留痕)",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "跨域调整",
+              "non_empty_count": 153,
+              "empty_count": 1719,
+              "unique_count": 1,
+              "type_counts": {
+                "empty": 1719,
+                "text": 153
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "命中来源",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 28,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "来源明细(留痕)",
+              "non_empty_count": 1872,
+              "empty_count": 0,
+              "unique_count": 907,
+              "type_counts": {
+                "text": 1872
+              },
+              "formula_count": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_path": "derived/job_keyword_matches_0d1c88e4_(1).xlsx",
+      "file_name": "job_keyword_matches_0d1c88e4_(1).xlsx",
+      "size_bytes": 3074608,
+      "sha256": "dcada9b2fb23b8ab08883e1fcd77c0e7e180eef361d3f6573176b391c6699dc2",
+      "modified_at": "2026-07-30T16:30:34+08:00",
+      "access_classification": "project-internal",
+      "schema_fingerprint": "8ed54ac63b52deca0e2c4b99b04d77b3cec5804fcf99d88c10e3f62aeb7d0c3b",
+      "sheets": [
+        {
+          "name": "Sheet1",
+          "state": "visible",
+          "row_count": 55127,
+          "column_count": 11,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "source_file",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "job_id",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 8066,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "row_index",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 5164,
+              "type_counts": {
+                "number": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "技术词(原始)",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 317,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "技术词(规范)",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 317,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "L4类型",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "挂载L3编码",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 132,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "挂载L3名称",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 132,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "L2编码",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 38,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "L2技术类",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 38,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "L1编码",
+              "non_empty_count": 55127,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 55127
+              },
+              "formula_count": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_path": "derived/job_keyword_summary_5bd0aecd.xlsx",
+      "file_name": "job_keyword_summary_5bd0aecd.xlsx",
+      "size_bytes": 5688140,
+      "sha256": "829567a216ba7bec33935bb0dcadfbb0df4300cd1ebb0859a467a1cf48b20c18",
+      "modified_at": "2026-07-30T16:30:38+08:00",
+      "access_classification": "project-internal",
+      "schema_fingerprint": "f0120dbc78f13f3224c7e4014f51353401b9c707e959eaae2dbe2cde4fc77c65",
+      "sheets": [
+        {
+          "name": "Sheet1",
+          "state": "visible",
+          "row_count": 10447,
+          "column_count": 63,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "source_file",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "text": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "job_id",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 10447,
+              "type_counts": {
+                "text": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "row_index",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 6580,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "匹配词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 49,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "公司",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 47,
+              "type_counts": {
+                "text": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "岗位",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4994,
+              "type_counts": {
+                "text": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "城市",
+              "non_empty_count": 1411,
+              "empty_count": 9036,
+              "unique_count": 24,
+              "type_counts": {
+                "empty": 9036,
+                "text": 1411
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "薪资",
+              "non_empty_count": 9948,
+              "empty_count": 499,
+              "unique_count": 728,
+              "type_counts": {
+                "empty": 499,
+                "text": 9948
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "经验",
+              "non_empty_count": 1433,
+              "empty_count": 9014,
+              "unique_count": 32,
+              "type_counts": {
+                "empty": 9014,
+                "text": 1433
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "学历",
+              "non_empty_count": 10060,
+              "empty_count": 387,
+              "unique_count": 10,
+              "type_counts": {
+                "empty": 387,
+                "text": 10060
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "招聘人数",
+              "non_empty_count": 6,
+              "empty_count": 10441,
+              "unique_count": 3,
+              "type_counts": {
+                "empty": 10441,
+                "text": 6
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 12,
+              "header": "JD描述",
+              "non_empty_count": 10250,
+              "empty_count": 197,
+              "unique_count": 5599,
+              "type_counts": {
+                "empty": 197,
+                "text": 10250
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 13,
+              "header": "关键词",
+              "non_empty_count": 1628,
+              "empty_count": 8819,
+              "unique_count": 97,
+              "type_counts": {
+                "empty": 8819,
+                "text": 1628
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 14,
+              "header": "地区",
+              "non_empty_count": 1605,
+              "empty_count": 8842,
+              "unique_count": 109,
+              "type_counts": {
+                "empty": 8842,
+                "text": 1605
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 15,
+              "header": "链接",
+              "non_empty_count": 10423,
+              "empty_count": 24,
+              "unique_count": 6204,
+              "type_counts": {
+                "empty": 24,
+                "text": 10423
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 16,
+              "header": "来源平台",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 11,
+              "type_counts": {
+                "text": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 17,
+              "header": "收录时间",
+              "non_empty_count": 1529,
+              "empty_count": 8918,
+              "unique_count": 2,
+              "type_counts": {
+                "empty": 8918,
+                "text": 1529
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 18,
+              "header": "公司猎聘网址",
+              "non_empty_count": 3332,
+              "empty_count": 7115,
+              "unique_count": 22,
+              "type_counts": {
+                "empty": 7115,
+                "text": 3332
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 19,
+              "header": "L1_T1_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 26,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 20,
+              "header": "L1_T2_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 5,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 21,
+              "header": "L1_T3_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 31,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 22,
+              "header": "L1_T4_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 8,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 23,
+              "header": "L1_T5_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 5,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 24,
+              "header": "L1_T6_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 25,
+              "header": "L1_T7_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 10,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 26,
+              "header": "L2_Sim-to-Real迁移_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 27,
+              "header": "L2_世界模型与预测推理_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 28,
+              "header": "L2_中间件与通信_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 29,
+              "header": "L2_云边端与算力基础设施_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 30,
+              "header": "L2_人机交互与协作_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 31,
+              "header": "L2_任务规划与推理_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 32,
+              "header": "L2_仿真平台与环境_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 33,
+              "header": "L2_低空与移动载体_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 34,
+              "header": "L2_关节与驱动模组_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 8,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 35,
+              "header": "L2_具身基础模型与VLA_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 13,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 36,
+              "header": "L2_农业与户外场景_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 37,
+              "header": "L2_减速器与传动_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 8,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 38,
+              "header": "L2_力觉与触觉传感_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 5,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 39,
+              "header": "L2_医疗康复场景_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 40,
+              "header": "L2_商业服务场景_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 41,
+              "header": "L2_学习与训练方法_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 42,
+              "header": "L2_家庭与消费场景_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 43,
+              "header": "L2_导航与定位_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 44,
+              "header": "L2_工业制造场景_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 8,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 45,
+              "header": "L2_开发与部署工具链_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 46,
+              "header": "L2_感知认知与理解_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 5,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 47,
+              "header": "L2_数据合成与生成_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 48,
+              "header": "L2_数据集与数据采集_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 49,
+              "header": "L2_整机-人形机器人_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 16,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 50,
+              "header": "L2_整机-四足与仿生_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 8,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 51,
+              "header": "L2_整机-臂与复合机器人_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 10,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 52,
+              "header": "L2_机器人操作系统_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 53,
+              "header": "L2_检测认证与标准_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 54,
+              "header": "L2_灵巧手与末端执行器_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 55,
+              "header": "L2_灵巧操作与抓取_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 56,
+              "header": "L2_物流仓储场景_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 57,
+              "header": "L2_特种与应急场景_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 58,
+              "header": "L2_结构件与材料_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 59,
+              "header": "L2_群体智能与协同_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 60,
+              "header": "L2_芯片与算力硬件_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 61,
+              "header": "L2_视觉传感_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 62,
+              "header": "L2_评测基准与竞赛_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 63,
+              "header": "L2_运动规划与控制_词数",
+              "non_empty_count": 10447,
+              "empty_count": 0,
+              "unique_count": 15,
+              "type_counts": {
+                "number": 10447
+              },
+              "formula_count": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_path": "derived/具身智能岗位_技术规范聚类分析_v2.xlsx",
+      "file_name": "具身智能岗位_技术规范聚类分析_v2.xlsx",
+      "size_bytes": 427176,
+      "sha256": "c0a07613b20e3eded79e6f8e8ec087927e2b48ed51e598961d2a531a8fb29a40",
+      "modified_at": "2026-07-29T13:35:44+08:00",
+      "access_classification": "project-internal",
+      "schema_fingerprint": "af5142148fb0e85344acc1ada11512658c1eac1c85ce01a0aaf9f941cf7bfa3c",
+      "sheets": [
+        {
+          "name": "总览",
+          "state": "visible",
+          "row_count": 10,
+          "column_count": 5,
+          "merged_range_count": 1,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "具身智能岗位 · 技术规范聚类分析 v2（基于标注规范v1.1 + 主数据 + 公司表）",
+              "non_empty_count": 9,
+              "empty_count": 1,
+              "unique_count": 9,
+              "type_counts": {
+                "empty": 1,
+                "text": 9
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "__column_2",
+              "non_empty_count": 9,
+              "empty_count": 1,
+              "unique_count": 9,
+              "type_counts": {
+                "empty": 1,
+                "number": 5,
+                "text": 4
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "__column_3",
+              "non_empty_count": 9,
+              "empty_count": 1,
+              "unique_count": 9,
+              "type_counts": {
+                "empty": 1,
+                "text": 9
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "__column_4",
+              "non_empty_count": 0,
+              "empty_count": 10,
+              "unique_count": 0,
+              "type_counts": {
+                "empty": 10
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "__column_5",
+              "non_empty_count": 0,
+              "empty_count": 10,
+              "unique_count": 0,
+              "type_counts": {
+                "empty": 10
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "技术标注分布",
+          "state": "visible",
+          "row_count": 43,
+          "column_count": 8,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "L1技术域",
+              "non_empty_count": 7,
+              "empty_count": 36,
+              "unique_count": 7,
+              "type_counts": {
+                "empty": 36,
+                "text": 7
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "命中岗位数",
+              "non_empty_count": 7,
+              "empty_count": 36,
+              "unique_count": 7,
+              "type_counts": {
+                "empty": 36,
+                "number": 7
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "占比",
+              "non_empty_count": 7,
+              "empty_count": 36,
+              "unique_count": 7,
+              "type_counts": {
+                "empty": 36,
+                "text": 7
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "__column_4",
+              "non_empty_count": 0,
+              "empty_count": 43,
+              "unique_count": 0,
+              "type_counts": {
+                "empty": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "L2技术类",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "命中岗位数",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 41,
+              "type_counts": {
+                "number": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "占比",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 38,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "所属L1",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "产业链分布",
+          "state": "visible",
+          "row_count": 12,
+          "column_count": 4,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "产业链(12类标准)",
+              "non_empty_count": 12,
+              "empty_count": 0,
+              "unique_count": 12,
+              "type_counts": {
+                "text": 12
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "岗位数",
+              "non_empty_count": 12,
+              "empty_count": 0,
+              "unique_count": 10,
+              "type_counts": {
+                "number": 12
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "占比",
+              "non_empty_count": 12,
+              "empty_count": 0,
+              "unique_count": 10,
+              "type_counts": {
+                "text": 12
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "层级",
+              "non_empty_count": 12,
+              "empty_count": 0,
+              "unique_count": 5,
+              "type_counts": {
+                "text": 12
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "岗位明细",
+          "state": "visible",
+          "row_count": 3718,
+          "column_count": 13,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "序号",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3718,
+              "type_counts": {
+                "number": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "公司",
+              "non_empty_count": 3715,
+              "empty_count": 3,
+              "unique_count": 93,
+              "type_counts": {
+                "empty": 3,
+                "text": 3715
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "岗位",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3010,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "城市",
+              "non_empty_count": 1986,
+              "empty_count": 1732,
+              "unique_count": 120,
+              "type_counts": {
+                "empty": 1732,
+                "text": 1986
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "学历",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "经验",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 8,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "能力等级",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "产业链(12类)",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 10,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "层级",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 5,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "细分领域",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 75,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "L1技术域",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 124,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 12,
+              "header": "L2技术类",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 1536,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 13,
+              "header": "聚类ID",
+              "non_empty_count": 3718,
+              "empty_count": 0,
+              "unique_count": 18,
+              "type_counts": {
+                "text": 3718
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "JD聚类结果",
+          "state": "visible",
+          "row_count": 18,
+          "column_count": 8,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "聚类ID",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 18,
+              "type_counts": {
+                "text": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "业务命名",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 18,
+              "type_counts": {
+                "text": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "岗位数",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 18,
+              "type_counts": {
+                "number": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "占比",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 18,
+              "type_counts": {
+                "text": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "主导产业链",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "text": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "主导L1技术域",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "text": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "主导L2(前3)",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 18,
+              "type_counts": {
+                "text": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "代表岗位(前3)",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 18,
+              "type_counts": {
+                "text": 18
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "聚类×产业链",
+          "state": "visible",
+          "row_count": 18,
+          "column_count": 13,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "聚类ID",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 18,
+              "type_counts": {
+                "text": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "具身智能本体",
+              "non_empty_count": 18,
+              "empty_count": 0,
+              "unique_count": 17,
+              "type_counts": {
+                "number": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "执行系统",
+              "non_empty_count": 10,
+              "empty_count": 8,
+              "unique_count": 6,
+              "type_counts": {
+                "empty": 8,
+                "number": 10
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "场景应用与解决方",
+              "non_empty_count": 2,
+              "empty_count": 16,
+              "unique_count": 1,
+              "type_counts": {
+                "empty": 16,
+                "number": 2
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "AI大模型",
+              "non_empty_count": 11,
+              "empty_count": 7,
+              "unique_count": 8,
+              "type_counts": {
+                "empty": 7,
+                "number": 11
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "政策与生态",
+              "non_empty_count": 16,
+              "empty_count": 2,
+              "unique_count": 11,
+              "type_counts": {
+                "empty": 2,
+                "number": 16
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "软件与算法",
+              "non_empty_count": 0,
+              "empty_count": 18,
+              "unique_count": 0,
+              "type_counts": {
+                "empty": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "感知系统",
+              "non_empty_count": 16,
+              "empty_count": 2,
+              "unique_count": 15,
+              "type_counts": {
+                "empty": 2,
+                "number": 16
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "加工设备及智能装",
+              "non_empty_count": 14,
+              "empty_count": 4,
+              "unique_count": 10,
+              "type_counts": {
+                "empty": 4,
+                "number": 14
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "决策认知系统",
+              "non_empty_count": 13,
+              "empty_count": 5,
+              "unique_count": 10,
+              "type_counts": {
+                "empty": 5,
+                "number": 13
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "检测/测试/测量",
+              "non_empty_count": 2,
+              "empty_count": 16,
+              "unique_count": 1,
+              "type_counts": {
+                "empty": 16,
+                "number": 2
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 12,
+              "header": "关键材料",
+              "non_empty_count": 0,
+              "empty_count": 18,
+              "unique_count": 0,
+              "type_counts": {
+                "empty": 18
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 13,
+              "header": "未匹配(外部/海",
+              "non_empty_count": 13,
+              "empty_count": 5,
+              "unique_count": 7,
+              "type_counts": {
+                "empty": 5,
+                "number": 13
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "能力缺口地图",
+          "state": "visible",
+          "row_count": 43,
+          "column_count": 4,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "L2技术类",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 43,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "所属L1",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "命中岗位数",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 41,
+              "type_counts": {
+                "number": 43
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "状态",
+              "non_empty_count": 43,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "text": 43
+              },
+              "formula_count": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_path": "restricted/科技人才库与机构库_20260731.xlsx",
+      "file_name": "科技人才库与机构库_20260731.xlsx",
+      "size_bytes": 2696720,
+      "sha256": "53048917f3a0a211fb974f54bcce5796e418dc5d77d41f2634eb59362f7d63ca",
+      "modified_at": "2026-07-31T18:05:22+08:00",
+      "access_classification": "restricted",
+      "schema_fingerprint": "1ccc9a2890837a3d63a1a35e647cb0962da4564a78adcedb0f3c7f397f364656",
+      "sheets": [
+        {
+          "name": "人才库",
+          "state": "visible",
+          "row_count": 7815,
+          "column_count": 22,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "人才ID",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 7815,
+              "type_counts": {
+                "text": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "代表姓名",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 7751,
+              "type_counts": {
+                "text": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "姓名归并组",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 7751,
+              "type_counts": {
+                "text": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "人才类型",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "text": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "主机构键",
+              "non_empty_count": 7742,
+              "empty_count": 73,
+              "unique_count": 1057,
+              "type_counts": {
+                "empty": 73,
+                "text": 7742
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "主机构",
+              "non_empty_count": 7742,
+              "empty_count": 73,
+              "unique_count": 1057,
+              "type_counts": {
+                "empty": 73,
+                "text": 7742
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "已确认机构(键:行数)",
+              "non_empty_count": 7742,
+              "empty_count": 73,
+              "unique_count": 1350,
+              "type_counts": {
+                "empty": 73,
+                "text": 7742
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "专利族数",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "标准数",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "number": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "高校任职数",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "number": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "原始行数",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "number": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 12,
+              "header": "待确认成果数",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "number": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 13,
+              "header": "单位确定方法",
+              "non_empty_count": 7815,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 7815
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 14,
+              "header": "置信度",
+              "non_empty_count": 7742,
+              "empty_count": 73,
+              "unique_count": 2,
+              "type_counts": {
+                "empty": 73,
+                "text": 7742
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 15,
+              "header": "职务/职称",
+              "non_empty_count": 215,
+              "empty_count": 7600,
+              "unique_count": 135,
+              "type_counts": {
+                "empty": 7600,
+                "text": 215
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 16,
+              "header": "研究方向",
+              "non_empty_count": 215,
+              "empty_count": 7600,
+              "unique_count": 214,
+              "type_counts": {
+                "empty": 7600,
+                "text": 215
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 17,
+              "header": "高校人才备注",
+              "non_empty_count": 215,
+              "empty_count": 7600,
+              "unique_count": 211,
+              "type_counts": {
+                "empty": 7600,
+                "text": 215
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 18,
+              "header": "技术词命中Top5",
+              "non_empty_count": 4739,
+              "empty_count": 3076,
+              "unique_count": 327,
+              "type_counts": {
+                "empty": 3076,
+                "text": 4739
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 19,
+              "header": "标准技术标注L2",
+              "non_empty_count": 6460,
+              "empty_count": 1355,
+              "unique_count": 786,
+              "type_counts": {
+                "empty": 1355,
+                "text": 6460
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 20,
+              "header": "技术标注明细(留痕)",
+              "non_empty_count": 6460,
+              "empty_count": 1355,
+              "unique_count": 1022,
+              "type_counts": {
+                "empty": 1355,
+                "text": 6460
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 21,
+              "header": "标准技术标注L3",
+              "non_empty_count": 5806,
+              "empty_count": 2009,
+              "unique_count": 647,
+              "type_counts": {
+                "empty": 2009,
+                "text": 5806
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 22,
+              "header": "L3标注明细(留痕)",
+              "non_empty_count": 5806,
+              "empty_count": 2009,
+              "unique_count": 756,
+              "type_counts": {
+                "empty": 2009,
+                "text": 5806
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "机构库",
+          "state": "visible",
+          "row_count": 1598,
+          "column_count": 35,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "机构ID",
+              "non_empty_count": 1598,
+              "empty_count": 0,
+              "unique_count": 1598,
+              "type_counts": {
+                "text": 1598
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "归一键",
+              "non_empty_count": 1598,
+              "empty_count": 0,
+              "unique_count": 1598,
+              "type_counts": {
+                "text": 1598
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "代表名称",
+              "non_empty_count": 1598,
+              "empty_count": 0,
+              "unique_count": 1598,
+              "type_counts": {
+                "text": 1598
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "机构类型",
+              "non_empty_count": 1598,
+              "empty_count": 0,
+              "unique_count": 4,
+              "type_counts": {
+                "text": 1598
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "类型调整留痕",
+              "non_empty_count": 172,
+              "empty_count": 1426,
+              "unique_count": 3,
+              "type_counts": {
+                "empty": 1426,
+                "text": 172
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "数据来源",
+              "non_empty_count": 1598,
+              "empty_count": 0,
+              "unique_count": 228,
+              "type_counts": {
+                "text": 1598
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "专利族数(机构申请)",
+              "non_empty_count": 1332,
+              "empty_count": 266,
+              "unique_count": 66,
+              "type_counts": {
+                "empty": 266,
+                "number": 1332
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "标准数(机构起草)",
+              "non_empty_count": 1332,
+              "empty_count": 266,
+              "unique_count": 36,
+              "type_counts": {
+                "empty": 266,
+                "number": 1332
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "关联人才数(已确认单位)",
+              "non_empty_count": 1332,
+              "empty_count": 266,
+              "unique_count": 60,
+              "type_counts": {
+                "empty": 266,
+                "number": 1332
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "任职高校人才数(R6)",
+              "non_empty_count": 1332,
+              "empty_count": 266,
+              "unique_count": 11,
+              "type_counts": {
+                "empty": 266,
+                "number": 1332
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "全部原始形态(频次)",
+              "non_empty_count": 1332,
+              "empty_count": 266,
+              "unique_count": 1332,
+              "type_counts": {
+                "empty": 266,
+                "text": 1332
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 12,
+              "header": "企业库命中(ID|名称)",
+              "non_empty_count": 107,
+              "empty_count": 1491,
+              "unique_count": 105,
+              "type_counts": {
+                "empty": 1491,
+                "text": 107
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 13,
+              "header": "标准技术标注L2",
+              "non_empty_count": 1178,
+              "empty_count": 420,
+              "unique_count": 647,
+              "type_counts": {
+                "empty": 420,
+                "text": 1178
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 14,
+              "header": "技术标注明细(留痕)",
+              "non_empty_count": 1178,
+              "empty_count": 420,
+              "unique_count": 776,
+              "type_counts": {
+                "empty": 420,
+                "text": 1178
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 15,
+              "header": "标准技术标注L3",
+              "non_empty_count": 1115,
+              "empty_count": 483,
+              "unique_count": 550,
+              "type_counts": {
+                "empty": 483,
+                "text": 1115
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 16,
+              "header": "L3标注明细(留痕)",
+              "non_empty_count": 1115,
+              "empty_count": 483,
+              "unique_count": 655,
+              "type_counts": {
+                "empty": 483,
+                "text": 1115
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 17,
+              "header": "英文名/别名",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 628,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 18,
+              "header": "官网链接",
+              "non_empty_count": 582,
+              "empty_count": 1016,
+              "unique_count": 522,
+              "type_counts": {
+                "empty": 1016,
+                "text": 582
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 19,
+              "header": "招聘链接",
+              "non_empty_count": 487,
+              "empty_count": 1111,
+              "unique_count": 419,
+              "type_counts": {
+                "empty": 1111,
+                "text": 487
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 20,
+              "header": "产业链(12类标准)",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 11,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 21,
+              "header": "层级",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 4,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 22,
+              "header": "细分领域",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 620,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 23,
+              "header": "代表产品",
+              "non_empty_count": 631,
+              "empty_count": 967,
+              "unique_count": 629,
+              "type_counts": {
+                "empty": 967,
+                "text": 631
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 24,
+              "header": "产品类型",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 461,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 25,
+              "header": "关键特性/参数",
+              "non_empty_count": 631,
+              "empty_count": 967,
+              "unique_count": 629,
+              "type_counts": {
+                "empty": 967,
+                "text": 631
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 26,
+              "header": "量产进展",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 552,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 27,
+              "header": "运营路径",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 613,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 28,
+              "header": "总部城市",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 191,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 29,
+              "header": "国家",
+              "non_empty_count": 631,
+              "empty_count": 967,
+              "unique_count": 4,
+              "type_counts": {
+                "empty": 967,
+                "text": 631
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 30,
+              "header": "省份",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 34,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 31,
+              "header": "城市",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 74,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 32,
+              "header": "区/县",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 217,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 33,
+              "header": "融资阶段",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 436,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 34,
+              "header": "融资轮次分类",
+              "non_empty_count": 631,
+              "empty_count": 967,
+              "unique_count": 74,
+              "type_counts": {
+                "empty": 967,
+                "text": 631
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 35,
+              "header": "校验备注",
+              "non_empty_count": 632,
+              "empty_count": 966,
+              "unique_count": 580,
+              "type_counts": {
+                "empty": 966,
+                "text": 632
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "高校库",
+          "state": "visible",
+          "row_count": 196,
+          "column_count": 27,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "高校ID",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 196,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "规范名称",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 196,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "关联v4机构ID",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 196,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "机构类别",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "办学层次",
+              "non_empty_count": 162,
+              "empty_count": 34,
+              "unique_count": 24,
+              "type_counts": {
+                "empty": 34,
+                "text": 162
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "所在省",
+              "non_empty_count": 195,
+              "empty_count": 1,
+              "unique_count": 29,
+              "type_counts": {
+                "empty": 1,
+                "text": 195
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "所在城市",
+              "non_empty_count": 194,
+              "empty_count": 2,
+              "unique_count": 61,
+              "type_counts": {
+                "empty": 2,
+                "text": 194
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "国家/地区",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "主管部门",
+              "non_empty_count": 187,
+              "empty_count": 9,
+              "unique_count": 39,
+              "type_counts": {
+                "empty": 9,
+                "text": 187
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "官网",
+              "non_empty_count": 71,
+              "empty_count": 125,
+              "unique_count": 71,
+              "type_counts": {
+                "empty": 125,
+                "text": 71
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "依托高校",
+              "non_empty_count": 20,
+              "empty_count": 176,
+              "unique_count": 11,
+              "type_counts": {
+                "empty": 176,
+                "text": 20
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 12,
+              "header": "具身智能相关学院/专业",
+              "non_empty_count": 79,
+              "empty_count": 117,
+              "unique_count": 75,
+              "type_counts": {
+                "empty": 117,
+                "text": 79
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 13,
+              "header": "相关实验室/团队/平台",
+              "non_empty_count": 79,
+              "empty_count": 117,
+              "unique_count": 79,
+              "type_counts": {
+                "empty": 117,
+                "text": 79
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 14,
+              "header": "推理链负责人",
+              "non_empty_count": 67,
+              "empty_count": 129,
+              "unique_count": 67,
+              "type_counts": {
+                "empty": 129,
+                "text": 67
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 15,
+              "header": "TOP5方向_标准L2映射",
+              "non_empty_count": 178,
+              "empty_count": 18,
+              "unique_count": 121,
+              "type_counts": {
+                "empty": 18,
+                "text": 178
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 16,
+              "header": "TOP5方向_标准L3映射",
+              "non_empty_count": 177,
+              "empty_count": 19,
+              "unique_count": 127,
+              "type_counts": {
+                "empty": 19,
+                "text": 177
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 17,
+              "header": "__column_17",
+              "non_empty_count": 0,
+              "empty_count": 196,
+              "unique_count": 0,
+              "type_counts": {
+                "empty": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 18,
+              "header": "任职人才数(R6)",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 11,
+              "type_counts": {
+                "number": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 19,
+              "header": "关联人才数(v4确认)",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 38,
+              "type_counts": {
+                "number": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 20,
+              "header": "专利族数",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 44,
+              "type_counts": {
+                "number": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 21,
+              "header": "标准数",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 9,
+              "type_counts": {
+                "number": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 22,
+              "header": "专利技术词Top5",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 93,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 23,
+              "header": "全部书写形态",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 196,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 24,
+              "header": "疑似重复",
+              "non_empty_count": 1,
+              "empty_count": 195,
+              "unique_count": 1,
+              "type_counts": {
+                "empty": 195,
+                "text": 1
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 25,
+              "header": "数据来源",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 26,
+              "header": "补全状态",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 27,
+              "header": "备注",
+              "non_empty_count": 135,
+              "empty_count": 61,
+              "unique_count": 8,
+              "type_counts": {
+                "empty": 61,
+                "text": 135
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "人才机构成果关系",
+          "state": "visible",
+          "row_count": 7603,
+          "column_count": 10,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "人才ID",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 7494,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "姓名",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 7469,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "机构ID",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 1012,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "机构名称",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 1012,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "成果类型",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "成果ID",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 7586,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "成果标识",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 2456,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "成果名称",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 2440,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "单位确定方法",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 5,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "置信度",
+              "non_empty_count": 7603,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "text": 7603
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "机构标准关系",
+          "state": "visible",
+          "row_count": 7237,
+          "column_count": 5,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "机构ID",
+              "non_empty_count": 7237,
+              "empty_count": 0,
+              "unique_count": 189,
+              "type_counts": {
+                "text": 7237
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "机构名称",
+              "non_empty_count": 7237,
+              "empty_count": 0,
+              "unique_count": 189,
+              "type_counts": {
+                "text": 7237
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "标准ID",
+              "non_empty_count": 7237,
+              "empty_count": 0,
+              "unique_count": 263,
+              "type_counts": {
+                "text": 7237
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "标准编号",
+              "non_empty_count": 7237,
+              "empty_count": 0,
+              "unique_count": 14,
+              "type_counts": {
+                "text": 7237
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "标准名称",
+              "non_empty_count": 7237,
+              "empty_count": 0,
+              "unique_count": 14,
+              "type_counts": {
+                "text": 7237
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "成果技术标注",
+          "state": "visible",
+          "row_count": 7586,
+          "column_count": 7,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "成果ID",
+              "non_empty_count": 7586,
+              "empty_count": 0,
+              "unique_count": 7586,
+              "type_counts": {
+                "text": 7586
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "成果标识",
+              "non_empty_count": 7586,
+              "empty_count": 0,
+              "unique_count": 2456,
+              "type_counts": {
+                "text": 7586
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "成果名称",
+              "non_empty_count": 7586,
+              "empty_count": 0,
+              "unique_count": 2440,
+              "type_counts": {
+                "text": 7586
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "技术标注L2",
+              "non_empty_count": 5454,
+              "empty_count": 2132,
+              "unique_count": 398,
+              "type_counts": {
+                "empty": 2132,
+                "text": 5454
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "技术标注L3",
+              "non_empty_count": 3929,
+              "empty_count": 3657,
+              "unique_count": 251,
+              "type_counts": {
+                "empty": 3657,
+                "text": 3929
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "标注明细(留痕)",
+              "non_empty_count": 3929,
+              "empty_count": 3657,
+              "unique_count": 327,
+              "type_counts": {
+                "empty": 3657,
+                "text": 3929
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "置信度",
+              "non_empty_count": 5454,
+              "empty_count": 2132,
+              "unique_count": 2,
+              "type_counts": {
+                "empty": 2132,
+                "text": 5454
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "高校人才明细索引",
+          "state": "visible",
+          "row_count": 180,
+          "column_count": 8,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 1,
+          "columns": [
+            {
+              "index": 1,
+              "header": "高校ID",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 53,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "高校名称",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 53,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "姓名",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 169,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "职务/职称",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 104,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "学院/实验室",
+              "non_empty_count": 178,
+              "empty_count": 2,
+              "unique_count": 115,
+              "type_counts": {
+                "empty": 2,
+                "text": 178
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "研究方向",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 168,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "人才类型",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "人才库ID",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 169,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_path": "restricted/高校库_20260727.xlsx",
+      "file_name": "高校库_20260727.xlsx",
+      "size_bytes": 67686,
+      "sha256": "fb82c823d07121a81167cf34cb4f1dd2542e8d5f57f1e9b9e0d85ff8458c1786",
+      "modified_at": "2026-07-28T20:07:26+08:00",
+      "access_classification": "restricted",
+      "schema_fingerprint": "24e6d93a2916fde98b82ecae5b059d36d1a6bac1df1ca0d9b95b5e7d58c3af7a",
+      "sheets": [
+        {
+          "name": "高校库主表",
+          "state": "visible",
+          "row_count": 196,
+          "column_count": 27,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 0,
+          "columns": [
+            {
+              "index": 1,
+              "header": "高校ID",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 196,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "规范名称",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 196,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "关联v4机构ID",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 196,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "机构类别",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "办学层次",
+              "non_empty_count": 162,
+              "empty_count": 34,
+              "unique_count": 24,
+              "type_counts": {
+                "empty": 34,
+                "text": 162
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "所在省",
+              "non_empty_count": 195,
+              "empty_count": 1,
+              "unique_count": 29,
+              "type_counts": {
+                "empty": 1,
+                "text": 195
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "所在城市",
+              "non_empty_count": 194,
+              "empty_count": 2,
+              "unique_count": 61,
+              "type_counts": {
+                "empty": 2,
+                "text": 194
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "国家/地区",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 6,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 9,
+              "header": "主管部门",
+              "non_empty_count": 187,
+              "empty_count": 9,
+              "unique_count": 39,
+              "type_counts": {
+                "empty": 9,
+                "text": 187
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 10,
+              "header": "官网",
+              "non_empty_count": 71,
+              "empty_count": 125,
+              "unique_count": 71,
+              "type_counts": {
+                "empty": 125,
+                "text": 71
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 11,
+              "header": "依托高校",
+              "non_empty_count": 20,
+              "empty_count": 176,
+              "unique_count": 11,
+              "type_counts": {
+                "empty": 176,
+                "text": 20
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 12,
+              "header": "具身智能相关学院/专业",
+              "non_empty_count": 79,
+              "empty_count": 117,
+              "unique_count": 75,
+              "type_counts": {
+                "empty": 117,
+                "text": 79
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 13,
+              "header": "相关实验室/团队/平台",
+              "non_empty_count": 79,
+              "empty_count": 117,
+              "unique_count": 79,
+              "type_counts": {
+                "empty": 117,
+                "text": 79
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 14,
+              "header": "推理链负责人",
+              "non_empty_count": 67,
+              "empty_count": 129,
+              "unique_count": 67,
+              "type_counts": {
+                "empty": 129,
+                "text": 67
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 15,
+              "header": "TOP5方向_标准L2映射",
+              "non_empty_count": 178,
+              "empty_count": 18,
+              "unique_count": 121,
+              "type_counts": {
+                "empty": 18,
+                "text": 178
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 16,
+              "header": "TOP5方向_标准L3映射",
+              "non_empty_count": 177,
+              "empty_count": 19,
+              "unique_count": 127,
+              "type_counts": {
+                "empty": 19,
+                "text": 177
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 17,
+              "header": "__column_17",
+              "non_empty_count": 0,
+              "empty_count": 196,
+              "unique_count": 0,
+              "type_counts": {
+                "empty": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 18,
+              "header": "任职人才数(R6)",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 11,
+              "type_counts": {
+                "number": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 19,
+              "header": "关联人才数(v4确认)",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 38,
+              "type_counts": {
+                "number": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 20,
+              "header": "专利族数",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 44,
+              "type_counts": {
+                "number": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 21,
+              "header": "标准数",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 9,
+              "type_counts": {
+                "number": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 22,
+              "header": "专利技术词Top5",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 93,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 23,
+              "header": "全部书写形态",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 196,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 24,
+              "header": "疑似重复",
+              "non_empty_count": 1,
+              "empty_count": 195,
+              "unique_count": 1,
+              "type_counts": {
+                "empty": 195,
+                "text": 1
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 25,
+              "header": "数据来源",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 7,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 26,
+              "header": "补全状态",
+              "non_empty_count": 196,
+              "empty_count": 0,
+              "unique_count": 3,
+              "type_counts": {
+                "text": 196
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 27,
+              "header": "备注",
+              "non_empty_count": 135,
+              "empty_count": 61,
+              "unique_count": 8,
+              "type_counts": {
+                "empty": 61,
+                "text": 135
+              },
+              "formula_count": 0
+            }
+          ]
+        },
+        {
+          "name": "高校人才明细索引",
+          "state": "visible",
+          "row_count": 180,
+          "column_count": 8,
+          "merged_range_count": 0,
+          "duplicate_data_row_count": 1,
+          "columns": [
+            {
+              "index": 1,
+              "header": "高校ID",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 53,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 2,
+              "header": "高校名称",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 53,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 3,
+              "header": "姓名",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 169,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 4,
+              "header": "职务/职称",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 104,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 5,
+              "header": "学院/实验室",
+              "non_empty_count": 178,
+              "empty_count": 2,
+              "unique_count": 115,
+              "type_counts": {
+                "empty": 2,
+                "text": 178
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 6,
+              "header": "研究方向",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 168,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 7,
+              "header": "人才类型",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 2,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            },
+            {
+              "index": 8,
+              "header": "人才库ID",
+              "non_empty_count": 180,
+              "empty_count": 0,
+              "unique_count": 169,
+              "type_counts": {
+                "text": 180
+              },
+              "formula_count": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+dataset_id: ""
+name: ""
+version: 0.0.0
+status: draft
+created_at: null
+frozen_at: null
+schema_version: ""
+taxonomy_version: ""
+sample_count: 0
+split: dev
+allowed_use: []
+forbidden_use: []
+annotation:
+  guideline_version: ""
+  annotator_count: 0
+  adjudication_required: false
+  agreement_metric: ""
+  agreement_score: null
+privacy_level: public_synthetic
+source_policy: ""
+files: []
+checksums_file: checksums.sha256
+notes: ""
+

@@ -1,0 +1,31 @@
+scenario_id: ""
+scenario_type: existing_job_evolution
+name: ""
+dataset_version: ""
+taxonomy_version: ""
+job_cluster_id: ""
+baseline:
+  window_start: null
+  window_end: null
+  jd_ids: []
+  job_version_id: ""
+  capability_metrics: []
+update:
+  window_start: null
+  window_end: null
+  new_jd_ids: []
+  expected_job_version_id: ""
+expected_changes:
+  added_capabilities: []
+  strengthened_capabilities: []
+  weakened_capabilities: []
+  deletion_candidates: []
+  unchanged_capabilities: []
+expected_graph:
+  node_distance_metric: long_term_importance
+  node_color_metric: recent_activity
+  expected_nodes: []
+  expected_edges: []
+assertions: []
+notes: ""
+

@@ -178,6 +178,75 @@ CREATE TABLE raw_file_asset (
   UNIQUE KEY uk_file_asset_hash_type (sha256_hash, asset_type_code)
 ) ENGINE=InnoDB COMMENT='[A/C] 原始文件和中间产物的对象存储索引';
 
+-- [C] XLSX/CSV等批量文件的一次幂等导入运行
+CREATE TABLE biz_file_import_run (
+  file_import_run_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  import_run_code VARCHAR(64) NOT NULL UNIQUE,
+  file_asset_id BIGINT UNSIGNED NOT NULL,
+  importer_code VARCHAR(64) NOT NULL,
+  mapping_code VARCHAR(64) NOT NULL,
+  mapping_version VARCHAR(32) NOT NULL,
+  source_schema_hash CHAR(64) NOT NULL,
+  idempotency_key CHAR(64) NOT NULL,
+  import_status_code VARCHAR(32) NOT NULL DEFAULT 'pending',
+  total_row_count INT UNSIGNED NOT NULL DEFAULT 0,
+  success_row_count INT UNSIGNED NOT NULL DEFAULT 0,
+  skipped_row_count INT UNSIGNED NOT NULL DEFAULT 0,
+  failed_row_count INT UNSIGNED NOT NULL DEFAULT 0,
+  started_at DATETIME NULL,
+  completed_at DATETIME NULL,
+  error_summary_json JSON NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_file_import_idempotency (idempotency_key),
+  FOREIGN KEY (file_asset_id) REFERENCES raw_file_asset(file_asset_id),
+  CHECK (import_status_code IN ('pending','profiling','validating','running','success','partial','failed','cancelled')),
+  CHECK (success_row_count + skipped_row_count + failed_row_count <= total_row_count),
+  KEY idx_file_import_status (import_status_code, created_at),
+  KEY idx_file_import_asset (file_asset_id, created_at)
+) ENGINE=InnoDB COMMENT='[C] 文件、映射版本、结构指纹和处理计数绑定的导入账本';
+
+-- [A] 不可变的工作表原始行；受限文件内容仍只保存在受控数据库/对象存储中
+CREATE TABLE raw_spreadsheet_row (
+  spreadsheet_row_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  file_asset_id BIGINT UNSIGNED NOT NULL,
+  sheet_name VARCHAR(255) NOT NULL,
+  source_row_number INT UNSIGNED NOT NULL,
+  external_record_key VARCHAR(500) NULL,
+  header_schema_hash CHAR(64) NOT NULL,
+  row_content_hash CHAR(64) NOT NULL,
+  row_payload_json JSON NOT NULL,
+  access_classification_code VARCHAR(32) NOT NULL DEFAULT 'project_internal',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_spreadsheet_source_row (file_asset_id, sheet_name, source_row_number),
+  FOREIGN KEY (file_asset_id) REFERENCES raw_file_asset(file_asset_id),
+  CHECK (access_classification_code IN ('public','project_internal','restricted','personal_sensitive')),
+  KEY idx_spreadsheet_row_hash (row_content_hash),
+  KEY idx_spreadsheet_external_key (external_record_key)
+) ENGINE=InnoDB COMMENT='[A] 可按文件、工作表和行号回溯的不可变XLSX/CSV原始行';
+
+-- [B/C] 每次导入对每一原始行的转换、目标落点、错误和重放状态
+CREATE TABLE biz_file_import_row_result (
+  import_row_result_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  file_import_run_id BIGINT UNSIGNED NOT NULL,
+  spreadsheet_row_id BIGINT UNSIGNED NOT NULL,
+  row_status_code VARCHAR(32) NOT NULL,
+  target_type_code VARCHAR(64) NULL,
+  target_record_key VARCHAR(128) NULL,
+  error_code VARCHAR(64) NULL,
+  error_field VARCHAR(255) NULL,
+  error_message TEXT NULL,
+  normalized_payload_json JSON NULL,
+  replay_of_result_id BIGINT UNSIGNED NULL,
+  processed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_import_run_source_row (file_import_run_id, spreadsheet_row_id),
+  FOREIGN KEY (file_import_run_id) REFERENCES biz_file_import_run(file_import_run_id),
+  FOREIGN KEY (spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id),
+  FOREIGN KEY (replay_of_result_id) REFERENCES biz_file_import_row_result(import_row_result_id),
+  CHECK (row_status_code IN ('success','skipped_duplicate','warning','failed','replayed')),
+  KEY idx_import_row_status (file_import_run_id, row_status_code),
+  KEY idx_import_row_target (target_type_code, target_record_key)
+) ENGINE=InnoDB COMMENT='[B/C] 文件导入逐行结果、错误定位和单行重放记录';
+
 ALTER TABLE biz_collection_request
   ADD CONSTRAINT fk_collection_request_asset
   FOREIGN KEY (response_asset_id) REFERENCES raw_file_asset(file_asset_id);
