@@ -99,7 +99,9 @@ def test_discovery_is_replayable_and_publishes_separate_standard_jd() -> None:
         assert standard_jd is not None and standard_jd.is_market_evidence is False
         assert session.scalar(select(func.count()).select_from(DiscoveryRun)) == 1
 
-        technology_id = session.scalar(select(TechnologyNode.technology_node_id))
+        technology_id = session.scalar(
+            select(TechnologyNode.technology_node_id).where(TechnologyNode.level_code == "L3")
+        )
         directed = run_discovery(
             session,
             mode_code="technology_directed",

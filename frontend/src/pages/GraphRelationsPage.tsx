@@ -1,27 +1,79 @@
+import { Network, Table2 } from 'lucide-react'
 import type { CSSProperties } from 'react'
-import { Maximize2, Minus, Plus, Table2, ZoomIn } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  graphApi,
+  graphDomainCode,
+  graphLevelCode,
+  type RelationGraphResponse,
+  type RelationNode,
+} from '../api/graphs'
 import { DomainLegend } from '../components/DomainLegend'
-import { GraphFilters } from '../components/GraphFilters'
-import { ScoreBar, StatusTag } from '../components/ui'
-import { domainColors, relationEdges, relationNodeMap, relationNodes } from '../data/graphData'
+import { GraphFilters, type GraphFilterState } from '../components/GraphFilters'
+import { StatusTag } from '../components/ui'
+import { domainColors } from '../data/graphData'
+
+interface PositionedNode extends RelationNode {
+  x: number
+  y: number
+}
+
+function positionNodes(data: RelationGraphResponse): PositionedNode[] {
+  const place = (nodes: RelationNode[], radius: number, offset: number) => nodes.map((node, index) => {
+    const angle = offset + (Math.PI * 2 * index) / Math.max(1, nodes.length)
+    return { ...node, x: 50 + Math.cos(angle) * radius, y: 50 + Math.sin(angle) * radius }
+  })
+  return [...place(data.role_nodes, 39, -.5), ...place(data.capability_nodes, 22, .2)]
+}
 
 export function GraphRelationsPage({ notify }: { notify: (message: string) => void }) {
-  const [selected, setSelected] = useState('integration')
+  const [filters, setFilters] = useState<GraphFilterState>({ domain: '全部 T 领域', level: 'L2 能力域' })
+  const [data, setData] = useState<RelationGraphResponse | null>(null)
+  const [selected, setSelected] = useState<string | null>(null)
   const [tableView, setTableView] = useState(false)
-  const selectedNode = relationNodeMap.get(selected) ?? relationNodes[0]
-  const connections = relationEdges.filter(([from, to]) => from === selected || to === selected)
-  const connectedNodes = connections.map(([from, to]) => relationNodeMap.get(from === selected ? to : from)!).filter(Boolean)
+  const [error, setError] = useState<string | null>(null)
+  const domainCode = graphDomainCode(filters.domain)
+  const levelCode = graphLevelCode(filters.level)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    setError(null)
+    graphApi.relations(domainCode, levelCode, controller.signal)
+      .then((response) => {
+        setData(response)
+        setSelected((current) => {
+          const ids = new Set([...response.role_nodes, ...response.capability_nodes].map((node) => node.id))
+          return current && ids.has(current) ? current : response.role_nodes[0]?.id ?? response.capability_nodes[0]?.id ?? null
+        })
+      })
+      .catch((reason: Error) => {
+        if (reason.name !== 'AbortError') setError(reason.message)
+      })
+    return () => controller.abort()
+  }, [domainCode, levelCode])
+
+  const nodes = useMemo(() => data ? positionNodes(data) : [], [data])
+  const nodeMap = useMemo(() => new Map(nodes.map((node) => [node.id, node])), [nodes])
+  const selectedNode = selected ? nodeMap.get(selected) : undefined
+  const connections = useMemo(
+    () => data?.edges.filter((edge) => edge.source === selected || edge.target === selected) ?? [],
+    [data, selected],
+  )
+  const connectedNodes = connections
+    .map((edge) => nodeMap.get(edge.source === selected ? edge.target : edge.source))
+    .filter((node): node is PositionedNode => Boolean(node))
 
   return (
     <div className="graph-page graph-subpage">
-      <div className="graph-subpage-intro"><div><h2>岗位—能力关联图</h2><p>全局展示全部岗位聚类与技术能力关键词，仅连接各岗位聚类中达到阈值的重要能力。</p></div><StatusTag tone="success">全局快照</StatusTag></div>
-      <GraphFilters onApply={(summary) => notify(`关联图筛选已更新：${summary}`)} />
-      <div className="graph-workspace graph-workspace--global">
-        <div className="graph-legend"><strong>节点类型</strong><span><i className="legend-cluster" />岗位聚类</span><span><i className="legend-skill" />技术能力关键词</span><hr /><strong>T1–T7 领域色</strong><DomainLegend compact /><hr /><p>连线仅表示“岗位簇的重要能力”，选中节点后高亮其一阶邻域。</p><button onClick={() => setTableView((value) => !value)}><Table2 size={15} />{tableView ? '图谱视图' : '表格视图'}</button></div>
-        {tableView ? <div className="relation-table-view"><table><thead><tr><th>岗位聚类</th><th>关系</th><th>重要能力</th><th>出现强度</th></tr></thead><tbody>{relationEdges.map(([from, to]) => { const cluster = relationNodeMap.get(from)!; const skill = relationNodeMap.get(to)!; return <tr key={`${from}-${to}`}><td><button onClick={() => setSelected(from)}>{cluster.label}</button></td><td>重要能力</td><td><button onClick={() => setSelected(to)}>{skill.label}</button></td><td>{skill.strength}%</td></tr> })}</tbody></table></div> : <div className="graph-canvas graph-canvas--global" role="group" aria-label="全部岗位聚类与重要能力关键词的全局关联网络"><svg className="edge-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{relationEdges.map(([from, to]) => { const a = relationNodeMap.get(from)!; const b = relationNodeMap.get(to)!; const highlighted = selected === from || selected === to; return <line key={`${from}-${to}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className={highlighted ? 'selected-edge' : ''} style={{ '--edge-color': domainColors[a.domain] } as CSSProperties} /> })}</svg>{relationNodes.map((node) => <button key={node.id} aria-pressed={selected === node.id} className={`graph-node graph-node--${node.type} ${selected === node.id ? 'selected' : ''}`} style={{ left: `${node.x}%`, top: `${node.y}%`, '--domain-color': domainColors[node.domain], '--node-heat': `${node.recentRate}%` } as CSSProperties} onClick={() => setSelected(node.id)}><small>{node.domain}</small><span>{node.label}</span>{node.type === 'skill' ? <em>{node.strength}%</em> : <em>{connectedNodes.length && selected === node.id ? `${connections.length} 项重要能力` : '岗位聚类'}</em>}</button>)}<div className="graph-zoom"><button aria-label="放大"><Plus size={16} /></button><button aria-label="缩小"><Minus size={16} /></button><button aria-label="适应画布"><Maximize2 size={15} /></button></div></div>}
-        <aside className="evidence-inspector"><div className="inspector-title"><div><span>{selectedNode.type === 'cluster' ? '岗位聚类详情' : '能力关键词详情'}</span><h3>{selectedNode.label}</h3></div><ZoomIn size={18} /></div><StatusTag tone={selectedNode.type === 'cluster' ? 'info' : 'success'}>{selectedNode.domain} · {selectedNode.type === 'cluster' ? '岗位聚类' : '重要能力'}</StatusTag><ScoreBar label="出现强度" value={selectedNode.strength} tone="teal" /><ScoreBar label="近期活跃度" value={selectedNode.recentRate} /><dl className="inspector-facts"><div><dt>关联节点</dt><dd>{connectedNodes.length} 个</dd></div><div><dt>最近更新</dt><dd>2026 Q2</dd></div><div><dt>领域归属</dt><dd>{selectedNode.domain}</dd></div><div><dt>关系规则</dt><dd>Top-N + 阈值</dd></div></dl><h4>{selectedNode.type === 'cluster' ? '重要能力' : '关联岗位聚类'}</h4><div className="connected-node-list">{connectedNodes.map((node) => <button key={node.id} onClick={() => setSelected(node.id)}><i style={{ background: domainColors[node.domain] }} /><span>{node.label}</span><strong>{node.strength}%</strong></button>)}</div><h4>来源证据</h4><div className="source-evidence"><button><strong>正式 JD 聚合证据</strong><span>基于去重 JD 中的能力出现频次、必需性和近期窗口计算。</span><em>证据置信度 0.92</em></button></div></aside>
-      </div>
+      <div className="graph-subpage-intro"><div><h2>岗位—能力关联图</h2><p>展示当前岗位聚类及其高频标准技术能力；仅使用通过语境校验的真实 JD 证据。</p></div><StatusTag tone="success">{data ? `数据版本 ${data.data_version.slice(0, 8)}` : '加载中'}</StatusTag></div>
+      <GraphFilters onChange={setFilters} onApply={(summary) => notify(`关联图筛选已更新：${summary}`)} />
+      {error ? <div className="empty-state"><Network size={24} /><strong>图谱加载失败</strong><span>{error}</span></div> : null}
+      {!error && !data ? <div className="empty-state"><Network size={24} /><strong>正在生成关系投影</strong><span>从最新岗位聚类和有效技术证据读取数据。</span></div> : null}
+      {data ? <div className="graph-workspace graph-workspace--global">
+        <div className="graph-legend"><strong>节点类型</strong><span><i className="legend-cluster" />岗位聚类</span><span><i className="legend-skill" />标准技术能力</span><hr /><strong>T1–T7 领域色</strong><DomainLegend compact /><hr /><p>页面最多展示 12 个岗位聚类及每簇 8 项重要能力，完整值可切换为表格读取。</p><button onClick={() => setTableView((value) => !value)}><Table2 size={15} />{tableView ? '图谱视图' : '表格视图'}</button></div>
+        {tableView ? <div className="relation-table-view"><table><thead><tr><th>岗位聚类</th><th>重要能力</th><th>覆盖率</th><th>支持 JD</th></tr></thead><tbody>{data.edges.map((edge) => <tr key={edge.id}><td><button onClick={() => setSelected(edge.source)}>{nodeMap.get(edge.source)?.label}</button></td><td><button onClick={() => setSelected(edge.target)}>{nodeMap.get(edge.target)?.label}</button></td><td>{Math.round(edge.coverage_rate * 100)}%</td><td>{edge.supporting_job_count}</td></tr>)}</tbody></table></div> : <div className="graph-canvas graph-canvas--global" role="group" aria-label="岗位聚类与标准技术能力的全局关联网络"><svg className="edge-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{data.edges.map((edge) => { const source = nodeMap.get(edge.source); const target = nodeMap.get(edge.target); if (!source || !target) return null; return <line key={edge.id} x1={source.x} y1={source.y} x2={target.x} y2={target.y} className={selected === edge.source || selected === edge.target ? 'selected-edge' : ''} style={{ '--edge-color': domainColors[target.domain_code], opacity: Math.max(.2, edge.importance / 100) } as CSSProperties} /> })}</svg>{nodes.map((node) => <button key={node.id} aria-pressed={selected === node.id} className={`graph-node graph-node--${node.type === 'job_cluster' ? 'cluster' : 'skill'} ${selected === node.id ? 'selected' : ''}`} style={{ left: `${node.x}%`, top: `${node.y}%`, '--domain-color': domainColors[node.domain_code], '--node-heat': `${Number(node.metrics.recent_activity ?? 65)}%` } as CSSProperties} onClick={() => setSelected(node.id)}><small>{node.domain_code}</small><span>{node.label}</span><em>{node.type === 'job_cluster' ? `${node.metrics.member_count} 条 JD` : `${node.evidence_count} 条证据`}</em></button>)}</div>}
+        <aside className="evidence-inspector">{selectedNode ? <><div className="inspector-title"><div><span>{selectedNode.type === 'job_cluster' ? '岗位聚类详情' : '标准技术能力'}</span><h3>{selectedNode.label}</h3></div></div><StatusTag tone={selectedNode.type === 'job_cluster' ? 'info' : 'success'}>{selectedNode.domain_code}</StatusTag><div className="evidence-count-stat"><span>证据数量</span><strong>{selectedNode.evidence_count}</strong><small>条</small></div><dl className="inspector-facts"><div><dt>关联节点</dt><dd>{connectedNodes.length} 个</dd></div><div><dt>目标日期</dt><dd>{data.target_date}</dd></div><div><dt>证据规则</dt><dd>已通过语境校验</dd></div><div><dt>图谱层级</dt><dd>{levelCode}</dd></div></dl><h4>{selectedNode.type === 'job_cluster' ? '重要能力' : '关联岗位聚类'}</h4><div className="connected-node-list">{connectedNodes.map((node) => <button key={node.id} onClick={() => setSelected(node.id)}><i style={{ background: domainColors[node.domain_code] }} /><span>{node.label}</span><strong>{node.evidence_count}</strong></button>)}</div></> : <div className="empty-state"><strong>当前筛选没有关系</strong><span>可切换技术域或层级。</span></div>}</aside>
+      </div> : null}
     </div>
   )
 }

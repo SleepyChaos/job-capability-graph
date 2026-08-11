@@ -276,7 +276,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 
 .graph-page { display: flex; flex-direction: column; gap: 0; margin: -20px -22px -34px; min-height: calc(100vh - 64px); background: #fff; }
 .graph-subpage-intro { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 13px 18px; border-bottom: 1px solid var(--line); }.graph-subpage-intro h2 { margin: 0 0 6px; font-size: 18px; }.graph-subpage-intro p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
-.graph-filterbar { min-height: 72px; display: grid; grid-template-columns: repeat(4, minmax(130px, 1fr)) auto; align-items: end; gap: 8px; padding: 10px 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }.graph-subpage > .graph-filterbar { border-width: 0 0 1px; border-radius: 0; }.graph-filterbar label span { display: block; margin-bottom: 5px; color: var(--muted); font-size: 9px; }.graph-filterbar select { width: 100%; height: 34px; padding: 0 28px 0 9px; color: #34516d; background: #fff; border: 1px solid var(--line); border-radius: 6px; font-size: 10px; }.graph-filter-actions { display: flex; gap: 6px; }.graph-filter-actions button { min-height: 34px; }
+.graph-filterbar { min-height: 72px; display: grid; grid-template-columns: repeat(2, minmax(180px, 1fr)) auto; align-items: end; gap: 8px; padding: 10px 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }.graph-subpage > .graph-filterbar { border-width: 0 0 1px; border-radius: 0; }.graph-filterbar label span { display: block; margin-bottom: 5px; color: var(--muted); font-size: 9px; }.graph-filterbar select { width: 100%; height: 34px; padding: 0 28px 0 9px; color: #34516d; background: #fff; border: 1px solid var(--line); border-radius: 6px; font-size: 10px; }.graph-filter-actions { display: flex; gap: 6px; }.graph-filter-actions button { min-height: 34px; }
 .graph-view-entry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }.graph-view-entry-grid > button { min-height: 168px; display: grid; grid-template-columns: auto 1fr auto; align-items: start; gap: 13px; padding: 18px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: var(--radius); text-align: left; transition: border-color .18s, box-shadow .18s, transform .18s; }.graph-view-entry-grid > button:hover { border-color: #8fb7e5; box-shadow: 0 8px 22px rgba(31,70,109,.08); transform: translateY(-2px); }.graph-view-entry-grid > button > svg:first-child { color: var(--blue); }.graph-view-entry-grid > button > svg:last-child { align-self: center; color: #8094a7; }.graph-view-entry-grid h3 { margin: 1px 0 9px; font-size: 14px; }.graph-view-entry-grid p { min-height: 48px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.65; }.graph-view-entry-grid span { display: block; margin-top: 13px; padding-top: 10px; color: #386087; border-top: 1px solid var(--soft-line); font-size: 9px; }
 .graph-home-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 14px; }.graph-trend-list { padding: 8px 14px 12px; }.graph-trend-list > div { min-height: 58px; display: grid; grid-template-columns: 150px 1fr 45px; align-items: center; gap: 12px; border-bottom: 1px solid var(--soft-line); }.graph-trend-list > div:last-child { border: 0; }.graph-trend-list > div > div strong, .graph-trend-list > div > div span { display: block; }.graph-trend-list > div > div strong { font-size: 10px; }.graph-trend-list > div > div span { margin-top: 4px; color: var(--muted); font-size: 8px; }.graph-trend-list .mini-chart { height: 31px; }.graph-trend-list b { color: var(--teal); font-size: 10px; text-align: right; }.graph-update-status { padding: 18px; }.graph-update-status > strong { display: block; margin: 15px 0 8px; font-size: 13px; }.graph-update-status > p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.7; }.graph-update-status dl { display: grid; gap: 7px; margin: 18px 0 0; }.graph-update-status dl > div { display: flex; align-items: center; justify-content: space-between; min-height: 34px; padding: 0 10px; background: #f5f8fb; border-radius: 5px; }.graph-update-status dt { color: var(--muted); font-size: 9px; }.graph-update-status dd { margin: 0; font-size: 10px; font-weight: 700; }
 .graph-tabs { height: 48px; display: flex; align-items: flex-end; gap: 14px; padding-left: 20px; border-bottom: 1px solid var(--line); }
@@ -406,6 +406,26 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   .learning-progress { grid-template-columns: 1fr; gap: 12px; }.feedback-flow { flex-direction: column; }.feedback-flow > svg { transform: rotate(90deg); }
   .review-filters { flex-direction: column; }.review-status-tabs { overflow-x: auto; }.inline-search { min-width: 170px; }
   .toast { left: 12px; right: 12px; bottom: 12px; }
+}
+
+.graph-data-warning { display: flex; align-items: center; gap: 10px; padding: 11px 14px; color: #7a5512; background: #fff8e6; border: 1px solid #efd48e; border-radius: var(--radius); }
+.graph-data-warning svg { flex: 0 0 auto; }
+.graph-data-warning strong, .graph-data-warning span { display: block; }
+.graph-data-warning strong { margin-bottom: 3px; font-size: 10px; }
+.graph-data-warning span { font-size: 9px; line-height: 1.5; }
+
+/* P0 图谱：长聚类列表独立滚动，避免把径向画布纵向撑开。 */
+.cluster-graph-workspace { height: 590px; min-height: 0; }
+.cluster-list { overflow-y: auto; }
+.cluster-list header { position: sticky; z-index: 7; top: 0; background: #fff; }
+.evidence-count-stat { display: flex; align-items: baseline; gap: 5px; margin: 14px 0 4px; padding: 10px 12px; background: #f4f8fc; border-radius: 7px; }
+.evidence-count-stat span { flex: 1; color: var(--muted); font-size: 9px; }
+.evidence-count-stat strong { color: var(--teal); font-size: 22px; }
+.evidence-count-stat small { color: var(--muted); font-size: 9px; }
+
+@media (max-width: 960px) {
+  .cluster-graph-workspace { height: auto; }
+  .cluster-list { max-height: 330px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

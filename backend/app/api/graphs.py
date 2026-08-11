@@ -1,0 +1,78 @@
+from typing import Annotated, Literal
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.modules.graph.service import (
+    GraphProjectionError,
+    cluster_capability_graph,
+    cluster_graph_list,
+    heatmap_graph,
+    relation_graph,
+)
+
+router = APIRouter(tags=["capability-graphs"])
+
+
+@router.get("/graphs/relations", response_model=dict)
+def get_relation_graph(
+    db: Annotated[Session, Depends(get_db)],
+    domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
+    level_code: Literal["L1", "L2", "L3"] = "L2",
+    cluster_limit: Annotated[int, Query(ge=1, le=30)] = 12,
+    capabilities_per_cluster: Annotated[int, Query(ge=1, le=12)] = 8,
+):
+    try:
+        return relation_graph(
+            db,
+            domain_code=domain_code,
+            level_code=level_code,
+            cluster_limit=cluster_limit,
+            capabilities_per_cluster=capabilities_per_cluster,
+        )
+    except GraphProjectionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.get("/graphs/clusters", response_model=dict)
+def get_graph_clusters(
+    db: Annotated[Session, Depends(get_db)],
+    limit: Annotated[int, Query(ge=1, le=100)] = 30,
+):
+    try:
+        return cluster_graph_list(db, limit=limit)
+    except GraphProjectionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.get("/graphs/clusters/{stable_cluster_code}", response_model=dict)
+def get_cluster_capability_graph(
+    stable_cluster_code: str,
+    db: Annotated[Session, Depends(get_db)],
+    level_code: Literal["L1", "L2", "L3"] = "L2",
+    capability_limit: Annotated[int, Query(ge=1, le=40)] = 20,
+    recent_job_count: Annotated[int, Query(ge=3, le=50)] = 10,
+):
+    try:
+        return cluster_capability_graph(
+            db,
+            stable_cluster_code=stable_cluster_code,
+            level_code=level_code,
+            capability_limit=capability_limit,
+            recent_job_count=recent_job_count,
+        )
+    except GraphProjectionError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.get("/graphs/heatmap", response_model=dict)
+def get_heatmap_graph(
+    db: Annotated[Session, Depends(get_db)],
+    domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
+    level_code: Literal["L1", "L2", "L3"] = "L2",
+):
+    try:
+        return heatmap_graph(db, domain_code=domain_code, level_code=level_code)
+    except GraphProjectionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc

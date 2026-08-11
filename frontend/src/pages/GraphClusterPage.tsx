@@ -1,39 +1,91 @@
-import { ArrowRight, Building2, GitBranch, TrendingUp, Users } from 'lucide-react'
+import { ArrowRight, Building2, GitBranch, Network, Users } from 'lucide-react'
 import type { CSSProperties } from 'react'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  graphApi,
+  graphLevelCode,
+  type ClusterCapability,
+  type ClusterGraphResponse,
+  type ClusterListItem,
+} from '../api/graphs'
 import { DomainLegend } from '../components/DomainLegend'
-import { GraphFilters } from '../components/GraphFilters'
+import { GraphFilters, type GraphFilterState } from '../components/GraphFilters'
 import { StatusTag } from '../components/ui'
-import { capabilityClusters, domainColors } from '../data/graphData'
+import { domainColors } from '../data/graphData'
+
+interface PositionedCapability extends ClusterCapability { x: number; y: number }
+
+function positionCapabilities(items: ClusterCapability[]): PositionedCapability[] {
+  return items.map((item, index) => {
+    const angle = -.8 + (Math.PI * 2 * index) / Math.max(1, items.length)
+    const radius = 39 - item.importance * .23
+    return { ...item, x: 50 + Math.cos(angle) * radius, y: 50 + Math.sin(angle) * radius }
+  })
+}
 
 export function GraphClusterPage({ notify }: { notify: (message: string) => void }) {
-  const [selectedId, setSelectedId] = useState(capabilityClusters[0].id)
-  const selected = capabilityClusters.find((cluster) => cluster.id === selectedId) ?? capabilityClusters[0]
-  const [selectedSkillName, setSelectedSkillName] = useState(selected.skills[0].name)
-  const selectedSkill = selected.skills.find((skill) => skill.name === selectedSkillName) ?? selected.skills[0]
+  const [filters, setFilters] = useState<GraphFilterState>({ domain: '全部 T 领域', level: 'L2 能力域' })
+  const [clusters, setClusters] = useState<ClusterListItem[]>([])
+  const [selectedCode, setSelectedCode] = useState<string | null>(null)
+  const [detail, setDetail] = useState<ClusterGraphResponse | null>(null)
+  const [selectedTechnologyId, setSelectedTechnologyId] = useState<number | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const levelCode = graphLevelCode(filters.level)
 
-  const selectCluster = (cluster: typeof selected) => {
-    setSelectedId(cluster.id)
-    setSelectedSkillName(cluster.skills[0].name)
-  }
+  useEffect(() => {
+    const controller = new AbortController()
+    graphApi.clusters(controller.signal)
+      .then((response) => {
+        setClusters(response.items)
+        setSelectedCode((current) => current ?? response.items[0]?.stable_cluster_code ?? null)
+      })
+      .catch((reason: Error) => {
+        if (reason.name !== 'AbortError') setError(reason.message)
+      })
+    return () => controller.abort()
+  }, [])
+
+  useEffect(() => {
+    if (!selectedCode) return
+    const controller = new AbortController()
+    setDetail(null)
+    setError(null)
+    graphApi.clusterDetail(selectedCode, levelCode, controller.signal)
+      .then((response) => {
+        setDetail(response)
+        setSelectedTechnologyId(response.capabilities[0]?.technology_node_id ?? null)
+      })
+      .catch((reason: Error) => {
+        if (reason.name !== 'AbortError') setError(reason.message)
+      })
+    return () => controller.abort()
+  }, [selectedCode, levelCode])
+
+  const visibleClusters = useMemo(() => {
+    const domain = filters.domain.slice(0, 2)
+    return filters.domain.startsWith('T') ? clusters.filter((item) => item.domain_code === domain) : clusters
+  }, [clusters, filters.domain])
+  useEffect(() => {
+    if (!visibleClusters.some((item) => item.stable_cluster_code === selectedCode)) {
+      setSelectedCode(visibleClusters[0]?.stable_cluster_code ?? null)
+    }
+  }, [selectedCode, visibleClusters])
+  const capabilities = useMemo(() => positionCapabilities(detail?.capabilities ?? []), [detail])
+  const selectedCapability = capabilities.find((item) => item.technology_node_id === selectedTechnologyId) ?? capabilities[0]
 
   return (
     <div className="page-stack graph-analysis-page">
-      <div className="page-intro"><div><h2>聚类岗位能力图谱</h2><p>聚焦一个岗位聚类：越靠近中心的能力出现次数越多；同域颜色越深，表示最近几批相关 JD 中出现越频繁。</p></div></div>
-      <GraphFilters onApply={(summary) => notify(`聚类图谱筛选已更新：${summary}`)} />
-      <div className="cluster-graph-workspace">
-        <aside className="cluster-list" aria-label="岗位聚类列表"><header><strong>岗位聚类</strong><span>{capabilityClusters.length} 个示例簇</span></header>{capabilityClusters.map((cluster) => <button className={cluster.id === selected.id ? 'selected' : ''} key={cluster.id} onClick={() => selectCluster(cluster)}><span>{cluster.domain}</span><strong>{cluster.name}</strong><small>{cluster.roles} 个岗位 · {cluster.jdCount} 条 JD</small><ArrowRight size={14} /></button>)}</aside>
-        <section className="cluster-map" aria-label={`${selected.name}能力重要性与新鲜度分布`}>
-          <div className="cluster-importance-key" aria-hidden="true"><span>重要</span><span>次要</span><span>长尾</span></div>
-          <div className="cluster-guide cluster-guide--near" /><div className="cluster-guide cluster-guide--mid" /><div className="cluster-guide cluster-guide--far" />
-          <div className="cluster-core" style={{ '--domain-color': domainColors[selected.domain] } as CSSProperties}><span>{selected.domain}</span><strong>{selected.name}</strong><small>能力频次中心</small></div>
-          <div className="cluster-skill-field">{selected.skills.map((skill) => <button key={skill.name} className={selectedSkill.name === skill.name ? 'selected' : ''} style={{ left: `${skill.x}%`, top: `${skill.y}%`, '--domain-color': domainColors[skill.domain], '--recency': `${skill.recentRate}%`, '--node-text': skill.recentRate >= 58 ? '#fff' : '#24445f' } as CSSProperties} aria-pressed={selectedSkill.name === skill.name} aria-label={`${skill.name}，出现 ${skill.occurrences} 次，近期活跃度 ${skill.recentRate}%，最近出现 ${skill.lastSeen}`} onClick={() => setSelectedSkillName(skill.name)}><small>{skill.domain}</small><strong>{skill.name}</strong><span>{skill.occurrences} 次</span><em>{skill.lastSeen}</em></button>)}</div>
-          <svg className="cluster-edge-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{selected.skills.map((skill) => <line key={skill.name} x1="50" y1="50" x2={skill.x} y2={skill.y} style={{ '--edge-color': domainColors[skill.domain], opacity: Math.max(.28, skill.recentRate / 100) } as CSSProperties} />)}</svg>
-          <div className="cluster-map-legend"><DomainLegend compact /><div className="recency-key"><span>久未出现</span><i style={{ '--domain-color': domainColors[selectedSkill.domain] } as CSSProperties} /><span>近期高频</span></div></div>
+      <div className="page-intro"><div><h2>聚类岗位能力图谱</h2><p>距离编码全窗口重要性，领域色深浅编码最近 10 条相关 JD 的活跃度；两项指标独立计算。</p></div>{detail ? <StatusTag tone="success">数据版本 {detail.data_version.slice(0, 8)}</StatusTag> : null}</div>
+      <GraphFilters onChange={setFilters} onApply={(summary) => notify(`聚类图谱筛选已更新：${summary}`)} />
+      {error ? <div className="empty-state"><Network size={24} /><strong>聚类图谱加载失败</strong><span>{error}</span></div> : null}
+      {!error ? <div className="cluster-graph-workspace">
+        <aside className="cluster-list" aria-label="岗位聚类列表"><header><strong>岗位聚类</strong><span>{visibleClusters.length} 个可浏览聚类</span></header>{visibleClusters.map((cluster) => <button className={cluster.stable_cluster_code === selectedCode ? 'selected' : ''} key={cluster.stable_cluster_code} onClick={() => setSelectedCode(cluster.stable_cluster_code)}><span>{cluster.domain_code}</span><strong>{cluster.label}</strong><small>{cluster.member_count} 条 JD · {cluster.organization_count} 家企业</small><ArrowRight size={14} /></button>)}</aside>
+        <section className="cluster-map" aria-label={detail ? `${detail.cluster.label}能力重要性与近期活跃度分布` : '正在加载聚类能力'}>
+          {detail ? <><div className="cluster-importance-key" aria-hidden="true"><span>重要</span><span>次要</span><span>长尾</span></div><div className="cluster-guide cluster-guide--near" /><div className="cluster-guide cluster-guide--mid" /><div className="cluster-guide cluster-guide--far" /><div className="cluster-core" style={{ '--domain-color': domainColors[detail.cluster.domain_code] } as CSSProperties}><span>{detail.cluster.domain_code}</span><strong>{detail.cluster.label}</strong><small>{detail.cluster.member_count} 条真实 JD</small></div><div className="cluster-skill-field">{capabilities.map((capability) => <button key={capability.technology_node_id} className={selectedCapability?.technology_node_id === capability.technology_node_id ? 'selected' : ''} style={{ left: `${capability.x}%`, top: `${capability.y}%`, '--domain-color': domainColors[capability.domain_code], '--recency': `${Math.max(7, capability.recent_activity)}%`, '--node-text': capability.recent_activity >= 58 ? '#fff' : '#24445f' } as CSSProperties} aria-pressed={selectedCapability?.technology_node_id === capability.technology_node_id} aria-label={`${capability.technology_name}，支持 ${capability.supporting_job_count} 条 JD，近期活跃度 ${capability.recent_activity}%`} onClick={() => setSelectedTechnologyId(capability.technology_node_id)}><small>{capability.domain_code} · {capability.level_code}</small><strong>{capability.technology_name}</strong><span>{capability.supporting_job_count} 条 JD</span><em>{capability.last_seen_at?.slice(0, 10) ?? '时间未知'}</em></button>)}</div><svg className="cluster-edge-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{capabilities.map((capability) => <line key={capability.technology_node_id} x1="50" y1="50" x2={capability.x} y2={capability.y} style={{ '--edge-color': domainColors[capability.domain_code], opacity: Math.max(.25, capability.recent_activity / 100) } as CSSProperties} />)}</svg><div className="cluster-map-legend"><DomainLegend compact /><div className="recency-key"><span>低活跃</span><i style={{ '--domain-color': domainColors[selectedCapability?.domain_code ?? 'T7'] } as CSSProperties} /><span>近期高频</span></div></div></> : <div className="empty-state"><Network size={24} /><strong>正在读取聚类能力</strong><span>仅聚合通过语境校验的技术证据。</span></div>}
         </section>
-        <aside className="cluster-inspector"><StatusTag tone="info">{selected.domain} 主领域</StatusTag><h3>{selected.name}</h3><p>{selected.description}</p><div className="cluster-facts"><div><Users size={16} /><span>岗位名称</span><strong>{selected.roles}</strong></div><div><Building2 size={16} /><span>关联 JD</span><strong>{selected.jdCount}</strong></div><div><TrendingUp size={16} /><span>近窗增长</span><strong>+{selected.growth}%</strong></div></div><h4>选中能力</h4><div className="selected-skill-summary"><i style={{ background: domainColors[selectedSkill.domain] }} /><div><strong>{selectedSkill.name}</strong><span>{selectedSkill.domain} · 最近出现 {selectedSkill.lastSeen}</span></div><b>{selectedSkill.occurrences} 次</b></div><dl className="inspector-facts"><div><dt>全窗重要性</dt><dd>{selectedSkill.strength}%</dd></div><div><dt>近期活跃度</dt><dd>{selectedSkill.recentRate}%</dd></div><div><dt>距离含义</dt><dd>越近越重要</dd></div></dl><h4>能力频次排序</h4><div className="cluster-skill-bars">{selected.skills.map((skill) => <button className={skill.name === selectedSkill.name ? 'selected' : ''} key={skill.name} onClick={() => setSelectedSkillName(skill.name)}><span><i style={{ background: domainColors[skill.domain] }} />{skill.name}</span><div><i style={{ width: `${skill.strength}%`, background: domainColors[skill.domain] }} /></div><strong>{skill.occurrences}</strong></button>)}</div><button className="secondary-button" onClick={() => notify('已打开该岗位簇的 JD 频次与时间证据')}><GitBranch size={15} />查看 JD 频次证据</button></aside>
-      </div>
-      <p className="chart-source-note">距离编码全时间窗出现次数，颜色深浅编码近期 JD 高频程度；两者分开计算，避免把“长期重要”与“近期活跃”混为一谈。</p>
+        <aside className="cluster-inspector">{detail && selectedCapability ? <><StatusTag tone="info">{detail.cluster.domain_code} 主领域</StatusTag><h3>{detail.cluster.label}</h3><p>{detail.cluster.description}</p><div className="cluster-facts"><div><Users size={16} /><span>关联 JD</span><strong>{detail.cluster.member_count}</strong></div><div><Building2 size={16} /><span>独立企业</span><strong>{detail.cluster.organization_count}</strong></div><div><GitBranch size={16} /><span>能力节点</span><strong>{detail.capabilities.length}</strong></div></div><h4>选中能力</h4><div className="selected-skill-summary"><i style={{ background: domainColors[selectedCapability.domain_code] }} /><div><strong>{selectedCapability.technology_name}</strong><span>{selectedCapability.domain_code} · 最近出现 {selectedCapability.last_seen_at?.slice(0, 10) ?? '未知'}</span></div><b>{selectedCapability.supporting_job_count} 条</b></div><dl className="inspector-facts"><div><dt>全窗重要性</dt><dd>{selectedCapability.importance}%</dd></div><div><dt>近期活跃度</dt><dd>{selectedCapability.recent_activity}%</dd></div><div><dt>岗位覆盖率</dt><dd>{Math.round(selectedCapability.coverage_rate * 100)}%</dd></div><div><dt>有效提及次数</dt><dd>{selectedCapability.mention_count}</dd></div></dl><h4>能力频次排序</h4><div className="cluster-skill-bars">{detail.capabilities.map((capability) => <button className={capability.technology_node_id === selectedCapability.technology_node_id ? 'selected' : ''} key={capability.technology_node_id} onClick={() => setSelectedTechnologyId(capability.technology_node_id)}><span><i style={{ background: domainColors[capability.domain_code] }} />{capability.technology_name}</span><div><i style={{ width: `${capability.importance}%`, background: domainColors[capability.domain_code] }} /></div><strong>{capability.supporting_job_count}</strong></button>)}</div></> : <div className="empty-state"><strong>请选择包含有效技术证据的岗位聚类</strong><span>当前聚类可能没有符合所选层级的标准技术能力。</span></div>}</aside>
+      </div> : null}
+      <p className="chart-source-note">证据口径：最新成功聚类运行中的真实 JD，且技术关系必须通过语境校验。近期活跃度按可靠时间优先、岗位序列兜底计算，不宣称长期趋势。</p>
     </div>
   )
 }

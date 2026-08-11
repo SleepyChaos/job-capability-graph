@@ -31,6 +31,7 @@ from app.modules.job.models import (
 from app.modules.taxonomy.models import (
     TechnologyDomain,
     TechnologyNode,
+    TechnologyNodeDomain,
     TechnologyTaxonomyVersion,
 )
 
@@ -94,9 +95,20 @@ def _seed_cluster_fixture(session: Session) -> str:
     ]
     session.add_all([taxonomy, source, *organizations])
     session.flush()
+    technology_l2 = TechnologyNode(
+        taxonomy_version_id=taxonomy.taxonomy_version_id,
+        technology_code="SYNTH-T1-L2",
+        source_spreadsheet_row_id=1,
+        level_code="L2",
+        technology_name="合成机器人控制能力域",
+        normalized_name="合成机器人控制能力域",
+    )
+    session.add(technology_l2)
+    session.flush()
     technology = TechnologyNode(
         taxonomy_version_id=taxonomy.taxonomy_version_id,
         technology_code="SYNTH-T1-L3",
+        parent_technology_node_id=technology_l2.technology_node_id,
         source_spreadsheet_row_id=1,
         level_code="L3",
         technology_name="合成机器人控制",
@@ -111,6 +123,28 @@ def _seed_cluster_fixture(session: Session) -> str:
     )
     session.add_all([technology, domain])
     session.flush()
+    session.add_all(
+        [
+            TechnologyNodeDomain(
+                technology_node_id=technology_l2.technology_node_id,
+                technology_domain_id=domain.technology_domain_id,
+                source_spreadsheet_row_id=1,
+                domain_score=Decimal("100"),
+                is_primary=True,
+                evidence_count=3,
+                calculation_version="synthetic-v1",
+            ),
+            TechnologyNodeDomain(
+                technology_node_id=technology.technology_node_id,
+                technology_domain_id=domain.technology_domain_id,
+                source_spreadsheet_row_id=1,
+                domain_score=Decimal("100"),
+                is_primary=True,
+                evidence_count=3,
+                calculation_version="synthetic-v1",
+            ),
+        ]
+    )
     parse_run = JobParseRun(
         run_code="PARSE-CLUSTER-SYNTH",
         parser_version="synthetic-v1",

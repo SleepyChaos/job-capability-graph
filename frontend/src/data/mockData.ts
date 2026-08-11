@@ -1,13 +1,13 @@
 import type { ReviewItem, RoleCandidate, SourceItem } from '../types'
 
 export const domains = [
-  { code: 'T1', name: '机器人本体与控制', value: 398, color: '#1769e0' },
-  { code: 'T2', name: '感知与环境理解', value: 312, color: '#0b9c93' },
-  { code: 'T3', name: '具身决策与规划', value: 220, color: '#38a8dc' },
-  { code: 'T4', name: '交互与人机协同', value: 156, color: '#6fbd73' },
-  { code: 'T5', name: '仿真与数据生成', value: 104, color: '#f2a43a' },
-  { code: 'T6', name: '基础设施与平台', value: 64, color: '#8e7ad5' },
-  { code: 'T7', name: '行业应用与解决方案', value: 30, color: '#94a3b8' },
+  { code: 'T1', name: '智能算法与模型', value: 398, color: '#1769e0' },
+  { code: 'T2', name: '感知与传感', value: 312, color: '#0b9c93' },
+  { code: 'T3', name: '本体与核心零部件', value: 220, color: '#38a8dc' },
+  { code: 'T4', name: '数据与仿真', value: 156, color: '#6fbd73' },
+  { code: 'T5', name: '系统软件与工具链', value: 104, color: '#f2a43a' },
+  { code: 'T6', name: '交互、安全与评测标准', value: 64, color: '#8e7ad5' },
+  { code: 'T7', name: '应用与场景', value: 30, color: '#64748b' },
 ]
 
 export const sources: SourceItem[] = [
