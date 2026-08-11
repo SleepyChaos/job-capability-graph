@@ -9,6 +9,9 @@
 - 文件资产、导入运行和不可变工作表原始行账本；
 - 文件/映射/结构指纹级幂等导入；
 - 自动化测试和覆盖率统计。
+- Alembic空库迁移与回滚；
+- T1–T7、L1–L4及表面词的正式发布；
+- 技术体系版本、领域和节点查询API。
 
 ## 本地初始化
 
@@ -19,6 +22,13 @@ uv sync --all-groups
 ```
 
 复制`.env.example`为`.env`可覆盖数据库等配置。默认使用`backend/.local/dev.db`，该目录不会提交。
+
+初始化或升级数据库：
+
+```powershell
+cd backend
+.\.venv\Scripts\alembic.exe upgrade head
+```
 
 ## 启动API
 
@@ -58,6 +68,24 @@ cd backend
 ```
 
 相同文件、导入器、映射版本和结构指纹重复执行时不会产生重复原始行。
+
+## 发布技术主数据
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m tools.import_taxonomy `
+  --mapping-code technology_taxonomy_20260810 `
+  --version-code v1.1 `
+  --version-name 具身智能技术词主数据v1.1 `
+  --effective-date 2026-07-27 `
+  --domain-version v1.1
+```
+
+正式发布前会核验固定数量、编码唯一性、L1–L4父链、T1–T7领域和L4重复挂载。查询接口：
+
+- `GET /api/v1/taxonomy/versions`；
+- `GET /api/v1/taxonomy/domains`；
+- `GET /api/v1/taxonomy/nodes?level=L3&domain_code=T1`。
 
 ## 质量检查
 

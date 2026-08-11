@@ -494,12 +494,14 @@ CREATE TABLE md_technology_taxonomy_version (
   version_code VARCHAR(32) NOT NULL UNIQUE,
   version_name VARCHAR(200) NOT NULL,
   previous_version_id BIGINT UNSIGNED NULL,
+  source_file_asset_id BIGINT UNSIGNED NOT NULL,
   effective_date DATE NOT NULL,
   version_status_code VARCHAR(32) NOT NULL DEFAULT 'draft',
   change_summary TEXT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (previous_version_id)
     REFERENCES md_technology_taxonomy_version(taxonomy_version_id),
+  FOREIGN KEY (source_file_asset_id) REFERENCES raw_file_asset(file_asset_id),
   CHECK (version_status_code IN ('draft','active','retired'))
 ) ENGINE=InnoDB COMMENT='[A] L1-L4技术分类版本';
 
@@ -509,6 +511,7 @@ CREATE TABLE md_technology_node (
   taxonomy_version_id BIGINT UNSIGNED NOT NULL,
   technology_code VARCHAR(64) NOT NULL,
   parent_technology_node_id BIGINT UNSIGNED NULL,
+  source_spreadsheet_row_id BIGINT UNSIGNED NOT NULL,
   level_code VARCHAR(8) NOT NULL COMMENT 'L1/L2/L3/L4',
   technology_name VARCHAR(500) NOT NULL,
   normalized_name VARCHAR(500) NOT NULL,
@@ -524,6 +527,7 @@ CREATE TABLE md_technology_node (
   FOREIGN KEY (taxonomy_version_id)
     REFERENCES md_technology_taxonomy_version(taxonomy_version_id),
   FOREIGN KEY (parent_technology_node_id) REFERENCES md_technology_node(technology_node_id),
+  FOREIGN KEY (source_spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id),
   CHECK (level_code IN ('L1','L2','L3','L4')),
   CHECK (governance_status_code IN ('active','pending_review','deprecated')),
   KEY idx_technology_level (taxonomy_version_id, level_code, governance_status_code)
@@ -533,18 +537,23 @@ CREATE TABLE md_technology_node (
 CREATE TABLE md_technology_alias (
   technology_alias_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   technology_node_id BIGINT UNSIGNED NOT NULL,
+  source_spreadsheet_row_id BIGINT UNSIGNED NOT NULL,
   alias_text VARCHAR(500) NOT NULL,
   normalized_alias VARCHAR(500) NOT NULL,
   alias_type_code VARCHAR(32) NOT NULL COMMENT 'allowed/source/abbreviation/regex/deprecated',
+  source_type_code VARCHAR(32) NULL COMMENT '源工作簿中的细分词/组合词/指标词/型号词/碎片词',
+  source_metadata_json JSON NULL COMMENT '原层级、跨域调整、命中来源和来源明细留痕',
   is_matchable TINYINT(1) NOT NULL DEFAULT 1,
   UNIQUE KEY uk_technology_alias (technology_node_id, normalized_alias),
   KEY idx_technology_alias_lookup (normalized_alias, is_matchable),
-  FOREIGN KEY (technology_node_id) REFERENCES md_technology_node(technology_node_id)
+  FOREIGN KEY (technology_node_id) REFERENCES md_technology_node(technology_node_id),
+  FOREIGN KEY (source_spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id)
 ) ENGINE=InnoDB COMMENT='[A] 技术节点别名和识别表达';
 
 -- [A] 独立于L轴的T1-T7领域
 CREATE TABLE md_technology_domain (
   technology_domain_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  source_spreadsheet_row_id BIGINT UNSIGNED NOT NULL,
   domain_version VARCHAR(32) NOT NULL,
   domain_code VARCHAR(8) NOT NULL COMMENT 'T1-T7',
   domain_name VARCHAR(200) NOT NULL,
@@ -553,6 +562,7 @@ CREATE TABLE md_technology_domain (
   sort_order TINYINT UNSIGNED NOT NULL,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   UNIQUE KEY uk_technology_domain (domain_version, domain_code),
+  FOREIGN KEY (source_spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id),
   CHECK (domain_code IN ('T1','T2','T3','T4','T5','T6','T7'))
 ) ENGINE=InnoDB COMMENT='[A] T1-T7七类技术领域';
 
@@ -560,6 +570,7 @@ CREATE TABLE md_technology_domain (
 CREATE TABLE rel_technology_node_domain (
   technology_node_id BIGINT UNSIGNED NOT NULL,
   technology_domain_id BIGINT UNSIGNED NOT NULL,
+  source_spreadsheet_row_id BIGINT UNSIGNED NOT NULL,
   domain_score DECIMAL(7,4) NOT NULL,
   is_primary TINYINT(1) NOT NULL DEFAULT 0,
   evidence_count INT UNSIGNED NOT NULL DEFAULT 0,
@@ -568,6 +579,7 @@ CREATE TABLE rel_technology_node_domain (
   PRIMARY KEY (technology_node_id, technology_domain_id),
   FOREIGN KEY (technology_node_id) REFERENCES md_technology_node(technology_node_id),
   FOREIGN KEY (technology_domain_id) REFERENCES md_technology_domain(technology_domain_id),
+  FOREIGN KEY (source_spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id),
   CHECK (domain_score BETWEEN 0 AND 100)
 ) ENGINE=InnoDB COMMENT='[A/B] 技术点的主域、次域、得分和证据';
 

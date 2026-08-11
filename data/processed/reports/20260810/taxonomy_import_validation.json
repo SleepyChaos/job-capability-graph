@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "validated_at": "2026-08-11",
+  "source": {
+    "relative_path": "data/source/20260810/core/技术词主数据_20260727.xlsx",
+    "sha256": "004da7aaaa4dafe8880846d3733dfa9658ad8d2803805b1b235ad674126a844c",
+    "schema_fingerprint": "b60f850f04ce4eedf1c55b2823cba7cff9294477dbef30c07384fd324358ef17",
+    "mapping_code": "technology_taxonomy_20260810",
+    "mapping_version": "1.0.0"
+  },
+  "taxonomy": {
+    "version_code": "v1.1",
+    "domain_version": "v1.1",
+    "status": "active"
+  },
+  "counts": {
+    "raw_rows": 2151,
+    "domains": 7,
+    "l1_nodes": 7,
+    "l2_nodes": 43,
+    "l3_nodes": 229,
+    "l4_nodes": 1872,
+    "matchable_aliases": 1872,
+    "node_domain_relations": 2151,
+    "row_results": 2151,
+    "failed_rows": 0
+  },
+  "checks": {
+    "expected_counts": "passed",
+    "code_uniqueness": "passed",
+    "l1_l4_parent_chain": "passed",
+    "t1_t7_domain_codes": "passed",
+    "l4_duplicate_mount": "passed",
+    "source_row_traceability": "passed",
+    "repeat_publish_idempotency": "passed",
+    "empty_database_migration": "passed",
+    "migration_downgrade": "passed"
+  }
+}

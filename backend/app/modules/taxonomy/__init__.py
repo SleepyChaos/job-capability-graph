@@ -1,0 +1,1 @@
+"""Technology taxonomy master data."""

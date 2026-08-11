@@ -54,9 +54,9 @@
       "entity": "technology_surface_term",
       "strategy": "TRANSFORM",
       "fields": {
-        "技术词": ["md_technology_alias.alias_text"],
-        "L4类型": ["md_technology_alias.alias_type_code"],
-        "挂载L3编码": ["md_technology_alias.technology_node_code"],
+        "技术词": ["md_technology_node.technology_name", "md_technology_alias.alias_text"],
+        "L4类型": ["md_technology_alias.source_type_code"],
+        "挂载L3编码": ["md_technology_node.parent_technology_code"],
         "L2编码": ["import_validation.expected_l2_code"],
         "L1编码": ["rel_technology_node_domain.domain_code"],
         "原层级(留痕)": ["md_technology_alias.source_metadata_json.original_level"],
