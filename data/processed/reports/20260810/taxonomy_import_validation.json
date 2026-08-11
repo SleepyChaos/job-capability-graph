@@ -20,7 +20,9 @@
     "l2_nodes": 43,
     "l3_nodes": 229,
     "l4_nodes": 1872,
-    "matchable_aliases": 1872,
+    "aliases": 1872,
+    "matchable_aliases": 1850,
+    "excluded_fragment_aliases": 22,
     "node_domain_relations": 2151,
     "row_results": 2151,
     "failed_rows": 0

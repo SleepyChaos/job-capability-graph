@@ -6,6 +6,7 @@ from sqlalchemy import engine_from_config, pool
 from app.core.config import get_settings
 from app.db.base import Base
 from app.modules.ingestion import models as ingestion_models  # noqa: F401
+from app.modules.job import models as job_models  # noqa: F401
 from app.modules.taxonomy import models as taxonomy_models  # noqa: F401
 
 config = context.config

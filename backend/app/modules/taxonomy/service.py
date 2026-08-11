@@ -234,6 +234,7 @@ class TaxonomyImportService:
                         "source_hit": payload.get("命中来源"),
                         "source_detail": payload.get("来源明细(留痕)"),
                     },
+                    is_matchable=source_type != "碎片词",
                 )
             )
             self._link_domain(node, domains[domain_code], source_row)

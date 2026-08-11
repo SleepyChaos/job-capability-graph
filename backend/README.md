@@ -12,6 +12,10 @@
 - Alembic空库迁移与回滚；
 - T1–T7、L1–L4及表面词的正式发布；
 - 技术体系版本、领域和节点查询API。
+- 3718条真实JD、机构别名、来源成员关系和时间质量分级；
+- 基于正文哈希的精确重复组与组内证据权重；
+- 基于可匹配L4别名、归一到L3标准技术点的确定性抽取与原文证据；
+- JD汇总、筛选、列表和详情API。
 
 ## 本地初始化
 
@@ -69,6 +73,12 @@ cd backend
 
 相同文件、导入器、映射版本和结构指纹重复执行时不会产生重复原始行。
 
+只暂存岗位工作表时增加：
+
+```powershell
+  --sheet 岗位数据
+```
+
 ## 发布技术主数据
 
 ```powershell
@@ -86,6 +96,33 @@ cd backend
 - `GET /api/v1/taxonomy/versions`；
 - `GET /api/v1/taxonomy/domains`；
 - `GET /api/v1/taxonomy/nodes?level=L3&domain_code=T1`。
+
+## 发布真实JD数据底座
+
+先将`具身智能岗位_清洗后_v3(1).xlsx`的`岗位数据`工作表写入Raw账本，再执行：
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m tools.import_jobs `
+  --mapping-code cleaned_job_posting_20260810 `
+  --taxonomy-version v1.1 `
+  --received-at 2026-08-10T00:00:00
+```
+
+导入是幂等的。同一映射再次发布不会重复创建JD。验收报告可用以下命令重建：
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m tools.validate_job_import `
+  --mapping-code cleaned_job_posting_20260810 `
+  --output ..\data\processed\reports\20260810\job_import_validation.json
+```
+
+JD查询接口：
+
+- `GET /api/v1/jobs/summary`；
+- `GET /api/v1/jobs`，支持关键词、来源、等级、学历、时间质量、重复组和技术编码筛选；
+- `GET /api/v1/jobs/{job_code}`，返回正文、全部来源、技术要求和命中证据。
 
 ## 质量检查
 

@@ -36,6 +36,7 @@ CREATE TABLE app_user (
 -- [A] 企业、政府、高校、研究机构、行业组织等统一主体
 CREATE TABLE md_organization (
   organization_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  source_spreadsheet_row_id BIGINT UNSIGNED NULL,
   organization_code VARCHAR(64) NOT NULL UNIQUE,
   canonical_name VARCHAR(500) NOT NULL,
   normalized_name VARCHAR(500) NOT NULL,
@@ -46,6 +47,7 @@ CREATE TABLE md_organization (
   city_name VARCHAR(100) NULL,
   website_url VARCHAR(1500) NULL,
   industry_text VARCHAR(500) NULL,
+  source_metadata_json JSON NULL,
   organization_status_code VARCHAR(32) NOT NULL DEFAULT 'active',
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -57,6 +59,7 @@ CREATE TABLE md_organization (
 CREATE TABLE md_organization_alias (
   organization_alias_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   organization_id BIGINT UNSIGNED NOT NULL,
+  source_spreadsheet_row_id BIGINT UNSIGNED NULL,
   alias_text VARCHAR(500) NOT NULL,
   normalized_alias VARCHAR(500) NOT NULL,
   alias_type_code VARCHAR(32) NOT NULL DEFAULT 'source',
@@ -68,6 +71,7 @@ CREATE TABLE md_organization_alias (
 -- [A] 用户维护的数据源对象
 CREATE TABLE md_data_source (
   data_source_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  source_file_asset_id BIGINT UNSIGNED NULL,
   source_code VARCHAR(64) NOT NULL UNIQUE,
   source_name VARCHAR(300) NOT NULL,
   source_type_code VARCHAR(32) NOT NULL
@@ -247,6 +251,18 @@ CREATE TABLE biz_file_import_row_result (
   KEY idx_import_row_target (target_type_code, target_record_key)
 ) ENGINE=InnoDB COMMENT='[B/C] 文件导入逐行结果、错误定位和单行重放记录';
 
+ALTER TABLE md_organization
+  ADD CONSTRAINT fk_organization_source_row
+  FOREIGN KEY (source_spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id);
+
+ALTER TABLE md_organization_alias
+  ADD CONSTRAINT fk_organization_alias_source_row
+  FOREIGN KEY (source_spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id);
+
+ALTER TABLE md_data_source
+  ADD CONSTRAINT fk_data_source_file_asset
+  FOREIGN KEY (source_file_asset_id) REFERENCES raw_file_asset(file_asset_id);
+
 ALTER TABLE biz_collection_request
   ADD CONSTRAINT fk_collection_request_asset
   FOREIGN KEY (response_asset_id) REFERENCES raw_file_asset(file_asset_id);
@@ -254,6 +270,7 @@ ALTER TABLE biz_collection_request
 -- [A] 稳定的网页或文档身份
 CREATE TABLE raw_source_document (
   source_document_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  source_spreadsheet_row_id BIGINT UNSIGNED NULL,
   document_code VARCHAR(64) NOT NULL UNIQUE,
   data_source_id BIGINT UNSIGNED NOT NULL,
   document_type_code VARCHAR(32) NOT NULL
@@ -269,6 +286,7 @@ CREATE TABLE raw_source_document (
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uk_source_document_identity (data_source_id, document_identity_key),
   FOREIGN KEY (data_source_id) REFERENCES md_data_source(data_source_id),
+  FOREIGN KEY (source_spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id),
   CHECK (document_status_code IN ('active','suspected_expired','expired','deleted','superseded')),
   KEY idx_document_type_seen (document_type_code, last_seen_at)
 ) ENGINE=InnoDB COMMENT='[A] 原始材料的稳定身份和存续状态';
@@ -283,6 +301,7 @@ CREATE TABLE raw_source_document_version (
   file_asset_id BIGINT UNSIGNED NULL,
   published_at DATETIME NULL,
   collected_at DATETIME NOT NULL,
+  source_collected_at DATETIME NULL COMMENT '源数据中的收录时间，迁移时缺失则保持NULL',
   valid_from DATETIME NOT NULL,
   valid_to DATETIME NULL,
   content_text LONGTEXT NOT NULL,
@@ -787,10 +806,12 @@ CREATE TABLE rel_milestone_evidence (
 -- [A] 只保存真实招聘材料，禁止写入生成标准JD
 CREATE TABLE biz_job_posting (
   job_posting_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  source_spreadsheet_row_id BIGINT UNSIGNED NULL,
   job_code VARCHAR(64) NOT NULL UNIQUE,
   source_document_version_id BIGINT UNSIGNED NOT NULL UNIQUE,
   data_source_id BIGINT UNSIGNED NOT NULL,
   source_job_id VARCHAR(300) NULL,
+  source_group_key VARCHAR(300) NULL,
   organization_id BIGINT UNSIGNED NULL,
   company_name_raw VARCHAR(500) NULL,
   job_title_raw VARCHAR(1000) NOT NULL,
@@ -810,14 +831,19 @@ CREATE TABLE biz_job_posting (
   jd_clean_text LONGTEXT NOT NULL,
   published_at DATETIME NULL,
   collected_at DATETIME NOT NULL,
+  source_collected_at DATETIME NULL,
+  time_quality_code VARCHAR(32) NOT NULL COMMENT 'source_collected/migration_only',
   expired_at DATETIME NULL,
   posting_status_code VARCHAR(32) NOT NULL DEFAULT 'active',
   parse_confidence_score DECIMAL(5,2) NULL,
   publish_score DECIMAL(5,2) NULL,
+  evidence_weight DECIMAL(9,6) NOT NULL DEFAULT 1 COMMENT '精确重复组内权重总和为1',
+  source_metadata_json JSON NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (source_document_version_id)
     REFERENCES raw_source_document_version(source_document_version_id),
+  FOREIGN KEY (source_spreadsheet_row_id) REFERENCES raw_spreadsheet_row(spreadsheet_row_id),
   FOREIGN KEY (data_source_id) REFERENCES md_data_source(data_source_id),
   FOREIGN KEY (organization_id) REFERENCES md_organization(organization_id),
   CHECK (posting_status_code IN ('active','suspected_expired','expired','removed')),
@@ -826,8 +852,20 @@ CREATE TABLE biz_job_posting (
   CHECK (experience_min_years IS NULL OR experience_max_years IS NULL
     OR experience_min_years <= experience_max_years),
   KEY idx_job_title_time (job_title_normalized, published_at),
-  KEY idx_job_org_status (organization_id, posting_status_code, collected_at)
+  KEY idx_job_org_status (organization_id, posting_status_code, collected_at),
+  KEY idx_job_time_quality (time_quality_code, source_collected_at)
 ) ENGINE=InnoDB COMMENT='[A] 去重、验证并正式发布的真实招聘JD';
+
+-- [A] 合并工作簿中同一JD可能来自多个上游数据集，另保留迁移容器来源
+CREATE TABLE rel_job_posting_data_source (
+  job_posting_id BIGINT UNSIGNED NOT NULL,
+  data_source_id BIGINT UNSIGNED NOT NULL,
+  source_role_code VARCHAR(32) NOT NULL COMMENT 'primary/supporting/migration',
+  source_order INT UNSIGNED NOT NULL,
+  PRIMARY KEY (job_posting_id, data_source_id),
+  FOREIGN KEY (job_posting_id) REFERENCES biz_job_posting(job_posting_id),
+  FOREIGN KEY (data_source_id) REFERENCES md_data_source(data_source_id)
+) ENGINE=InnoDB COMMENT='[A] JD的主来源、辅助来源和迁移容器来源';
 
 -- [A/B] JD核心职责
 CREATE TABLE biz_job_responsibility (
@@ -860,6 +898,8 @@ CREATE TABLE biz_job_requirement (
   mapping_method_code VARCHAR(32) NULL,
   confidence_score DECIMAL(5,2) NOT NULL,
   UNIQUE KEY uk_job_requirement_no (job_posting_id, requirement_no),
+  UNIQUE KEY uk_job_requirement_technology_type
+    (job_posting_id, technology_node_id, requirement_type_code),
   FOREIGN KEY (job_posting_id) REFERENCES biz_job_posting(job_posting_id),
   FOREIGN KEY (technology_node_id) REFERENCES md_technology_node(technology_node_id),
   FOREIGN KEY (capability_id) REFERENCES md_capability(capability_id),
@@ -870,6 +910,17 @@ CREATE TABLE biz_job_requirement (
   KEY idx_job_requirement_technology (technology_node_id, requirement_type_code, job_posting_id),
   KEY idx_job_requirement_capability (capability_id, requirement_type_code, job_posting_id)
 ) ENGINE=InnoDB COMMENT='[A/B] JD标准技术点或广义能力要求';
+
+CREATE TABLE rel_job_requirement_evidence (
+  job_requirement_id BIGINT UNSIGNED NOT NULL,
+  evidence_span_id BIGINT UNSIGNED NOT NULL,
+  matched_alias_id BIGINT UNSIGNED NOT NULL,
+  support_score DECIMAL(5,2) NOT NULL,
+  PRIMARY KEY (job_requirement_id, evidence_span_id),
+  FOREIGN KEY (job_requirement_id) REFERENCES biz_job_requirement(job_requirement_id),
+  FOREIGN KEY (evidence_span_id) REFERENCES biz_evidence_span(evidence_span_id),
+  FOREIGN KEY (matched_alias_id) REFERENCES md_technology_alias(technology_alias_id)
+) ENGINE=InnoDB COMMENT='[A/B] JD技术要求到命中L4表面词及原文位置的证据';
 
 CREATE TABLE rel_job_scenario (
   job_posting_id BIGINT UNSIGNED NOT NULL,

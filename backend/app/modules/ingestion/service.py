@@ -51,6 +51,7 @@ class WorkbookStagingService:
         mapping_version: str,
         access_classification: str,
         external_key_fields: dict[str, str] | None = None,
+        include_sheets: set[str] | None = None,
     ) -> StageWorkbookResult:
         path = path.resolve()
         file_hash = sha256_file(path)
@@ -85,6 +86,8 @@ class WorkbookStagingService:
         workbook = load_workbook(path, read_only=True, data_only=False)
         try:
             for sheet in workbook.worksheets:
+                if include_sheets is not None and sheet.title not in include_sheets:
+                    continue
                 rows = sheet.iter_rows(values_only=True)
                 header_values = next(rows, None)
                 if header_values is None:

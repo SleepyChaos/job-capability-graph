@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "file_name": "具身智能岗位_清洗后_v3(1).xlsx",
+    "sha256": "a96bff92a5d28cad4539f4f20c5d09d142fa6f46c4df1410db438d8ea3265646",
+    "mapping_code": "cleaned_job_posting_20260810",
+    "mapping_version": "1.0.0",
+    "schema_hash": "4fa04742697bfb040c6813261d3757f10c1ec8eab987173a6ac4122baaa84748"
+  },
+  "counts": {
+    "jobs": 3718,
+    "organizations": 84,
+    "organization_aliases": 102,
+    "data_sources": 5,
+    "source_documents": 3718,
+    "document_versions": 3718,
+    "unique_content": 3391,
+    "duplicate_groups": 235,
+    "duplicate_members": 562,
+    "technology_covered_jobs": 1678,
+    "requirements": 4880,
+    "evidence_spans": 7591,
+    "matchable_aliases": 1850,
+    "missing_organization_jobs": 3,
+    "missing_or_invalid_url_documents": 200
+  },
+  "quality_status": {
+    "accepted": 1474,
+    "warning": 2244
+  },
+  "time_quality": {
+    "migration_only": 2027,
+    "source_collected": 1691
+  },
+  "source_memberships": {
+    "all_jobs_jd": 3161,
+    "embodied_final": 421,
+    "migration_workbook": 3718,
+    "search_all": 44,
+    "猎聘10家中游": 390
+  },
+  "top_technologies": [
+    {
+      "technology_code": "T3.05.04",
+      "technology_name": "电机与驱动",
+      "job_count": 336,
+      "mention_count": 813
+    },
+    {
+      "technology_code": "T1.01.11",
+      "technology_name": "VLA端到端大模型",
+      "job_count": 329,
+      "mention_count": 891
+    },
+    {
+      "technology_code": "T3.01.08",
+      "technology_name": "人形机器人(通用)",
+      "job_count": 280,
+      "mention_count": 467
+    },
+    {
+      "technology_code": "T5.01.01",
+      "technology_name": "ROS",
+      "job_count": 233,
+      "mention_count": 275
+    },
+    {
+      "technology_code": "T1.03.12",
+      "technology_name": "运动控制(通用)",
+      "job_count": 221,
+      "mention_count": 382
+    },
+    {
+      "technology_code": "T6.03.04",
+      "technology_name": "检测认证",
+      "job_count": 214,
+      "mention_count": 316
+    },
+    {
+      "technology_code": "T7.01.04",
+      "technology_name": "汽车制造",
+      "job_count": 208,
+      "mention_count": 271
+    },
+    {
+      "technology_code": "T2.01.01",
+      "technology_name": "激光雷达",
+      "job_count": 177,
+      "mention_count": 344
+    },
+    {
+      "technology_code": "T3.02.01",
+      "technology_name": "四足机器人",
+      "job_count": 157,
+      "mention_count": 373
+    },
+    {
+      "technology_code": "T1.05.02",
+      "technology_name": "强化学习",
+      "job_count": 153,
+      "mention_count": 323
+    },
+    {
+      "technology_code": "T7.01.08",
+      "technology_name": "智能制造与工业自动化",
+      "job_count": 122,
+      "mention_count": 177
+    },
+    {
+      "technology_code": "T3.04.02",
+      "technology_name": "灵巧手(多指)",
+      "job_count": 114,
+      "mention_count": 212
+    },
+    {
+      "technology_code": "T1.04.01",
+      "technology_name": "SLAM",
+      "job_count": 91,
+      "mention_count": 236
+    },
+    {
+      "technology_code": "T3.06.02",
+      "technology_name": "精密减速器",
+      "job_count": 89,
+      "mention_count": 162
+    },
+    {
+      "technology_code": "T3.03.09",
+      "technology_name": "工业机械臂",
+      "job_count": 85,
+      "mention_count": 96
+    }
+  ],
+  "top_matched_aliases": [
+    {
+      "alias": "电机",
+      "source_type": "细分词",
+      "evidence_count": 746
+    },
+    {
+      "alias": "人形机器人",
+      "source_type": "细分词",
+      "evidence_count": 419
+    },
+    {
+      "alias": "大模型",
+      "source_type": "细分词",
+      "evidence_count": 401
+    },
+    {
+      "alias": "检测",
+      "source_type": "细分词",
+      "evidence_count": 313
+    },
+    {
+      "alias": "激光雷达",
+      "source_type": "细分词",
+      "evidence_count": 299
+    },
+    {
+      "alias": "强化学习",
+      "source_type": "细分词",
+      "evidence_count": 283
+    },
+    {
+      "alias": "ROS",
+      "source_type": "细分词",
+      "evidence_count": 275
+    },
+    {
+      "alias": "汽车",
+      "source_type": "细分词",
+      "evidence_count": 271
+    },
+    {
+      "alias": "SLAM",
+      "source_type": "细分词",
+      "evidence_count": 216
+    },
+    {
+      "alias": "灵巧手",
+      "source_type": "细分词",
+      "evidence_count": 200
+    },
+    {
+      "alias": "运动控制",
+      "source_type": "细分词",
+      "evidence_count": 190
+    },
+    {
+      "alias": "VLA",
+      "source_type": "细分词",
+      "evidence_count": 175
+    },
+    {
+      "alias": "机器狗",
+      "source_type": "细分词",
+      "evidence_count": 174
+    },
+    {
+      "alias": "减速器",
+      "source_type": "细分词",
+      "evidence_count": 150
+    },
+    {
+      "alias": "世界模型",
+      "source_type": "细分词",
+      "evidence_count": 117
+    },
+    {
+      "alias": "关节模组",
+      "source_type": "细分词",
+      "evidence_count": 110
+    },
+    {
+      "alias": "四足",
+      "source_type": "细分词",
+      "evidence_count": 110
+    },
+    {
+      "alias": "多模态大模型",
+      "source_type": "细分词",
+      "evidence_count": 95
+    },
+    {
+      "alias": "力控",
+      "source_type": "细分词",
+      "evidence_count": 92
+    },
+    {
+      "alias": "控制系统",
+      "source_type": "细分词",
+      "evidence_count": 91
+    }
+  ],
+  "checks": {
+    "bad_evidence_offsets": 0,
+    "duplicate_weight_sum_mismatches": 0,
+    "expected_job_count": true,
+    "expected_unique_content_count": true,
+    "expected_duplicate_group_count": true
+  }
+}

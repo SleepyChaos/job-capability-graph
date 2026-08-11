@@ -29,6 +29,12 @@ def parse_args() -> argparse.Namespace:
         metavar="SHEET=FIELD",
         help="指定工作表的外部主键字段，可重复使用。",
     )
+    parser.add_argument(
+        "--sheet",
+        action="append",
+        default=[],
+        help="只暂存指定工作表，可重复使用；省略时暂存全部工作表。",
+    )
     return parser.parse_args()
 
 
@@ -54,6 +60,7 @@ def main() -> None:
             mapping_version=args.mapping_version,
             access_classification=args.classification,
             external_key_fields=parse_external_keys(args.external_key),
+            include_sheets=set(args.sheet) if args.sheet else None,
         )
     print(json.dumps(asdict(result), ensure_ascii=False))
 

@@ -22,6 +22,19 @@ def test_initial_migration_upgrades_and_downgrades(tmp_path: Path) -> None:
         "md_technology_node",
         "md_technology_alias",
         "rel_technology_node_domain",
+        "md_organization",
+        "md_organization_alias",
+        "md_data_source",
+        "raw_source_document",
+        "raw_source_document_version",
+        "biz_document_quality",
+        "biz_duplicate_document_group",
+        "rel_duplicate_document_member",
+        "biz_evidence_span",
+        "biz_job_posting",
+        "rel_job_posting_data_source",
+        "biz_job_requirement",
+        "rel_job_requirement_evidence",
     }.issubset(set(inspector.get_table_names()))
 
     command.downgrade(config, "base")
