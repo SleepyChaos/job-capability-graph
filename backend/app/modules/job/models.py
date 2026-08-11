@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 
 from sqlalchemy import (
@@ -347,3 +347,202 @@ class JobRequirementEvidence(Base):
         ForeignKey("md_technology_alias.technology_alias_id")
     )
     support_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+
+
+class JobParseRun(Base):
+    __tablename__ = "biz_job_parse_run"
+
+    job_parse_run_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    run_code: Mapped[str] = mapped_column(String(64), unique=True)
+    parser_version: Mapped[str] = mapped_column(String(64))
+    taxonomy_version_id: Mapped[int] = mapped_column(
+        ForeignKey("md_technology_taxonomy_version.taxonomy_version_id")
+    )
+    target_date: Mapped[date] = mapped_column()
+    input_snapshot_hash: Mapped[str] = mapped_column(String(64))
+    config_json: Mapped[dict | None] = mapped_column(JSON)
+    run_status_code: Mapped[str] = mapped_column(String(32), default="running")
+    input_job_count: Mapped[int] = mapped_column(Integer, default=0)
+    parsed_job_count: Mapped[int] = mapped_column(Integer, default=0)
+    review_job_count: Mapped[int] = mapped_column(Integer, default=0)
+    responsibility_count: Mapped[int] = mapped_column(Integer, default=0)
+    assessment_count: Mapped[int] = mapped_column(Integer, default=0)
+    feature_count: Mapped[int] = mapped_column(Integer, default=0)
+    started_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime)
+
+    __table_args__ = (Index("idx_job_parse_run_status", "run_status_code", "target_date"),)
+
+
+class JobParseResult(Base):
+    __tablename__ = "rel_job_parse_result"
+
+    job_parse_run_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_job_parse_run.job_parse_run_id"), primary_key=True
+    )
+    job_posting_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_job_posting.job_posting_id"), primary_key=True
+    )
+    source_document_version_id: Mapped[int] = mapped_column(
+        ForeignKey("raw_source_document_version.source_document_version_id")
+    )
+    content_hash: Mapped[str] = mapped_column(String(64))
+    parse_status_code: Mapped[str] = mapped_column(String(32))
+    responsibility_count: Mapped[int] = mapped_column(Integer, default=0)
+    required_segment_count: Mapped[int] = mapped_column(Integer, default=0)
+    bonus_segment_count: Mapped[int] = mapped_column(Integer, default=0)
+    unknown_segment_count: Mapped[int] = mapped_column(Integer, default=0)
+    ambiguity_review_count: Mapped[int] = mapped_column(Integer, default=0)
+    parse_quality_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+    review_required: Mapped[bool] = mapped_column(Boolean, default=False)
+    reason_json: Mapped[dict | None] = mapped_column(JSON)
+    parsed_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        Index("idx_job_parse_result_review", "job_parse_run_id", "review_required"),
+        Index("idx_job_parse_result_quality", "job_parse_run_id", "parse_quality_score"),
+    )
+
+
+class JobResponsibility(Base):
+    __tablename__ = "biz_job_responsibility"
+
+    job_responsibility_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    job_parse_run_id: Mapped[int] = mapped_column(ForeignKey("biz_job_parse_run.job_parse_run_id"))
+    job_posting_id: Mapped[int] = mapped_column(ForeignKey("biz_job_posting.job_posting_id"))
+    responsibility_no: Mapped[int] = mapped_column(Integer)
+    raw_text: Mapped[str] = mapped_column(Text)
+    normalized_task_text: Mapped[str | None] = mapped_column(Text)
+    action_verb: Mapped[str | None] = mapped_column(String(100))
+    task_object: Mapped[str | None] = mapped_column(String(500))
+    expected_output: Mapped[str | None] = mapped_column(String(500))
+    extraction_method_code: Mapped[str] = mapped_column(String(64))
+    confidence_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+
+    __table_args__ = (
+        UniqueConstraint(
+            "job_parse_run_id",
+            "job_posting_id",
+            "responsibility_no",
+            name="uk_job_responsibility_run_no",
+        ),
+        Index("idx_job_responsibility_job", "job_posting_id", "job_parse_run_id"),
+    )
+
+
+class JobFactEvidence(Base):
+    __tablename__ = "rel_job_fact_evidence"
+
+    job_fact_evidence_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    job_parse_run_id: Mapped[int] = mapped_column(ForeignKey("biz_job_parse_run.job_parse_run_id"))
+    job_posting_id: Mapped[int] = mapped_column(ForeignKey("biz_job_posting.job_posting_id"))
+    target_type_code: Mapped[str] = mapped_column(String(32))
+    target_id: Mapped[int] = mapped_column(BigInteger)
+    evidence_span_id: Mapped[int] = mapped_column(ForeignKey("biz_evidence_span.evidence_span_id"))
+    support_type_code: Mapped[str] = mapped_column(String(32), default="support")
+    support_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+
+    __table_args__ = (
+        UniqueConstraint(
+            "job_parse_run_id",
+            "target_type_code",
+            "target_id",
+            "evidence_span_id",
+            "support_type_code",
+            name="uk_job_fact_evidence_run",
+        ),
+    )
+
+
+class TechnologyAmbiguityRule(Base):
+    __tablename__ = "md_technology_ambiguity_rule"
+
+    technology_ambiguity_rule_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    rule_code: Mapped[str] = mapped_column(String(64), unique=True)
+    normalized_alias: Mapped[str] = mapped_column(String(500))
+    technology_node_id: Mapped[int] = mapped_column(
+        ForeignKey("md_technology_node.technology_node_id")
+    )
+    positive_markers_json: Mapped[list] = mapped_column(JSON)
+    missing_context_decision_code: Mapped[str] = mapped_column(String(32), default="needs_review")
+    review_weight: Mapped[Decimal] = mapped_column(Numeric(7, 4), default=Decimal("0.35"))
+    rule_version: Mapped[str] = mapped_column(String(64))
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint(
+            "normalized_alias", "technology_node_id", name="uk_ambiguity_alias_technology"
+        ),
+        Index("idx_ambiguity_rule_active", "is_active", "normalized_alias"),
+    )
+
+
+class TechnologyMatchAssessment(Base):
+    __tablename__ = "biz_technology_match_assessment"
+
+    technology_match_assessment_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    job_parse_run_id: Mapped[int] = mapped_column(ForeignKey("biz_job_parse_run.job_parse_run_id"))
+    job_requirement_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_job_requirement.job_requirement_id")
+    )
+    evidence_span_id: Mapped[int] = mapped_column(ForeignKey("biz_evidence_span.evidence_span_id"))
+    context_evidence_span_id: Mapped[int | None] = mapped_column(
+        ForeignKey("biz_evidence_span.evidence_span_id")
+    )
+    ambiguity_rule_id: Mapped[int | None] = mapped_column(
+        ForeignKey("md_technology_ambiguity_rule.technology_ambiguity_rule_id")
+    )
+    context_type_code: Mapped[str] = mapped_column(String(32))
+    assessment_status_code: Mapped[str] = mapped_column(String(32))
+    adjusted_support_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+    feature_weight: Mapped[Decimal] = mapped_column(Numeric(7, 4))
+    reason_code: Mapped[str] = mapped_column(String(64))
+    assessed_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint(
+            "job_parse_run_id",
+            "job_requirement_id",
+            "evidence_span_id",
+            name="uk_match_assessment_run_evidence",
+        ),
+        Index(
+            "idx_match_assessment_review",
+            "job_parse_run_id",
+            "assessment_status_code",
+            "reason_code",
+        ),
+    )
+
+
+class JobClusterFeatureSnapshot(Base):
+    __tablename__ = "biz_job_cluster_feature_snapshot"
+
+    job_parse_run_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_job_parse_run.job_parse_run_id"), primary_key=True
+    )
+    job_posting_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_job_posting.job_posting_id"), primary_key=True
+    )
+    feature_version: Mapped[str] = mapped_column(String(64))
+    title_tokens_json: Mapped[list] = mapped_column(JSON)
+    responsibility_tokens_json: Mapped[list] = mapped_column(JSON)
+    technology_weights_json: Mapped[dict] = mapped_column(JSON)
+    domain_weights_json: Mapped[dict] = mapped_column(JSON)
+    level_code: Mapped[str | None] = mapped_column(String(32))
+    sample_weight: Mapped[Decimal] = mapped_column(Numeric(9, 6))
+    time_quality_code: Mapped[str] = mapped_column(String(32))
+    feature_hash: Mapped[str] = mapped_column(String(64))
+    eligible_for_clustering: Mapped[bool] = mapped_column(Boolean, default=True)
+    exclusion_reason_json: Mapped[list | None] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        Index(
+            "idx_cluster_feature_eligible",
+            "job_parse_run_id",
+            "eligible_for_clustering",
+            "time_quality_code",
+        ),
+    )

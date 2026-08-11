@@ -10,6 +10,7 @@ from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
 from app.modules.ingestion.service import WorkbookStagingService
+from app.modules.job.parsing_service import JobParsingService
 from app.modules.job.service import JobImportService
 from app.modules.taxonomy.service import TaxonomyImportService
 
@@ -71,6 +72,14 @@ def test_real_job_import_idempotency_and_api() -> None:
             taxonomy_version_code="v1.1-job-test",
             received_at=datetime(2026, 8, 10),
         )
+        parsing_first = JobParsingService(session).run(
+            taxonomy_version_code="v1.1-job-test",
+            target_date=date(2026, 8, 10),
+        )
+        parsing_second = JobParsingService(session).run(
+            taxonomy_version_code="v1.1-job-test",
+            target_date=date(2026, 8, 10),
+        )
 
         assert first.total_jobs == 3718
         assert first.organization_count == 84
@@ -84,6 +93,15 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert first.evidence_span_count == 7591
         assert not first.already_published
         assert second.already_published
+        assert parsing_first.parsed_job_count == 3718
+        assert parsing_first.review_job_count == 675
+        assert parsing_first.responsibility_count == 17176
+        assert parsing_first.assessment_count == 7591
+        assert parsing_first.ambiguity_review_count == 734
+        assert parsing_first.feature_count == 3718
+        assert parsing_first.eligible_feature_count == 3540
+        assert not parsing_first.already_completed
+        assert parsing_second.already_completed
 
         def override_db():
             yield session
@@ -99,6 +117,17 @@ def test_real_job_import_idempotency_and_api() -> None:
                 )
                 first_job_code = ros_jobs.json()["items"][0]["job_code"]
                 detail = client.get(f"/api/v1/jobs/{first_job_code}")
+                parsing_summary = client.get("/api/v1/job-parsing/summary")
+                parsing_reviews = client.get(
+                    "/api/v1/job-parsing/jobs",
+                    params={"review_required": True, "limit": 5},
+                )
+                parsing_excluded = client.get(
+                    "/api/v1/job-parsing/jobs",
+                    params={"eligible": False, "limit": 5},
+                )
+                parsing_detail = client.get(f"/api/v1/job-parsing/jobs/{first_job_code}")
+                ambiguity_rules = client.get("/api/v1/job-parsing/ambiguity-rules")
         finally:
             app.dependency_overrides.clear()
 
@@ -117,3 +146,15 @@ def test_real_job_import_idempotency_and_api() -> None:
             for technology in detail.json()["technologies"]
         )
         assert all(technology["evidence"] for technology in detail.json()["technologies"])
+        assert parsing_summary.status_code == 200
+        assert parsing_summary.json()["run"]["parsed_job_count"] == 3718
+        assert parsing_summary.json()["ambiguity_review_count"] == 734
+        assert parsing_summary.json()["eligible_feature_count"] == 3540
+        assert parsing_reviews.status_code == 200
+        assert parsing_reviews.json()["total"] == 675
+        assert parsing_excluded.status_code == 200
+        assert parsing_excluded.json()["total"] == 178
+        assert parsing_detail.status_code == 200
+        assert parsing_detail.json()["cluster_feature"]["version"] == "cluster_features_v1"
+        assert ambiguity_rules.status_code == 200
+        assert len(ambiguity_rules.json()) == 4

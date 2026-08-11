@@ -16,6 +16,9 @@
 - 基于正文哈希的精确重复组与组内证据权重；
 - 基于可匹配L4别名、归一到L3标准技术点的确定性抽取与原文证据；
 - JD汇总、筛选、列表和详情API。
+- 中英文JD职责、硬性要求和加分项的确定性结构化切分；
+- 宽泛技术词上下文复核、解析质量分级和聚类特征快照；
+- T1–T7分层的120条人工双标候选清单。
 
 ## 本地初始化
 
@@ -123,6 +126,37 @@ JD查询接口：
 - `GET /api/v1/jobs/summary`；
 - `GET /api/v1/jobs`，支持关键词、来源、等级、学历、时间质量、重复组和技术编码筛选；
 - `GET /api/v1/jobs/{job_code}`，返回正文、全部来源、技术要求和命中证据。
+
+## 结构化解析JD并生成聚类输入
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m tools.parse_jobs `
+  --taxonomy-version v1.1 `
+  --target-date 2026-08-10
+```
+
+解析运行由输入快照、技术体系版本、目标日期和解析器版本共同确定，重复执行不会覆盖或重复生成结果。验收与人工标注候选清单：
+
+```powershell
+.\.venv\Scripts\python.exe -m tools.validate_job_parsing `
+  --output ..\data\processed\reports\20260810\job_parsing_validation.json
+
+.\.venv\Scripts\python.exe -m tools.build_jd_annotation_batch `
+  --sample-count 120 `
+  --per-domain-min 10 `
+  --output ..\data\evaluation\jd_parsing\annotation_candidates_v1.json
+```
+
+解析与聚类准备接口：
+
+- `GET /api/v1/job-parsing/runs`；
+- `GET /api/v1/job-parsing/summary`；
+- `GET /api/v1/job-parsing/jobs`，支持待审、聚类资格和质量分筛选；
+- `GET /api/v1/job-parsing/jobs/{job_code}`，返回职责、技术上下文判定和特征快照；
+- `GET /api/v1/job-parsing/ambiguity-rules`。
+
+`annotation_candidates_v1.json`只是待双人标注的候选清单，不能直接作为金标准或准确率依据。
 
 ## 质量检查
 

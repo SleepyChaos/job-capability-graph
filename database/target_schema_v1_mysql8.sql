@@ -867,9 +867,75 @@ CREATE TABLE rel_job_posting_data_source (
   FOREIGN KEY (data_source_id) REFERENCES md_data_source(data_source_id)
 ) ENGINE=InnoDB COMMENT='[A] JD的主来源、辅助来源和迁移容器来源';
 
+-- [B] 可重放的JD结构化解析运行；input_snapshot_hash固定输入边界
+CREATE TABLE biz_job_parse_run (
+  job_parse_run_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  run_code VARCHAR(64) NOT NULL UNIQUE,
+  parser_version VARCHAR(64) NOT NULL,
+  taxonomy_version_id BIGINT UNSIGNED NOT NULL,
+  target_date DATE NOT NULL,
+  input_snapshot_hash CHAR(64) NOT NULL,
+  config_json JSON NULL,
+  run_status_code VARCHAR(32) NOT NULL DEFAULT 'running',
+  input_job_count INT UNSIGNED NOT NULL DEFAULT 0,
+  parsed_job_count INT UNSIGNED NOT NULL DEFAULT 0,
+  review_job_count INT UNSIGNED NOT NULL DEFAULT 0,
+  responsibility_count INT UNSIGNED NOT NULL DEFAULT 0,
+  assessment_count INT UNSIGNED NOT NULL DEFAULT 0,
+  feature_count INT UNSIGNED NOT NULL DEFAULT 0,
+  started_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  completed_at DATETIME NULL,
+  FOREIGN KEY (taxonomy_version_id)
+    REFERENCES md_technology_taxonomy_version(taxonomy_version_id),
+  CHECK (run_status_code IN ('running','completed','failed')),
+  KEY idx_job_parse_run_status (run_status_code, target_date)
+) ENGINE=InnoDB COMMENT='[B] JD结构化解析输入快照、规则版本和运行统计';
+
+-- [A/B] 宽泛表面词必须满足上下文才能按全权重进入聚类特征
+CREATE TABLE md_technology_ambiguity_rule (
+  technology_ambiguity_rule_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  rule_code VARCHAR(64) NOT NULL UNIQUE,
+  normalized_alias VARCHAR(500) NOT NULL,
+  technology_node_id BIGINT UNSIGNED NOT NULL,
+  positive_markers_json JSON NOT NULL,
+  missing_context_decision_code VARCHAR(32) NOT NULL DEFAULT 'needs_review',
+  review_weight DECIMAL(7,4) NOT NULL DEFAULT 0.35,
+  rule_version VARCHAR(64) NOT NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_ambiguity_alias_technology (normalized_alias, technology_node_id),
+  FOREIGN KEY (technology_node_id) REFERENCES md_technology_node(technology_node_id),
+  KEY idx_ambiguity_rule_active (is_active, normalized_alias)
+) ENGINE=InnoDB COMMENT='[A/B] 技术词上下文歧义治理规则';
+
+CREATE TABLE rel_job_parse_result (
+  job_parse_run_id BIGINT UNSIGNED NOT NULL,
+  job_posting_id BIGINT UNSIGNED NOT NULL,
+  source_document_version_id BIGINT UNSIGNED NOT NULL,
+  content_hash CHAR(64) NOT NULL,
+  parse_status_code VARCHAR(32) NOT NULL,
+  responsibility_count INT UNSIGNED NOT NULL DEFAULT 0,
+  required_segment_count INT UNSIGNED NOT NULL DEFAULT 0,
+  bonus_segment_count INT UNSIGNED NOT NULL DEFAULT 0,
+  unknown_segment_count INT UNSIGNED NOT NULL DEFAULT 0,
+  ambiguity_review_count INT UNSIGNED NOT NULL DEFAULT 0,
+  parse_quality_score DECIMAL(5,2) NOT NULL,
+  review_required TINYINT(1) NOT NULL DEFAULT 0,
+  reason_json JSON NULL,
+  parsed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (job_parse_run_id, job_posting_id),
+  FOREIGN KEY (job_parse_run_id) REFERENCES biz_job_parse_run(job_parse_run_id),
+  FOREIGN KEY (job_posting_id) REFERENCES biz_job_posting(job_posting_id),
+  FOREIGN KEY (source_document_version_id)
+    REFERENCES raw_source_document_version(source_document_version_id),
+  KEY idx_job_parse_result_review (job_parse_run_id, review_required),
+  KEY idx_job_parse_result_quality (job_parse_run_id, parse_quality_score)
+) ENGINE=InnoDB COMMENT='[B] 每条JD在指定解析运行中的质量和待审原因';
+
 -- [A/B] JD核心职责
 CREATE TABLE biz_job_responsibility (
   job_responsibility_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  job_parse_run_id BIGINT UNSIGNED NOT NULL,
   job_posting_id BIGINT UNSIGNED NOT NULL,
   responsibility_no INT UNSIGNED NOT NULL,
   raw_text TEXT NOT NULL,
@@ -877,9 +943,13 @@ CREATE TABLE biz_job_responsibility (
   action_verb VARCHAR(100) NULL,
   task_object VARCHAR(500) NULL,
   expected_output VARCHAR(500) NULL,
-  confidence_score DECIMAL(5,2) NULL,
-  UNIQUE KEY uk_job_responsibility_no (job_posting_id, responsibility_no),
-  FOREIGN KEY (job_posting_id) REFERENCES biz_job_posting(job_posting_id)
+  extraction_method_code VARCHAR(64) NOT NULL,
+  confidence_score DECIMAL(5,2) NOT NULL,
+  UNIQUE KEY uk_job_responsibility_run_no
+    (job_parse_run_id, job_posting_id, responsibility_no),
+  FOREIGN KEY (job_parse_run_id) REFERENCES biz_job_parse_run(job_parse_run_id),
+  FOREIGN KEY (job_posting_id) REFERENCES biz_job_posting(job_posting_id),
+  KEY idx_job_responsibility_job (job_posting_id, job_parse_run_id)
 ) ENGINE=InnoDB COMMENT='[A/B] JD职责和产业任务结构';
 
 -- [A/B] JD必需、加分和前沿要求；技术点与广义能力必须二选一
@@ -922,6 +992,31 @@ CREATE TABLE rel_job_requirement_evidence (
   FOREIGN KEY (matched_alias_id) REFERENCES md_technology_alias(technology_alias_id)
 ) ENGINE=InnoDB COMMENT='[A/B] JD技术要求到命中L4表面词及原文位置的证据';
 
+CREATE TABLE biz_technology_match_assessment (
+  technology_match_assessment_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  job_parse_run_id BIGINT UNSIGNED NOT NULL,
+  job_requirement_id BIGINT UNSIGNED NOT NULL,
+  evidence_span_id BIGINT UNSIGNED NOT NULL,
+  context_evidence_span_id BIGINT UNSIGNED NULL,
+  ambiguity_rule_id BIGINT UNSIGNED NULL,
+  context_type_code VARCHAR(32) NOT NULL,
+  assessment_status_code VARCHAR(32) NOT NULL,
+  adjusted_support_score DECIMAL(5,2) NOT NULL,
+  feature_weight DECIMAL(7,4) NOT NULL,
+  reason_code VARCHAR(64) NOT NULL,
+  assessed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_match_assessment_run_evidence
+    (job_parse_run_id, job_requirement_id, evidence_span_id),
+  FOREIGN KEY (job_parse_run_id) REFERENCES biz_job_parse_run(job_parse_run_id),
+  FOREIGN KEY (job_requirement_id) REFERENCES biz_job_requirement(job_requirement_id),
+  FOREIGN KEY (evidence_span_id) REFERENCES biz_evidence_span(evidence_span_id),
+  FOREIGN KEY (context_evidence_span_id) REFERENCES biz_evidence_span(evidence_span_id),
+  FOREIGN KEY (ambiguity_rule_id)
+    REFERENCES md_technology_ambiguity_rule(technology_ambiguity_rule_id),
+  KEY idx_match_assessment_review
+    (job_parse_run_id, assessment_status_code, reason_code)
+) ENGINE=InnoDB COMMENT='[B] 每次解析运行对技术命中上下文、歧义和特征权重的判定';
+
 CREATE TABLE rel_job_scenario (
   job_posting_id BIGINT UNSIGNED NOT NULL,
   application_scenario_id BIGINT UNSIGNED NOT NULL,
@@ -935,18 +1030,43 @@ CREATE TABLE rel_job_scenario (
 -- [A/B] 统一把JD职责、要求和场景回指到原文证据
 CREATE TABLE rel_job_fact_evidence (
   job_fact_evidence_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  job_parse_run_id BIGINT UNSIGNED NOT NULL,
   job_posting_id BIGINT UNSIGNED NOT NULL,
   target_type_code VARCHAR(32) NOT NULL COMMENT 'responsibility/requirement/scenario/header',
   target_id BIGINT UNSIGNED NOT NULL COMMENT '由target_type_code解释',
   evidence_span_id BIGINT UNSIGNED NOT NULL,
   support_type_code VARCHAR(32) NOT NULL DEFAULT 'support',
   support_score DECIMAL(5,2) NOT NULL,
-  UNIQUE KEY uk_job_fact_evidence (target_type_code, target_id, evidence_span_id, support_type_code),
+  UNIQUE KEY uk_job_fact_evidence_run
+    (job_parse_run_id, target_type_code, target_id, evidence_span_id, support_type_code),
+  FOREIGN KEY (job_parse_run_id) REFERENCES biz_job_parse_run(job_parse_run_id),
   FOREIGN KEY (job_posting_id) REFERENCES biz_job_posting(job_posting_id),
   FOREIGN KEY (evidence_span_id) REFERENCES biz_evidence_span(evidence_span_id),
   CHECK (target_type_code IN ('responsibility','requirement','scenario','header')),
   CHECK (support_type_code IN ('support','contradict'))
 ) ENGINE=InnoDB COMMENT='[A/B] JD结构化字段的原文证据';
+
+CREATE TABLE biz_job_cluster_feature_snapshot (
+  job_parse_run_id BIGINT UNSIGNED NOT NULL,
+  job_posting_id BIGINT UNSIGNED NOT NULL,
+  feature_version VARCHAR(64) NOT NULL,
+  title_tokens_json JSON NOT NULL,
+  responsibility_tokens_json JSON NOT NULL,
+  technology_weights_json JSON NOT NULL,
+  domain_weights_json JSON NOT NULL,
+  level_code VARCHAR(32) NULL,
+  sample_weight DECIMAL(9,6) NOT NULL,
+  time_quality_code VARCHAR(32) NOT NULL,
+  feature_hash CHAR(64) NOT NULL,
+  eligible_for_clustering TINYINT(1) NOT NULL DEFAULT 1,
+  exclusion_reason_json JSON NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (job_parse_run_id, job_posting_id),
+  FOREIGN KEY (job_parse_run_id) REFERENCES biz_job_parse_run(job_parse_run_id),
+  FOREIGN KEY (job_posting_id) REFERENCES biz_job_posting(job_posting_id),
+  KEY idx_cluster_feature_eligible
+    (job_parse_run_id, eligible_for_clustering, time_quality_code)
+) ENGINE=InnoDB COMMENT='[B] 可重放岗位聚类使用的标题、职责、技术、领域和权重快照';
 
 -- ============================================================================
 -- 6. 岗位聚类、统一岗位和版本演化

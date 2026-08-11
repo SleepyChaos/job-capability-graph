@@ -1,0 +1,1605 @@
+{
+  "dataset_id": "jd_parsing_annotation_candidates_v1",
+  "schema_version": "jd_gold_schema_v1",
+  "status": "candidate_not_gold",
+  "parse_run_code": "jdparse_8ad8184577692c219c983899",
+  "input_snapshot_hash": "6546f0e8c16713cb86cb04c4edd50cfe880593db686c8bc9b0849763dae64654",
+  "sample_count": 120,
+  "selection_method": "deterministic_stratified_t_domain_with_review_hard_cases",
+  "domain_distribution": {
+    "T1": 30,
+    "T2": 13,
+    "T3": 19,
+    "T4": 10,
+    "T5": 10,
+    "T6": 13,
+    "T7": 24,
+    "UNCLASSIFIED": 1
+  },
+  "warning": "候选清单必须经过双人标注与裁决后才能冻结为金标准。",
+  "samples": [
+    {
+      "sample_id": "jd_annotation_0001",
+      "job_code": "job_a566389e150c720e52b05513",
+      "source_job_id": "O01233",
+      "content_hash": "5264161fda535d1378efe450ae1bcb2388296c4b29a906dbf70a82ae4ea02daf",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0002",
+      "job_code": "job_f7c4891f1e1ba0343a26cdb6",
+      "source_job_id": "O08152",
+      "content_hash": "0318fbffcd7630eda94041964c17ff49eb432388f807a754cfa6e8f0ba3215aa",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0003",
+      "job_code": "job_e57c45854eda61623e1916a6",
+      "source_job_id": "O06557",
+      "content_hash": "de1d31f17da741befc0026106eb671502f8b41cc8b7bb4ffb959ecffc594364f",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 35.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0004",
+      "job_code": "job_c93c0afdba4ed0ab557a5974",
+      "source_job_id": "O01605",
+      "content_hash": "55135995cd901e37648f7abe1146fdc63ad4f619795bc5accc6183e176433571",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0005",
+      "job_code": "job_35cd42ac13c301cdc3c4e3b9",
+      "source_job_id": "O01726",
+      "content_hash": "58d7ccb4eaf3a8810566d0b0a937568aca77c33e8985956aaa64f2dd7c486f92",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 67.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0006",
+      "job_code": "job_5dec427444926013c9d444db",
+      "source_job_id": "O02121",
+      "content_hash": "619c8b1045fa89bff38610341a2786c5289dc4447c0927bfd3303b5017f71e6d",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0007",
+      "job_code": "job_629bfc199dc5d85aa5748dc7",
+      "source_job_id": "O07914",
+      "content_hash": "5e5c42e34b48f859e3d91d72ff1539a92ba248728cea455a60db7e6d57e6e9ba",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0008",
+      "job_code": "job_472f4211cd0c7dbb5a42f11a",
+      "source_job_id": "O00350",
+      "content_hash": "e24428c9662f41d893612570d5f154de36b60fc9c59b7664f57cca34462e38e3",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 82.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0009",
+      "job_code": "job_de7fe5293845404f4b201388",
+      "source_job_id": "O01618",
+      "content_hash": "032d0a1bc1fac2b1588c82ee7d7cbec763edcf590f19f8ebf561bf11aae3713e",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0010",
+      "job_code": "job_97097a936f9af9825be1c958",
+      "source_job_id": "O01625",
+      "content_hash": "1967ded352ed56ae5b8f2bf70128e53f36afe83df8d0425c35065acd320a4e21",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 94.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0011",
+      "job_code": "job_498c0b7890d2b2fa082b43c7",
+      "source_job_id": "O06641",
+      "content_hash": "c2b258b961fe3b88daf75a1f1a58bd74b40a7115f55ab1d33a8baefc0de034de",
+      "primary_domain": "T2",
+      "job_level": "junior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 67.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0012",
+      "job_code": "job_bd75a0dc0b82c52eaf8bfeb4",
+      "source_job_id": "O06566",
+      "content_hash": "2d5c2851966e888f21fa3c57be2ab2d2908e5304f4be5062a4f10a0a0e775114",
+      "primary_domain": "T2",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 97.27,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0013",
+      "job_code": "job_f9a0c5a2a7c89d45ee2a52a8",
+      "source_job_id": "O02219",
+      "content_hash": "41795a274394c907881affafc38fc3d4307bf54e4bf4ee542f53bead7eeaad94",
+      "primary_domain": "T2",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0014",
+      "job_code": "job_d3294b17fbe52d03a4ca7605",
+      "source_job_id": "O00419",
+      "content_hash": "405cfa19a5066216df372a7fb1ee02b2bb61714267d809ac5a635e7f9f4bad3d",
+      "primary_domain": "T2",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0015",
+      "job_code": "job_8a9ddc1f5708f4474614ffe3",
+      "source_job_id": "O00327",
+      "content_hash": "0d9e9a2fa8586ff70b536898707e947ba2d268440d94e717beb3a96e4e1a028d",
+      "primary_domain": "T2",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 94.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0016",
+      "job_code": "job_4c862b1a1d73af567bebf590",
+      "source_job_id": "O03022",
+      "content_hash": "74e4086c3715184a6c7ef149069de7b882f8c2f972e648526e7fc2bfd65a56a4",
+      "primary_domain": "T2",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 82.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0017",
+      "job_code": "job_4fe8ca04f15ee858eb105c17",
+      "source_job_id": "O00115",
+      "content_hash": "8205d49baa5348b62efb17de647925fe020ff3013f4b5fa52eedbe9fd160046a",
+      "primary_domain": "T2",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 83.33,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0018",
+      "job_code": "job_600fdcd6384079fcdba03020",
+      "source_job_id": "O06756",
+      "content_hash": "b7752b80fad013eec58cf5ac9faaa5a637193256ee4d5e745d050cb8df981696",
+      "primary_domain": "T2",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 85.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0019",
+      "job_code": "job_a098dce40ff5b60b5b08777f",
+      "source_job_id": "O00332",
+      "content_hash": "3cb1145421d20b5377ee02ce6f6e2ac83a80640acc262d21b9ad05a7d586ae10",
+      "primary_domain": "T2",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 94.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0020",
+      "job_code": "job_65c66522899f144e0132cafa",
+      "source_job_id": "O00228",
+      "content_hash": "c801e5ff55812f25d6ecf27880a9a34d99418c7ae1a17c277faf6eb9a6b413a2",
+      "primary_domain": "T2",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0021",
+      "job_code": "job_4b04b6ed2e7af13378b1d8fa",
+      "source_job_id": "O07521",
+      "content_hash": "b5f411887146987d2382182e1995e13f57778bb1b1efa7afa00f75eb79296716",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 65.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0022",
+      "job_code": "job_f9677bf5762e3abc662c3410",
+      "source_job_id": "O01462",
+      "content_hash": "f72f91517726b577cf88ab10953dfe46b5d8f881b134adfe7e72c307014f91b7",
+      "primary_domain": "T3",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 70.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0023",
+      "job_code": "job_620d7884f5fdbe5261f7b703",
+      "source_job_id": "O00461",
+      "content_hash": "cba8dd1cae2090b9ca92c8203d1cd86e173548eaeb82193c96f0eb14e38d320e",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 95.71,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0024",
+      "job_code": "job_5215f52a274d93e75a49ef6c",
+      "source_job_id": "O07191",
+      "content_hash": "25633195db23acf1a74381a4bf3bf760a081fac29c261644022252122c98e1bb",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 86.25,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0025",
+      "job_code": "job_6ffd8ed2046caa7bbc8a9bbd",
+      "source_job_id": "O06655",
+      "content_hash": "2dcba6769b4110e0bf9f45778d8f6088d11eacc1b47f7d17588ebc8fccbafb3a",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 81.67,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0026",
+      "job_code": "job_f68690746b3d5a68f0a36983",
+      "source_job_id": "O01984",
+      "content_hash": "923942bf4739f0622b0dece68a7f3f0e077b136e570327b4df0061be47c2596e",
+      "primary_domain": "T3",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0027",
+      "job_code": "job_5581fcb38f534228dcb54bb5",
+      "source_job_id": "O02260",
+      "content_hash": "584730519be79c72edf1c78d25bc92950e3b3c3dfb457fb9d8d22933251acb46",
+      "primary_domain": "T3",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0028",
+      "job_code": "job_abcdf229b52295b8a82745ea",
+      "source_job_id": "O00462",
+      "content_hash": "3c94fa3a66985fbdfb83afb4903fa293b1d3ba2030479981c6697065125926f3",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0029",
+      "job_code": "job_5f2c373b7087cb5b70388aa8",
+      "source_job_id": "O07973",
+      "content_hash": "9e1874b952e3e18509fb0d1edd4b8f49863605651a6121398593a10e845c3695",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0030",
+      "job_code": "job_97083e4fffbdb1fe8cd8c052",
+      "source_job_id": "O02235",
+      "content_hash": "6acdd4269dadc0e9192409da772756c8de6b413d0840795d8425bb61552ecd07",
+      "primary_domain": "T3",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0031",
+      "job_code": "job_07c80322c87161e590abcd1e",
+      "source_job_id": "O02003",
+      "content_hash": "b3e69bcf69fd3d5cf891af1943074e29b8ff9c2065adaee2c8fb9ea372efc510",
+      "primary_domain": "T4",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 97.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0032",
+      "job_code": "job_b2fb172c19a5111af903ffac",
+      "source_job_id": "O01108",
+      "content_hash": "fa6dff9b2dae4f9ed5a217604fe93eb098490545ae579d1ddc166c7bd80bb475",
+      "primary_domain": "T4",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0033",
+      "job_code": "job_c325af40aa21fada451a0f83",
+      "source_job_id": "O01981",
+      "content_hash": "f310b165b013caba160e8f96acb29a0ce82bdd1933e530d086e1346294b80763",
+      "primary_domain": "T4",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 67.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0034",
+      "job_code": "job_a63958ea523e2bc168329c82",
+      "source_job_id": "O08225",
+      "content_hash": "7efdf2581f454d3da0dffb4aae664e96791d6364e718c5ab6ad1c78863373246",
+      "primary_domain": "T4",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0035",
+      "job_code": "job_f8ea8f5030568feac9946ac1",
+      "source_job_id": "O02307",
+      "content_hash": "f91585a52256820703fae493fee2037c119a95b1b88223daeabf6fbc238ad6f5",
+      "primary_domain": "T4",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0036",
+      "job_code": "job_7f8449410e09bb5fbeb13113",
+      "source_job_id": "O02045",
+      "content_hash": "8d01be3fcfb379c7021a71389058466a3862444a1cf28485c7f2f1a7ebe3be96",
+      "primary_domain": "T4",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0037",
+      "job_code": "job_e12012eff9c8d183148669f5",
+      "source_job_id": "O06339",
+      "content_hash": "910ec0372a45395524a2c43a8d3aa9154c9fd4abd67c618d0b0ff4228b555ed7",
+      "primary_domain": "T4",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 80.77,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0038",
+      "job_code": "job_9f53395d41b3f73e7252f960",
+      "source_job_id": "O01113",
+      "content_hash": "7ebcabe690d6f4f7f3bbe9cfc6f319618dd72e1c26ffdc3ff4eb983d645d5d2b",
+      "primary_domain": "T4",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0039",
+      "job_code": "job_92b82ed8bd6e114f3e1c566a",
+      "source_job_id": "O00482",
+      "content_hash": "87513e286ba2490686cadb35884c8930abf1b381eb5cff67568778e30fe71159",
+      "primary_domain": "T4",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 95.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0040",
+      "job_code": "job_ef4817c27cc42d3b30f89909",
+      "source_job_id": "O02002",
+      "content_hash": "b3e69bcf69fd3d5cf891af1943074e29b8ff9c2065adaee2c8fb9ea372efc510",
+      "primary_domain": "T4",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 97.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0041",
+      "job_code": "job_01ddf7f6dab19c3513e4ec9d",
+      "source_job_id": "O01939",
+      "content_hash": "409ed1e0b9ea6acd8aab94acf2b397877e5629efed4021b89158bfe11d457c8b",
+      "primary_domain": "T5",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0042",
+      "job_code": "job_00887aa45eef3f970cca963c",
+      "source_job_id": "O01337",
+      "content_hash": "647ba1b06bf9141321e70455f7327a6d17a9e0dd86f113b42f2455da00b30d2e",
+      "primary_domain": "T5",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0043",
+      "job_code": "job_e4685d8eb95543a12a501682",
+      "source_job_id": "O02011",
+      "content_hash": "2b4af9288b9e899102aede1f6b08cd261081f898005734b7277b539e87474c00",
+      "primary_domain": "T5",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 66.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0044",
+      "job_code": "job_6f17328ce00240ba66da4d4d",
+      "source_job_id": "O00452",
+      "content_hash": "f583c4dc0bc10c73cd71ab5d75e424e1292f808bec123017c49d460a22478d00",
+      "primary_domain": "T5",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0045",
+      "job_code": "job_d30f28de9bfe07f35368a217",
+      "source_job_id": "O02225",
+      "content_hash": "041874e53d5b71a0c91b553881eaf9a218fbd035b3b9cc3289d00e034ed87245",
+      "primary_domain": "T5",
+      "job_level": "junior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 97.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0046",
+      "job_code": "job_c608310efb4fdd883a329b32",
+      "source_job_id": "O01783",
+      "content_hash": "0537940cbbcaaaa9159b101bbf286cc9021a6232c85c0aeafa6a1d582f4f5eb7",
+      "primary_domain": "T5",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 89.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0047",
+      "job_code": "job_fea755124da72ffebfa0e6b6",
+      "source_job_id": "O01351",
+      "content_hash": "f9e6e98cf40b70193dbf6c32105b41548a77b0edc3d7ecfd660c36bf13d601af",
+      "primary_domain": "T5",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0048",
+      "job_code": "job_c2409423304c83dc64dae0d7",
+      "source_job_id": "O01690",
+      "content_hash": "2a0dfdf3810b901fcc0bc03004378466a405094fb898c9cf10918c576ea8c58a",
+      "primary_domain": "T5",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0049",
+      "job_code": "job_23bf2332939795188e63c0bf",
+      "source_job_id": "O06811",
+      "content_hash": "4ade230efde75094cdee538ebbe798aac6e18e43fb4a2b7272ef9613a8dbd364",
+      "primary_domain": "T5",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 76.5,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0050",
+      "job_code": "job_eb7e4d1501bcf1caf7c62f28",
+      "source_job_id": "O01643",
+      "content_hash": "9ba7d5f8e65daea18234c7251d5580ca04ba4829e854f3bd0f4b7b26995ff2a2",
+      "primary_domain": "T5",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0051",
+      "job_code": "job_3bee7b60fef908ef86d54ebb",
+      "source_job_id": "O02586",
+      "content_hash": "831873d8166ff695682bfaf03bfea763846395d00a698375b5db3085cf2ad82e",
+      "primary_domain": "T6",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 89.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0052",
+      "job_code": "job_e3b485f9a3acefbd2d708adc",
+      "source_job_id": "O02637",
+      "content_hash": "85d0ba8397afca54e0b76b59ea319ae7914c8e2cbfbf6908d8ce5a749db94df3",
+      "primary_domain": "T6",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0053",
+      "job_code": "job_b3516d0c03124a1274d6fe65",
+      "source_job_id": "O02108",
+      "content_hash": "18d7478b74dbf4bf038de0cc13a5297014f8ecd03efea986a9a090358ea8fcbb",
+      "primary_domain": "T6",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0054",
+      "job_code": "job_4c38216c370d5fa910a578dd",
+      "source_job_id": "O02633",
+      "content_hash": "b5f93e8f7df8586cbee9185ce8f7e12d48c48145e3de6e22a157ae1add85cd89",
+      "primary_domain": "T6",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 61.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0055",
+      "job_code": "job_eab0c18ebe8765c7835c6068",
+      "source_job_id": "O03063",
+      "content_hash": "169d8c02aec24079d9d987e991b167fabbae17505cc7fd8d4ccd7c6ed39a4f91",
+      "primary_domain": "T6",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 88.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0056",
+      "job_code": "job_5f619542e78ff4e725c068e4",
+      "source_job_id": "O02970",
+      "content_hash": "c8dad3a8bcf98c03cb34a1f65556bca153db043b42d285879aed78808fdf8991",
+      "primary_domain": "T6",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 70.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0057",
+      "job_code": "job_83a352e889e6b50d36f19e9a",
+      "source_job_id": "O00000",
+      "content_hash": "c855eb4d94fb94ebe10a95a0892f2403b9389de52f6155b40879b63ddaa64b4a",
+      "primary_domain": "T6",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0058",
+      "job_code": "job_585a0e0a45a607b5a4fc8e6f",
+      "source_job_id": "O00173",
+      "content_hash": "3b13e61d6802c5eb5c3e9239d8c6b397ed2cfc64c09db2a2ffbb3da2d018956a",
+      "primary_domain": "T6",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 85.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0059",
+      "job_code": "job_f53cc071b6ae702c777ca982",
+      "source_job_id": "O03399",
+      "content_hash": "97a62fc001d44db36d66dff9991e018568850f3af14dea7b4cd0a8f600728e04",
+      "primary_domain": "T6",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 71.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0060",
+      "job_code": "job_709cee7dbe53ac2364f10620",
+      "source_job_id": "O02379",
+      "content_hash": "238be919693685d1b1a811a71a60b875f67144a03df5d4353ab0e17ecc5fe1a4",
+      "primary_domain": "T6",
+      "job_level": "junior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 88.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0061",
+      "job_code": "job_df02843cc74f45af4336ce1f",
+      "source_job_id": "O07868",
+      "content_hash": "6c90b6abe278cca7649708b22ec3a6b169661d981b016062a2078178dcaa7997",
+      "primary_domain": "T7",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 66.67,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0062",
+      "job_code": "job_a47c3b55615127d85941af7c",
+      "source_job_id": "O02310",
+      "content_hash": "8a033196951c0d1eb0a8d7df2f6e69cbe13107a59629e02e2eedb667dbc7535a",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0063",
+      "job_code": "job_42aac2af83dfd03a003bb954",
+      "source_job_id": "O02246",
+      "content_hash": "f7bc655bd4dd4fd70c42934a29208a1860309f4d353fb174e46431a147857c41",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 89.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0064",
+      "job_code": "job_b08931a2eb305bd979aaf94a",
+      "source_job_id": "O02718",
+      "content_hash": "d44ea8752969b4d9cd4e3da2e1e08c3fbd0740a06ce8d4d65f6b6ee3a6c5e83e",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 60.0,
+      "review_reasons": [
+        "missing_responsibility",
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0065",
+      "job_code": "job_37f20bee41ae62f64b2135cc",
+      "source_job_id": "O01770",
+      "content_hash": "69daab6dad1ad7ff0ad1859b17706733b831246123ce7c6d8c3894c211611d20",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0066",
+      "job_code": "job_3f9ad3b37344c9c6c1ba9d9b",
+      "source_job_id": "O02739",
+      "content_hash": "d3b8064bed811761eda85b1242bc76781f2c28b48a33ebdf273823b6a3e65841",
+      "primary_domain": "T7",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 54.0,
+      "review_reasons": [
+        "missing_responsibility",
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0067",
+      "job_code": "job_b923dd2a0132bc3b1169c839",
+      "source_job_id": "O01952",
+      "content_hash": "64ea3e93b530c30964ef0b85a57cfefae9213f54f3c6c92cc8b8dd403f6805e5",
+      "primary_domain": "T7",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0068",
+      "job_code": "job_46297927beec2518b43d3516",
+      "source_job_id": "O00855",
+      "content_hash": "928ee66d981ae1758581c2468003b9521a6df73da228b4d9ebfc872a77ef3859",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0069",
+      "job_code": "job_2405661bb7963a9a5366c037",
+      "source_job_id": "O00989",
+      "content_hash": "f2c01bc119a4899b403fd011aac6897e7463512ca66c848953237278cb760ba1",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 93.08,
+      "review_reasons": [],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0070",
+      "job_code": "job_360701b5fc9e851db2c71524",
+      "source_job_id": "O01806",
+      "content_hash": "af215e275919830e6001368ff2ce6163b434932c893f1bd9ffd149ad27d8bd75",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0071",
+      "job_code": "job_40cdc9c1d4a7651d559e5a8e",
+      "source_job_id": "O08151",
+      "content_hash": "87609bdbd6510dba398679c9372a08dafb692a741b89f66a59f98faffddab0c2",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0072",
+      "job_code": "job_f2d968c270be322924807fd8",
+      "source_job_id": "O00253",
+      "content_hash": "410afe641e3d8ccc0a991d9a89012ec02ec451534270adca49dc06e7c7b14b01",
+      "primary_domain": "T7",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 61.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0073",
+      "job_code": "job_1e10ad42f8381228d4795c12",
+      "source_job_id": "O08176",
+      "content_hash": "7d6b6586a634fd9bcfd4e691fd50539a16e8afe1f7a29444361861285110e718",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 89.71,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0074",
+      "job_code": "job_7388d7700b42029aea899ff9",
+      "source_job_id": "O01418",
+      "content_hash": "accee2954922529362bc53293b074ac9e818d0bd6d6fd93cec0020ec84494c3e",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 94.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0075",
+      "job_code": "job_50237c7cb375a191565beb68",
+      "source_job_id": "O08004",
+      "content_hash": "d397eb7cd8ab5350b87ae1cec5fd51b50a0f1fbaee0af58a20eb9afe9766d624",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0076",
+      "job_code": "job_06117dd9b7ea79ce82323119",
+      "source_job_id": "O00684",
+      "content_hash": "6837d8110ae0a8aacb505b725e17826cb0f8b662460a757e53e37bf8e620e881",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 88.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0077",
+      "job_code": "job_26e8370e760265dcedbc54f6",
+      "source_job_id": "O00209",
+      "content_hash": "6f95241b9953dece35b3b0221de67cf5fbda3b4ec2c24ab5b53f3add91549712",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0078",
+      "job_code": "job_06533b6fd7d2c6f6c2650448",
+      "source_job_id": "O07886",
+      "content_hash": "cbf69d53f1ec015c184ce5d4e723ce032839197d9777104d3a4d3b88b5a13c97",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 97.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0079",
+      "job_code": "job_88adf2b543234b34b0ff0ed0",
+      "source_job_id": "O02086",
+      "content_hash": "27bacf1555f9476e4291318ebf27d17a98485e55ec1ca0d5dbda968835f3551e",
+      "primary_domain": "T3",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0080",
+      "job_code": "job_23547762cc894a6ea5bd8543",
+      "source_job_id": "O01814",
+      "content_hash": "b4f5c09196d67d9a7a9866b9ad371318d2cc0f33737c8ef20844c1b1c137b417",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0081",
+      "job_code": "job_ba169b854a9a0f0c3e9da279",
+      "source_job_id": "O00236",
+      "content_hash": "d9e4ccc1082a613c276253e237580c98c1dc34621f37aae5801e4f78b90a8d90",
+      "primary_domain": "T7",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 94.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0082",
+      "job_code": "job_8c6ebb3f2eb0d283da75a0b2",
+      "source_job_id": "O08000",
+      "content_hash": "f8ef7245aaf9c71b7740a245a24862b5f4dfa8dd1ba3ad616476cb1847d3208c",
+      "primary_domain": "T3",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0083",
+      "job_code": "job_e76133ece3fdc82a01e950a5",
+      "source_job_id": "O01908",
+      "content_hash": "db57f003b3cb0b57ca4f749a468eafc21881926ddfe8b311f72148d0c6829cce",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0084",
+      "job_code": "job_505d7999ae03862a4b9a184f",
+      "source_job_id": "O06559",
+      "content_hash": "bea48e551eb8211b1cd664869cbddf8875580d8c30c4fd65ec1b9643eb080d99",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 50.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0085",
+      "job_code": "job_f9dce21c27d2b400d8a1a3a6",
+      "source_job_id": "O00778",
+      "content_hash": "361fa1e29b736c362508261acc63ddfe9c86021e41207c4daf89fdf0031aae6a",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 87.08,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0086",
+      "job_code": "job_fdda85a121aaca864c8eef61",
+      "source_job_id": "O01948",
+      "content_hash": "bb77e26dd0d1c05f1c48778dccb463eed1c6e6cec00479d0d1ee0523383a711c",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0087",
+      "job_code": "job_9c62ddeb1ccfd6c42165f4e2",
+      "source_job_id": "O00867",
+      "content_hash": "1f355cbd1691601df39921778075830135e8b4bb6ae2b01ad7da7f9ec85ba60b",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 94.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0088",
+      "job_code": "job_8358a5c14d096916fe4043b2",
+      "source_job_id": "O00091",
+      "content_hash": "1261446205e1f34bc62855869aef612b96b97fe9206646f25ae49c21db6ec32c",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 92.27,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0089",
+      "job_code": "job_61ee03d46aae7c9e707dc710",
+      "source_job_id": "O00832",
+      "content_hash": "861b507c4e5b16f4767a042ab0ebca588fc536ae40eb835d1275773084a7a2a8",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 90.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0090",
+      "job_code": "job_f403dffd61148e785dab036d",
+      "source_job_id": "O00195",
+      "content_hash": "682c8bd7e7a8be0da8878475bedfc51567ffcb25cfbae8a5637ee2c4cb46c597",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 90.38,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0091",
+      "job_code": "job_951c00ea97c3c4072efe71b7",
+      "source_job_id": "O00060",
+      "content_hash": "3c676997beda6f35e821b2b2a330e13652c2d5024c9591757357016bd6909a51",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 84.41,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0092",
+      "job_code": "job_d8a2ed85f0c87b8902078b7a",
+      "source_job_id": "O00278",
+      "content_hash": "72a566bb3d69c832aacd25496b30c67db0de8591d9fe6a230381c15800a2f061",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 91.25,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0093",
+      "job_code": "job_fd841ab5f58f4e2abedd6076",
+      "source_job_id": "O02113",
+      "content_hash": "249f702dd0a31a1c3f3ee3c4274cc174917d3e3ac33c911763a17adfffade31c",
+      "primary_domain": "T7",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0094",
+      "job_code": "job_bd4639becc3e61a9459000d0",
+      "source_job_id": "O08088",
+      "content_hash": "af1a1d099d8db4173ea3bc1e7d3e94d0c0bff75f27b060ab56b8d8e73b02e4aa",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 91.69,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0095",
+      "job_code": "job_e40a7d3a1e79dd666aa5665f",
+      "source_job_id": "O01896",
+      "content_hash": "648ddb416e917f3ac229698fc9ab87204ce89860b5ebc856bb1f88f5cb87c4eb",
+      "primary_domain": "T3",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0096",
+      "job_code": "job_95365b44b4519d1c495c8e33",
+      "source_job_id": "O02674",
+      "content_hash": "91863ba52651576c662ec4c5060d523364f928f2a51f0506e046c685cdd8ce58",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 88.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0097",
+      "job_code": "job_a5309c7cbfcfb8468b967b69",
+      "source_job_id": "O02319",
+      "content_hash": "4336583a4f4068a26c202a64fd486a77048e3c7e6735d51e85f9cc5dfb1bb558",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0098",
+      "job_code": "job_11d0062d1043977124d5e892",
+      "source_job_id": "O07934",
+      "content_hash": "6858fa8c6bc740513d64b83348a79c2f0a9ccc07dd6d93aaa4b8e1fb88427689",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0099",
+      "job_code": "job_fa550315795220b53acc6067",
+      "source_job_id": "O02628",
+      "content_hash": "af88caf76c456066db9136cad45ffc137a7b43da4d0f43b65f9f4f3e4a5aa2d1",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0100",
+      "job_code": "job_44197b64182d61f53f145fad",
+      "source_job_id": "O00472",
+      "content_hash": "2a0e076901da51a2571a57c69cd0d9aa426c57a05bffca5c21207b2b7a822a77",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 95.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0101",
+      "job_code": "job_f974f750c04346570e8cbfff",
+      "source_job_id": "O06321",
+      "content_hash": "f8ef09cb64dbb794edbc1be5a946b1f36fbf7a9eaedd2aa5c183c9049212aa5b",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 46.36,
+      "review_reasons": [
+        "missing_responsibility"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0102",
+      "job_code": "job_5bfd1930cbdf4aec5b920140",
+      "source_job_id": "O00711",
+      "content_hash": "be6f504af313fb7fe012abbeb0d8db23c9343c06cddd94557a849910ce41d03d",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 95.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0103",
+      "job_code": "job_7d2d9d60cccfac13c5cf15d9",
+      "source_job_id": "O03350",
+      "content_hash": "4f0d862bd8a5f0b25ce34f19319a84d4eb46e9206c70bdb3e548bbb6b09cc661",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 65.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0104",
+      "job_code": "job_af67084c896565cd762f002a",
+      "source_job_id": "O01735",
+      "content_hash": "6d0e48738fae1e5d6431d9a29370d4704bba300a6787c6d2e9a81cd4be0a1c85",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0105",
+      "job_code": "job_c58ef682ce2e5a2881513df5",
+      "source_job_id": "O03512",
+      "content_hash": "e60a739a1131f7ba13794688a7c34afa325df82fc5e30c751740e11822b64661",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 97.27,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0106",
+      "job_code": "job_700fe60902c6c18a9768f561",
+      "source_job_id": "O02664",
+      "content_hash": "adbed14cbda066a433423c4ee9c4821e64fda03cde067d2701006d626fb8a532",
+      "primary_domain": "T7",
+      "job_level": "junior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0107",
+      "job_code": "job_21cfaa73fe83f21249d7cb27",
+      "source_job_id": "O08220",
+      "content_hash": "ebfdce951316fd62166cf506fdf764cf79ab33716dded5fd97cce297f9fee3ef",
+      "primary_domain": "T7",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 97.5,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0108",
+      "job_code": "job_e92cc39a32d97a446d10fc65",
+      "source_job_id": "O07846",
+      "content_hash": "f82708e06a4eedf2bb74643b16e00d9e85662662e7c3ea87986d913375a99f05",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 57.69,
+      "review_reasons": [
+        "missing_responsibility",
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0109",
+      "job_code": "job_4edad717db49ba2660eabb0b",
+      "source_job_id": "O02291",
+      "content_hash": "2a74092f7e43bdb98bf3c45acc19c58fa4a4e0c1eb1d25882322ac9b18730a0e",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0110",
+      "job_code": "job_bf59095a46856f2c33fccf08",
+      "source_job_id": "O01086",
+      "content_hash": "b3b2876bfacb5243c8cb7b0e111517e060436e88699d3d3ff9733477bde07196",
+      "primary_domain": "T6",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 94.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0111",
+      "job_code": "job_9b8d84e16bdbab85c2058990",
+      "source_job_id": "O03321",
+      "content_hash": "80173d71047b66d0af6f0248db469711792cf37555d406a07ba50615d4e704a2",
+      "primary_domain": "T3",
+      "job_level": "junior",
+      "time_quality": "source_collected",
+      "parse_quality_score": 51.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0112",
+      "job_code": "job_8aa0289684f95990aa3e344b",
+      "source_job_id": "O00233",
+      "content_hash": "bb0cb176b3baa0421dc6f82b464630983775ea6947452043ed3d7fe1c34bc22e",
+      "primary_domain": "T2",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0113",
+      "job_code": "job_e663a1c2a04aef47b6d513d7",
+      "source_job_id": "O01152",
+      "content_hash": "f68a01e6711ee91562a38cc8b818aba8b9dbf24959dc851dc7a3aad36471243b",
+      "primary_domain": "T1",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 96.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0114",
+      "job_code": "job_d2e5bbde7fa26770f8b77dc6",
+      "source_job_id": "O01776",
+      "content_hash": "26c1ba899943493c83bafb7564877eeb86b67b3996d89b61722023330d36e551",
+      "primary_domain": "T1",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0115",
+      "job_code": "job_187ff85bdb79a8da4c120e2a",
+      "source_job_id": "O00069",
+      "content_hash": "420c250adf313d49c616ff95aa57bc8ff7f410bae5a174de4f57e35146b4c42f",
+      "primary_domain": "UNCLASSIFIED",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 41.0,
+      "review_reasons": [
+        "high_unknown_segment_ratio"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0116",
+      "job_code": "job_75c95c35a47464399b879414",
+      "source_job_id": "O02820",
+      "content_hash": "63f1bfad3d7fa7926ee550f80ef0f4741e946b1dc1745704f73ba97573224a9b",
+      "primary_domain": "T6",
+      "job_level": "middle",
+      "time_quality": "source_collected",
+      "parse_quality_score": 94.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0117",
+      "job_code": "job_f318f1b4204a718298b58320",
+      "source_job_id": "O00317",
+      "content_hash": "cf3992f4164efedd8ab1e712bdab88c1261f2a4d88f1462bebd9633b4232edcb",
+      "primary_domain": "T6",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 94.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0118",
+      "job_code": "job_f6f1bca830879e4c273eae3e",
+      "source_job_id": "O01710",
+      "content_hash": "45fb45517549fe2263433875eab339a85ea1045ce88df6fab0675f8b38b70f03",
+      "primary_domain": "T3",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0119",
+      "job_code": "job_a0a0e465081fb04d422e8f24",
+      "source_job_id": "O00282",
+      "content_hash": "691aa1bce0d5d16a12d8e681654297123d840c72e97c20840b213e053e2f2fe1",
+      "primary_domain": "T2",
+      "job_level": "senior",
+      "time_quality": "migration_only",
+      "parse_quality_score": 100.0,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    },
+    {
+      "sample_id": "jd_annotation_0120",
+      "job_code": "job_7dd8341a53543d60bb2e123a",
+      "source_job_id": "O00203",
+      "content_hash": "cca87526130f9221973faec10119e789aa79f98fd10673217377a762336f8df6",
+      "primary_domain": "T2",
+      "job_level": "middle",
+      "time_quality": "migration_only",
+      "parse_quality_score": 98.42,
+      "review_reasons": [
+        "ambiguous_technology_match"
+      ],
+      "annotation_status": "pending_double_annotation"
+    }
+  ]
+}

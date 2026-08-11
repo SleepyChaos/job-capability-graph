@@ -4,6 +4,7 @@ from uuid import uuid4
 from fastapi import FastAPI, Request
 
 from app.api.health import router as health_router
+from app.api.job_parsing import router as job_parsing_router
 from app.api.jobs import router as jobs_router
 from app.api.taxonomy import router as taxonomy_router
 from app.core.config import get_settings
@@ -22,6 +23,7 @@ app = FastAPI(title=settings.app_name, version="0.1.0", lifespan=lifespan)
 app.include_router(health_router, prefix=settings.api_prefix)
 app.include_router(taxonomy_router, prefix=settings.api_prefix)
 app.include_router(jobs_router, prefix=settings.api_prefix)
+app.include_router(job_parsing_router, prefix=settings.api_prefix)
 
 
 @app.middleware("http")
