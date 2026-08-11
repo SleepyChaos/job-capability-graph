@@ -16,6 +16,7 @@ from app.modules.clustering.service import run_full_clustering
 from app.modules.data_center.models import ReviewTask
 from app.modules.job.models import (
     DataSource,
+    EvidenceSpan,
     JobClusterFeatureSnapshot,
     JobParseRun,
     JobPosting,
@@ -25,6 +26,7 @@ from app.modules.job.models import (
     Organization,
     SourceDocument,
     SourceDocumentVersion,
+    TechnologyMatchAssessment,
 )
 from app.modules.taxonomy.models import (
     TechnologyDomain,
@@ -177,16 +179,37 @@ def _seed_cluster_fixture(session: Session) -> str:
             )
         )
         if similar:
+            requirement = JobRequirement(
+                job_posting_id=job.job_posting_id,
+                requirement_no=1,
+                requirement_type_code="required",
+                raw_term="合成机器人控制",
+                raw_text="要求掌握合成机器人控制",
+                technology_node_id=technology.technology_node_id,
+                mention_count=1,
+                confidence_score=Decimal("95"),
+            )
+            session.add(requirement)
+            session.flush()
+            evidence = EvidenceSpan(
+                source_document_version_id=document_version.source_document_version_id,
+                span_type_code="requirement",
+                evidence_text="要求掌握合成机器人控制",
+                evidence_hash=f"{index + 30:064d}",
+                source_reliability_score=Decimal("90"),
+            )
+            session.add(evidence)
+            session.flush()
             session.add(
-                JobRequirement(
-                    job_posting_id=job.job_posting_id,
-                    requirement_no=1,
-                    requirement_type_code="required",
-                    raw_term="合成机器人控制",
-                    raw_text="要求掌握合成机器人控制",
-                    technology_node_id=technology.technology_node_id,
-                    mention_count=1,
-                    confidence_score=Decimal("95"),
+                TechnologyMatchAssessment(
+                    job_parse_run_id=parse_run.job_parse_run_id,
+                    job_requirement_id=requirement.job_requirement_id,
+                    evidence_span_id=evidence.evidence_span_id,
+                    context_type_code="technical",
+                    assessment_status_code="accepted",
+                    adjusted_support_score=Decimal("95"),
+                    feature_weight=Decimal("1"),
+                    reason_code="synthetic_accepted",
                 )
             )
         session.add(

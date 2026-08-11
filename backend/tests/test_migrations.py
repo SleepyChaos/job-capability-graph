@@ -68,6 +68,18 @@ def test_initial_migration_upgrades_and_downgrades(tmp_path: Path) -> None:
         "rel_job_role_evidence",
         "biz_job_evolution_event",
         "biz_job_evolution_change",
+        "biz_role_discovery_run",
+        "biz_technology_maturity_snapshot",
+        "rel_maturity_event_contribution",
+        "biz_industry_task_candidate",
+        "rel_industry_task_technology",
+        "rel_industry_task_evidence",
+        "biz_task_community",
+        "rel_task_community_member",
+        "biz_emerging_role_candidate",
+        "biz_candidate_score_component",
+        "rel_candidate_technology",
+        "biz_standard_job_description",
     }.issubset(set(inspector.get_table_names()))
 
     command.downgrade(config, "base")

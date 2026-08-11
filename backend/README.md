@@ -202,6 +202,18 @@ cd backend
 
 算法簇不是正式岗位。单例簇不会晋升岗位，满足最小 JD、企业和一致性门槛的岗位版本仍须人工审核。当前源时间只覆盖两天，全部能力趋势标记为`insufficient_history`，系统不会据此生成删除或淘汰结论。
 
+## 新岗位发现与专项审批
+
+统一运行接口`POST /api/v1/role-discovery/runs`支持三种模式：
+
+- `automatic`：扫描可追溯 JD 技术组合、已审核里程碑与正式岗位覆盖缺口；
+- `technology_directed`：从用户选择的当前技术体系节点定向推演；
+- `name_inference`：按正式岗位、别名、历史候选和真实 JD 标题依次核验名称。
+
+每次运行冻结`target_date`、聚类输入、技术体系、已审核里程碑、已审批岗位版本及通过语境校验的技术证据。候选将机械事实、八维正向评分、惩罚项、成熟阶段和审核工作流分开保存。查询接口为`GET /api/v1/role-discovery/runs`、`GET /api/v1/role-discovery/candidates`及候选详情接口。
+
+专项审批使用`queue_code=job_discovery`，操作接口为`POST /api/v1/role-discovery/reviews/{task_code}/actions`。审批发布会原子创建`inference_derived`正式岗位、首个岗位版本和标准 JD；标准 JD 永久标记`is_market_evidence=false`，不会进入招聘数量、企业覆盖或市场热度计算。名称查询本身不能作为发布证据。
+
 ## 质量检查
 
 ```powershell

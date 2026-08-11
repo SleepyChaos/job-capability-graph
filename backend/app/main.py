@@ -5,6 +5,7 @@ from fastapi import FastAPI, Request
 
 from app.api.clustering import router as clustering_router
 from app.api.data_center import router as data_center_router
+from app.api.discovery import router as discovery_router
 from app.api.health import router as health_router
 from app.api.job_parsing import router as job_parsing_router
 from app.api.jobs import router as jobs_router
@@ -28,6 +29,7 @@ app.include_router(jobs_router, prefix=settings.api_prefix)
 app.include_router(job_parsing_router, prefix=settings.api_prefix)
 app.include_router(data_center_router, prefix=settings.api_prefix)
 app.include_router(clustering_router, prefix=settings.api_prefix)
+app.include_router(discovery_router, prefix=settings.api_prefix)
 
 
 @app.middleware("http")
