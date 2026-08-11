@@ -19,6 +19,9 @@
 - 中英文JD职责、硬性要求和加分项的确定性结构化切分；
 - 宽泛技术词上下文复核、解析质量分级和聚类特征快照；
 - T1–T7分层的120条人工双标候选清单。
+- 数据源、单层采集策略、采集运行与请求留痕公共契约；
+- 里程碑材料版本、候选事实、原文证据和确定性置信评分；
+- 数据审核任务、状态机、前后快照与审核发布闭环。
 
 ## 本地初始化
 
@@ -157,6 +160,19 @@ cd backend
 - `GET /api/v1/job-parsing/ambiguity-rules`。
 
 `annotation_candidates_v1.json`只是待双人标注的候选清单，不能直接作为金标准或准确率依据。
+
+## 数据采集中枢与里程碑审核
+
+采集器通过以下接口登记来源、策略、运行和请求：
+
+- `POST/GET /api/v1/sources`；
+- `POST/GET /api/v1/collection-policies`；
+- `POST/GET /api/v1/collection-runs`；
+- `POST /api/v1/collection-runs/{run_code}/requests`。
+
+结构化里程碑材料提交到 `POST /api/v1/milestones/candidates`。证据引文必须能在正文中精确定位，关联技术编码必须存在于启用的技术主数据。全部里程碑候选进入 `GET /api/v1/reviews/data`，审核操作使用 `POST /api/v1/reviews/data/{task_code}/actions`。
+
+开发阶段审核接口要求 `X-Reviewer-Code`，且该编码必须映射到启用的审核员或管理员。该请求头不是正式认证方案。现有数据包没有可验证里程碑，自动化测试中的 `SYNTH-` 数据只用于集成验收，不会写入正式数据。
 
 ## 质量检查
 

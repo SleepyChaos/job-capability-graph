@@ -42,6 +42,19 @@ def test_initial_migration_upgrades_and_downgrades(tmp_path: Path) -> None:
         "md_technology_ambiguity_rule",
         "biz_technology_match_assessment",
         "biz_job_cluster_feature_snapshot",
+        "app_user",
+        "md_source_collection_policy",
+        "biz_collection_run",
+        "biz_collection_request",
+        "biz_extraction_run",
+        "biz_extracted_fact",
+        "rel_fact_evidence",
+        "biz_fact_validation",
+        "biz_review_task",
+        "biz_review_action",
+        "biz_milestone_event",
+        "rel_milestone_technology",
+        "rel_milestone_evidence",
     }.issubset(set(inspector.get_table_names()))
 
     command.downgrade(config, "base")
