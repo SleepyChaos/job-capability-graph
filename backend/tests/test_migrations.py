@@ -55,6 +55,19 @@ def test_initial_migration_upgrades_and_downgrades(tmp_path: Path) -> None:
         "biz_milestone_event",
         "rel_milestone_technology",
         "rel_milestone_evidence",
+        "biz_job_clustering_run",
+        "biz_job_cluster_version",
+        "rel_job_cluster_member",
+        "rel_job_cluster_lineage",
+        "rel_job_cluster_domain",
+        "biz_job_role",
+        "md_job_role_alias",
+        "biz_job_role_version",
+        "rel_job_role_version_requirement",
+        "rel_job_cluster_role",
+        "rel_job_role_evidence",
+        "biz_job_evolution_event",
+        "biz_job_evolution_change",
     }.issubset(set(inspector.get_table_names()))
 
     command.downgrade(config, "base")

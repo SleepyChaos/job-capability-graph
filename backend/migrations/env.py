@@ -5,6 +5,7 @@ from sqlalchemy import engine_from_config, pool
 
 from app.core.config import get_settings
 from app.db.base import Base
+from app.modules.clustering import models as clustering_models  # noqa: F401
 from app.modules.data_center import models as data_center_models  # noqa: F401
 from app.modules.ingestion import models as ingestion_models  # noqa: F401
 from app.modules.job import models as job_models  # noqa: F401

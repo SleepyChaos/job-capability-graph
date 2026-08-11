@@ -22,6 +22,8 @@
 - 数据源、单层采集策略、采集运行与请求留痕公共契约；
 - 里程碑材料版本、候选事实、原文证据和确定性置信评分；
 - 数据审核任务、状态机、前后快照与审核发布闭环。
+- 可重放多视图岗位聚类、Top-K归属、灰区和跨期稳定簇；
+- 稳定岗位候选、岗位版本、能力重要度、证据与演化审核草稿。
 
 ## 本地初始化
 
@@ -173,6 +175,32 @@ cd backend
 结构化里程碑材料提交到 `POST /api/v1/milestones/candidates`。证据引文必须能在正文中精确定位，关联技术编码必须存在于启用的技术主数据。全部里程碑候选进入 `GET /api/v1/reviews/data`，审核操作使用 `POST /api/v1/reviews/data/{task_code}/actions`。
 
 开发阶段审核接口要求 `X-Reviewer-Code`，且该编码必须映射到启用的审核员或管理员。该请求头不是正式认证方案。现有数据包没有可验证里程碑，自动化测试中的 `SYNTH-` 数据只用于集成验收，不会写入正式数据。
+
+## 岗位聚类与岗位版本
+
+对已完成的解析运行执行可重放聚类：
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m tools.cluster_jobs `
+  --parse-run-code jdparse_8ad8184577692c219c983899
+```
+
+相同输入快照、算法版本和参数重复执行时返回已有运行。真实数据验收报告可以重建：
+
+```powershell
+.\.venv\Scripts\python.exe -m tools.validate_job_clustering `
+  --output ..\data\processed\reports\20260810\job_clustering_validation.json
+```
+
+查询和审核接口：
+
+- `POST/GET /api/v1/job-clustering/runs`；
+- `GET /api/v1/job-clusters`及`GET /api/v1/job-clusters/{stable_cluster_code}`；
+- `GET /api/v1/job-roles`及`GET /api/v1/job-roles/{role_code}`；
+- `POST /api/v1/job-roles/reviews/{task_code}/actions`。
+
+算法簇不是正式岗位。单例簇不会晋升岗位，满足最小 JD、企业和一致性门槛的岗位版本仍须人工审核。当前源时间只覆盖两天，全部能力趋势标记为`insufficient_history`，系统不会据此生成删除或淘汰结论。
 
 ## 质量检查
 

@@ -1,0 +1,65 @@
+{
+  "report_type": "real_job_clustering_validation",
+  "run_code": "cluster_af7ba2f54ad24ba4b94ff6e3",
+  "algorithm": {
+    "name": "explainable_sparse_multiview",
+    "version": "baseline_sparse_multiview_v1",
+    "parameters": {
+      "assign_threshold": 0.36,
+      "grey_threshold": 0.24,
+      "top_k": 3,
+      "max_cluster_size": 120,
+      "max_block_candidates": 400,
+      "weights": {
+        "title": 0.2,
+        "responsibility": 0.3,
+        "capability": 0.25,
+        "domain": 0.1,
+        "scenario": 0.08,
+        "level": 0.07
+      }
+    },
+    "input_snapshot_hash": "ef3d1ea65bf9deb84bf22108328227e9cd1121b01b82ce016a2ee5925da96a23"
+  },
+  "input": {
+    "eligible_job_count": 3540,
+    "clustered_member_count": 3540,
+    "distinct_clustered_job_count": 3540
+  },
+  "output": {
+    "cluster_count": 2097,
+    "active_cluster_count": 468,
+    "singleton_cluster_count": 1629,
+    "grey_job_count": 742,
+    "candidate_role_count": 111,
+    "active_role_count": 0,
+    "role_requirement_count": 338,
+    "role_evidence_count": 2178
+  },
+  "quality_metrics": {
+    "mean_coherence": 62.54,
+    "singleton_cluster_count": 1629,
+    "singleton_job_ratio": 0.460169,
+    "median_cluster_size": 1,
+    "p90_cluster_size": 2,
+    "grey_job_ratio": 0.209605,
+    "scenario_feature_status": "not_available",
+    "trend_history_status": "insufficient_history"
+  },
+  "invariants": {
+    "every_eligible_job_clustered_once": true,
+    "every_member_has_selected_top_candidate": true,
+    "all_role_versions_pending_review": true,
+    "every_role_version_has_review_task": true,
+    "role_evidence_passed_context_validation": true,
+    "trend_never_claimed_without_history": true,
+    "no_removal_proposed_without_history": true
+  },
+  "truth_boundary": {
+    "cluster_is_algorithm_output_not_formal_role": true,
+    "candidate_roles_require_human_review": true,
+    "source_time_span_insufficient_for_trend": true,
+    "scenario_feature_available": false,
+    "singleton_clusters_are_not_promoted_to_roles": true
+  }
+}
