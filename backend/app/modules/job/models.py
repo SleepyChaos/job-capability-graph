@@ -540,6 +540,80 @@ class TechnologyMatchAssessment(Base):
     )
 
 
+class LlmTechnologyReassessmentRun(Base):
+    """一次受限的 LLM 技术命中复核运行。"""
+
+    __tablename__ = "biz_llm_technology_reassessment_run"
+
+    reassessment_run_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    run_code: Mapped[str] = mapped_column(String(64), unique=True)
+    job_parse_run_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_job_parse_run.job_parse_run_id")
+    )
+    model_version: Mapped[str] = mapped_column(String(100))
+    prompt_version: Mapped[str] = mapped_column(String(64))
+    input_snapshot_hash: Mapped[str] = mapped_column(String(64))
+    config_json: Mapped[dict] = mapped_column(JSON)
+    run_status_code: Mapped[str] = mapped_column(String(32), default="running")
+    input_assessment_count: Mapped[int] = mapped_column(Integer, default=0)
+    processed_count: Mapped[int] = mapped_column(Integer, default=0)
+    accepted_count: Mapped[int] = mapped_column(Integer, default=0)
+    rejected_count: Mapped[int] = mapped_column(Integer, default=0)
+    uncertain_count: Mapped[int] = mapped_column(Integer, default=0)
+    validation_failure_count: Mapped[int] = mapped_column(Integer, default=0)
+    started_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime)
+
+    __table_args__ = (
+        Index(
+            "idx_llm_technology_reassessment_run",
+            "job_parse_run_id",
+            "run_status_code",
+        ),
+    )
+
+
+class LlmTechnologyReassessment(Base):
+    """逐条保存模型原始决定、证据校验与是否回写，便于审计和回滚。"""
+
+    __tablename__ = "biz_llm_technology_reassessment"
+
+    reassessment_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    reassessment_run_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_llm_technology_reassessment_run.reassessment_run_id")
+    )
+    technology_match_assessment_id: Mapped[int] = mapped_column(
+        ForeignKey(
+            "biz_technology_match_assessment.technology_match_assessment_id"
+        )
+    )
+    original_status_code: Mapped[str] = mapped_column(String(32))
+    decision_code: Mapped[str] = mapped_column(String(32))
+    confidence_score: Mapped[Decimal | None] = mapped_column(Numeric(7, 6))
+    evidence_quote: Mapped[str | None] = mapped_column(Text)
+    reason_code: Mapped[str] = mapped_column(String(64))
+    reason_text: Mapped[str | None] = mapped_column(Text)
+    raw_response_json: Mapped[dict | None] = mapped_column(JSON)
+    validation_status_code: Mapped[str] = mapped_column(String(32))
+    applied: Mapped[bool] = mapped_column(Boolean, default=False)
+    input_hash: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint(
+            "reassessment_run_id",
+            "technology_match_assessment_id",
+            name="uk_llm_technology_reassessment_item",
+        ),
+        Index(
+            "idx_llm_technology_reassessment_decision",
+            "reassessment_run_id",
+            "decision_code",
+            "validation_status_code",
+        ),
+    )
+
+
 class JobClusterFeatureSnapshot(Base):
     __tablename__ = "biz_job_cluster_feature_snapshot"
 

@@ -166,6 +166,19 @@ cd backend
 
 `annotation_candidates_v1.json`只是待双人标注的候选清单，不能直接作为金标准或准确率依据。
 
+### 用 DeepSeek 复核歧义技术命中
+
+配置 `APP_LLM_API_KEY` 后，可对解析运行中状态为 `needs_review` 的技术候选执行闭集语义复核：
+
+```powershell
+.\.venv\Scripts\python.exe -m tools.reassess_technologies_llm `
+  --parse-run-code jdparse_8ad8184577692c219c983899 `
+  --batch-size 12 `
+  --apply-threshold 0.85
+```
+
+模型只能确认或否定现有技术编码，不能生成新编码。每条结果都会保存模型、Prompt、置信度、逐字证据、Schema 校验状态和回写状态；只有证据引文确实存在于输入上下文且置信度达到阈值的 `accepted` 结果会回写。先做小批量质量检查时可增加 `--limit 20 --no-apply`。
+
 ## 数据采集中枢与里程碑审核
 
 采集器通过以下接口登记来源、策略、运行和请求：

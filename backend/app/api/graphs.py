@@ -10,6 +10,7 @@ from app.modules.graph.service import (
     cluster_graph_list,
     heatmap_graph,
     relation_graph,
+    relation_graph_neighbors,
 )
 
 router = APIRouter(tags=["capability-graphs"])
@@ -27,8 +28,12 @@ def get_relation_graph(
     cluster_domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
     capability_domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
     capability_level_code: Literal["L1", "L2", "L3"] | None = None,
-    cluster_limit: Annotated[int, Query(ge=1, le=30)] = 12,
-    capabilities_per_cluster: Annotated[int, Query(ge=1, le=12)] = 8,
+    cluster_limit: Annotated[int, Query(ge=1, le=1000)] = 1000,
+    capabilities_per_cluster: Annotated[int, Query(ge=1, le=40)] = 20,
+    node_budget: Annotated[int, Query(ge=2, le=1000)] = 240,
+    min_supporting_job_count: Annotated[int, Query(ge=1, le=1000)] = 1,
+    mode: Literal["overview", "focus"] = "overview",
+    focus_node_id: str | None = None,
 ):
     try:
         return relation_graph(
@@ -42,6 +47,34 @@ def get_relation_graph(
             capability_level_code=capability_level_code or level_code,
             cluster_limit=cluster_limit,
             capabilities_per_cluster=capabilities_per_cluster,
+            node_budget=node_budget,
+            min_supporting_job_count=min_supporting_job_count,
+            mode=mode,
+            focus_node_id=focus_node_id,
+        )
+    except GraphProjectionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.get("/graphs/relations/{node_id}/neighbors", response_model=dict)
+def get_relation_graph_neighbors(
+    node_id: str,
+    db: Annotated[Session, Depends(get_db)],
+    cluster_domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
+    capability_domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
+    capability_level_code: Literal["L1", "L2", "L3"] = "L2",
+    min_supporting_job_count: Annotated[int, Query(ge=1, le=1000)] = 1,
+    neighbor_limit: Annotated[int, Query(ge=1, le=160)] = 60,
+):
+    try:
+        return relation_graph_neighbors(
+            db,
+            node_id=node_id,
+            cluster_domain_code=cluster_domain_code,
+            capability_domain_code=capability_domain_code,
+            capability_level_code=capability_level_code,
+            min_supporting_job_count=min_supporting_job_count,
+            neighbor_limit=neighbor_limit,
         )
     except GraphProjectionError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc

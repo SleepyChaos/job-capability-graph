@@ -40,13 +40,55 @@ export interface RelationGraphResponse extends GraphMetadata {
   role_nodes: RelationNode[]
   capability_nodes: RelationNode[]
   edges: RelationEdge[]
-  rendering: { fallback: string; layout_owner: string }
+  filters: {
+    cluster_domain_code: string | null
+    capability_domain_code: string | null
+    capability_level_code: string
+    cluster_limit: number
+    capabilities_per_cluster: number
+    node_budget: number
+    min_supporting_job_count: number
+    mode: 'overview' | 'focus'
+    focus_node_id: string | null
+  }
+  rendering: {
+    primary_route?: string
+    fallback: string
+    layout_owner: string
+    semantic_zoom?: boolean
+    neighbor_expansion?: boolean
+  }
 }
 
 export interface RelationGraphQuery {
   clusterDomainCode?: string | null
   capabilityDomainCode?: string | null
   capabilityLevelCode?: string
+  clusterLimit?: number
+  nodeBudget?: number
+  minSupportingJobCount?: number
+  mode?: 'overview' | 'focus'
+  focusNodeId?: string | null
+}
+
+export interface RelationGraphExpansion extends GraphMetadata {
+  role_nodes: RelationNode[]
+  capability_nodes: RelationNode[]
+  edges: RelationEdge[]
+  filters: {
+    cluster_domain_code: string | null
+    capability_domain_code: string | null
+    capability_level_code: string
+    min_supporting_job_count: number
+    neighbor_limit: number
+  }
+  expansion: {
+    source_node_id: string
+    returned_neighbor_count: number
+    neighbor_limit: number
+    truncated: boolean
+  }
+  rendering: RelationGraphResponse['rendering']
 }
 
 export interface ClusterListItem {
@@ -163,13 +205,45 @@ export const graphApi = {
     const query = new URLSearchParams({ capability_level_code: filters.capabilityLevelCode ?? 'L2' })
     if (filters.clusterDomainCode) query.set('cluster_domain_code', filters.clusterDomainCode)
     if (filters.capabilityDomainCode) query.set('capability_domain_code', filters.capabilityDomainCode)
+    if (filters.clusterLimit) query.set('cluster_limit', String(filters.clusterLimit))
+    if (filters.nodeBudget) query.set('node_budget', String(filters.nodeBudget))
+    if (filters.minSupportingJobCount) query.set('min_supporting_job_count', String(filters.minSupportingJobCount))
+    if (filters.mode) query.set('mode', filters.mode)
+    if (filters.focusNodeId) query.set('focus_node_id', filters.focusNodeId)
     return getGraphOrEmpty<RelationGraphResponse>(`/graphs/relations?${query}`, {
       ...emptyMetadata(),
       role_nodes: [],
       capability_nodes: [],
       edges: [],
-      rendering: { fallback: 'edge_table', layout_owner: 'frontend_deterministic_radial' },
+      filters: {
+        cluster_domain_code: null,
+        capability_domain_code: null,
+        capability_level_code: filters.capabilityLevelCode ?? 'L2',
+        cluster_limit: filters.clusterLimit ?? 1000,
+        capabilities_per_cluster: 20,
+        node_budget: filters.nodeBudget ?? 240,
+        min_supporting_job_count: filters.minSupportingJobCount ?? 1,
+        mode: filters.mode ?? 'overview',
+        focus_node_id: filters.focusNodeId ?? null,
+      },
+      rendering: {
+        primary_route: 'canvas_force',
+        fallback: 'edge_table',
+        layout_owner: 'frontend_g6_force_worker',
+        semantic_zoom: true,
+        neighbor_expansion: true,
+      },
     }, signal)
+  },
+  relationNeighbors(nodeId: string, filters: RelationGraphQuery, neighborLimit: number, signal?: AbortSignal) {
+    const query = new URLSearchParams({
+      capability_level_code: filters.capabilityLevelCode ?? 'L2',
+      neighbor_limit: String(neighborLimit),
+      min_supporting_job_count: String(filters.minSupportingJobCount ?? 1),
+    })
+    if (filters.clusterDomainCode) query.set('cluster_domain_code', filters.clusterDomainCode)
+    if (filters.capabilityDomainCode) query.set('capability_domain_code', filters.capabilityDomainCode)
+    return getJson<RelationGraphExpansion>(`/graphs/relations/${encodeURIComponent(nodeId)}/neighbors?${query}`, signal)
   },
   clusters(signal?: AbortSignal) {
     return getGraphOrEmpty<ClusterListResponse>('/graphs/clusters?limit=30', {

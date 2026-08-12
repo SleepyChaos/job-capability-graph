@@ -41,6 +41,8 @@ def test_initial_migration_upgrades_and_downgrades(tmp_path: Path) -> None:
         "rel_job_fact_evidence",
         "md_technology_ambiguity_rule",
         "biz_technology_match_assessment",
+        "biz_llm_technology_reassessment_run",
+        "biz_llm_technology_reassessment",
         "biz_job_cluster_feature_snapshot",
         "app_user",
         "md_source_collection_policy",

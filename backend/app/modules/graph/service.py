@@ -28,7 +28,7 @@ from app.modules.taxonomy.models import (
     TechnologyNodeDomain,
 )
 
-PROJECTION_VERSION = "graph_projection_p0_v1"
+PROJECTION_VERSION = "graph_projection_p2_v1"
 DAILY_METRIC_CALCULATION_VERSION = "daily_trigger_metric_v1"
 DOMAIN_LEDGER = {
     "T1": ("智能算法与模型", "#1769e0"),
@@ -72,8 +72,12 @@ def relation_graph(
     cluster_domain_code: str | None = None,
     capability_domain_code: str | None = None,
     capability_level_code: str = "L2",
-    cluster_limit: int = 12,
-    capabilities_per_cluster: int = 8,
+    cluster_limit: int = 1000,
+    capabilities_per_cluster: int = 20,
+    node_budget: int = 240,
+    min_supporting_job_count: int = 1,
+    mode: str = "overview",
+    focus_node_id: str | None = None,
     # Compatibility aliases for scripts and callers written before the
     # relation graph gained independent role/capability filters.
     domain_code: str | None = None,
@@ -83,10 +87,31 @@ def relation_graph(
         capability_domain_code = domain_code
     if level_code is not None and capability_level_code == "L2":
         capability_level_code = level_code
+    if mode not in {"overview", "focus"}:
+        raise GraphProjectionError("图谱模式仅支持 overview 或 focus")
+    if mode == "focus" and not focus_node_id:
+        raise GraphProjectionError("聚焦图谱需要提供 focus_node_id")
+    if node_budget < 2:
+        raise GraphProjectionError("节点预算至少为 2")
+    if min_supporting_job_count < 1:
+        raise GraphProjectionError("最小支持岗位数至少为 1")
+
     context = _context(db)
     _validate_filters(cluster_domain_code, capability_level_code)
     _validate_filters(capability_domain_code, capability_level_code)
     clusters = _active_clusters(db, context.run.clustering_run_id)
+    if focus_node_id:
+        focus_code = focus_node_id.removeprefix("cluster:")
+        clusters = [item for item in clusters if item.stable_cluster_code == focus_code]
+        if not clusters:
+            raise GraphProjectionError("未找到指定的岗位聚类节点")
+    if mode == "focus":
+        cluster_limit = 1
+    # Include every active role cluster that fits the overall node budget.
+    # Capability nodes are de-duplicated below and consume the remaining
+    # budget, so the default 720-node overview can hold the current full
+    # cluster snapshot plus all evidence-backed L2 capabilities.
+    effective_cluster_limit = min(cluster_limit, node_budget)
     memberships = _cluster_memberships(db, [item.job_cluster_version_id for item in clusters])
     signal_by_job = _signals_by_job(context.signals)
     projected = []
@@ -106,13 +131,17 @@ def relation_graph(
         if cluster_domain_code and role_domain != cluster_domain_code:
             continue
 
-        capability_metrics = _cluster_capability_metrics(
-            context,
-            cluster,
-            memberships.get(cluster.job_cluster_version_id, set()),
-            signal_by_job,
-            level_code=capability_level_code,
-            recent_job_count=10,
+        capability_metrics = (
+            role_metrics
+            if capability_level_code == "L2"
+            else _cluster_capability_metrics(
+                context,
+                cluster,
+                memberships.get(cluster.job_cluster_version_id, set()),
+                signal_by_job,
+                level_code=capability_level_code,
+                recent_job_count=10,
+            )
         )
         if capability_domain_code:
             capability_metrics = [
@@ -120,13 +149,19 @@ def relation_graph(
                 for item in capability_metrics
                 if item["domain_code"] == capability_domain_code
             ]
+        capability_metrics = [
+            item
+            for item in capability_metrics
+            if item["supporting_job_count"] >= min_supporting_job_count
+        ]
         projected.append((cluster, role_domain, capability_metrics[:capabilities_per_cluster]))
-        if len(projected) >= cluster_limit:
+        if len(projected) >= effective_cluster_limit:
             break
 
     capability_nodes = {}
     role_nodes = []
     edges = []
+    capability_budget = max(0, node_budget - len(projected))
     for cluster, primary_domain, metrics in projected:
         role_nodes.append(
             {
@@ -144,18 +179,30 @@ def relation_graph(
         )
         for metric in metrics:
             technology_id = metric["technology_node_id"]
-            capability_nodes[technology_id] = {
-                "id": f"technology:{technology_id}",
-                "type": "technology",
-                "label": metric["technology_name"],
-                "domain_code": metric["domain_code"],
-                "level_code": metric["level_code"],
-                "metrics": {
-                    "supporting_job_count": metric["supporting_job_count"],
-                    "recent_activity": metric["recent_activity"],
-                },
-                "evidence_count": metric["supporting_job_count"],
-            }
+            if technology_id not in capability_nodes and len(capability_nodes) >= capability_budget:
+                continue
+            capability_node = capability_nodes.get(technology_id)
+            if capability_node is None:
+                capability_node = {
+                    "id": f"technology:{technology_id}",
+                    "type": "technology",
+                    "label": metric["technology_name"],
+                    "domain_code": metric["domain_code"],
+                    "level_code": metric["level_code"],
+                    "metrics": {
+                        "supporting_job_count": 0,
+                        "recent_activity": 0,
+                    },
+                    "evidence_count": 0,
+                }
+                capability_nodes[technology_id] = capability_node
+            capability_node["metrics"]["supporting_job_count"] += metric[
+                "supporting_job_count"
+            ]
+            capability_node["metrics"]["recent_activity"] = max(
+                capability_node["metrics"]["recent_activity"], metric["recent_activity"]
+            )
+            capability_node["evidence_count"] += metric["supporting_job_count"]
             edges.append(
                 {
                     "id": f"edge:{cluster.stable_cluster_code}:{technology_id}",
@@ -169,14 +216,42 @@ def relation_graph(
                     "evidence_job_codes": metric["evidence_job_codes"],
                 }
             )
+
+    # Keep the taxonomy visible even when an L2 capability has no accepted JD
+    # relation in the current snapshot. Relation thresholds filter edges; they
+    # do not erase governed capability nodes from the global overview.
+    for technology in sorted(context.nodes.values(), key=lambda item: item.technology_code):
+        if technology.level_code != capability_level_code:
+            continue
+        technology_id = technology.technology_node_id
+        domain_code = context.primary_domains.get(technology_id, "T7")
+        if capability_domain_code and domain_code != capability_domain_code:
+            continue
+        if technology_id in capability_nodes:
+            continue
+        if len(capability_nodes) >= capability_budget:
+            break
+        capability_nodes[technology_id] = {
+            "id": f"technology:{technology_id}",
+            "type": "technology",
+            "label": technology.technology_name,
+            "domain_code": domain_code,
+            "level_code": technology.level_code,
+            "metrics": {"supporting_job_count": 0, "recent_activity": 0},
+            "evidence_count": 0,
+        }
     return {
         **_metadata(context),
         "filters": {
             "cluster_domain_code": cluster_domain_code,
             "capability_domain_code": capability_domain_code,
             "capability_level_code": capability_level_code,
-            "cluster_limit": cluster_limit,
+            "cluster_limit": effective_cluster_limit,
             "capabilities_per_cluster": capabilities_per_cluster,
+            "node_budget": node_budget,
+            "min_supporting_job_count": min_supporting_job_count,
+            "mode": mode,
+            "focus_node_id": focus_node_id,
         },
         "legend": _legend(),
         "role_nodes": role_nodes,
@@ -184,9 +259,190 @@ def relation_graph(
         "edges": edges,
         "rendering": {
             "artifact_family": "node_link",
-            "primary_route": "svg",
+            "primary_route": "canvas_force",
             "fallback": "edge_table",
-            "layout_owner": "frontend_deterministic_radial",
+            "layout_owner": "frontend_g6_force_worker",
+            "semantic_zoom": True,
+            "neighbor_expansion": True,
+        },
+    }
+
+
+def relation_graph_neighbors(
+    db: Session,
+    *,
+    node_id: str,
+    cluster_domain_code: str | None = None,
+    capability_domain_code: str | None = None,
+    capability_level_code: str = "L2",
+    min_supporting_job_count: int = 1,
+    neighbor_limit: int = 60,
+) -> dict:
+    """Project just one node's immediate, governed neighbors.
+
+    This endpoint deliberately does not reuse the overview node budget. The
+    client can keep a compact overview and append bounded local neighborhoods
+    as the user explores, rather than requesting a potentially thousand-node
+    projection in one response.
+    """
+    if not node_id.startswith(("cluster:", "technology:")):
+        raise GraphProjectionError("节点 ID 必须以 cluster: 或 technology: 开头")
+    if min_supporting_job_count < 1:
+        raise GraphProjectionError("最小支持岗位数至少为 1")
+    if neighbor_limit < 1:
+        raise GraphProjectionError("邻居上限至少为 1")
+
+    context = _context(db)
+    _validate_filters(cluster_domain_code, capability_level_code)
+    _validate_filters(capability_domain_code, capability_level_code)
+    clusters = _active_clusters(db, context.run.clustering_run_id)
+    memberships = _cluster_memberships(db, [item.job_cluster_version_id for item in clusters])
+    signal_by_job = _signals_by_job(context.signals)
+
+    def role_metrics(cluster: JobClusterVersion) -> list[dict]:
+        return _cluster_capability_metrics(
+            context,
+            cluster,
+            memberships.get(cluster.job_cluster_version_id, set()),
+            signal_by_job,
+            level_code="L2",
+            recent_job_count=10,
+        )
+
+    def capability_metrics(cluster: JobClusterVersion) -> list[dict]:
+        metrics = _cluster_capability_metrics(
+            context,
+            cluster,
+            memberships.get(cluster.job_cluster_version_id, set()),
+            signal_by_job,
+            level_code=capability_level_code,
+            recent_job_count=10,
+        )
+        return [
+            item
+            for item in metrics
+            if item["supporting_job_count"] >= min_supporting_job_count
+            and (not capability_domain_code or item["domain_code"] == capability_domain_code)
+        ]
+
+    role_nodes: list[dict] = []
+    capability_nodes: dict[int, dict] = {}
+    edges: list[dict] = []
+
+    def append_relation(cluster: JobClusterVersion, primary_domain: str, metric: dict) -> None:
+        role_id = f"cluster:{cluster.stable_cluster_code}"
+        technology_id = metric["technology_node_id"]
+        if not any(item["id"] == role_id for item in role_nodes):
+            role_nodes.append(
+                {
+                    "id": role_id,
+                    "type": "job_cluster",
+                    "label": cluster.cluster_label,
+                    "domain_code": primary_domain,
+                    "metrics": {
+                        "member_count": cluster.member_count,
+                        "organization_count": cluster.independent_organization_count,
+                        "coherence_score": _float(cluster.coherence_score),
+                    },
+                    "evidence_count": cluster.member_count,
+                }
+            )
+        capability_nodes[technology_id] = {
+            "id": f"technology:{technology_id}",
+            "type": "technology",
+            "label": metric["technology_name"],
+            "domain_code": metric["domain_code"],
+            "level_code": metric["level_code"],
+            "metrics": {
+                "supporting_job_count": metric["supporting_job_count"],
+                "recent_activity": metric["recent_activity"],
+            },
+            "evidence_count": metric["supporting_job_count"],
+        }
+        edges.append(
+            {
+                "id": f"edge:{cluster.stable_cluster_code}:{technology_id}",
+                "source": role_id,
+                "target": f"technology:{technology_id}",
+                "relation_type": "important_technology",
+                "importance": metric["importance"],
+                "recent_activity": metric["recent_activity"],
+                "supporting_job_count": metric["supporting_job_count"],
+                "coverage_rate": metric["coverage_rate"],
+                "evidence_job_codes": metric["evidence_job_codes"],
+            }
+        )
+
+    if node_id.startswith("cluster:"):
+        cluster_code = node_id.removeprefix("cluster:")
+        cluster = next(
+            (item for item in clusters if item.stable_cluster_code == cluster_code), None
+        )
+        if cluster is None:
+            raise GraphProjectionError("未找到指定的岗位聚类节点")
+        primary_domain = _primary_domain(role_metrics(cluster))
+        if cluster_domain_code and primary_domain != cluster_domain_code:
+            raise GraphProjectionError("指定岗位聚类不满足当前领域筛选")
+        for metric in capability_metrics(cluster)[:neighbor_limit]:
+            append_relation(cluster, primary_domain, metric)
+    else:
+        try:
+            technology_id = int(node_id.removeprefix("technology:"))
+        except ValueError as exc:
+            raise GraphProjectionError("技术能力节点 ID 无效") from exc
+        matches: list[tuple[JobClusterVersion, str, dict]] = []
+        for cluster in clusters:
+            primary_domain = _primary_domain(role_metrics(cluster))
+            if cluster_domain_code and primary_domain != cluster_domain_code:
+                continue
+            metric = next(
+                (
+                    item
+                    for item in capability_metrics(cluster)
+                    if item["technology_node_id"] == technology_id
+                ),
+                None,
+            )
+            if metric:
+                matches.append((cluster, primary_domain, metric))
+        matches.sort(
+            key=lambda item: (
+                -item[2]["importance"],
+                -item[2]["supporting_job_count"],
+                item[0].stable_cluster_code,
+            )
+        )
+        if not matches:
+            raise GraphProjectionError("当前筛选下未找到该技术能力节点的关联岗位聚类")
+        for cluster, primary_domain, metric in matches[:neighbor_limit]:
+            append_relation(cluster, primary_domain, metric)
+
+    return {
+        **_metadata(context),
+        "filters": {
+            "cluster_domain_code": cluster_domain_code,
+            "capability_domain_code": capability_domain_code,
+            "capability_level_code": capability_level_code,
+            "min_supporting_job_count": min_supporting_job_count,
+            "neighbor_limit": neighbor_limit,
+        },
+        "legend": _legend(),
+        "role_nodes": role_nodes,
+        "capability_nodes": list(capability_nodes.values()),
+        "edges": edges,
+        "expansion": {
+            "source_node_id": node_id,
+            "returned_neighbor_count": len(role_nodes) + len(capability_nodes) - 1,
+            "neighbor_limit": neighbor_limit,
+            "truncated": len(edges) >= neighbor_limit,
+        },
+        "rendering": {
+            "artifact_family": "node_link",
+            "primary_route": "canvas_force",
+            "fallback": "edge_table",
+            "layout_owner": "frontend_g6_force_worker",
+            "semantic_zoom": True,
+            "neighbor_expansion": True,
         },
     }
 

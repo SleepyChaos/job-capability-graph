@@ -15,14 +15,41 @@ services:
       timeout: 5s
       retries: 10
 
+  # 新环境默认恢复仓库内已审计的最新开发快照；设置 RESTORE_RUNTIME_SNAPSHOT=0
+  # 可跳过恢复并让 bootstrap 只从核心 XLSX 重建。
+  restore:
+    image: mysql:8.0
+    environment:
+      MYSQL_PWD: root_password_change_me
+      RESTORE_RUNTIME_SNAPSHOT: ${RESTORE_RUNTIME_SNAPSHOT:-1}
+    volumes:
+      - ./data/runtime:/srv/data/runtime:ro
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        table_count="$$(mysql -hmysql -uroot -N -e \
+          "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='job_capability_graph'")"
+        if [ "$$RESTORE_RUNTIME_SNAPSHOT" = "1" ] && [ "$$table_count" = "0" ]; then
+          echo 'Restoring audited runtime snapshot...'
+          gunzip -c /srv/data/runtime/job-capability-graph-mysql-20260812.sql.gz | \
+            mysql -hmysql -uroot job_capability_graph
+        else
+          echo "Runtime restore skipped (enabled=$$RESTORE_RUNTIME_SNAPSHOT, tables=$$table_count)."
+        fi
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: "no"
+
   migrate:
     build: ./backend
     environment:
       APP_DATABASE_URL: mysql+pymysql://app:app_password_change_me@mysql:3306/job_capability_graph?charset=utf8mb4
     command: ["python", "-m", "alembic", "upgrade", "head"]
     depends_on:
-      mysql:
-        condition: service_healthy
+      restore:
+        condition: service_completed_successfully
     restart: "no"
 
   # 使用仓库内的核心 XLSX 在 MySQL 中重建当前运行数据；不执行数据包附带的旧 SQL。
@@ -85,9 +112,10 @@ services:
     environment:
       APP_DATABASE_URL: mysql+pymysql://app:app_password_change_me@mysql:3306/job_capability_graph?charset=utf8mb4
       # LLM 网关（可选）：无 Key 时全部调用降级为规则输出
-      APP_LLM_API_KEY: ${APP_LLM_API_KEY:-}
-      APP_LLM_BASE_URL: ${APP_LLM_BASE_URL:-https://api.deepseek.com/v1}
-      APP_LLM_MODEL: ${APP_LLM_MODEL:-deepseek-chat}
+      # 兼容数据包早期使用的 OPENAI_* / LLM_MODEL 命名；值仍只从未入库的 .env 注入。
+      APP_LLM_API_KEY: ${APP_LLM_API_KEY:-${OPENAI_API_KEY:-}}
+      APP_LLM_BASE_URL: ${APP_LLM_BASE_URL:-${OPENAI_BASE_URL:-https://api.deepseek.com/v1}}
+      APP_LLM_MODEL: ${APP_LLM_MODEL:-${LLM_MODEL:-deepseek-chat}}
       APP_AUTH_SECRET: ${APP_AUTH_SECRET:-change-me-in-production}
     volumes:
       # 数据导入与评测需要访问仓库数据目录

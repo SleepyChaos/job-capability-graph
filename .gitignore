@@ -12,6 +12,15 @@ backend/.coverage
 backend/htmlcov/
 __pycache__/
 *.py[cod]
+.DS_Store
+.coverage
+/.local/
+/db/
+/unified.db
+/backend_dev.log
+/frontend/.codegraph/
+/frontend/.next/
+/frontend/assets/
 
 # 本地验证截图与构建输出
 output/
