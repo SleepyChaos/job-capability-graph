@@ -81,7 +81,7 @@ docker compose exec backend python -m tools.reassess_technologies_llm \
 RESTORE_RUNTIME_SNAPSHOT=0 docker compose up --build -d
 ```
 
-该流程只使用项目 Alembic 结构和 `data/source/20260810/core` 中的核心 XLSX。清空已有卷会删除本地 MySQL 数据，具体操作和限制见 [Docker 开发说明](docs/Docker开发说明_20260812.md)。
+该流程只使用项目 Alembic 结构和 `data/source/20260810/core` 中的核心 XLSX。清空已有卷会删除本地 MySQL 数据，具体操作和限制见 [测试、部署与运维](docs/04-测试部署与运维.md)。
 
 ## 开发验证
 
@@ -91,8 +91,7 @@ cd backend
 .venv/bin/pytest
 
 cd ../frontend
-pnpm lint
 pnpm build
 ```
 
-更多设计、进度与验收文档见 [`docs/`](docs/)，后端接口与命令见 [`backend/README.md`](backend/README.md)。
+项目状态、架构、数据口径和后续任务统一从 [`docs/README.md`](docs/README.md) 进入；后端开发命令见 [`backend/README.md`](backend/README.md)。
