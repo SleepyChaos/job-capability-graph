@@ -34,6 +34,7 @@ def test_graph_projections_share_governed_evidence_and_visual_ledger() -> None:
         assert relations["edges"][0]["supporting_job_count"] == 3
         assert relations["edges"][0]["coverage_rate"] == 1
         assert relations["rendering"]["fallback"] == "edge_table"
+        assert relations["rendering"]["layout_owner"] == "frontend_g6_force"
         assert clusters["items"][0]["stable_cluster_code"] == cluster_code
         assert detail["capabilities"][0]["level_code"] == "L2"
         assert detail["capabilities"][0]["supporting_job_count"] == 3

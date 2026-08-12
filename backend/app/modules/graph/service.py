@@ -184,9 +184,9 @@ def relation_graph(
         "edges": edges,
         "rendering": {
             "artifact_family": "node_link",
-            "primary_route": "svg",
+            "primary_route": "g6_force",
             "fallback": "edge_table",
-            "layout_owner": "frontend_deterministic_radial",
+            "layout_owner": "frontend_g6_force",
         },
     }
 
