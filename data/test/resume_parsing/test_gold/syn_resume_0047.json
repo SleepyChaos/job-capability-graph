@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0047",
+  "file": "syn_resume_0047.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人控制算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.06.01",
+      "term_name": "灵巧手语义接口",
+      "evidence_text": "主导灵巧手语义接口相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.06",
+      "term_name": "触觉感知算法",
+      "evidence_text": "主导触觉感知算法相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.01",
+      "term_name": "SLAM",
+      "evidence_text": "负责SLAM模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.05",
+      "term_name": "人形机器人整机与商业化",
+      "evidence_text": "在项目中使用人形机器人整机与商业化解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.03.02",
+      "term_name": "听觉传感",
+      "evidence_text": "主导听觉传感相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.06",
+      "term_name": "路径规划与轨迹",
+      "evidence_text": "在项目中使用路径规划与轨迹解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

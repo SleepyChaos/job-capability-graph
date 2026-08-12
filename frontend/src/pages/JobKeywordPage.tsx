@@ -1,49 +1,118 @@
-import { Check, Play, Save, Tags } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { Check, Play, RefreshCw, Save, Search, ShieldAlert, Tags } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { discoveryApi, maturityStageLabels, type CandidateListItem, type DiscoveryRun } from '../api/discovery'
+import { taxonomyApi, type TechnologyNode } from '../api/taxonomy'
 import { Panel, StatusTag } from '../components/ui'
-import { roleCandidates } from '../data/mockData'
 
-const keywordOptions = [
-  { name: 'Sim2Real', domain: 'T5', level: 'L3' },
-  { name: '合成数据', domain: 'T5', level: 'L3' },
-  { name: '多模态模型', domain: 'T3', level: 'L3' },
-  { name: '模仿学习', domain: 'T3', level: 'L3' },
-  { name: '触觉感知', domain: 'T2', level: 'L3' },
-  { name: '现场调试', domain: 'T7', level: 'L3' },
-]
+function todayISO(): string {
+  return new Date().toISOString().slice(0, 10)
+}
 
 export function JobKeywordPage({ notify }: { notify: (message: string) => void }) {
-  const [selectedTerms, setSelectedTerms] = useState(['Sim2Real', '合成数据'])
-  const [hasRun, setHasRun] = useState(true)
-  const inferredRoles = useMemo(() => {
-    if (selectedTerms.some((item) => ['Sim2Real', '合成数据'].includes(item))) return [roleCandidates[0], roleCandidates[1]]
-    if (selectedTerms.some((item) => ['多模态模型', '模仿学习'].includes(item))) return [roleCandidates[1], roleCandidates[0]]
-    return [roleCandidates[2]]
-  }, [selectedTerms])
+  const [query, setQuery] = useState('')
+  const [options, setOptions] = useState<TechnologyNode[]>([])
+  const [searching, setSearching] = useState(false)
+  const [selected, setSelected] = useState<TechnologyNode[]>([])
+  const [run, setRun] = useState<DiscoveryRun | null>(null)
+  const [results, setResults] = useState<CandidateListItem[]>([])
+  const [running, setRunning] = useState(false)
+  const [error, setError] = useState('')
 
-  const toggleTerm = (term: string) => {
-    setSelectedTerms((items) => items.includes(term) ? items.filter((item) => item !== term) : [...items, term])
-    setHasRun(false)
+  useEffect(() => {
+    const controller = new AbortController()
+    setSearching(true)
+    taxonomyApi.nodes({ level: 'L3', search: query || undefined, limit: 24 }, controller.signal)
+      .then((page) => setOptions(page.items))
+      .catch((reason: Error) => { if (reason.name !== 'AbortError') setError(reason.message) })
+      .finally(() => setSearching(false))
+    return () => controller.abort()
+  }, [query])
+
+  const toggleTerm = (node: TechnologyNode) => {
+    setSelected((items) => items.some((item) => item.node_id === node.node_id)
+      ? items.filter((item) => item.node_id !== node.node_id)
+      : items.length >= 6 ? items : [...items, node])
+    setRun(null)
+    setResults([])
   }
 
-  const runInference = () => {
-    setHasRun(true)
-    notify(`已基于 ${selectedTerms.length} 个技术关键词完成定向岗位推演`)
+  const runInference = async () => {
+    if (selected.length === 0) return
+    setRunning(true)
+    setError('')
+    try {
+      const result = await discoveryApi.createRun({
+        mode_code: 'technology_directed',
+        target_date: todayISO(),
+        selected_technology_ids: selected.map((node) => node.node_id),
+      })
+      setRun(result)
+      const page = await discoveryApi.candidates({ runCode: result.run_code, limit: 50 })
+      setResults(page.items)
+      notify(result.already_completed
+        ? `相同技术组合已推演过（${result.run_code}），返回既有结果`
+        : `定向推演完成：${result.task_count} 项任务、${result.candidate_count} 个候选，已自动保存到记录库`)
+    } catch (reason) {
+      setError((reason as Error).message)
+    } finally {
+      setRunning(false)
+    }
   }
 
   return (
     <div className="page-stack discovery-page">
-      <div className="page-intro"><div><h2>技术词定向推演</h2><p>从 T1–T7、L1–L4 技术词标准库中选择组合，针对性分析可能形成的新岗位。</p></div><button className="primary-button" disabled={selectedTerms.length === 0} onClick={runInference}><Play size={15} />执行定向推演</button></div>
+      <div className="page-intro">
+        <div><h2>技术词定向推演</h2><p>从 L3 标准技术点中选择组合（最多 6 个），针对性分析可能形成的新岗位；运行输入快照会整体冻结。</p></div>
+        <button className="primary-button" disabled={selected.length === 0 || running} onClick={runInference}>{running ? <RefreshCw className="spin" size={15} /> : <Play size={15} />}执行定向推演</button>
+      </div>
 
-      <Panel title="选择技术关键词" subtitle="所有词项均来自已审核的技术词主数据">
+      {error ? <div className="empty-state"><ShieldAlert size={24} /><strong>推演失败</strong><span>{error}</span></div> : null}
+
+      <Panel title="选择技术关键词" subtitle="词项来自已发布的技术词主数据（/taxonomy/nodes · L3）" action={<label className="inline-search"><Search size={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索 L3 技术点" /></label>}>
         <div className="keyword-discovery-workbench">
-          <div className="keyword-picker">{keywordOptions.map((term) => <button className={selectedTerms.includes(term.name) ? 'selected' : ''} key={term.name} onClick={() => toggleTerm(term.name)}><span>{term.name}</span><small>{term.domain} · {term.level}</small>{selectedTerms.includes(term.name) ? <Check size={14} /> : null}</button>)}</div>
-          <div className="keyword-inference-summary"><strong>当前组合推演</strong><span>{selectedTerms.length ? selectedTerms.join(' + ') : '请选择至少一个技术关键词'}</span><div><i>JD 任务共现</i><b>0.74</b></div><div><i>里程碑推进度</i><b>0.81</b></div><div><i>既有岗位覆盖缺口</i><b>0.63</b></div></div>
+          <div className="keyword-picker">
+            {searching ? <div className="empty-state"><RefreshCw className="spin" size={20} /><strong>检索中…</strong></div> : options.map((node) => {
+              const active = selected.some((item) => item.node_id === node.node_id)
+              return (
+                <button className={active ? 'selected' : ''} key={node.node_id} onClick={() => toggleTerm(node)}>
+                  <span>{node.name}</span><small>{node.code} · {node.domain_code}</small>{active ? <Check size={14} /> : null}
+                </button>
+              )
+            })}
+          </div>
+          <div className="keyword-inference-summary">
+            <strong>当前组合</strong>
+            <span>{selected.length ? selected.map((node) => node.name).join(' + ') : '请选择至少一个 L3 技术点'}</span>
+            <div><i>已选词数</i><b>{selected.length} / 6</b></div>
+            <div><i>运行模式</i><b>technology_directed</b></div>
+            <div><i>输入快照</i><b>target_date={todayISO()}</b></div>
+          </div>
         </div>
       </Panel>
 
-      <Panel title="定向推演结果" subtitle={hasRun ? `组合 ${selectedTerms.join(' + ')} 产生 ${inferredRoles.length} 个关联候选` : '关键词组合已变化，请重新执行推演'} action={hasRun ? <button className="secondary-button" onClick={() => notify('本次技术词定向推演已保存到记录库')}><Save size={15} />保存结果</button> : undefined}>
-        {hasRun ? <div className="inference-result-grid">{inferredRoles.map((role, index) => <article key={role.id}><div><StatusTag tone={index === 0 ? 'warning' : 'info'}>{index === 0 ? '高度相关' : '关联候选'}</StatusTag><b>{role.score - index * 4}</b></div><Tags size={20} /><h3>{role.name}</h3><p>{role.summary}</p><footer><span>{role.primaryDomain}</span><span>{role.jdCount} 条 JD 证据</span></footer></article>)}</div> : <div className="inference-empty"><Tags size={26} /><strong>等待重新推演</strong><span>执行后将根据新的技术词组合更新岗位候选与证据评分。</span></div>}
+      <Panel
+        title="定向推演结果"
+        subtitle={run ? `运行 ${run.run_code}：${results.length} 个候选（截点 ${run.target_date}${run.evidence_limited ? '，证据受限' : ''}）` : '选择技术词组合后执行推演'}
+        action={run ? <StatusTag tone="success"><Save size={13} /> 已自动进入记录库</StatusTag> : undefined}
+      >
+        {run ? (
+          results.length > 0 ? (
+            <div className="inference-result-grid">
+              {results.map((candidate) => (
+                <article key={candidate.candidate_code}>
+                  <div>
+                    <StatusTag tone="warning">{maturityStageLabels[candidate.maturity_stage_code] ?? candidate.maturity_stage_code}</StatusTag>
+                    <b>{Number(candidate.candidate_score).toFixed(1)}</b>
+                  </div>
+                  <Tags size={20} />
+                  <h3>{candidate.proposed_name}</h3>
+                  <p>{candidate.classification_code} · 风险标签 {candidate.risk_flags.length > 0 ? candidate.risk_flags.join('、') : '无'}</p>
+                  <footer><span>{candidate.candidate_code}</span><span>工作流：{candidate.workflow_status_code}</span></footer>
+                </article>
+              ))}
+            </div>
+          ) : <div className="inference-empty"><Tags size={26} /><strong>本次组合未产生候选</strong><span>任务组合缺少跨企业证据或与既有岗位重合度过高；可更换技术词组合再试。</span></div>
+        ) : <div className="inference-empty"><Tags size={26} /><strong>等待推演</strong><span>执行后将基于冻结快照计算任务社区、覆盖缺口与候选评分。</span></div>}
       </Panel>
     </div>
   )

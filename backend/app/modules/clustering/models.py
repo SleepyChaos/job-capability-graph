@@ -305,6 +305,7 @@ class JobEvolutionEvent(Base):
     )
     event_type_code: Mapped[str] = mapped_column(String(32))
     change_summary: Mapped[str] = mapped_column(Text)
+    comparison_warning_text: Mapped[str | None] = mapped_column(Text)
     confidence_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
     approval_status_code: Mapped[str] = mapped_column(String(32), default="pending")
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())

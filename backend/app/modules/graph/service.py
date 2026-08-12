@@ -4,13 +4,17 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from app.modules.clustering.models import (
     JobClusteringRun,
     JobClusterMember,
     JobClusterVersion,
+)
+from app.modules.graph.models import (
+    DOMAIN_AGGREGATE_TECHNOLOGY_ID,
+    TechnologyDailyTriggerMetric,
 )
 from app.modules.job.models import (
     JobParseRun,
@@ -25,6 +29,7 @@ from app.modules.taxonomy.models import (
 )
 
 PROJECTION_VERSION = "graph_projection_p0_v1"
+DAILY_METRIC_CALCULATION_VERSION = "daily_trigger_metric_v1"
 DOMAIN_LEDGER = {
     "T1": ("智能算法与模型", "#1769e0"),
     "T2": ("感知与传感", "#0b9c93"),
@@ -256,34 +261,20 @@ def heatmap_graph(
     _validate_filters(domain_code, level_code)
     if days != 45:
         raise GraphProjectionError("P0热力图固定使用45天窗口")
-    dates = [context.run.target_date - timedelta(days=offset) for offset in range(44, -1, -1)]
-    date_set = set(dates)
-    domain_jobs = defaultdict(set)
-    domain_mentions = Counter()
-    technology_jobs = defaultdict(set)
-    technology_mentions = Counter()
-    technology_nodes = {}
-    observed_dates = set()
-    for signal in context.signals:
-        if signal.observed_at is None:
-            continue
-        observed_date = signal.observed_at.date()
-        if observed_date not in date_set:
-            continue
-        projected = _project_node(context.nodes, signal.technology_node_id, level_code)
-        if projected is None:
-            continue
-        domain = context.primary_domains.get(
-            projected.technology_node_id
-        ) or context.primary_domains.get(signal.technology_node_id)
-        if domain not in DOMAIN_LEDGER:
-            continue
-        observed_dates.add(observed_date)
-        domain_jobs[(domain, observed_date)].add(signal.job_posting_id)
-        domain_mentions[(domain, observed_date)] += signal.mention_count
-        technology_jobs[(projected.technology_node_id, observed_date)].add(signal.job_posting_id)
-        technology_mentions[(projected.technology_node_id, observed_date)] += signal.mention_count
-        technology_nodes[projected.technology_node_id] = (projected, domain)
+    aggregates = _heatmap_aggregates(context, level_code=level_code, days=days)
+    dates = aggregates["dates"]
+    domain_jobs = aggregates["domain_jobs"]
+    domain_mentions = aggregates["domain_mentions"]
+    technology_jobs = aggregates["technology_jobs"]
+    technology_mentions = aggregates["technology_mentions"]
+    technology_nodes = aggregates["technology_nodes"]
+    observed_dates = aggregates["observed_dates"]
+    # 设计 §11.4：L2 口径的按日触发指标同步落库，供离线复核与回放。
+    metric_source = "runtime_projection"
+    if level_code == "L2":
+        _persist_daily_metrics(db, context, aggregates)
+        db.commit()
+        metric_source = "stored_daily_metric"
 
     domain_series = []
     global_rows = []
@@ -366,6 +357,7 @@ def heatmap_graph(
             ),
         },
         "filters": {"domain_code": domain_code, "level_code": level_code},
+        "metric_source": metric_source,
         "domain_series": domain_series,
         "global_rows": global_rows,
         "detail_series": detail_series,
@@ -601,6 +593,131 @@ def _primary_domain(metrics: list[dict]) -> str:
     for item in metrics:
         scores[item["domain_code"]] += item["supporting_job_count"]
     return scores.most_common(1)[0][0] if scores else "T7"
+
+
+def _heatmap_aggregates(context: ProjectionContext, *, level_code: str, days: int) -> dict:
+    """聚合 45 天窗口内的技术触发信号，同时记录独立企业与独立来源。"""
+    dates = [context.run.target_date - timedelta(days=offset) for offset in range(days - 1, -1, -1)]
+    date_set = set(dates)
+    domain_jobs = defaultdict(set)
+    domain_mentions = Counter()
+    domain_orgs = defaultdict(set)
+    domain_sources = defaultdict(set)
+    technology_jobs = defaultdict(set)
+    technology_mentions = Counter()
+    technology_orgs = defaultdict(set)
+    technology_sources = defaultdict(set)
+    technology_nodes = {}
+    observed_dates = set()
+    for signal in context.signals:
+        if signal.observed_at is None:
+            continue
+        observed_date = signal.observed_at.date()
+        if observed_date not in date_set:
+            continue
+        projected = _project_node(context.nodes, signal.technology_node_id, level_code)
+        if projected is None:
+            continue
+        domain = context.primary_domains.get(
+            projected.technology_node_id
+        ) or context.primary_domains.get(signal.technology_node_id)
+        if domain not in DOMAIN_LEDGER:
+            continue
+        observed_dates.add(observed_date)
+        domain_jobs[(domain, observed_date)].add(signal.job_posting_id)
+        domain_mentions[(domain, observed_date)] += signal.mention_count
+        if signal.organization_id is not None:
+            domain_orgs[(domain, observed_date)].add(signal.organization_id)
+        domain_sources[(domain, observed_date)].add(signal.data_source_id)
+        technology_jobs[(projected.technology_node_id, observed_date)].add(signal.job_posting_id)
+        technology_mentions[(projected.technology_node_id, observed_date)] += signal.mention_count
+        if signal.organization_id is not None:
+            technology_orgs[(projected.technology_node_id, observed_date)].add(
+                signal.organization_id
+            )
+        technology_sources[(projected.technology_node_id, observed_date)].add(
+            signal.data_source_id
+        )
+        technology_nodes[projected.technology_node_id] = (projected, domain)
+    return {
+        "dates": dates,
+        "domain_jobs": domain_jobs,
+        "domain_mentions": domain_mentions,
+        "domain_orgs": domain_orgs,
+        "domain_sources": domain_sources,
+        "technology_jobs": technology_jobs,
+        "technology_mentions": technology_mentions,
+        "technology_orgs": technology_orgs,
+        "technology_sources": technology_sources,
+        "technology_nodes": technology_nodes,
+        "observed_dates": observed_dates,
+    }
+
+
+def _persist_daily_metrics(db: Session, context: ProjectionContext, aggregates: dict) -> int:
+    """设计 §11.4：把按日触发指标落库（同一聚类运行幂等重建）。"""
+    run_code = context.run.run_code
+    db.execute(
+        delete(TechnologyDailyTriggerMetric).where(
+            TechnologyDailyTriggerMetric.clustering_run_code == run_code
+        )
+    )
+    rows = 0
+    domain_jobs = aggregates["domain_jobs"]
+    for (domain, metric_date), job_ids in domain_jobs.items():
+        db.add(
+            TechnologyDailyTriggerMetric(
+                metric_date=metric_date,
+                technology_domain_code=domain,
+                technology_node_id=DOMAIN_AGGREGATE_TECHNOLOGY_ID,
+                trigger_document_count=len(job_ids),
+                trigger_mention_count=aggregates["domain_mentions"][(domain, metric_date)],
+                independent_org_count=len(aggregates["domain_orgs"][(domain, metric_date)]),
+                independent_source_count=len(
+                    aggregates["domain_sources"][(domain, metric_date)]
+                ),
+                clustering_run_code=run_code,
+                calculation_version=DAILY_METRIC_CALCULATION_VERSION,
+            )
+        )
+        rows += 1
+    technology_jobs = aggregates["technology_jobs"]
+    technology_nodes = aggregates["technology_nodes"]
+    for (technology_id, metric_date), job_ids in technology_jobs.items():
+        domain = technology_nodes[technology_id][1]
+        db.add(
+            TechnologyDailyTriggerMetric(
+                metric_date=metric_date,
+                technology_domain_code=domain,
+                technology_node_id=technology_id,
+                trigger_document_count=len(job_ids),
+                trigger_mention_count=aggregates["technology_mentions"]
+                [(technology_id, metric_date)],
+                independent_org_count=len(
+                    aggregates["technology_orgs"][(technology_id, metric_date)]
+                ),
+                independent_source_count=len(
+                    aggregates["technology_sources"][(technology_id, metric_date)]
+                ),
+                clustering_run_code=run_code,
+                calculation_version=DAILY_METRIC_CALCULATION_VERSION,
+            )
+        )
+        rows += 1
+    db.flush()
+    return rows
+
+
+def refresh_daily_trigger_metrics(db: Session, *, level_code: str = "L2", days: int = 45) -> int:
+    """离线刷新按日触发指标（与热力图同一口径），返回落库行数。"""
+    _validate_filters(None, level_code)
+    if days != 45:
+        raise GraphProjectionError("P0热力图固定使用45天窗口")
+    context = _context(db)
+    aggregates = _heatmap_aggregates(context, level_code=level_code, days=days)
+    rows = _persist_daily_metrics(db, context, aggregates)
+    db.commit()
+    return rows
 
 
 def _heat_cell(metric_date: date, job_ids: set[int], mention_count: int) -> dict:

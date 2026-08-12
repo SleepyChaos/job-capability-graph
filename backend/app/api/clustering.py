@@ -136,6 +136,7 @@ class RoleDetail(RoleListItem):
     versions: list[RoleVersionItem]
     requirements: list[RoleRequirementItem]
     evolution_changes: list[dict]
+    evolution_warning: str | None = None
 
 
 class RoleReviewAction(BaseModel):
@@ -365,6 +366,14 @@ def role_detail(role_code: str, db: Annotated[Session, Depends(get_db)]):
             )
         ]
     item = _role_item(db, role)
+    evolution_warning = None
+    if latest:
+        latest_event = db.scalar(
+            select(JobEvolutionEvent)
+            .where(JobEvolutionEvent.to_role_version_id == latest.job_role_version_id)
+            .order_by(JobEvolutionEvent.job_evolution_event_id.desc())
+        )
+        evolution_warning = latest_event.comparison_warning_text if latest_event else None
     return RoleDetail(
         **item.model_dump(),
         definition=latest.one_line_definition if latest else None,
@@ -382,6 +391,7 @@ def role_detail(role_code: str, db: Annotated[Session, Depends(get_db)]):
         ],
         requirements=requirements,
         evolution_changes=changes,
+        evolution_warning=evolution_warning,
     )
 
 

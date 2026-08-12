@@ -1,6 +1,6 @@
 import { RotateCcw } from 'lucide-react'
-import { useState } from 'react'
-import { domains } from '../data/mockData'
+import { useEffect, useState } from 'react'
+import { cachedDomains, type TechnologyDomain } from '../api/taxonomy'
 
 interface GraphFiltersProps {
   onApply?: (summary: string) => void
@@ -18,6 +18,10 @@ const defaultFilters: GraphFilterState = { domain: '全部 T 领域', level: 'L2
 export function GraphFilters({ onApply, onChange, initialValues }: GraphFiltersProps) {
   const initialFilters = { ...defaultFilters, ...initialValues }
   const [filters, setFilters] = useState<GraphFilterState>(initialFilters)
+  const [domains, setDomains] = useState<TechnologyDomain[]>([])
+  useEffect(() => {
+    cachedDomains().then(setDomains).catch(() => undefined)
+  }, [])
   const update = (key: keyof GraphFilterState, value: string) => {
     const next = { ...filters, [key]: value }
     setFilters(next)

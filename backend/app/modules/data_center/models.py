@@ -237,6 +237,7 @@ class MilestoneEvent(Base):
     description_text: Mapped[str] = mapped_column(Text)
     maturity_delta_score: Mapped[Decimal | None] = mapped_column(Numeric(5, 2))
     verification_status_code: Mapped[str] = mapped_column(String(32), default="candidate")
+    data_origin_code: Mapped[str] = mapped_column(String(32), default="source_fact")
     verified_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("app_user.user_id"))
     verified_at: Mapped[datetime | None] = mapped_column(DateTime)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())

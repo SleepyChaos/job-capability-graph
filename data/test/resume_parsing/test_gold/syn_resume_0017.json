@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0017",
+  "file": "syn_resume_0017.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.02.07",
+      "term_name": "具身智能体(Agent)",
+      "evidence_text": "负责具身智能体(Agent)模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.04",
+      "term_name": "并联机器人",
+      "evidence_text": "在项目中使用并联机器人解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.04.01",
+      "term_name": "惯性测量单元(IMU)",
+      "evidence_text": "主导惯性测量单元(IMU)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

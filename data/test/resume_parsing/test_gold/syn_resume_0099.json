@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0099",
+  "file": "syn_resume_0099.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人控制算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "人工智能"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.01.10",
+      "term_name": "遥操作与端到端控制",
+      "evidence_text": "在项目中使用遥操作与端到端控制解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.06",
+      "term_name": "元学习",
+      "evidence_text": "负责元学习模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.09",
+      "term_name": "力觉感知",
+      "evidence_text": "在项目中使用力觉感知解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.10",
+      "term_name": "触觉仿真",
+      "evidence_text": "在项目中使用触觉仿真解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

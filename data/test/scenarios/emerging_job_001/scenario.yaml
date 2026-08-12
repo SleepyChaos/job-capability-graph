@@ -1,0 +1,25 @@
+scenario_id: emerging_job_001
+title_hypothesis: 由真实推演运行产生的新岗位候选（名称以运行结果为准，Q5）
+as_of_date: "2026-08-11"
+status: structure_ready_pending_demo_run
+
+inputs:
+  mode: automatic
+  data_source_codes: [all_jobs_jd, embodied_final]
+  taxonomy_version: v1.1
+  clustering_run: latest_success
+  milestone_policy: 无已验证里程碑时标记 evidence_limited（如实展示）
+
+steps:
+  - 运行 POST /api/v1/role-discovery/runs（mode=automatic，target_date=今天）
+  - 在候选列表选择分数最高的 pending 候选
+  - POST /expression/auto 生成表达层（无 LLM Key 时规则降级）
+  - POST /reviews/{task_code}/actions approve 完成专项审批
+  - 校验正式岗位、首版本与标准 JD 入库（is_market_evidence=false）
+
+expected:
+  candidate_generated: true
+  manual_review_required: true
+  published_as_real_job_before_approval: false
+  standard_jd_not_counted_as_market_evidence: true
+  jd_backflow_visible_after_new_collection: pending_real_crawl

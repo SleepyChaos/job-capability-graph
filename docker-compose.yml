@@ -1,0 +1,56 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_change_me
+      MYSQL_DATABASE: job_capability_graph
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app_password_change_me
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_password_change_me"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    build: ./backend
+    environment:
+      APP_DATABASE_URL: mysql+pymysql://app:app_password_change_me@mysql:3306/job_capability_graph?charset=utf8mb4
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: "no"
+
+  backend:
+    build: ./backend
+    environment:
+      APP_DATABASE_URL: mysql+pymysql://app:app_password_change_me@mysql:3306/job_capability_graph?charset=utf8mb4
+      # LLM 网关（可选）：无 Key 时全部调用降级为规则输出
+      APP_LLM_API_KEY: ${APP_LLM_API_KEY:-}
+      APP_LLM_BASE_URL: ${APP_LLM_BASE_URL:-https://api.deepseek.com/v1}
+      APP_LLM_MODEL: ${APP_LLM_MODEL:-deepseek-chat}
+      APP_AUTH_SECRET: ${APP_AUTH_SECRET:-change-me-in-production}
+    volumes:
+      # 数据导入与评测需要访问仓库数据目录
+      - ./data:/srv/data:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql-data:

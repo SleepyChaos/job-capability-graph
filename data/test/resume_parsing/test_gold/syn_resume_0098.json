@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0098",
+  "file": "syn_resume_0098.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T3.01.04",
+      "term_name": "人形机器人核心零部件",
+      "evidence_text": "主导人形机器人核心零部件相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.05",
+      "term_name": "双足行走与步态",
+      "evidence_text": "在项目中使用双足行走与步态解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.08",
+      "term_name": "学习驱动运动控制",
+      "evidence_text": "主导学习驱动运动控制相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.04.01",
+      "term_name": "惯性测量单元(IMU)",
+      "evidence_text": "在项目中使用惯性测量单元(IMU)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.06",
+      "term_name": "触觉感知算法",
+      "evidence_text": "主导触觉感知算法相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

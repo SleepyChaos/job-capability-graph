@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0018",
+  "file": "syn_resume_0018.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.09.06",
+      "term_name": "操作感知与表示",
+      "evidence_text": "主导操作感知与表示相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.05",
+      "term_name": "触觉传感器",
+      "evidence_text": "负责触觉传感器模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.08",
+      "term_name": "人形机器人(通用)",
+      "evidence_text": "主导人形机器人(通用)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.01",
+      "term_name": "具身推理与ECoT",
+      "evidence_text": "负责具身推理与ECoT模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.03",
+      "term_name": "电子皮肤与柔性触觉",
+      "evidence_text": "在项目中使用电子皮肤与柔性触觉解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.04",
+      "term_name": "想象训练与Rollout",
+      "evidence_text": "在项目中使用想象训练与Rollout解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

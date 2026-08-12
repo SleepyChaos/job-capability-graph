@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0077",
+  "file": "syn_resume_0077.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.04.01",
+      "term_name": "惯性测量单元(IMU)",
+      "evidence_text": "在项目中使用惯性测量单元(IMU)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.04",
+      "term_name": "灵巧抓取",
+      "evidence_text": "主导灵巧抓取相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.05",
+      "term_name": "机器人学习",
+      "evidence_text": "在项目中使用机器人学习解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.05",
+      "term_name": "双足行走与步态",
+      "evidence_text": "在项目中使用双足行走与步态解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

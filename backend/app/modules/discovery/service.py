@@ -277,6 +277,16 @@ def candidate_snapshot(db: Session, candidate: EmergingRoleCandidate) -> dict:
         )
         .order_by(CandidateTechnology.importance_score.desc())
     ).all()
+    score_components = list(
+        db.scalars(
+            select(CandidateScoreComponent)
+            .where(
+                CandidateScoreComponent.emerging_role_candidate_id
+                == candidate.emerging_role_candidate_id
+            )
+            .order_by(CandidateScoreComponent.candidate_score_component_id)
+        )
+    )
     return {
         "candidate_code": candidate.candidate_code,
         "proposed_name": candidate.proposed_name,
@@ -287,6 +297,7 @@ def candidate_snapshot(db: Session, candidate: EmergingRoleCandidate) -> dict:
         "risk_flags": candidate.risk_flags_json,
         "mechanical_card": candidate.mechanical_card_json,
         "expression": candidate.expression_json,
+        "expression_model_version": candidate.expression_model_version,
         "approved_role_id": candidate.approved_job_role_id,
         "technologies": [
             {
@@ -297,6 +308,16 @@ def candidate_snapshot(db: Session, candidate: EmergingRoleCandidate) -> dict:
                 "evidence_count": rel.evidence_count,
             }
             for rel, node in technologies
+        ],
+        "score_components": [
+            {
+                "component_code": item.component_code,
+                "component_type_code": item.component_type_code,
+                "raw_score": float(item.raw_score),
+                "weight": float(item.weight),
+                "weighted_score": float(item.weighted_score),
+            }
+            for item in score_components
         ],
     }
 
@@ -312,6 +333,7 @@ def apply_candidate_expression(
     difference_explanation: str,
     fact_references: list[str],
     model_version: str,
+    generation_method: str = "llm_expression",
 ) -> EmergingRoleCandidate:
     candidate = db.scalar(
         select(EmergingRoleCandidate).where(EmergingRoleCandidate.candidate_code == candidate_code)
@@ -340,12 +362,146 @@ def apply_candidate_expression(
         "formation_reason": formation_reason.strip(),
         "difference_explanation": difference_explanation.strip(),
         "fact_references": sorted(references),
-        "generation_method": "llm_expression",
+        "generation_method": generation_method,
     }
     candidate.expression_model_version = model_version
     db.commit()
     db.refresh(candidate)
     return candidate
+
+
+EXPRESSION_PROMPT_VERSION = "candidate_expression_v1"
+
+
+def auto_candidate_expression(db: Session, *, candidate_code: str) -> EmergingRoleCandidate:
+    """一键生成表达层：LLM 可用时生成并校验，否则规则降级（设计 §8.5、§12.3）。"""
+    candidate = db.scalar(
+        select(EmergingRoleCandidate).where(
+            EmergingRoleCandidate.candidate_code == candidate_code
+        )
+    )
+    if candidate is None:
+        raise DiscoveryError("新岗位候选不存在")
+    if candidate.workflow_status_code not in {"pending", "needs_revision"}:
+        raise DiscoveryError("只有待审或待修改候选可以更新表达层")
+    card = candidate.mechanical_card_json or {}
+    technologies = candidate_snapshot(db, candidate)["technologies"]
+    references = _card_fact_references(card)
+
+    llm_result = _llm_expression(card, candidate, technologies)
+    if llm_result is not None:
+        return apply_candidate_expression(
+            db,
+            candidate_code=candidate_code,
+            proposed_name=str(llm_result["proposed_name"])[:500],
+            one_line_definition=str(llm_result["one_line_definition"])[:3000],
+            core_responsibilities=[str(item) for item in llm_result["core_responsibilities"]],
+            formation_reason=str(llm_result["formation_reason"])[:5000],
+            difference_explanation=str(llm_result["difference_explanation"])[:5000],
+            fact_references=references,
+            model_version=f"llm:{llm_result['_model']}",
+            generation_method="llm_expression",
+        )
+
+    fallback = _rule_expression(card, candidate, technologies)
+    return apply_candidate_expression(
+        db,
+        candidate_code=candidate_code,
+        proposed_name=candidate.proposed_name,
+        one_line_definition=fallback["one_line_definition"],
+        core_responsibilities=fallback["core_responsibilities"],
+        formation_reason=fallback["formation_reason"],
+        difference_explanation=fallback["difference_explanation"],
+        fact_references=references,
+        model_version="rule_expression_v1",
+        generation_method="rule_expression",
+    )
+
+
+def _card_fact_references(card: dict) -> list[str]:
+    references = [f"task:{item}" for item in card.get("task_ids", [])]
+    references += [f"technology:{item}" for item in card.get("technology_node_ids", [])][:10]
+    references += [f"evidence:{item}" for item in card.get("evidence_ids", [])][:10]
+    return references or ["task:unknown"]
+
+
+def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | None:
+    from app.infrastructure.llm import generate, validate_schema
+
+    facts = {
+        "proposed_name": candidate.proposed_name,
+        "job_count": card.get("job_count"),
+        "organization_count": card.get("organization_count"),
+        "task_gap": card.get("task_gap"),
+        "maturity_raw": card.get("maturity_raw"),
+        "technologies": [
+            {"name": item["technology_name"], "requirement_type": item["requirement_type"]}
+            for item in technologies[:12]
+        ],
+    }
+    system_prompt = (
+        "你是岗位研究助手。只能基于给定机械事实生成岗位表达，"
+        "不得新增事实、数字或技能；输出 JSON，包含键：proposed_name、"
+        "one_line_definition、core_responsibilities（数组）、formation_reason、"
+        "difference_explanation。"
+    )
+    result = generate(
+        system_prompt=system_prompt,
+        user_prompt=f"机械事实：{json.dumps(facts, ensure_ascii=False)}",
+        prompt_version=EXPRESSION_PROMPT_VERSION,
+        json_mode=True,
+    )
+    if result is None or result.parsed_json is None:
+        return None
+    data = result.parsed_json
+    required = {
+        "proposed_name",
+        "one_line_definition",
+        "core_responsibilities",
+        "formation_reason",
+        "difference_explanation",
+    }
+    if not validate_schema(data, required) or not isinstance(
+        data.get("core_responsibilities"), list
+    ):
+        return None
+    data["_model"] = result.model
+    return data
+
+
+def _rule_expression(card: dict, candidate, technologies: list[dict]) -> dict:
+    required_names = [
+        item["technology_name"]
+        for item in technologies
+        if item["requirement_type"] == "required"
+    ][:5]
+    bonus_names = [
+        item["technology_name"]
+        for item in technologies
+        if item["requirement_type"] != "required"
+    ][:5]
+    job_count = int(card.get("job_count", 0))
+    org_count = int(card.get("organization_count", 0))
+    responsibilities = [
+        f"围绕候选任务组合开展工程交付（证据 JD {job_count} 条）",
+        f"应用必需技术：{'、'.join(required_names) if required_names else '待补充'}",
+    ]
+    if bonus_names:
+        responsibilities.append(f"加分技术：{'、'.join(bonus_names)}")
+    return {
+        "one_line_definition": (
+            f"基于 {job_count} 条真实 JD、{org_count} 家独立企业的任务缺口证据形成的新岗位候选。"
+        ),
+        "core_responsibilities": responsibilities,
+        "formation_reason": (
+            "由技术词、任务缺口与市场支撑的确定性算法计算形成；表达层为规则降级生成，"
+            "接入 LLM 后可优化语言。"
+        ),
+        "difference_explanation": (
+            f"与最邻近既有岗位重合度 {card.get('nearest_role_overlap', 0)}，"
+            "任务组合未被现有岗位充分覆盖。"
+        ),
+    }
 
 
 def _run_evidence_discovery(

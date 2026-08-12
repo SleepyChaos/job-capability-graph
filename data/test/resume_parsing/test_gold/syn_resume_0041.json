@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0041",
+  "file": "syn_resume_0041.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.01.04",
+      "term_name": "大小脑分层架构",
+      "evidence_text": "主导大小脑分层架构相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.02",
+      "term_name": "模型预测控制(MPC)",
+      "evidence_text": "在项目中使用模型预测控制(MPC)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.02",
+      "term_name": "轮足机器人",
+      "evidence_text": "在项目中使用轮足机器人解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.08",
+      "term_name": "图匹配算法",
+      "evidence_text": "在项目中使用图匹配算法解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.07",
+      "term_name": "具身智能体(Agent)",
+      "evidence_text": "主导具身智能体(Agent)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

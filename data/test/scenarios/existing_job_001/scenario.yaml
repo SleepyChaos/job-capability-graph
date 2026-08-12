@@ -1,0 +1,20 @@
+scenario_id: existing_job_001
+title_hypothesis: 既有岗位能力演化（两时间窗比较，名称以数据为准）
+as_of_date: "2026-08-11"
+status: structure_ready_pending_second_window
+
+inputs:
+  clustering_runs: [T0_latest, T1_next_cycle]
+  comparison_api: GET /api/v1/job-roles/{role_code}（versions + evolution_changes + evolution_warning）
+
+steps:
+  - T0：当前聚类运行形成的岗位版本作为基线
+  - T1：新一轮采集与聚类后重算能力重要度
+  - 查看岗位详情接口的 evolution_changes（added/modified/strengthened/weakened）
+  - 若两窗口样本量差异超阈值，evolution_warning 必须非空
+
+expected:
+  version_chain_length: ">=2"
+  changes_have_evidence: true
+  comparison_warning_emitted_on_sample_gap: true
+  note: 当前可靠源时间仅覆盖 2 天，第二时间窗需真实采集积累（数据边界如实披露）

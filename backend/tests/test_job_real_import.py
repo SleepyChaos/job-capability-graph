@@ -2,7 +2,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
@@ -10,6 +10,7 @@ from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
 from app.modules.ingestion.service import WorkbookStagingService
+from app.modules.job.models import DuplicateDocumentGroup, DuplicateDocumentMember
 from app.modules.job.parsing_service import JobParsingService
 from app.modules.job.service import JobImportService
 from app.modules.taxonomy.service import TaxonomyImportService
@@ -84,8 +85,42 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert first.total_jobs == 3718
         assert first.organization_count == 84
         assert first.unique_content_count == 3391
-        assert first.duplicate_group_count == 235
-        assert first.duplicate_member_count == 562
+        # 精确哈希去重保持 235 簇 / 562 成员；SimHash 近重复另计（设计 §6.2）
+        exact_groups = session.scalar(
+            select(func.count())
+            .select_from(DuplicateDocumentGroup)
+            .where(DuplicateDocumentGroup.detection_method_code == "exact_content_hash")
+        )
+        exact_members = session.scalar(
+            select(func.count())
+            .select_from(DuplicateDocumentMember)
+            .join(
+                DuplicateDocumentGroup,
+                DuplicateDocumentGroup.duplicate_group_id
+                == DuplicateDocumentMember.duplicate_group_id,
+            )
+            .where(DuplicateDocumentGroup.detection_method_code == "exact_content_hash")
+        )
+        near_groups = session.scalar(
+            select(func.count())
+            .select_from(DuplicateDocumentGroup)
+            .where(DuplicateDocumentGroup.detection_method_code == "simhash_near_duplicate")
+        )
+        near_members = session.scalar(
+            select(func.count())
+            .select_from(DuplicateDocumentMember)
+            .join(
+                DuplicateDocumentGroup,
+                DuplicateDocumentGroup.duplicate_group_id
+                == DuplicateDocumentMember.duplicate_group_id,
+            )
+            .where(DuplicateDocumentGroup.detection_method_code == "simhash_near_duplicate")
+        )
+        assert exact_groups == 235
+        assert exact_members == 562
+        assert near_groups and near_groups >= 1
+        assert first.duplicate_group_count == exact_groups + near_groups
+        assert first.duplicate_member_count == exact_members + near_members
         assert first.source_timed_count == 1691
         assert first.migration_timed_count == 2027
         assert first.technology_covered_job_count == 1678
@@ -94,12 +129,12 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert not first.already_published
         assert second.already_published
         assert parsing_first.parsed_job_count == 3718
-        assert parsing_first.review_job_count == 675
-        assert parsing_first.responsibility_count == 17176
+        assert parsing_first.review_job_count == 687
+        assert parsing_first.responsibility_count == 16719
         assert parsing_first.assessment_count == 7591
-        assert parsing_first.ambiguity_review_count == 734
+        assert parsing_first.ambiguity_review_count == 735
         assert parsing_first.feature_count == 3718
-        assert parsing_first.eligible_feature_count == 3540
+        assert parsing_first.eligible_feature_count == 3534
         assert not parsing_first.already_completed
         assert parsing_second.already_completed
 
@@ -135,7 +170,7 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert summary.json()["total_jobs"] == 3718
         assert summary.json()["technology_covered_job_count"] == 1678
         assert duplicates.status_code == 200
-        assert duplicates.json()["total"] == 562
+        assert duplicates.json()["total"] == first.duplicate_member_count
         assert all(item["duplicate_group_code"] for item in duplicates.json()["items"])
         assert ros_jobs.status_code == 200
         assert ros_jobs.json()["total"] == 233
@@ -148,12 +183,12 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert all(technology["evidence"] for technology in detail.json()["technologies"])
         assert parsing_summary.status_code == 200
         assert parsing_summary.json()["run"]["parsed_job_count"] == 3718
-        assert parsing_summary.json()["ambiguity_review_count"] == 734
-        assert parsing_summary.json()["eligible_feature_count"] == 3540
+        assert parsing_summary.json()["ambiguity_review_count"] == 735
+        assert parsing_summary.json()["eligible_feature_count"] == 3534
         assert parsing_reviews.status_code == 200
-        assert parsing_reviews.json()["total"] == 675
+        assert parsing_reviews.json()["total"] == 687
         assert parsing_excluded.status_code == 200
-        assert parsing_excluded.json()["total"] == 178
+        assert parsing_excluded.json()["total"] == 184
         assert parsing_detail.status_code == 200
         assert parsing_detail.json()["cluster_feature"]["version"] == "cluster_features_v1"
         assert ambiguity_rules.status_code == 200

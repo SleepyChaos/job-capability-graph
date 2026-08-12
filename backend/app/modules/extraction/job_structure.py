@@ -32,6 +32,10 @@ CHINESE_HEADINGS = {
     "加分项": "bonus",
     "优先条件": "bonus",
     "优先资格": "bonus",
+    "应用场景": "scenario",
+    "业务场景": "scenario",
+    "工作场景": "scenario",
+    "落地场景": "scenario",
     "公司介绍": "about",
     "关于我们": "about",
     "福利待遇": "benefit",
@@ -57,6 +61,8 @@ ENGLISH_HEADINGS = {
     "preferred skills": "bonus",
     "about us": "about",
     "about the company": "about",
+    "application scenarios": "scenario",
+    "use cases": "scenario",
     "benefits": "benefit",
     "equal opportunity": "about",
 }
@@ -69,6 +75,15 @@ BONUS_MARKERS = (
     "preferred",
     "a plus",
     "bonus",
+)
+
+SCENARIO_MARKERS = (
+    "应用场景",
+    "业务场景",
+    "落地场景",
+    "部署场景",
+    "application scenario",
+    "use case",
 )
 RESPONSIBILITY_MARKERS = (
     "负责",
@@ -220,11 +235,17 @@ class JobStructureParser:
     def _classify(text: str, heading_type: str | None) -> tuple[str, int]:
         lowered = text.casefold()
         if heading_type:
+            if heading_type == "scenario":
+                return "scenario", 92
             if any(marker in lowered for marker in BONUS_MARKERS):
                 return "bonus", 95
             return heading_type, 92
         if any(marker in lowered for marker in ABOUT_MARKERS):
             return "about", 90
+        # 保守策略：只有开头即出现场景标记的条目才归为场景，避免污染职责/要求切分。
+        prefix = lowered[:14]
+        if any(marker in prefix for marker in SCENARIO_MARKERS):
+            return "scenario", 72
         if any(marker in lowered for marker in BONUS_MARKERS):
             return "bonus", 85
         responsibility_score = sum(marker in lowered for marker in RESPONSIBILITY_MARKERS)

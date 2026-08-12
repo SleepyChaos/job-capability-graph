@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0004",
+  "file": "syn_resume_0004.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.06.09",
+      "term_name": "自主认知",
+      "evidence_text": "在项目中使用自主认知解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.07",
+      "term_name": "抓取合成与数据",
+      "evidence_text": "主导抓取合成与数据相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.08",
+      "term_name": "学习驱动运动控制",
+      "evidence_text": "负责学习驱动运动控制模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

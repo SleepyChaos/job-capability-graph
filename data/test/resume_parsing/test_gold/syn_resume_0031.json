@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0031",
+  "file": "syn_resume_0031.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T3.03.03",
+      "term_name": "外骨骼机器人",
+      "evidence_text": "在项目中使用外骨骼机器人解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.06",
+      "term_name": "操作感知与表示",
+      "evidence_text": "主导操作感知与表示相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.10",
+      "term_name": "感知认知(通用)",
+      "evidence_text": "在项目中使用感知认知(通用)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

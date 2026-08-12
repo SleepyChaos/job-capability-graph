@@ -12,6 +12,12 @@ from urllib.parse import urlparse
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, aliased
 
+from app.modules.extraction.near_duplicate import near_duplicate_clusters
+from app.modules.extraction.publish_gate import (
+    PUBLISH_GATE_VERSION,
+    compute_publish_score,
+    route_publish_score,
+)
 from app.modules.extraction.technology import (
     TechnologyAliasMatcher,
     TechnologyHit,
@@ -250,6 +256,23 @@ class JobImportService:
             experience_text = self._text(payload, "经验(标准化)")
             experience_min, experience_max = EXPERIENCE_RANGES[experience_text]
             education_text = self._text(payload, "学历(标准化)")
+            # 统一发布门禁（设计 §6.3）：按七分量公式计算并记录分流，不再硬编码 90/75。
+            completeness_points = sum(
+                (bool(canonical_url), bool(raw_company), bool(source_time))
+            )
+            publish_components = {
+                "source_reliability": float(
+                    primary_source.default_reliability_score or Decimal("60")
+                ),
+                "extraction_confidence": 95.0,
+                "schema_completeness": 60.0 + completeness_points * (40.0 / 3),
+                "evidence_coverage": 100.0,
+                "cross_source_support": min(100.0, max(0, len(source_codes) - 1) * 50.0),
+                "timeliness": 90.0 if source_time else 40.0,
+                "consistency": 100.0 if title and content else 0.0,
+            }
+            publish_score_value = compute_publish_score(publish_components)
+            publish_route = route_publish_score(publish_score_value)
             job = JobPosting(
                 source_spreadsheet_row_id=source_row.spreadsheet_row_id,
                 job_code=stable_code("job", f"{primary_source.source_code}\0{occ_id}"),
@@ -274,8 +297,11 @@ class JobImportService:
                 source_collected_at=source_time,
                 time_quality_code=time_quality,
                 parse_confidence_score=Decimal("95"),
-                publish_score=Decimal("90") if canonical_url and raw_company else Decimal("75"),
+                publish_score=Decimal(str(publish_score_value)),
                 source_metadata_json={
+                    "publish_gate_version": PUBLISH_GATE_VERSION,
+                    "publish_route": publish_route,
+                    "publish_components": publish_components,
                     "career_direction": payload.get("职业方向"),
                     "career_type": payload.get("职业种类"),
                     "industry_chain_level": payload.get("产业链层级"),
@@ -350,6 +376,7 @@ class JobImportService:
 
         self.session.flush()
         self._create_duplicate_groups(document_versions_by_hash, job_by_document_version)
+        self._create_near_duplicate_groups(document_versions_by_hash, job_by_document_version)
         self.session.commit()
         return self._result(already_published=False)
 
@@ -614,6 +641,64 @@ class JobImportService:
                     reasons = dict(quality.reason_json or {})
                     reasons["duplicate_group_code"] = group.group_code
                     quality.reason_json = reasons
+
+    def _create_near_duplicate_groups(
+        self,
+        versions_by_hash: dict[str, list[SourceDocumentVersion]],
+        job_by_document_version: dict[int, JobPosting],
+    ) -> None:
+        """设计 §6.2 第 2 条：对非精确重复的内容做 SimHash 近重复聚簇并降权。"""
+        candidate_versions = [
+            version
+            for versions in versions_by_hash.values()
+            if len(versions) == 1
+            for version in versions
+            if (version.content_text or "").strip()
+        ]
+        if len(candidate_versions) < 2:
+            return
+        items = [
+            (version.source_document_version_id, version.content_text)
+            for version in candidate_versions
+        ]
+        version_by_id = {
+            version.source_document_version_id: version for version in candidate_versions
+        }
+        clusters = near_duplicate_clusters(items)
+        for members in clusters:
+            member_ids = [member_id for member_id, _similarity in members]
+            similarity_by_id = dict(members)
+            group_identity = hashlib.sha256(
+                "|".join(str(member_id) for member_id in sorted(member_ids)).encode()
+            ).hexdigest()
+            representative_id = min(
+                member_ids,
+                key=lambda item: version_by_id[item].collected_at or datetime.max,
+            )
+            group = DuplicateDocumentGroup(
+                group_code=stable_code("ndup", group_identity),
+                representative_document_version_id=representative_id,
+                detection_method_code="simhash_near_duplicate",
+                algorithm_version="simhash64_v1",
+                member_count=len(members),
+            )
+            self.session.add(group)
+            self.session.flush()
+            weight = Decimal("1") / Decimal(len(members))
+            for member_id in member_ids:
+                similarity = similarity_by_id[member_id]
+                self.session.add(
+                    DuplicateDocumentMember(
+                        duplicate_group_id=group.duplicate_group_id,
+                        source_document_version_id=member_id,
+                        similarity_score=Decimal(str(similarity)),
+                        copied_ratio=Decimal(str(similarity)),
+                        is_representative=member_id == representative_id,
+                    )
+                )
+                job = job_by_document_version.get(member_id)
+                if job is not None:
+                    job.evidence_weight = weight
 
     def _result(self, *, already_published: bool) -> JobImportResult:
         total_jobs = self.session.scalar(select(func.count()).select_from(JobPosting)) or 0

@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0019",
+  "file": "syn_resume_0019.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T3.03.04",
+      "term_name": "并联机器人",
+      "evidence_text": "主导并联机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.08.01",
+      "term_name": "群体智能与协同",
+      "evidence_text": "在项目中使用群体智能与协同解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.11",
+      "term_name": "具身操作",
+      "evidence_text": "在项目中使用具身操作解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.06",
+      "term_name": "操作感知与表示",
+      "evidence_text": "主导操作感知与表示相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

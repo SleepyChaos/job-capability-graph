@@ -209,6 +209,29 @@ class DuplicateDocumentMember(Base):
     is_representative: Mapped[bool] = mapped_column(Boolean, default=False)
 
 
+class JobScenario(Base):
+    """JD 应用场景条目（后端设计 §7.1 application_scenarios[]）。"""
+
+    __tablename__ = "rel_job_scenario"
+
+    job_scenario_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    job_posting_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_job_posting.job_posting_id")
+    )
+    scenario_no: Mapped[int] = mapped_column(Integer)
+    scenario_text: Mapped[str] = mapped_column(Text)
+    normalized_scenario: Mapped[str] = mapped_column(String(500))
+    start_offset: Mapped[int] = mapped_column(Integer, default=0)
+    end_offset: Mapped[int] = mapped_column(Integer, default=0)
+    confidence_score: Mapped[Decimal] = mapped_column(Numeric(5, 2), default=Decimal("0"))
+    data_origin_code: Mapped[str] = mapped_column(String(32), default="source_fact")
+
+    __table_args__ = (
+        UniqueConstraint("job_posting_id", "scenario_no", name="uk_job_scenario_no"),
+        Index("idx_job_scenario_posting", "job_posting_id"),
+    )
+
+
 class EvidenceSpan(Base):
     __tablename__ = "biz_evidence_span"
 
@@ -271,6 +294,7 @@ class JobPosting(Base):
     posting_status_code: Mapped[str] = mapped_column(String(32), default="active")
     parse_confidence_score: Mapped[Decimal | None] = mapped_column(Numeric(5, 2))
     publish_score: Mapped[Decimal | None] = mapped_column(Numeric(5, 2))
+    data_origin_code: Mapped[str] = mapped_column(String(32), default="source_fact")
     evidence_weight: Mapped[Decimal] = mapped_column(Numeric(9, 6), default=Decimal("1"))
     source_metadata_json: Mapped[dict | None] = mapped_column(JSON)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())

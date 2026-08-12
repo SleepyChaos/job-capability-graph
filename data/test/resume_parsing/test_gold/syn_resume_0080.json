@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0080",
+  "file": "syn_resume_0080.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.07.02",
+      "term_name": "记忆机制",
+      "evidence_text": "负责记忆机制模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.06",
+      "term_name": "触觉感知算法",
+      "evidence_text": "主导触觉感知算法相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.06",
+      "term_name": "世界模型评测基准",
+      "evidence_text": "负责世界模型评测基准模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.01",
+      "term_name": "四足机器人",
+      "evidence_text": "在项目中使用四足机器人解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.03",
+      "term_name": "模仿学习",
+      "evidence_text": "负责模仿学习模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.09",
+      "term_name": "力觉感知",
+      "evidence_text": "负责力觉感知模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

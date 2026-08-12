@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0006",
+  "file": "syn_resume_0006.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.05.03",
+      "term_name": "模仿学习",
+      "evidence_text": "在项目中使用模仿学习解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.05",
+      "term_name": "场景理解与环境感知",
+      "evidence_text": "在项目中使用场景理解与环境感知解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.08",
+      "term_name": "细分方法与技术(其他)",
+      "evidence_text": "在项目中使用细分方法与技术(其他)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

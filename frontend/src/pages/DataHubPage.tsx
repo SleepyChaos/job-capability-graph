@@ -1,68 +1,118 @@
 import {
   ArrowRight,
-  CheckCircle2,
   Database,
   DatabaseZap,
-  FileCheck2,
   GitBranch,
+  RefreshCw,
+  ShieldAlert,
   ShieldCheck,
   TableProperties,
 } from 'lucide-react'
-import { MetricStrip, MiniLineChart, Panel, StatusTag } from '../components/ui'
+import { useEffect, useState } from 'react'
+import { dataCenterApi, type CollectionRun } from '../api/dataCenter'
+import { jobsApi, type JobSummary } from '../api/jobs'
+import { taxonomyApi } from '../api/taxonomy'
+import { MetricStrip, Panel, StatusTag } from '../components/ui'
 import type { PageId } from '../types'
 
-const sections = [
-  {
-    id: 'sources' as const,
-    title: '数据采集中枢',
-    description: '维护多源采集入口、定时任务、增量发现和解析质量。',
-    icon: DatabaseZap,
-    metric: '12 个数据源',
-    detail: '今日新增 1,442 条',
-    tone: 'teal',
-  },
-  {
-    id: 'management' as const,
-    title: '数据管理中心',
-    description: '查询、查看和编辑 JD、技术词、里程碑与原始文档。',
-    icon: TableProperties,
-    metric: '4 类核心数据集',
-    detail: '共 4,868 条结构化记录',
-    tone: 'blue',
-  },
-  {
-    id: 'taxonomy' as const,
-    title: '技术词标准管理',
-    description: '维护技术词标准、L1–L4 知识层级、T1–T7 领域映射与候选词版本。',
-    icon: GitBranch,
-    metric: '229 个标准技术点',
-    detail: '8 个候选词待治理',
-    tone: 'purple',
-  },
-  {
-    id: 'review' as const,
-    title: '数据审核中心',
-    description: '审核低置信度 JD、关键词、里程碑及聚类或 T/L 分类。',
-    icon: ShieldCheck,
-    metric: '5 项待审核',
-    detail: '平均处理时间 4.2h',
-    tone: 'amber',
-  },
-]
+interface HubStats {
+  jobSummary: JobSummary | null
+  sourceCount: number
+  l3Count: number
+  nodeTotal: number
+  queuedReviewCount: number
+  milestoneTotal: number
+  runs: CollectionRun[]
+}
 
 export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void }) {
+  const [stats, setStats] = useState<HubStats | null>(null)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    const controller = new AbortController()
+    Promise.all([
+      jobsApi.summary(controller.signal),
+      dataCenterApi.sources(controller.signal),
+      taxonomyApi.nodes({ level: 'L3', limit: 1 }, controller.signal),
+      taxonomyApi.nodes({ limit: 1 }, controller.signal),
+      dataCenterApi.reviews('queued', controller.signal),
+      dataCenterApi.milestones({ limit: 1 }, controller.signal),
+      dataCenterApi.runs(controller.signal),
+    ])
+      .then(([jobSummary, sources, l3Page, nodePage, queuedReviews, milestonePage, runs]) => {
+        setStats({
+          jobSummary,
+          sourceCount: sources.length,
+          l3Count: l3Page.total,
+          nodeTotal: nodePage.total,
+          queuedReviewCount: queuedReviews.length,
+          milestoneTotal: milestonePage.total,
+          runs,
+        })
+      })
+      .catch((reason: Error) => { if (reason.name !== 'AbortError') setError(reason.message) })
+    return () => controller.abort()
+  }, [])
+
+  const summary = stats?.jobSummary
+  const coverageRate = summary && summary.total_jobs > 0
+    ? Math.round((summary.technology_covered_job_count / summary.total_jobs) * 100)
+    : 0
+
+  const sections = [
+    {
+      id: 'sources' as const,
+      title: '数据采集中枢',
+      description: '维护多源采集入口、采集策略、运行记录与合规状态。',
+      icon: DatabaseZap,
+      metric: `${stats?.sourceCount ?? '—'} 个注册数据源`,
+      detail: `${stats?.runs.length ?? 0} 条采集运行记录`,
+      tone: 'teal',
+    },
+    {
+      id: 'management' as const,
+      title: '数据管理中心',
+      description: '查询、查看 JD、技术词、里程碑与原始文档。',
+      icon: TableProperties,
+      metric: `${(summary?.total_jobs ?? 0).toLocaleString()} 条正式 JD`,
+      detail: `${(summary?.requirement_count ?? 0).toLocaleString()} 条技术证据`,
+      tone: 'blue',
+    },
+    {
+      id: 'taxonomy' as const,
+      title: '技术词标准管理',
+      description: '维护技术词标准、L1–L4 知识层级、T1–T7 领域映射与候选词版本。',
+      icon: GitBranch,
+      metric: `${stats?.l3Count ?? '—'} 个标准技术点`,
+      detail: `体系共 ${stats?.nodeTotal ?? '—'} 个节点`,
+      tone: 'purple',
+    },
+    {
+      id: 'review' as const,
+      title: '数据审核中心',
+      description: '审核低置信度抽取结果、岗位版本建议与 T/L 分类。',
+      icon: ShieldCheck,
+      metric: `${stats?.queuedReviewCount ?? '—'} 项待审核`,
+      detail: '审核动作保留审计快照',
+      tone: 'amber',
+    },
+  ]
+
   return (
     <div className="page-stack">
       <div className="page-intro">
         <div><h2>数据中心</h2><p>负责从真实来源采集、清洗、抽取和治理可信数据；不在此处生成或定义新岗位。</p></div>
-        <StatusTag tone="success">数据链路正常</StatusTag>
+        {error ? <StatusTag tone="danger">接口异常</StatusTag> : stats ? <StatusTag tone="success">数据链路正常</StatusTag> : <StatusTag tone="info">加载中</StatusTag>}
       </div>
 
+      {error ? <div className="empty-state"><ShieldAlert size={25} /><strong>加载失败</strong><span>{error}</span></div> : !stats ? <div className="empty-state"><RefreshCw className="spin" size={22} /><strong>正在聚合真实数据…</strong></div> : null}
+
       <MetricStrip items={[
-        { label: '原始文档', value: '3,862', delta: '↑ 184' },
-        { label: '有效 JD', value: '1,284', delta: '↑ 12.6%' },
-        { label: '标准技术点', value: '229', delta: '8 个候选' },
-        { label: '待审核事项', value: '5', delta: '今日减少 7' },
+        { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家机构` },
+        { label: '唯一内容版本', value: (summary?.unique_content_count ?? 0).toLocaleString(), delta: `${summary?.duplicate_group_count ?? 0} 个重复簇` },
+        { label: '标准技术点', value: (stats?.l3Count ?? 0).toLocaleString(), delta: `体系 ${stats?.nodeTotal ?? 0} 节点` },
+        { label: '待审核事项', value: String(stats?.queuedReviewCount ?? 0), delta: `里程碑 ${stats?.milestoneTotal ?? 0}` },
       ]} />
 
       <section className="data-hub-sections" aria-label="数据中心功能分区">
@@ -78,33 +128,45 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
       <div className="data-hub-grid">
         <Panel title="数据资产构成" subtitle="正式数据与原始证据保持版本关联">
           <div className="asset-composition">
-            {[['原始文档', 3862, 100], ['标准化 JD', 1284, 72], ['技术表面词', 1872, 86], ['技术里程碑', 146, 36]].map(([label, value, width]) => (
-              <div key={String(label)}><span>{label}</span><div><i style={{ width: `${width}%` }} /></div><strong>{Number(value).toLocaleString()}</strong></div>
-            ))}
+            {([
+              ['唯一内容版本', summary?.unique_content_count ?? 0, summary?.unique_content_count ?? 0],
+              ['正式 JD', summary?.total_jobs ?? 0, summary?.unique_content_count ?? 0],
+              ['技术体系节点', stats?.nodeTotal ?? 0, summary?.unique_content_count ?? 0],
+              ['技术里程碑', stats?.milestoneTotal ?? 0, summary?.unique_content_count ?? 0],
+            ] as [string, number, number][]).map(([label, value, max]) => {
+              const width = max > 0 ? Math.max(Math.round((value / max) * 100), 2) : 0
+              return <div key={label}><span>{label}</span><div><i style={{ width: `${width}%` }} /></div><strong>{value.toLocaleString()}</strong></div>
+            })}
           </div>
         </Panel>
-        <Panel title="近 14 天数据流入" subtitle="去重后的新增记录">
-          <div className="hub-trend"><MiniLineChart values={[28, 41, 36, 52, 48, 63, 58, 72, 69, 81, 76, 88, 83, 96]} /><div><span>07-27</span><span>08-09</span></div></div>
+        <Panel title="数据时间质量" subtitle="时间覆盖是趋势分析的主要边界">
+          <div className="governance-list">
+            <div><Database size={17} /><span>具备来源时间的 JD</span><strong>{(summary?.source_timed_count ?? 0).toLocaleString()}</strong></div>
+            <div><Database size={17} /><span>仅迁移时间的 JD</span><strong>{(summary?.migration_timed_count ?? 0).toLocaleString()}</strong></div>
+            <div><Database size={17} /><span>采集运行记录</span><strong>{stats?.runs.length ?? 0}</strong></div>
+          </div>
         </Panel>
         <Panel title="治理状态" subtitle="从采集到发布的质量关口">
           <div className="governance-list">
-            <div><CheckCircle2 size={17} /><span>来源合规信息完整</span><strong>12 / 12</strong></div>
-            <div><CheckCircle2 size={17} /><span>结构化解析通过</span><strong>96.8%</strong></div>
-            <div><FileCheck2 size={17} /><span>证据关联完整</span><strong>93.6%</strong></div>
-            <div><Database size={17} /><span>待发布数据版本</span><strong>3</strong></div>
+            <div><ShieldCheck size={17} /><span>注册数据源</span><strong>{stats?.sourceCount ?? 0}</strong></div>
+            <div><ShieldCheck size={17} /><span>JD 技术证据覆盖率</span><strong>{coverageRate}%</strong></div>
+            <div><ShieldAlert size={17} /><span>重复簇成员</span><strong>{(summary?.duplicate_member_count ?? 0).toLocaleString()}</strong></div>
+            <div><ShieldAlert size={17} /><span>待审核任务</span><strong>{stats?.queuedReviewCount ?? 0}</strong></div>
           </div>
         </Panel>
       </div>
 
-      <Panel title="最近数据变更" subtitle="所有编辑、审核和版本发布均保留审计记录">
-        <table className="compact-table data-change-table">
-          <thead><tr><th>时间</th><th>数据对象</th><th>变更</th><th>操作者</th><th>结果</th></tr></thead>
-          <tbody>
-            <tr><td>今天 11:42</td><td>JD-2026-01284</td><td>修正岗位级别：高级 → 中级</td><td>研究员 张明</td><td><StatusTag tone="success">已生效</StatusTag></td></tr>
-            <tr><td>今天 10:18</td><td>JD-RAW-01892</td><td>岗位级别缺失，进入低置信度审核</td><td>JD 抽取任务</td><td><StatusTag tone="warning">待审核</StatusTag></td></tr>
-            <tr><td>今天 09:45</td><td>TERM-CAND-019</td><td>新增候选技术词“4D 高斯溅射”</td><td>技术抽取任务</td><td><StatusTag tone="warning">待审核</StatusTag></td></tr>
-          </tbody>
-        </table>
+      <Panel title="最近采集运行" subtitle="真实网页采集器将在阶段 D 接入；当前运行记录来自 /collection-runs">
+        {stats && stats.runs.length > 0 ? (
+          <table className="compact-table data-change-table">
+            <thead><tr><th>运行编号</th><th>数据源</th><th>发现</th><th>变化</th><th>失败</th><th>状态</th></tr></thead>
+            <tbody>
+              {stats.runs.slice(0, 5).map((run) => (
+                <tr key={run.run_code}><td>{run.run_code}</td><td>{run.source_code}</td><td>{run.discovered_count}</td><td>{run.changed_count}</td><td>{run.failed_count}</td><td><StatusTag tone={run.run_status_code === 'success' ? 'success' : 'info'}>{run.run_status_code}</StatusTag></td></tr>
+              ))}
+            </tbody>
+          </table>
+        ) : <div className="empty-state"><Database size={24} /><strong>暂无采集运行</strong><span>数据采集中枢配置策略后可发起运行。</span></div>}
       </Panel>
     </div>
   )

@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0008",
+  "file": "syn_resume_0008.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.01.01",
+      "term_name": "激光雷达",
+      "evidence_text": "主导激光雷达相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.10",
+      "term_name": "细分方法与技术(其他)",
+      "evidence_text": "在项目中使用细分方法与技术(其他)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.03",
+      "term_name": "激光导航",
+      "evidence_text": "负责激光导航模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.01",
+      "term_name": "全身控制(WBC)",
+      "evidence_text": "主导全身控制(WBC)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.01",
+      "term_name": "具身推理与ECoT",
+      "evidence_text": "在项目中使用具身推理与ECoT解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

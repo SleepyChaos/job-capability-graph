@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0045",
+  "file": "syn_resume_0045.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.03.01",
+      "term_name": "全身控制(WBC)",
+      "evidence_text": "在项目中使用全身控制(WBC)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.02",
+      "term_name": "轮式人形机器人",
+      "evidence_text": "在项目中使用轮式人形机器人解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.03",
+      "term_name": "电子皮肤与柔性触觉",
+      "evidence_text": "负责电子皮肤与柔性触觉模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.03",
+      "term_name": "动作专家与混合专家",
+      "evidence_text": "在项目中使用动作专家与混合专家解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.06",
+      "term_name": "大模型部署与推理优化",
+      "evidence_text": "在项目中使用大模型部署与推理优化解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.03",
+      "term_name": "特种人形机器人",
+      "evidence_text": "负责特种人形机器人模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

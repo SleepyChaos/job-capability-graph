@@ -14,6 +14,7 @@ from app.modules.discovery.models import DiscoveryRun, EmergingRoleCandidate, St
 from app.modules.discovery.service import (
     DiscoveryError,
     apply_candidate_expression,
+    auto_candidate_expression,
     candidate_snapshot,
     review_candidate,
     run_discovery,
@@ -131,11 +132,29 @@ def list_discovery_runs(
     ]
 
 
+@router.get("/role-discovery/runs/{run_code}", response_model=dict)
+def get_discovery_run(run_code: str, db: Annotated[Session, Depends(get_db)]):
+    run = db.scalar(select(DiscoveryRun).where(DiscoveryRun.run_code == run_code))
+    if run is None:
+        raise HTTPException(status_code=404, detail="推演运行不存在")
+    return {
+        "run_code": run.run_code,
+        "mode_code": run.mode_code,
+        "target_date": run.target_date.isoformat(),
+        "run_status_code": run.run_status_code,
+        "query_role_name": run.query_role_name,
+        "input_snapshot": run.input_snapshot_json,
+        "result_summary": run.result_summary_json,
+        "created_at": run.created_at.isoformat() if run.created_at else None,
+    }
+
+
 @router.get("/role-discovery/candidates", response_model=CandidatePage)
 def list_candidates(
     db: Annotated[Session, Depends(get_db)],
     workflow_status: str | None = None,
     maturity_stage: str | None = None,
+    run_code: str | None = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
 ):
@@ -144,6 +163,8 @@ def list_candidates(
         filters.append(EmergingRoleCandidate.workflow_status_code == workflow_status)
     if maturity_stage:
         filters.append(EmergingRoleCandidate.maturity_stage_code == maturity_stage)
+    if run_code:
+        filters.append(DiscoveryRun.run_code == run_code)
     total = db.scalar(select(func.count()).select_from(EmergingRoleCandidate).where(*filters)) or 0
     rows = db.execute(
         select(EmergingRoleCandidate, DiscoveryRun)
@@ -260,6 +281,22 @@ def update_candidate_expression(
             fact_references=payload.fact_references,
             model_version=payload.model_version,
         )
+    except DiscoveryError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return candidate_snapshot(db, candidate)
+
+
+@router.post(
+    "/role-discovery/candidates/{candidate_code}/expression/auto", response_model=dict
+)
+def auto_expression(
+    candidate_code: str,
+    db: Annotated[Session, Depends(get_db)],
+    _reviewer: Annotated[AppUser, Depends(get_reviewer)],
+):
+    """一键生成表达层：LLM 可用时生成并校验，否则规则降级。"""
+    try:
+        candidate = auto_candidate_expression(db, candidate_code=candidate_code)
     except DiscoveryError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     return candidate_snapshot(db, candidate)

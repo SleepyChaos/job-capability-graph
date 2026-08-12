@@ -23,6 +23,11 @@ from app.modules.data_center.models import (
     ReviewTask,
     SourceCollectionPolicy,
 )
+from app.modules.extraction.publish_gate import (
+    PUBLISH_GATE_VERSION,
+    compute_publish_score,
+    route_publish_score,
+)
 from app.modules.job.models import (
     DataSource,
     EvidenceSpan,
@@ -453,16 +458,33 @@ def _milestone_score(
     cross_source = 0.0
     timeliness = 90.0 if submission.published_at else 65.0
     consistency = 100.0 if technologies else 0.0
-    score = (
-        0.22 * reliability
-        + 0.18 * extraction
-        + 0.16 * completeness
-        + 0.14 * evidence_coverage
-        + 0.12 * cross_source
-        + 0.10 * timeliness
-        + 0.08 * consistency
+    # 三类惩罚项（设计 §6.3）：日期与年份矛盾计入 contradiction；
+    # 重复与幻觉惩罚在规则入口暂无信号，保留 0 并入库留痕。
+    contradiction_penalty = (
+        8.0
+        if submission.event_date is not None and submission.event_date.year != submission.event_year
+        else 0.0
     )
+    penalties = {
+        "duplicate_penalty": 0.0,
+        "contradiction_penalty": contradiction_penalty,
+        "hallucination_penalty": 0.0,
+    }
+    score = compute_publish_score(
+        {
+            "source_reliability": reliability,
+            "extraction_confidence": extraction,
+            "schema_completeness": completeness,
+            "evidence_coverage": evidence_coverage,
+            "cross_source_support": cross_source,
+            "timeliness": timeliness,
+            "consistency": consistency,
+        },
+        penalties,
+    )
+    route = route_publish_score(score, high_impact=True)
     breakdown = {
+        "gate_version": PUBLISH_GATE_VERSION,
         "source_reliability": reliability,
         "extraction_confidence": extraction,
         "completeness": completeness,
@@ -470,9 +492,13 @@ def _milestone_score(
         "cross_source_confirmation": cross_source,
         "timeliness": timeliness,
         "consistency": consistency,
+        "duplicate_penalty": penalties["duplicate_penalty"],
+        "contradiction_penalty": penalties["contradiction_penalty"],
+        "hallucination_penalty": penalties["hallucination_penalty"],
+        "publish_route": route,
         "manual_review_required": True,
     }
-    return breakdown, Decimal(str(round(score, 2)))
+    return breakdown, Decimal(str(score))
 
 
 def _submission_snapshot(submission: MilestoneSubmission) -> dict[str, Any]:

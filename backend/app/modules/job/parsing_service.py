@@ -26,6 +26,7 @@ from app.modules.job.models import (
     JobRequirement,
     JobRequirementEvidence,
     JobResponsibility,
+    JobScenario,
     SourceDocumentVersion,
     TechnologyAmbiguityRule,
     TechnologyMatchAssessment,
@@ -192,6 +193,9 @@ class JobParsingService:
                 version,
                 responsibility_segments,
                 context_evidence,
+            )
+            self._create_scenarios(
+                job, [item for item in segments if item.segment_type == "scenario"]
             )
             assessments, ambiguity_review_count = self._assess_technologies(
                 run,
@@ -408,6 +412,22 @@ class JobParsingService:
             )
             result.append(responsibility)
         return result
+
+    def _create_scenarios(self, job: JobPosting, segments: list[ParsedJobSegment]) -> None:
+        """设计 §7.1：把 JD 中的应用场景段落写入 rel_job_scenario（最多保留 6 条）。"""
+        for number, segment in enumerate(segments[:6], start=1):
+            self.session.add(
+                JobScenario(
+                    job_posting_id=job.job_posting_id,
+                    scenario_no=number,
+                    scenario_text=segment.text[:2000],
+                    normalized_scenario=" ".join(segment.text.split())[:500],
+                    start_offset=segment.start_offset,
+                    end_offset=segment.end_offset,
+                    confidence_score=Decimal(segment.confidence),
+                    data_origin_code="source_fact",
+                )
+            )
 
     def _assess_technologies(
         self,

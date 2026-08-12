@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0082",
+  "file": "syn_resume_0082.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.06.04",
+      "term_name": "视觉感知与理解",
+      "evidence_text": "主导视觉感知与理解相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.09",
+      "term_name": "导航(通用)",
+      "evidence_text": "主导导航(通用)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.02",
+      "term_name": "复合机器人",
+      "evidence_text": "负责复合机器人模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.02",
+      "term_name": "3D视觉感知",
+      "evidence_text": "主导3D视觉感知相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.04",
+      "term_name": "灵巧抓取",
+      "evidence_text": "主导灵巧抓取相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.03",
+      "term_name": "动作专家与混合专家",
+      "evidence_text": "负责动作专家与混合专家模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

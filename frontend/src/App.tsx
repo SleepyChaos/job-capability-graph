@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { dataCenterApi } from './api/dataCenter'
 import { talentApi, type LearningPath, type MatchResult, type ProfileDetail, type ProfileSummary } from './api/talent'
 import { AppShell } from './components/AppShell'
 import { DataHubPage } from './pages/DataHubPage'
@@ -56,6 +57,8 @@ export default function App() {
   const [selectedVersionCode, setSelectedVersionCode] = useState('')
   const [selectedMatchResult, setSelectedMatchResult] = useState<MatchResult | null>(null)
   const [learningPath, setLearningPath] = useState<LearningPath | null>(null)
+  const [notificationCount, setNotificationCount] = useState(0)
+  const [managementQuery, setManagementQuery] = useState('')
 
   useEffect(() => {
     window.location.hash = `/${page}`
@@ -83,6 +86,14 @@ export default function App() {
     return () => controller.abort()
   }, [])
 
+  useEffect(() => {
+    const controller = new AbortController()
+    dataCenterApi.reviews('queued', controller.signal)
+      .then((tasks) => setNotificationCount(tasks.length))
+      .catch(() => undefined)
+    return () => controller.abort()
+  }, [page])
+
   const notify = (message: string) => setToast(message)
   const selectedProfile = profiles.find((profile) => profile.version_code === selectedVersionCode) ?? profiles[0]
   const upsertProfile = (profile: ProfileSummary | ProfileDetail) => {
@@ -99,7 +110,7 @@ export default function App() {
   switch (page) {
     case 'data': content = <DataHubPage onNavigate={setPage} />; break
     case 'sources': content = <SourcesPage notify={notify} />; break
-    case 'management': content = <DataManagementPage notify={notify} />; break
+    case 'management': content = <DataManagementPage notify={notify} initialQuery={managementQuery} />; break
     case 'taxonomy': content = <TaxonomyPage notify={notify} />; break
     case 'jobs': content = <JobsPage notify={notify} />; break
     case 'job-keyword': content = <JobKeywordPage notify={notify} />; break
@@ -122,6 +133,8 @@ export default function App() {
       page={page}
       pageTitle={pageTitles[page]}
       onNavigate={setPage}
+      notificationCount={notificationCount}
+      onSearch={(value) => { setManagementQuery(value); setPage('management'); setToast(`已在数据管理中心搜索“${value}”`) }}
       sidebarOpen={sidebarOpen}
       onSidebarOpenChange={setSidebarOpen}
       sidebarCollapsed={sidebarCollapsed}

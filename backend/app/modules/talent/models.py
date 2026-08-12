@@ -192,6 +192,30 @@ class CandidateMatchResult(Base):
     )
 
 
+class CandidateMatchDimensionResult(Base):
+    __tablename__ = "biz_match_dimension_result"
+
+    match_dimension_result_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
+    candidate_match_result_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_candidate_match_result.candidate_match_result_id")
+    )
+    dimension_code: Mapped[str] = mapped_column(String(64))
+    dimension_label: Mapped[str] = mapped_column(String(200))
+    raw_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+    weight: Mapped[Decimal] = mapped_column(Numeric(5, 4))
+    contribution: Mapped[Decimal] = mapped_column(Numeric(7, 4))
+    status_code: Mapped[str] = mapped_column(String(32), default="scored")
+    explanation_json: Mapped[dict | None] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint(
+            "candidate_match_result_id", "dimension_code", name="uk_match_dimension_result"
+        ),
+        Index("idx_match_dimension_result", "candidate_match_result_id"),
+    )
+
+
 class CandidateMatchGap(Base):
     __tablename__ = "biz_candidate_match_gap"
 

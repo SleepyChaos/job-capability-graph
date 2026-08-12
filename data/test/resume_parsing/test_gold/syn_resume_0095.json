@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0095",
+  "file": "syn_resume_0095.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "人工智能"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T3.03.04",
+      "term_name": "并联机器人",
+      "evidence_text": "主导并联机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.09",
+      "term_name": "细分方法与技术(其他)",
+      "evidence_text": "主导细分方法与技术(其他)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.02",
+      "term_name": "轮足机器人",
+      "evidence_text": "在项目中使用轮足机器人解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.01",
+      "term_name": "扩散策略",
+      "evidence_text": "主导扩散策略相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

@@ -69,6 +69,8 @@ interface AppShellProps {
   page: PageId
   pageTitle: string
   onNavigate: (page: PageId) => void
+  notificationCount?: number
+  onSearch?: (query: string) => void
   sidebarOpen: boolean
   onSidebarOpenChange: (open: boolean) => void
   sidebarCollapsed: boolean
@@ -82,6 +84,8 @@ export function AppShell({
   page,
   pageTitle,
   onNavigate,
+  notificationCount = 0,
+  onSearch,
   sidebarOpen,
   onSidebarOpenChange,
   sidebarCollapsed,
@@ -239,7 +243,7 @@ export function AppShell({
           <span>{sidebarCollapsed ? '展开菜单' : '收起菜单'}</span>
         </button>
         <div className="sidebar-foot">
-          <button className="nav-item" title={sidebarCollapsed ? '系统设置' : undefined}><Settings2 size={19} /><span>系统设置</span></button>
+          <button className="nav-item" title="系统设置待接入（阶段 D 认证上线后开放）" disabled><Settings2 size={19} /><span>系统设置</span></button>
           <div className="workspace-user">
             <CircleUserRound size={28} />
             <div><strong>研究空间</strong><span>具身智能专项</span></div>
@@ -259,11 +263,23 @@ export function AppShell({
           <div className="topbar-actions">
             <label className="search-box">
               <Search size={17} />
-              <input aria-label="全局搜索" placeholder="搜索岗位、技术、能力或文档" />
+              <input
+                aria-label="全局搜索"
+                placeholder="搜索岗位或技术词，回车进入数据管理中心"
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    const value = event.currentTarget.value.trim()
+                    if (value) {
+                      onSearch?.(value)
+                      event.currentTarget.value = ''
+                    }
+                  }
+                }}
+              />
             </label>
-            <button className="filter-button"><span>近 90 天</span><ChevronDown size={15} /></button>
-            <button className="filter-button"><span>全部 T 领域</span><ChevronDown size={15} /></button>
-            <button className="icon-button notification" aria-label="通知"><Bell size={18} /><i>6</i></button>
+            <button className="filter-button" disabled title="全局时间筛选待接入（阶段 C 后开放）"><span>近 90 天</span><ChevronDown size={15} /></button>
+            <button className="filter-button" disabled title="全局 T 领域筛选待接入（阶段 C 后开放）"><span>全部 T 领域</span><ChevronDown size={15} /></button>
+            <button className="icon-button notification" aria-label="待审核任务" title="进入数据审核中心" onClick={() => onNavigate('review')}><Bell size={18} />{notificationCount > 0 ? <i>{notificationCount > 99 ? '99+' : notificationCount}</i> : null}</button>
           </div>
         </header>
         <div className="page-content">{children}</div>

@@ -17,6 +17,7 @@ from app.modules.job.models import (
     JobPostingDataSource,
     JobRequirement,
     JobRequirementEvidence,
+    JobScenario,
     Organization,
     SourceDocumentVersion,
 )
@@ -77,6 +78,7 @@ class JobDetailResponse(JobListItem):
     jd_text: str
     source_codes: list[str]
     technologies: list[JobTechnologyRequirement]
+    scenarios: list[str] = []
 
 
 def duplicate_group_subquery():
@@ -302,12 +304,20 @@ def job_detail(job_code: str, db: Annotated[Session, Depends(get_db)]) -> JobDet
         }
     )
     item = job_item(job, company, technology_count, duplicate_code)
+    scenarios = list(
+        db.scalars(
+            select(JobScenario.scenario_text)
+            .where(JobScenario.job_posting_id == job.job_posting_id)
+            .order_by(JobScenario.scenario_no)
+        )
+    )
     return JobDetailResponse(
         **item.model_dump(),
         salary=job.salary_text,
         jd_text=job.jd_clean_text,
         source_codes=source_codes,
         technologies=technologies,
+        scenarios=scenarios,
     )
 
 

@@ -265,6 +265,7 @@ class StandardJobDescription(Base):
     generation_method_code: Mapped[str] = mapped_column(String(32), default="mechanical")
     model_version: Mapped[str | None] = mapped_column(String(100))
     is_market_evidence: Mapped[bool] = mapped_column(Boolean, default=False)
+    data_origin_code: Mapped[str] = mapped_column(String(32), default="algorithm_inference")
     approval_status_code: Mapped[str] = mapped_column(String(32), default="approved")
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 

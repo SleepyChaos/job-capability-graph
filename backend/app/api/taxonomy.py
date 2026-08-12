@@ -36,6 +36,7 @@ class TechnologyDomainResponse(BaseModel):
 
 
 class TechnologyNodeResponse(BaseModel):
+    node_id: int
     code: str
     name: str
     normalized_name: str
@@ -201,6 +202,7 @@ def list_nodes(
     ).all()
     items = [
         TechnologyNodeResponse(
+            node_id=node.technology_node_id,
             code=node.technology_code,
             name=node.technology_name,
             normalized_name=node.normalized_name,

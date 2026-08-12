@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0030",
+  "file": "syn_resume_0030.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.06.04",
+      "term_name": "视觉感知与理解",
+      "evidence_text": "主导视觉感知与理解相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.01",
+      "term_name": "灵巧手语义接口",
+      "evidence_text": "负责灵巧手语义接口模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.07",
+      "term_name": "具身智能体(Agent)",
+      "evidence_text": "主导具身智能体(Agent)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

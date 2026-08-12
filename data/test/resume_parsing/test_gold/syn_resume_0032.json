@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0032",
+  "file": "syn_resume_0032.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T3.01.05",
+      "term_name": "人形机器人整机与商业化",
+      "evidence_text": "主导人形机器人整机与商业化相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.02",
+      "term_name": "世界模型安全预演",
+      "evidence_text": "主导世界模型安全预演相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.01",
+      "term_name": "扩散策略",
+      "evidence_text": "在项目中使用扩散策略解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.07",
+      "term_name": "场景图建模",
+      "evidence_text": "主导场景图建模相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

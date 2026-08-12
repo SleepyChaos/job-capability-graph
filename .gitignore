@@ -1,6 +1,7 @@
 frontend/node_modules/
 frontend/dist/
 frontend/*.tsbuildinfo
+frontend/dev*.log
 .pnpm-store/
 backend/.venv/
 backend/.uv-cache/
@@ -11,3 +12,14 @@ backend/.coverage
 backend/htmlcov/
 __pycache__/
 *.py[cod]
+
+# 本地验证截图与构建输出
+output/
+
+# 环境变量与密钥：仅 .env.example 可入库
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+!backend/.env.example

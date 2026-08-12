@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0053",
+  "file": "syn_resume_0053.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.02.10",
+      "term_name": "世界模型架构",
+      "evidence_text": "负责世界模型架构模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.02",
+      "term_name": "强化学习",
+      "evidence_text": "主导强化学习相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.01",
+      "term_name": "触觉世界模型",
+      "evidence_text": "负责触觉世界模型模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.06",
+      "term_name": "元学习",
+      "evidence_text": "在项目中使用元学习解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.03",
+      "term_name": "外骨骼机器人",
+      "evidence_text": "主导外骨骼机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.08",
+      "term_name": "世界模型数据集",
+      "evidence_text": "负责世界模型数据集模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

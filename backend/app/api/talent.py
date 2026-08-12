@@ -1,18 +1,22 @@
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
+from app.modules.talent.resume_adapter import ResumeFileError, extract_resume_text, virus_scan
 from app.modules.talent.service import (
     TalentWorkflowError,
     answer_profile_question,
     create_learning_path,
     create_profile_draft,
     create_profile_version,
+    delete_profile_family,
+    export_profiles_masked,
     get_profile,
     list_profiles,
+    match_explanation,
     publish_profile,
     run_matching,
 )
@@ -59,9 +63,47 @@ def create_profile(payload: ProfileDraftCreate, db: Annotated[Session, Depends(g
     )
 
 
+@router.post("/talent/profiles/upload", response_model=dict, status_code=201)
+async def upload_profile(
+    db: Annotated[Session, Depends(get_db)],
+    file: Annotated[UploadFile, File()],
+):
+    """多格式简历上传（txt/pdf/docx）：MIME 嗅探 + 扩展名白名单 + 病毒扫描接口预留。"""
+    data = await file.read()
+    scan = virus_scan(data)
+    if scan["status"] == "infected":
+        raise HTTPException(status_code=422, detail="文件未通过安全扫描，已拒绝")
+    try:
+        text, mime_type, input_type_code = extract_resume_text(file.filename or "resume.txt", data)
+    except ResumeFileError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    try:
+        return create_profile_draft(
+            db,
+            source_name=file.filename or "上传简历",
+            mime_type=mime_type,
+            content_text=text,
+            input_type_code=input_type_code,
+        )
+    except TalentWorkflowError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
 @router.get("/talent/profiles", response_model=list[dict])
 def get_profiles(db: Annotated[Session, Depends(get_db)]):
     return list_profiles(db)
+
+
+@router.get("/talent/profiles/export", response_model=list[dict])
+def export_profiles(db: Annotated[Session, Depends(get_db)]):
+    """脱敏导出画像统计字段（设计 §17.2）。"""
+    return export_profiles_masked(db)
+
+
+@router.delete("/talent/profiles/{version_code}", response_model=dict)
+def delete_profile(version_code: str, db: Annotated[Session, Depends(get_db)]):
+    """隐私删除请求：软删整个画像族（设计 §17.2）。"""
+    return _call(lambda: delete_profile_family(db, version_code=version_code))
 
 
 @router.get("/talent/profiles/{version_code}", response_model=dict)
@@ -116,3 +158,9 @@ def match_profile(
 @router.post("/talent/matches/{result_code}/learning-path", response_model=dict, status_code=201)
 def build_learning_path(result_code: str, db: Annotated[Session, Depends(get_db)]):
     return _call(lambda: create_learning_path(db, result_code=result_code))
+
+
+@router.get("/talent/matches/{result_code}/explanation", response_model=dict)
+def explain_match(result_code: str, db: Annotated[Session, Depends(get_db)]):
+    """匹配解释：LLM 可用时生成，否则规则降级；不修改机械总分。"""
+    return _call(lambda: match_explanation(db, result_code=result_code))

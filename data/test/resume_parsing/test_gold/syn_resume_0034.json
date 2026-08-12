@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0034",
+  "file": "syn_resume_0034.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.02.09",
+      "term_name": "世界模型感知表征",
+      "evidence_text": "在项目中使用世界模型感知表征解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.09",
+      "term_name": "模型驱动运动控制",
+      "evidence_text": "负责模型驱动运动控制模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.06",
+      "term_name": "大模型部署与推理优化",
+      "evidence_text": "在项目中使用大模型部署与推理优化解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.05",
+      "term_name": "具身推理机制",
+      "evidence_text": "主导具身推理机制相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.10",
+      "term_name": "世界模型架构",
+      "evidence_text": "在项目中使用世界模型架构解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

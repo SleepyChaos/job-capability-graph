@@ -24,18 +24,22 @@ export function TalentMatchPage({ hasProfiles, onProfileCreated, onNavigate, not
 
   const begin = async () => {
     if (resumeText.trim().length < 30) {
-      setError('请至少提供 30 个有效字符的简历文本。')
+      setError('请至少提供 30 个有效字符的简历文本，或上传 TXT/PDF/DOCX 文件。')
       return
     }
     setBusy(true); setError('')
     try {
       const next = await talentApi.createProfile({ source_name: sourceName, mime_type: 'text/plain', input_type_code: sourceName.endsWith('.txt') ? 'txt' : 'pasted_text', content_text: resumeText })
-      setProfile(next)
-      setMessages([
-        { role: 'assistant', text: `已解析《${sourceName}》，识别到 ${next.skill_count} 项标准技术能力。事实、推断和用户补充会分别保存。` },
-        ...(next.next_question ? [{ role: 'assistant' as const, text: next.next_question.question_text }] : []),
-      ])
+      afterParsed(next)
     } catch (reason) { setError((reason as Error).message) } finally { setBusy(false) }
+  }
+
+  const afterParsed = (next: ProfileDetail) => {
+    setProfile(next)
+    setMessages([
+      { role: 'assistant', text: `已解析《${next.source_name}》，识别到 ${next.skill_count} 项标准技术能力。事实、推断和用户补充会分别保存。` },
+      ...(next.next_question ? [{ role: 'assistant' as const, text: next.next_question.question_text }] : []),
+    ])
   }
 
   const answer = async (value: string) => {
@@ -62,10 +66,18 @@ export function TalentMatchPage({ hasProfiles, onProfileCreated, onNavigate, not
     } catch (reason) { setError((reason as Error).message) } finally { setBusy(false) }
   }
 
-  const readTxt = async (file?: File) => {
-    if (!file) return
-    if (!file.name.toLowerCase().endsWith('.txt')) { setError('P0 浏览器入口先支持 TXT 和粘贴文本；PDF/DOCX 文本适配将在后续接入。'); return }
-    setSourceName(file.name); setResumeText(await file.text()); setError('')
+  const uploadResume = async (file?: File) => {
+    if (!file || busy) return
+    setBusy(true); setError('')
+    try {
+      const next = await talentApi.uploadProfile(file)
+      afterParsed(next)
+    } catch (reason) {
+      setError((reason as Error).message)
+    } finally {
+      setBusy(false)
+      if (fileRef.current) fileRef.current.value = ''
+    }
   }
 
   const reset = () => { setProfile(null); setMessages([]); setInput(''); setResumeText(''); setSourceName('粘贴文本简历'); setError('') }
@@ -74,12 +86,12 @@ export function TalentMatchPage({ hasProfiles, onProfileCreated, onNavigate, not
     <section className="talent-entry">
       <div className="talent-entry-mark"><Sparkles size={25} /></div>
       <h2>从一场对话开始认识你</h2>
-      <p>P0 先打通 TXT / 粘贴文本 → 技术词证据 → 2–8 轮追问 → 画像确认。PDF、DOCX 与 OCR 适配保留接口但暂不在浏览器端伪装完成。</p>
+      <p>支持粘贴文本或上传 TXT / 文本型 PDF / DOCX（服务端解析，扫描件 OCR 尚未接入）。解析后进入 2–8 轮追问与画像确认。</p>
       <div className="talent-text-entry">
         <textarea value={resumeText} onChange={(event) => setResumeText(event.target.value)} placeholder="粘贴简历文本，例如：姓名、求职意向、教育经历、项目职责、使用的技术及项目结果……" />
-        <div><span>{sourceName} · {resumeText.length} 字符</span><button className="secondary-button" onClick={() => fileRef.current?.click()}><UploadCloud size={15} />读取 TXT</button><button className="primary-button" onClick={begin} disabled={busy}>{busy ? '正在解析…' : '开始证据建档'}</button></div>
+        <div><span>{sourceName} · {resumeText.length} 字符</span><button className="secondary-button" onClick={() => fileRef.current?.click()} disabled={busy}><UploadCloud size={15} />上传简历文件</button><button className="primary-button" onClick={begin} disabled={busy}>{busy ? '正在解析…' : '开始证据建档'}</button></div>
       </div>
-      <input ref={fileRef} hidden type="file" accept=".txt,text/plain" onChange={(event) => readTxt(event.target.files?.[0])} />
+      <input ref={fileRef} hidden type="file" accept=".txt,.pdf,.docx" onChange={(event) => uploadResume(event.target.files?.[0])} />
       {error ? <p className="form-error">{error}</p> : null}
       <div className="talent-entry-notes"><span>不使用敏感属性</span><i /><span>每项能力保留原文证据</span><i /><span>缺少信息不等于不会</span></div>
       {hasProfiles ? <button className="link-button talent-history" onClick={() => onNavigate('resume')}>查看历史求职者画像 <ArrowRight size={14} /></button> : null}

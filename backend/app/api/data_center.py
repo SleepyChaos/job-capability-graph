@@ -24,6 +24,7 @@ from app.modules.data_center.service import (
     review_milestone,
     submit_milestone_candidate,
 )
+from app.modules.ingestion.web_crawler import run_web_collection
 from app.modules.job.models import DataSource
 
 router = APIRouter(tags=["data-center"])
@@ -94,6 +95,7 @@ class CollectionRunResponse(BaseModel):
     changed_count: int
     unchanged_count: int
     failed_count: int
+    error_summary: str | None = None
 
 
 class CollectionRequestCreate(BaseModel):
@@ -191,9 +193,20 @@ def _milestone_response(db: Session, milestone: MilestoneEvent) -> MilestoneResp
 def get_reviewer(
     db: Annotated[Session, Depends(get_db)],
     reviewer_code: Annotated[str | None, Header(alias="X-Reviewer-Code")] = None,
+    authorization: Annotated[str | None, Header()] = None,
 ) -> AppUser:
+    """审核身份：优先 Bearer JWT，过渡期兼容 X-Reviewer-Code（Q8）。"""
+    from app.api.auth import resolve_bearer_user
+
+    bearer_user = resolve_bearer_user(db, authorization)
+    if bearer_user is not None:
+        if bearer_user.role_code not in {"reviewer", "admin"}:
+            raise HTTPException(status_code=403, detail="当前账号没有审核权限")
+        return bearer_user
     if not reviewer_code:
-        raise HTTPException(status_code=401, detail="缺少开发期审核身份头 X-Reviewer-Code")
+        raise HTTPException(
+            status_code=401, detail="缺少认证：请提供 Bearer 令牌或开发期 X-Reviewer-Code 头"
+        )
     user = db.scalar(
         select(AppUser).where(AppUser.user_code == reviewer_code, AppUser.is_active.is_(True))
     )
@@ -323,6 +336,7 @@ def _run_response(
         changed_count=run.changed_count,
         unchanged_count=run.unchanged_count,
         failed_count=run.failed_count,
+        error_summary=run.error_summary,
     )
 
 
@@ -351,6 +365,30 @@ def create_request(
         request_status_code=request.request_status_code,
         parse_status_code=request.parse_status_code,
     )
+
+
+@router.post("/collection-runs/{run_code}/execute", response_model=CollectionRunResponse)
+def execute_collection_run(run_code: str, db: Annotated[Session, Depends(get_db)]):
+    """同步执行真实网页采集（P1 降级：无 Worker，请求内完成，见降级清单 D1）。"""
+    run = db.scalar(select(CollectionRun).where(CollectionRun.run_code == run_code))
+    if run is None:
+        raise HTTPException(status_code=404, detail="采集运行不存在")
+    if run.run_status_code not in {"pending", "failed"}:
+        raise HTTPException(status_code=422, detail="该运行已执行或正在执行")
+    source = db.get(DataSource, run.data_source_id)
+    policy = db.get(SourceCollectionPolicy, run.collection_policy_id)
+    if source is None or policy is None:
+        raise HTTPException(status_code=404, detail="数据源或采集策略不存在")
+    try:
+        run_web_collection(db, run=run, source=source, policy=policy)
+    except DataCenterError as exc:
+        db.rollback()
+        raise _error(exc) from exc
+    except Exception as exc:  # noqa: BLE001 - 网络异常不应中断服务
+        db.rollback()
+        raise HTTPException(status_code=502, detail=f"采集执行失败：{exc}") from exc
+    db.commit()
+    return _run_response(run, source.source_code, policy.policy_version)
 
 
 @router.post("/milestones/candidates", response_model=MilestoneResponse, status_code=201)

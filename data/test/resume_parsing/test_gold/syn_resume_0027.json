@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0027",
+  "file": "syn_resume_0027.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.02.09",
+      "term_name": "世界模型感知表征",
+      "evidence_text": "负责世界模型感知表征模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.04",
+      "term_name": "大小脑分层架构",
+      "evidence_text": "在项目中使用大小脑分层架构解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.04",
+      "term_name": "想象训练与Rollout",
+      "evidence_text": "在项目中使用想象训练与Rollout解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

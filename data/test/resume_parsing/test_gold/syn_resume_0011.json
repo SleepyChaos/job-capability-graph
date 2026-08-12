@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0011",
+  "file": "syn_resume_0011.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.02.04",
+      "term_name": "想象训练与Rollout",
+      "evidence_text": "负责想象训练与Rollout模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.07",
+      "term_name": "自监督学习",
+      "evidence_text": "负责自监督学习模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.08",
+      "term_name": "世界模型数据集",
+      "evidence_text": "在项目中使用世界模型数据集解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

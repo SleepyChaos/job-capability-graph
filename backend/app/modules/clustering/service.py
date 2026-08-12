@@ -419,6 +419,58 @@ def _persist_clusters(
                 )
             )
 
+    # 谱系补全（设计 §7.3）：在 continued/born 之外识别 split/merged/ended。
+    if previous_clusters:
+        overlap_pairs = []
+        for cluster in output.clusters:
+            current = {item.raw.job_posting_id for item in cluster.members}
+            for old_id, old_members in previous_members.items():
+                union = current | old_members
+                overlap_score = len(current & old_members) / len(union) if union else 0.0
+                if overlap_score >= 0.30:
+                    overlap_pairs.append((cluster.draft_id, old_id, overlap_score))
+        old_by_new = defaultdict(list)
+        new_by_old = defaultdict(list)
+        for draft_id, old_id, overlap_score in overlap_pairs:
+            old_by_new[draft_id].append((old_id, overlap_score))
+            new_by_old[old_id].append((draft_id, overlap_score))
+        for old_id in previous_clusters:
+            related = new_by_old.get(old_id, [])
+            if not related:
+                db.add(
+                    JobClusterLineage(
+                        from_cluster_version_id=old_id,
+                        lineage_type_code="ended",
+                        explanation_text="本次运行中该簇未延续到任何新簇，标记为终止。",
+                    )
+                )
+            elif len(related) >= 2:
+                for draft_id, overlap_score in related:
+                    db.add(
+                        JobClusterLineage(
+                            from_cluster_version_id=old_id,
+                            to_cluster_version_id=versions_by_draft[
+                                draft_id
+                            ].job_cluster_version_id,
+                            lineage_type_code="split",
+                            member_overlap_score=decimal_score(overlap_score),
+                            explanation_text="历史簇成员分流到多个新簇，发生拆分。",
+                        )
+                    )
+        for draft_id, version in versions_by_draft.items():
+            related = old_by_new.get(draft_id, [])
+            if len(related) >= 2:
+                for old_id, overlap_score in related:
+                    db.add(
+                        JobClusterLineage(
+                            from_cluster_version_id=old_id,
+                            to_cluster_version_id=version.job_cluster_version_id,
+                            lineage_type_code="merged",
+                            member_overlap_score=decimal_score(overlap_score),
+                            explanation_text="新簇同时吸收多个历史簇的成员，发生合并。",
+                        )
+                    )
+
     for cluster, version in persisted:
         ranked_members = sorted(
             ((member, similarity(member, cluster)) for member in cluster.members),
@@ -858,6 +910,7 @@ def _create_evolution_event(
             if previous is None
             else "新周期岗位能力统计与上一版本的差异草稿。"
         ),
+        comparison_warning_text=_comparison_warning(requirements, old_requirements),
         confidence_score=version.evidence_strength_score or Decimal("0"),
     )
     db.add(event)
@@ -902,6 +955,30 @@ def _create_evolution_event(
         )
     # No removal is proposed until multiple sufficiently long source-time windows exist.
     return event
+
+
+def _comparison_warning(
+    requirements: list[tuple[CapabilityMetric, JobRoleVersionRequirement]],
+    old_requirements: dict[int, JobRoleVersionRequirement],
+) -> str | None:
+    """设计 §11.5：两版本样本量差异过大时输出比较告警，防止把采集缺失误判为能力衰退。"""
+    if not old_requirements:
+        return None
+    new_sample = sum(len(metric.evidence_ids) for metric, _requirement in requirements)
+    old_sample = sum(int(item.supporting_job_count) for item in old_requirements.values())
+    if old_sample <= 0:
+        return None
+    if new_sample < old_sample * 0.5:
+        return (
+            f"新版本支撑证据量（{new_sample}）明显少于上一版本（{old_sample}），"
+            "能力减弱可能来自采集量下降而非真实变化，请结合证据判断。"
+        )
+    if new_sample > old_sample * 2:
+        return (
+            f"新版本支撑证据量（{new_sample}）明显多于上一版本（{old_sample}），"
+            "能力增强可能来自采集量上升，请结合证据判断。"
+        )
+    return None
 
 
 def _requirement_value(requirement: JobRoleVersionRequirement | None) -> dict | None:

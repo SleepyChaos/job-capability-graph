@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0050",
+  "file": "syn_resume_0050.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.05.05",
+      "term_name": "分割与实例感知",
+      "evidence_text": "负责分割与实例感知模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.01",
+      "term_name": "全身控制(WBC)",
+      "evidence_text": "主导全身控制(WBC)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.05.03",
+      "term_name": "3D重建",
+      "evidence_text": "负责3D重建模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.01.02",
+      "term_name": "深度相机",
+      "evidence_text": "主导深度相机相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.01",
+      "term_name": "四足机器人",
+      "evidence_text": "主导四足机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0069",
+  "file": "syn_resume_0069.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人控制算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.07.05",
+      "term_name": "图神经网络与嵌入",
+      "evidence_text": "在项目中使用图神经网络与嵌入解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.08.01",
+      "term_name": "群体智能与协同",
+      "evidence_text": "在项目中使用群体智能与协同解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.10",
+      "term_name": "世界模型架构",
+      "evidence_text": "在项目中使用世界模型架构解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

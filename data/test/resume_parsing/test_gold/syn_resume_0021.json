@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0021",
+  "file": "syn_resume_0021.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "人工智能"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.01.10",
+      "term_name": "遥操作与端到端控制",
+      "evidence_text": "负责遥操作与端到端控制模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.06",
+      "term_name": "大模型部署与推理优化",
+      "evidence_text": "负责大模型部署与推理优化模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.07",
+      "term_name": "端到端导航",
+      "evidence_text": "主导端到端导航相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.02",
+      "term_name": "轮式人形机器人",
+      "evidence_text": "负责轮式人形机器人模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.08",
+      "term_name": "移动操控一体化",
+      "evidence_text": "在项目中使用移动操控一体化解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

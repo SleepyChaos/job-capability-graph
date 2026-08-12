@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0026",
+  "file": "syn_resume_0026.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "人工智能"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.01.11",
+      "term_name": "VLA端到端大模型",
+      "evidence_text": "在项目中使用VLA端到端大模型解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.04",
+      "term_name": "图检索增强(GraphRAG)",
+      "evidence_text": "在项目中使用图检索增强(GraphRAG)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.08",
+      "term_name": "世界模型数据集",
+      "evidence_text": "主导世界模型数据集相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.09",
+      "term_name": "自主认知",
+      "evidence_text": "在项目中使用自主认知解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.08",
+      "term_name": "图匹配算法",
+      "evidence_text": "在项目中使用图匹配算法解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

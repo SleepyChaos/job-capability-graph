@@ -1,10 +1,10 @@
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session
 from test_clustering_service import _seed_cluster_fixture
 
 from app.db.base import Base
 from app.modules.clustering.service import run_full_clustering
-from app.modules.talent.models import CandidateProfileVersion
+from app.modules.talent.models import CandidateMatchDimensionResult, CandidateProfileVersion
 from app.modules.talent.service import (
     answer_profile_question,
     create_learning_path,
@@ -67,10 +67,39 @@ def test_candidate_profile_match_gap_and_learning_path_are_version_bound() -> No
         assert match["result_count"] == 1
         assert repeated_match["run_code"] == match["run_code"]
         assert match["results"][0]["overall_score"] > 50
-        assert match["results"][0]["dimensions"][0]["code"] == "required_skill_coverage"
+        dimensions = match["results"][0]["dimensions"]
+        assert len(dimensions) == 10
+        assert dimensions[0]["code"] == "required_capability_fit"
+        assert {item["code"] for item in dimensions} >= {
+            "required_capability_fit",
+            "proficiency_fit",
+            "task_semantic_fit",
+            "transferable_fit",
+        }
+        dimension_row_count = session.scalar(
+            select(func.count()).select_from(CandidateMatchDimensionResult)
+        )
+        assert dimension_row_count == 10
+        gaps = match["results"][0]["gaps"]
+        assert all(
+            gap["gap_type_code"]
+            in {
+                "confirmed_missing",
+                "evidence_insufficient",
+                "depth_insufficient",
+                "transferable",
+                "low_confidence_requirement",
+            }
+            for gap in gaps
+        )
         path = create_learning_path(session, result_code=match["results"][0]["result_code"])
-        assert path["algorithm_version"] == "gap_path_rules_p0_v1"
+        assert path["algorithm_version"] == "gap_path_topo_v1"
         assert all(step["evidence_reference"].startswith("gap:") for step in path["steps"])
+        assert all(
+            dependency < step["step_no"]
+            for step in path["steps"]
+            for dependency in step["depends_on"]
+        )
 
         revised = create_profile_version(
             session,

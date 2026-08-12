@@ -1,0 +1,402 @@
+{
+  "resume_parsing": {
+    "status": "scored",
+    "dataset": "resume_parsing_synthetic_v1",
+    "sample_count": 30,
+    "failed_count": 0,
+    "skill_f1_macro": 0.8495,
+    "evidence_locate_rate": 0.9572,
+    "overall_score": 91.62,
+    "overall_formula": "15%基础字段 + 50%技能F1 + 15%教育经历 + 20%证据定位",
+    "note": "合成集自检口径；官方指标以人工脱敏/真实简历冻结集为准（Q3）。",
+    "samples": [
+      {
+        "sample_id": "syn_resume_0001",
+        "format": "txt",
+        "status": "scored",
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0002",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0003",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.5,
+        "recall": 0.75,
+        "f1": 0.6,
+        "tp": 3,
+        "fp": 3,
+        "fn": 1,
+        "evidence_locate_rate": 0.75
+      },
+      {
+        "sample_id": "syn_resume_0004",
+        "format": "txt",
+        "status": "scored",
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0005",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.8333333333333334,
+        "recall": 1.0,
+        "f1": 0.9090909090909091,
+        "tp": 5,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0006",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.6666666666666666,
+        "recall": 0.6666666666666666,
+        "f1": 0.6666666666666666,
+        "tp": 2,
+        "fp": 1,
+        "fn": 1,
+        "evidence_locate_rate": 0.6666666666666666
+      },
+      {
+        "sample_id": "syn_resume_0007",
+        "format": "txt",
+        "status": "scored",
+        "precision": 0.6666666666666666,
+        "recall": 0.6666666666666666,
+        "f1": 0.6666666666666666,
+        "tp": 4,
+        "fp": 2,
+        "fn": 2,
+        "evidence_locate_rate": 0.6666666666666666
+      },
+      {
+        "sample_id": "syn_resume_0008",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.8,
+        "recall": 0.8,
+        "f1": 0.8000000000000002,
+        "tp": 4,
+        "fp": 1,
+        "fn": 1,
+        "evidence_locate_rate": 0.8
+      },
+      {
+        "sample_id": "syn_resume_0009",
+        "format": "docx",
+        "status": "scored",
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0010",
+        "format": "txt",
+        "status": "scored",
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0011",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.7499999999999999,
+        "tp": 3,
+        "fp": 2,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0012",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1": 0.8,
+        "tp": 6,
+        "fp": 3,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0013",
+        "format": "txt",
+        "status": "scored",
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0014",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0015",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1": 0.8,
+        "tp": 4,
+        "fp": 2,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0016",
+        "format": "txt",
+        "status": "scored",
+        "precision": 0.8571428571428571,
+        "recall": 1.0,
+        "f1": 0.923076923076923,
+        "tp": 6,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0017",
+        "format": "docx",
+        "status": "scored",
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0018",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 6,
+        "fp": 2,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0019",
+        "format": "txt",
+        "status": "scored",
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0020",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0021",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.5555555555555556,
+        "recall": 1.0,
+        "f1": 0.7142857142857143,
+        "tp": 5,
+        "fp": 4,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0022",
+        "format": "txt",
+        "status": "scored",
+        "precision": 0.7142857142857143,
+        "recall": 0.8333333333333334,
+        "f1": 0.7692307692307692,
+        "tp": 5,
+        "fp": 2,
+        "fn": 1,
+        "evidence_locate_rate": 0.8333333333333334
+      },
+      {
+        "sample_id": "syn_resume_0023",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.8333333333333334,
+        "recall": 1.0,
+        "f1": 0.9090909090909091,
+        "tp": 5,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0024",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.8571428571428571,
+        "recall": 1.0,
+        "f1": 0.923076923076923,
+        "tp": 6,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0025",
+        "format": "txt",
+        "status": "scored",
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0026",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.7142857142857143,
+        "recall": 1.0,
+        "f1": 0.8333333333333333,
+        "tp": 5,
+        "fp": 2,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0027",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.7499999999999999,
+        "tp": 3,
+        "fp": 2,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0028",
+        "format": "txt",
+        "status": "scored",
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.888888888888889,
+        "tp": 4,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0029",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.8571428571428571,
+        "recall": 1.0,
+        "f1": 0.923076923076923,
+        "tp": 6,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      },
+      {
+        "sample_id": "syn_resume_0030",
+        "format": "docx",
+        "status": "scored",
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "evidence_locate_rate": 1.0
+      }
+    ]
+  },
+  "jd_parsing": {
+    "status": "pending_gold",
+    "detail": "JD 解析金标准未冻结：annotation_candidates_v1.json 的 120 条候选仍待双人标注与裁决（Q3）。标注完成后本命令自动计算字段级 P/R/F1 与综合得分。"
+  },
+  "matching_sanity": {
+    "status": "scored",
+    "dataset": "synthetic_sanity_v1（非官方口径）",
+    "accuracy": 1.0,
+    "results": [
+      {
+        "gold": "A_STRONG_FIT",
+        "predicted": "A_STRONG_FIT",
+        "top_score": 70.98
+      },
+      {
+        "gold": "B_PARTIAL_FIT",
+        "predicted": "B_PARTIAL_FIT",
+        "top_score": 66.34
+      },
+      {
+        "gold": "C_NOT_FIT",
+        "predicted": "C_NOT_FIT",
+        "top_score": 15.91
+      }
+    ],
+    "note": "官方指标需专家三分类标注（Q3/Q4）；当前为流水线方向性自检。"
+  }
+}
