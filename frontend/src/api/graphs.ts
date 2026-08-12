@@ -47,8 +47,6 @@ export interface RelationGraphQuery {
   clusterDomainCode?: string | null
   capabilityDomainCode?: string | null
   capabilityLevelCode?: string
-  clusterLimit?: number
-  capabilitiesPerCluster?: number
 }
 
 export interface ClusterListItem {
@@ -162,11 +160,7 @@ function getGraphOrEmpty<T>(path: string, empty: T, signal?: AbortSignal): Promi
 
 export const graphApi = {
   relations(filters: RelationGraphQuery, signal?: AbortSignal) {
-    const query = new URLSearchParams({
-      capability_level_code: filters.capabilityLevelCode ?? 'L2',
-      cluster_limit: String(filters.clusterLimit ?? 30),
-      capabilities_per_cluster: String(filters.capabilitiesPerCluster ?? 12),
-    })
+    const query = new URLSearchParams({ capability_level_code: filters.capabilityLevelCode ?? 'L2' })
     if (filters.clusterDomainCode) query.set('cluster_domain_code', filters.clusterDomainCode)
     if (filters.capabilityDomainCode) query.set('capability_domain_code', filters.capabilityDomainCode)
     return getGraphOrEmpty<RelationGraphResponse>(`/graphs/relations?${query}`, {
@@ -174,7 +168,7 @@ export const graphApi = {
       role_nodes: [],
       capability_nodes: [],
       edges: [],
-      rendering: { fallback: 'edge_table', layout_owner: 'frontend_g6_force' },
+      rendering: { fallback: 'edge_table', layout_owner: 'frontend_deterministic_radial' },
     }, signal)
   },
   clusters(signal?: AbortSignal) {
