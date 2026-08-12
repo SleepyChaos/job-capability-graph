@@ -44,3 +44,22 @@ def test_graph_projections_share_governed_evidence_and_visual_ledger() -> None:
         assert heatmap["detail_series"][0]["total_trigger_documents"] == 3
         assert heatmap["window"]["data_status"] == "partial"
         assert heatmap["data_version"] == relations["data_version"]
+
+
+def test_relation_graph_keeps_role_filter_independent_from_capability_filter() -> None:
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+        run_full_clustering(session, parse_run_code=parse_run_code)
+
+        relations = relation_graph(
+            session,
+            cluster_domain_code="T1",
+            capability_domain_code="T2",
+            capability_level_code="L2",
+        )
+
+        assert len(relations["role_nodes"]) == 1
+        assert relations["capability_nodes"] == []
+        assert relations["edges"] == []

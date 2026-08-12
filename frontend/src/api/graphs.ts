@@ -43,6 +43,12 @@ export interface RelationGraphResponse extends GraphMetadata {
   rendering: { fallback: string; layout_owner: string }
 }
 
+export interface RelationGraphQuery {
+  clusterDomainCode?: string | null
+  capabilityDomainCode?: string | null
+  capabilityLevelCode?: string
+}
+
 export interface ClusterListItem {
   stable_cluster_code: string
   label: string
@@ -153,9 +159,10 @@ function getGraphOrEmpty<T>(path: string, empty: T, signal?: AbortSignal): Promi
 }
 
 export const graphApi = {
-  relations(domainCode: string | null, levelCode: string, signal?: AbortSignal) {
-    const query = new URLSearchParams({ level_code: levelCode })
-    if (domainCode) query.set('domain_code', domainCode)
+  relations(filters: RelationGraphQuery, signal?: AbortSignal) {
+    const query = new URLSearchParams({ capability_level_code: filters.capabilityLevelCode ?? 'L2' })
+    if (filters.clusterDomainCode) query.set('cluster_domain_code', filters.clusterDomainCode)
+    if (filters.capabilityDomainCode) query.set('capability_domain_code', filters.capabilityDomainCode)
     return getGraphOrEmpty<RelationGraphResponse>(`/graphs/relations?${query}`, {
       ...emptyMetadata(),
       role_nodes: [],

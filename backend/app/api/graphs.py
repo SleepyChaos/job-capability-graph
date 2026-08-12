@@ -18,16 +18,28 @@ router = APIRouter(tags=["capability-graphs"])
 @router.get("/graphs/relations", response_model=dict)
 def get_relation_graph(
     db: Annotated[Session, Depends(get_db)],
+    # ``domain_code``/``level_code`` remain as compatibility aliases for
+    # existing clients. The relation page uses the explicit split filters
+    # below so role clusters are not implicitly narrowed by capability
+    # criteria.
     domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
     level_code: Literal["L1", "L2", "L3"] = "L2",
+    cluster_domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
+    capability_domain_code: Literal["T1", "T2", "T3", "T4", "T5", "T6", "T7"] | None = None,
+    capability_level_code: Literal["L1", "L2", "L3"] | None = None,
     cluster_limit: Annotated[int, Query(ge=1, le=30)] = 12,
     capabilities_per_cluster: Annotated[int, Query(ge=1, le=12)] = 8,
 ):
     try:
         return relation_graph(
             db,
-            domain_code=domain_code,
-            level_code=level_code,
+            # The explicit parameters take precedence. Legacy callers keep
+            # the old capability-only behavior without breaking the route.
+            cluster_domain_code=cluster_domain_code,
+            capability_domain_code=(
+                capability_domain_code if capability_domain_code is not None else domain_code
+            ),
+            capability_level_code=capability_level_code or level_code,
             cluster_limit=cluster_limit,
             capabilities_per_cluster=capabilities_per_cluster,
         )

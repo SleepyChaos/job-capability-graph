@@ -69,38 +69,65 @@ class ProjectionContext:
 def relation_graph(
     db: Session,
     *,
-    domain_code: str | None = None,
-    level_code: str = "L2",
+    cluster_domain_code: str | None = None,
+    capability_domain_code: str | None = None,
+    capability_level_code: str = "L2",
     cluster_limit: int = 12,
     capabilities_per_cluster: int = 8,
+    # Compatibility aliases for scripts and callers written before the
+    # relation graph gained independent role/capability filters.
+    domain_code: str | None = None,
+    level_code: str | None = None,
 ) -> dict:
+    if capability_domain_code is None:
+        capability_domain_code = domain_code
+    if level_code is not None and capability_level_code == "L2":
+        capability_level_code = level_code
     context = _context(db)
-    _validate_filters(domain_code, level_code)
+    _validate_filters(cluster_domain_code, capability_level_code)
+    _validate_filters(capability_domain_code, capability_level_code)
     clusters = _active_clusters(db, context.run.clustering_run_id)
     memberships = _cluster_memberships(db, [item.job_cluster_version_id for item in clusters])
     signal_by_job = _signals_by_job(context.signals)
     projected = []
     for cluster in clusters:
-        metrics = _cluster_capability_metrics(
+        # The cluster domain is derived from its unfiltered L2 capability
+        # profile. This keeps the role-cluster selector stable when the user
+        # changes the capability level or capability domain selector.
+        role_metrics = _cluster_capability_metrics(
             context,
             cluster,
             memberships.get(cluster.job_cluster_version_id, set()),
             signal_by_job,
-            level_code=level_code,
+            level_code="L2",
             recent_job_count=10,
         )
-        if domain_code:
-            metrics = [item for item in metrics if item["domain_code"] == domain_code]
-        if metrics:
-            projected.append((cluster, metrics[:capabilities_per_cluster]))
+        role_domain = _primary_domain(role_metrics)
+        if cluster_domain_code and role_domain != cluster_domain_code:
+            continue
+
+        capability_metrics = _cluster_capability_metrics(
+            context,
+            cluster,
+            memberships.get(cluster.job_cluster_version_id, set()),
+            signal_by_job,
+            level_code=capability_level_code,
+            recent_job_count=10,
+        )
+        if capability_domain_code:
+            capability_metrics = [
+                item
+                for item in capability_metrics
+                if item["domain_code"] == capability_domain_code
+            ]
+        projected.append((cluster, role_domain, capability_metrics[:capabilities_per_cluster]))
         if len(projected) >= cluster_limit:
             break
 
     capability_nodes = {}
     role_nodes = []
     edges = []
-    for cluster, metrics in projected:
-        primary_domain = _primary_domain(metrics)
+    for cluster, primary_domain, metrics in projected:
         role_nodes.append(
             {
                 "id": f"cluster:{cluster.stable_cluster_code}",
@@ -145,8 +172,9 @@ def relation_graph(
     return {
         **_metadata(context),
         "filters": {
-            "domain_code": domain_code,
-            "level_code": level_code,
+            "cluster_domain_code": cluster_domain_code,
+            "capability_domain_code": capability_domain_code,
+            "capability_level_code": capability_level_code,
             "cluster_limit": cluster_limit,
             "capabilities_per_cluster": capabilities_per_cluster,
         },

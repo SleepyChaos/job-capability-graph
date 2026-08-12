@@ -27,7 +27,7 @@ export function GraphPage({ onNavigate }: { onNavigate: (page: PageId) => void }
     const controller = new AbortController()
     setError(null)
     Promise.all([
-      graphApi.relations(null, 'L2', controller.signal),
+      graphApi.relations({ capabilityLevelCode: 'L2' }, controller.signal),
       graphApi.clusters(controller.signal),
       graphApi.heatmap(null, 'L2', controller.signal),
     ]).then(([relations, clusters, heatmap]) => setData({ relations, clusters, heatmap }))
