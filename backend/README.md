@@ -36,7 +36,7 @@ $env:UV_CACHE_DIR = (Join-Path (Get-Location) '.uv-cache')
 uv sync --all-groups
 ```
 
-复制`.env.example`为`.env`可覆盖数据库等配置。默认使用`backend/.local/dev.db`，该目录不会提交。当前联调运行库为 `backend/.local/runtime.db`；结构已到 Alembic `20260811_0011`，已导入 2,151 个技术节点、3,718 条 JD、2,096 个岗位聚类，并完成 113 个岗位版本的开发基线审批。可复核快照见 `../data/runtime/job-capability-graph-runtime.db`。
+复制`.env.example`为`.env`可覆盖数据库等配置。默认使用`backend/.local/dev.db`，该目录不会提交。当前联调运行库为 `backend/.local/runtime.db`；结构已到 Alembic `20260812_0012`，已导入 2,151 个技术节点、3,718 条 JD、2,096 个岗位聚类，并完成 113 个岗位版本的开发基线审批。可复核快照见 `../data/runtime/job-capability-graph-runtime.db`。
 
 初始化或升级数据库：
 

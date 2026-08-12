@@ -56,7 +56,7 @@ services:
           --domain-version v1.1
         python -m tools.stage_workbook \
           --file '/srv/data/source/20260810/core/具身智能岗位_清洗后_v3(1).xlsx' \
-          --storage-key data/source/20260810/core/具身智能岗位_清洗后_v3(1).xlsx \
+          --storage-key 'data/source/20260810/core/具身智能岗位_清洗后_v3(1).xlsx' \
           --importer-code cleaned_job_xlsx_v1 \
           --mapping-code cleaned_job_posting_20260810 \
           --mapping-version 1.0.0 \

@@ -11,7 +11,14 @@ COPY tools ./tools
 COPY migrations ./migrations
 COPY alembic.ini ./
 
-RUN pip install --upgrade pip && pip install .
+ARG PIP_ALLOW_INSECURE_INDEX=0
+RUN pip install --upgrade pip && \
+    if [ "$PIP_ALLOW_INSECURE_INDEX" = "1" ]; then \
+      PIP_TRUSTED_HOST='pypi.org files.pythonhosted.org' \
+        pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org .; \
+    else \
+      pip install .; \
+    fi
 
 EXPOSE 8000
 

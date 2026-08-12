@@ -272,7 +272,7 @@ class JobPosting(Base):
     )
     company_name_raw: Mapped[str | None] = mapped_column(String(500))
     job_title_raw: Mapped[str] = mapped_column(String(1000))
-    job_title_normalized: Mapped[str] = mapped_column(String(500))
+    job_title_normalized: Mapped[str] = mapped_column(String(1000))
     employment_type_code: Mapped[str | None] = mapped_column(String(32))
     job_level_code: Mapped[str | None] = mapped_column(String(32))
     region_text: Mapped[str | None] = mapped_column(String(300))
