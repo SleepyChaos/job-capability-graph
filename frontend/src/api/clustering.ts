@@ -9,6 +9,11 @@ async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
   return response.json() as Promise<T>
 }
 
+const NO_CLUSTERING_RUN_MESSAGES = new Set([
+  '没有可用的岗位聚类运行',
+  '不存在成功的岗位聚类运行',
+])
+
 export interface ClusterListItem {
   stable_cluster_code: string
   label: string
@@ -30,8 +35,15 @@ export interface ClusterPage {
 export const clusteringApi = {
   clusters(params: { limit?: number; offset?: number } = {}, signal?: AbortSignal) {
     const query = new URLSearchParams()
-    query.set('limit', String(params.limit ?? 50))
-    query.set('offset', String(params.offset ?? 0))
-    return getJson<ClusterPage>(`/job-clusters?${query}`, signal)
+    const limit = params.limit ?? 50
+    const offset = params.offset ?? 0
+    query.set('limit', String(limit))
+    query.set('offset', String(offset))
+    return getJson<ClusterPage>(`/job-clusters?${query}`, signal).catch((error: Error) => {
+      // A fresh runtime database has no successful clustering snapshot yet;
+      // keep overview cards usable while preserving other API failures.
+      if (NO_CLUSTERING_RUN_MESSAGES.has(error.message)) return { total: 0, limit, offset, items: [] }
+      throw error
+    })
   },
 }

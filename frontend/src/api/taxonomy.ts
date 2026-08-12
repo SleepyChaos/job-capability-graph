@@ -9,6 +9,23 @@ async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
   return response.json() as Promise<T>
 }
 
+const MISSING_VERSION_MESSAGE = '技术体系版本不存在'
+
+/**
+ * A fresh local database is valid before the first taxonomy workbook is
+ * published. The backend keeps the precise 404 contract for API consumers;
+ * the UI treats that initialization state as an empty dataset instead of a
+ * page-level failure.
+ */
+async function getTaxonomyOrEmpty<T>(path: string, empty: T, signal?: AbortSignal): Promise<T> {
+  try {
+    return await getJson<T>(path, signal)
+  } catch (error) {
+    if (error instanceof Error && error.message === MISSING_VERSION_MESSAGE) return empty
+    throw error
+  }
+}
+
 export interface TaxonomyVersion {
   version_code: string
   version_name: string
@@ -69,7 +86,7 @@ export const taxonomyApi = {
   domains(versionCode: string | null, signal?: AbortSignal) {
     const query = new URLSearchParams()
     if (versionCode) query.set('version_code', versionCode)
-    return getJson<TechnologyDomain[]>(`/taxonomy/domains?${query}`, signal)
+    return getTaxonomyOrEmpty<TechnologyDomain[]>(`/taxonomy/domains?${query}`, [], signal)
   },
   nodes(
     params: { level?: string; domainCode?: string | null; search?: string; limit?: number; offset?: number } = {},
@@ -81,6 +98,10 @@ export const taxonomyApi = {
     if (params.search) query.set('search', params.search)
     query.set('limit', String(params.limit ?? 100))
     query.set('offset', String(params.offset ?? 0))
-    return getJson<TechnologyNodePage>(`/taxonomy/nodes?${query}`, signal)
+    return getTaxonomyOrEmpty<TechnologyNodePage>(
+      `/taxonomy/nodes?${query}`,
+      { total: 0, limit: params.limit ?? 100, offset: params.offset ?? 0, items: [] },
+      signal,
+    )
   },
 }

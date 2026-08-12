@@ -129,26 +129,87 @@ async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
   return response.json() as Promise<T>
 }
 
+const NO_CLUSTERING_RUN_MESSAGE = '不存在成功的岗位聚类运行'
+const EMPTY_DATA_VERSION = 'uninitialized'
+
+const emptyMetadata = (): GraphMetadata => ({
+  data_version: EMPTY_DATA_VERSION,
+  projection_version: 'graph_projection_p0_v1',
+  generated_at: new Date().toISOString(),
+  target_date: '',
+  clustering_run_code: '',
+  evidence_policy: 'accepted_technology_context_only',
+  legend: [],
+})
+
+function getGraphOrEmpty<T>(path: string, empty: T, signal?: AbortSignal): Promise<T> {
+  return getJson<T>(path, signal).catch((error: Error) => {
+    // The first clustering run is an optional data-initialization step. A
+    // structured empty projection lets graph pages explain that state instead
+    // of showing a transport error to the user.
+    if (error.message === NO_CLUSTERING_RUN_MESSAGE) return empty
+    throw error
+  })
+}
+
 export const graphApi = {
   relations(domainCode: string | null, levelCode: string, signal?: AbortSignal) {
     const query = new URLSearchParams({ level_code: levelCode })
     if (domainCode) query.set('domain_code', domainCode)
-    return getJson<RelationGraphResponse>(`/graphs/relations?${query}`, signal)
+    return getGraphOrEmpty<RelationGraphResponse>(`/graphs/relations?${query}`, {
+      ...emptyMetadata(),
+      role_nodes: [],
+      capability_nodes: [],
+      edges: [],
+      rendering: { fallback: 'edge_table', layout_owner: 'frontend_deterministic_radial' },
+    }, signal)
   },
   clusters(signal?: AbortSignal) {
-    return getJson<ClusterListResponse>('/graphs/clusters?limit=30', signal)
+    return getGraphOrEmpty<ClusterListResponse>('/graphs/clusters?limit=30', {
+      ...emptyMetadata(),
+      total_active_cluster_count: 0,
+      items: [],
+    }, signal)
   },
   clusterDetail(clusterCode: string, levelCode: string, signal?: AbortSignal) {
     const query = new URLSearchParams({ level_code: levelCode, capability_limit: '20' })
-    return getJson<ClusterGraphResponse>(
+    return getGraphOrEmpty<ClusterGraphResponse>(
       `/graphs/clusters/${encodeURIComponent(clusterCode)}?${query}`,
+      {
+        ...emptyMetadata(),
+        cluster: {
+          stable_cluster_code: clusterCode,
+          label: '',
+          domain_code: 'T7',
+          member_count: 0,
+          organization_count: 0,
+          capability_count: 0,
+          coherence_score: null,
+          description: null,
+        },
+        capabilities: [],
+        encoding: {},
+      },
       signal,
     )
   },
   heatmap(domainCode: string | null, levelCode: string, signal?: AbortSignal) {
     const query = new URLSearchParams({ level_code: levelCode })
     if (domainCode) query.set('domain_code', domainCode)
-    return getJson<HeatmapResponse>(`/graphs/heatmap?${query}`, signal)
+    return getGraphOrEmpty<HeatmapResponse>(`/graphs/heatmap?${query}`, {
+      ...emptyMetadata(),
+      window: {
+        start_date: '',
+        end_date: '',
+        days: 45,
+        observed_date_count: 0,
+        coverage_ratio: 0,
+        data_status: 'partial',
+        warning: '尚未生成成功的岗位聚类快照，暂时没有可展示的热力数据。',
+      },
+      domain_series: [],
+      detail_series: [],
+    }, signal)
   },
 }
 

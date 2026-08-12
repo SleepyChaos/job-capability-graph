@@ -24,6 +24,9 @@
 - 数据审核任务、状态机、前后快照与审核发布闭环。
 - 可重放多视图岗位聚类、Top-K归属、灰区和跨期稳定簇；
 - 稳定岗位候选、岗位版本、能力重要度、证据与演化审核草稿。
+- 新岗位三种推演模式、专项审批、LLM 表达/解释网关、JWT 基础认证和隐私操作接口。
+- PDF/DOCX/TXT 简历上传解析、近重复检测、发布门禁、按日指标和场景/来源标记。
+- 当前代码基线 `a31ca68`：后端测试 42 项通过，覆盖率 86.89%，Ruff 通过。
 
 ## 本地初始化
 
@@ -33,7 +36,7 @@ $env:UV_CACHE_DIR = (Join-Path (Get-Location) '.uv-cache')
 uv sync --all-groups
 ```
 
-复制`.env.example`为`.env`可覆盖数据库等配置。默认使用`backend/.local/dev.db`，该目录不会提交。
+复制`.env.example`为`.env`可覆盖数据库等配置。默认使用`backend/.local/dev.db`，该目录不会提交。当前联调运行库为 `backend/.local/runtime.db`；结构已到 Alembic `20260811_0011`，已导入 2,151 个技术节点、3,718 条 JD、2,096 个岗位聚类，并完成 113 个岗位版本的开发基线审批。可复核快照见 `../data/runtime/job-capability-graph-runtime.db`。
 
 初始化或升级数据库：
 
@@ -221,3 +224,14 @@ cd backend
 .\.venv\Scripts\ruff.exe check app tools tests
 .\.venv\Scripts\pytest.exe --cov=app --cov=tools --cov-report=term-missing
 ```
+
+## Docker Compose 数据化开发
+
+仓库根目录的 `docker-compose.yml` 已包含 `mysql`、`migrate`、`bootstrap`、`backend` 和 `frontend`。`bootstrap` 从 `data/source/20260810/core` 的核心 XLSX 幂等重建 MySQL，并运行 JD 解析、岗位聚类和全量岗位版本审批；不执行数据包目录中的废弃 SQL。
+
+```bash
+cd ..
+docker compose up --build
+```
+
+详细顺序、重建卷命令和生产注意事项见 `../docs/Docker开发说明_20260812.md`。

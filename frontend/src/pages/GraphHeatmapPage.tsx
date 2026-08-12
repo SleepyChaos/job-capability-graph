@@ -63,13 +63,15 @@ export function GraphHeatmapPage({ notify }: { notify: (message: string) => void
   const selectedDetail = data?.detail_series.find((item) => item.technology_node_id === detailSelection.technologyId) ?? data?.detail_series[0]
   const globalMax = useMemo(() => Math.max(1, ...(data?.domain_series.flatMap((item) => item.values.map((cell) => cell.trigger_document_count)) ?? [1])), [data])
   const detailMax = useMemo(() => Math.max(1, ...(data?.detail_series.flatMap((item) => item.values.map((cell) => cell.trigger_document_count)) ?? [1])), [data])
+  const hasProjection = Boolean(data && data.data_version !== 'uninitialized')
 
   return <div className="page-stack graph-analysis-page">
     <div className="page-intro"><div><h2>能力热力图</h2><p>每个日格统计当天新进入正式库、去重并通过语境校验的材料触发数；同一 JD 对同一技术点每天只计一次。</p></div>{data ? <StatusTag tone={data.window.data_status === 'partial' ? 'warning' : 'success'}>{data.window.observed_date_count}/45 天有可靠数据</StatusTag> : null}</div>
     {error ? <div className="empty-state"><Activity size={24} /><strong>热力图加载失败</strong><span>{error}</span></div> : null}
     {!error && !data ? <div className="empty-state"><Activity size={24} /><strong>正在聚合 45 天触发数据</strong><span>按技术域和标准技术层级生成日格。</span></div> : null}
-    {data?.window.warning ? <div className="graph-data-warning" role="status"><AlertTriangle size={17} /><div><strong>时间覆盖不足</strong><span>{data.window.warning}</span></div></div> : null}
-    {data ? <>
+    {data?.window.warning && hasProjection ? <div className="graph-data-warning" role="status"><AlertTriangle size={17} /><div><strong>时间覆盖不足</strong><span>{data.window.warning}</span></div></div> : null}
+    {data && !hasProjection ? <div className="empty-state"><Activity size={24} /><strong>暂无热力图快照</strong><span>当前数据库尚未生成成功的岗位聚类运行；完成 JD 解析和聚类后，这里会显示近 45 天触发数据。</span></div> : null}
+    {data && hasProjection ? <>
       <Panel title="全局技术域 · 近 45 天触发热力图" subtitle="固定 21 行 × 15 日格；每三行连续表示一个技术域" action={<StatusTag tone="info">315 个日格</StatusTag>}>
         <div className="calendar-heat-scroll"><div className="calendar-heat-grid" role="grid" aria-label="七个技术域最近45天材料触发次数热力图" aria-rowcount={21} aria-colcount={15}>{data.domain_series.map((series) => <section className="calendar-domain-group" key={series.domain_code} aria-label={`${series.domain_code} ${series.domain_name}`}><div className="calendar-domain-label"><i style={{ background: series.color }} /><strong>{series.domain_code}</strong><span>{series.domain_name}</span><small>45 天 {series.total_trigger_documents} 次</small></div><DailyHeatBands values={series.values} domain={series.domain_code} labelPrefix={`${series.domain_code} ${series.domain_name}`} maxValue={globalMax} selectedDay={globalSelection.domain === series.domain_code ? globalSelection.day : -1} onSelect={(day) => setGlobalSelection({ domain: series.domain_code, day })} /></section>)}</div></div>
         {selectedGlobal ? <div className="calendar-heat-footer" aria-live="polite"><DomainLegend /><div><span>选中日格</span><strong>{selectedGlobal.domain_code} {selectedGlobal.domain_name} · {selectedGlobal.values[globalSelection.day].metric_date}</strong><p>去重材料触发 <b>{selectedGlobal.values[globalSelection.day].trigger_document_count}</b> 次；原文提及 {selectedGlobal.values[globalSelection.day].trigger_mention_count} 次。</p></div><div className="heat-scale"><span>0 / 低频</span><i style={{ '--domain-color': selectedGlobal.color } as CSSProperties} /><span>高频</span></div></div> : null}

@@ -2,6 +2,7 @@
   "name": "embodied-job-evolution-mock",
   "private": true,
   "version": "0.1.0",
+  "packageManager": "pnpm@10.29.3",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",

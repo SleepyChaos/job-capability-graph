@@ -49,6 +49,7 @@ export function TaxonomyPage({ notify }: { notify: (message: string) => void }) 
   const selectLevel = (next: string) => { setLevel(next); setOffset(0) }
   const selectDomain = (code: string | null) => { setDomainCode(code); setOffset(0) }
   const selectedDomain = domains.find((domain) => domain.code === domainCode)
+  const hasNoPublishedTaxonomy = !loading && !error && domains.length === 0 && LEVELS.every((item) => (levelCounts[item] ?? 0) === 0)
 
   return (
     <div className="page-stack">
@@ -90,7 +91,7 @@ export function TaxonomyPage({ notify }: { notify: (message: string) => void }) 
                 </tr>
               ))}</tbody>
             </table>
-            {loading ? <div className="empty-state"><RefreshCw className="spin" size={22} /><strong>正在加载…</strong></div> : nodes.length === 0 ? <div className="empty-state"><Waypoints size={25} /><strong>没有匹配的技术节点</strong><span>尝试切换层级、领域或修改搜索条件。</span></div> : null}
+            {loading ? <div className="empty-state"><RefreshCw className="spin" size={22} /><strong>正在加载…</strong></div> : nodes.length === 0 ? <div className="empty-state"><Waypoints size={25} /><strong>{hasNoPublishedTaxonomy ? '尚未导入已发布技术体系' : '没有匹配的技术节点'}</strong><span>{hasNoPublishedTaxonomy ? '当前数据库已完成结构初始化，导入并发布技术体系工作簿后，这里会显示 L1–L4 节点。' : '尝试切换层级、领域或修改搜索条件。'}</span></div> : null}
           </div>
           {total > PAGE_SIZE ? (
             <div className="pagination-row">
@@ -102,7 +103,7 @@ export function TaxonomyPage({ notify }: { notify: (message: string) => void }) 
         </Panel>
       </div>
       <Panel title="T1–T7 领域映射" subtitle="领域归属与 L 层级相互独立；跨领域项可设一个主领域和多个次领域">
-        <div className="domain-rail">{domains.map((domain) => (
+        <div className="domain-rail">{domains.length === 0 ? <div className="empty-state"><Waypoints size={25} /><strong>暂无已发布技术领域</strong><span>技术体系导入并通过发布校验后，T1–T7 领域会显示在这里。</span></div> : domains.map((domain) => (
           <button key={domain.code} onClick={() => selectDomain(domain.code)}>
             <i style={{ background: domain.color ?? '#64748b' }} /><strong>{domain.code}</strong><span>{domain.name}</span><em>{domain.node_count} 个节点</em>
           </button>

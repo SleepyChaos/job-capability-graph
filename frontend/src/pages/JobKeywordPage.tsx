@@ -79,6 +79,7 @@ export function JobKeywordPage({ notify }: { notify: (message: string) => void }
                 </button>
               )
             })}
+            {!searching && options.length === 0 ? <div className="empty-state"><Tags size={24} /><strong>尚未导入已发布技术体系</strong><span>当前数据库已完成结构初始化，导入并发布技术体系后才能选择 L3 技术点。</span></div> : null}
           </div>
           <div className="keyword-inference-summary">
             <strong>当前组合</strong>
