@@ -27,7 +27,7 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("APP_LLM_BASE_URL", "OPENAI_BASE_URL"),
     )
     llm_model: str = Field(
-        default="deepseek-chat",
+        default="deepseek-v4-flash",
         validation_alias=AliasChoices("APP_LLM_MODEL", "LLM_MODEL"),
     )
     llm_timeout_seconds: int = 30

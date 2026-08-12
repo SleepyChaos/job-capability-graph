@@ -60,10 +60,10 @@ docker compose down
 ```dotenv
 APP_LLM_API_KEY=your-key
 APP_LLM_BASE_URL=https://api.deepseek.com/v1
-APP_LLM_MODEL=deepseek-chat
+APP_LLM_MODEL=deepseek-v4-flash
 ```
 
-旧变量名 `OPENAI_API_KEY`、`OPENAI_BASE_URL`、`LLM_MODEL` 也兼容。先做不回写测试：
+默认调用模型为 `deepseek-v4-flash`。旧变量名 `OPENAI_API_KEY`、`OPENAI_BASE_URL`、`LLM_MODEL` 也兼容。先做不回写测试：
 
 ```bash
 docker compose exec backend python -m tools.reassess_technologies_llm \

@@ -115,7 +115,7 @@ services:
       # 兼容数据包早期使用的 OPENAI_* / LLM_MODEL 命名；值仍只从未入库的 .env 注入。
       APP_LLM_API_KEY: ${APP_LLM_API_KEY:-${OPENAI_API_KEY:-}}
       APP_LLM_BASE_URL: ${APP_LLM_BASE_URL:-${OPENAI_BASE_URL:-https://api.deepseek.com/v1}}
-      APP_LLM_MODEL: ${APP_LLM_MODEL:-${LLM_MODEL:-deepseek-chat}}
+      APP_LLM_MODEL: ${APP_LLM_MODEL:-${LLM_MODEL:-deepseek-v4-flash}}
       APP_AUTH_SECRET: ${APP_AUTH_SECRET:-change-me-in-production}
     volumes:
       # 数据导入与评测需要访问仓库数据目录
