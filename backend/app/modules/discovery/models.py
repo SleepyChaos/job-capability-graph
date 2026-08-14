@@ -190,6 +190,9 @@ class EmergingRoleCandidate(Base):
         ForeignKey("biz_task_community.task_community_id")
     )
     candidate_code: Mapped[str] = mapped_column(String(64), unique=True)
+    # 由推演模式 + 技术组合派生的稳定标识：同一组合在后续运行中复用同一行，
+    # 避免每跑一次就产生一整批同名候选。
+    candidate_key: Mapped[str] = mapped_column(String(64), unique=True)
     proposed_name: Mapped[str] = mapped_column(String(500))
     normalized_name: Mapped[str] = mapped_column(String(500))
     maturity_stage_code: Mapped[str] = mapped_column(String(32))

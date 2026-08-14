@@ -165,7 +165,19 @@ def list_candidates(
         filters.append(EmergingRoleCandidate.maturity_stage_code == maturity_stage)
     if run_code:
         filters.append(DiscoveryRun.run_code == run_code)
-    total = db.scalar(select(func.count()).select_from(EmergingRoleCandidate).where(*filters)) or 0
+    # 计数与取数必须走同一套 join，否则按 run_code 过滤时计数会退化成笛卡尔积。
+    total = (
+        db.scalar(
+            select(func.count())
+            .select_from(EmergingRoleCandidate)
+            .join(
+                DiscoveryRun,
+                DiscoveryRun.discovery_run_id == EmergingRoleCandidate.discovery_run_id,
+            )
+            .where(*filters)
+        )
+        or 0
+    )
     rows = db.execute(
         select(EmergingRoleCandidate, DiscoveryRun)
         .join(DiscoveryRun, DiscoveryRun.discovery_run_id == EmergingRoleCandidate.discovery_run_id)

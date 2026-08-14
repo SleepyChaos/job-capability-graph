@@ -57,7 +57,10 @@ from app.modules.job.models import (
 )
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_3"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_4"
+
+# 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
+TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
 DEFAULT_PARAMETERS = {
     "min_pair_job_count": 2,
     "max_communities": 100,
@@ -184,15 +187,24 @@ def run_discovery(
     db.commit()
 
     try:
+        refreshed_count = 0
+        skipped_count = 0
         if mode_code == "name_inference":
             candidate_count, task_count = _run_name_inference(db, run)
         else:
-            candidate_count, task_count = _run_evidence_discovery(db, run, selected_ids, config)
+            (
+                candidate_count,
+                task_count,
+                refreshed_count,
+                skipped_count,
+            ) = _run_evidence_discovery(db, run, selected_ids, config)
         verified_milestones = int(snapshot["verified_milestone_count"])
         approved_roles = int(snapshot["approved_role_count"])
         evidence_limited = verified_milestones == 0 or approved_roles == 0
         run.result_summary_json = {
             "candidate_count": candidate_count,
+            "refreshed_candidate_count": refreshed_count,
+            "skipped_settled_candidate_count": skipped_count,
             "task_count": task_count,
             "verified_milestone_count": verified_milestones,
             "approved_role_count": approved_roles,
@@ -504,7 +516,8 @@ def _rule_expression(card: dict, candidate, technologies: list[dict]) -> dict:
 
 def _run_evidence_discovery(
     db: Session, run: DiscoveryRun, selected_ids: list[int], parameters: dict
-) -> tuple[int, int]:
+) -> tuple[int, int, int, int]:
+    """返回 (新建候选, 任务, 刷新候选, 因已处置而跳过)。"""
     ancestors = _ancestor_chains(db, run.taxonomy_version_id)
     parse_run_id = db.scalar(
         select(JobClusteringRun.job_parse_run_id).where(
@@ -517,9 +530,21 @@ def _run_evidence_discovery(
         : int(parameters["max_communities"])
     ]
     candidate_count = 0
+    refreshed_count = 0
+    skipped_count = 0
     task_count = 0
     for technology_ids, evidence in ranked:
         if len(evidence.job_ids) < int(parameters["min_pair_job_count"]):
+            continue
+        candidate_key = _candidate_key(run.mode_code, technology_ids)
+        existing = db.scalar(
+            select(EmergingRoleCandidate).where(
+                EmergingRoleCandidate.candidate_key == candidate_key
+            )
+        )
+        if existing is not None and existing.workflow_status_code in TERMINAL_CANDIDATE_STATUSES:
+            # 已处置过的技术组合不再重复提出，也不必再落任务和社区。
+            skipped_count += 1
             continue
         task = _persist_task(db, run, technology_ids, evidence, maturity, ancestors)
         task_count += 1
@@ -545,9 +570,23 @@ def _run_evidence_discovery(
                 membership_score=Decimal("1"),
             )
         )
-        _persist_candidate(db, run, community, task, technology_ids, evidence, maturity, ancestors)
-        candidate_count += 1
-    return candidate_count, task_count
+        reused = _persist_candidate(
+            db,
+            run,
+            community,
+            task,
+            technology_ids,
+            evidence,
+            maturity,
+            ancestors,
+            candidate_key=candidate_key,
+            existing=existing,
+        )
+        if reused:
+            refreshed_count += 1
+        else:
+            candidate_count += 1
+    return candidate_count, task_count, refreshed_count, skipped_count
 
 
 def _collect_pair_evidence(
@@ -873,7 +912,10 @@ def _persist_candidate(
     evidence: _PairEvidence,
     maturity: dict[int, float],
     ancestors: dict[int, tuple[int, ...]],
-) -> EmergingRoleCandidate:
+    candidate_key: str,
+    existing: EmergingRoleCandidate | None = None,
+) -> bool:
+    """写入或刷新候选，返回是否复用了既有候选。"""
     technologies = list(
         db.scalars(
             select(TechnologyNode)
@@ -925,10 +967,38 @@ def _persist_candidate(
         "evidence_ids": sorted(evidence.evidence_job_ids),
         "llm_boundary": "expression_only_no_fact_mutation",
     }
+    if existing is not None:
+        # 未决候选就地刷新：保留 candidate_code、表达层与审批任务，只更新机械事实。
+        mechanical["first_seen_run_code"] = (existing.mechanical_card_json or {}).get(
+            "first_seen_run_code"
+        ) or run.run_code
+        mechanical["last_seen_run_code"] = run.run_code
+        existing.task_community_id = community.task_community_id
+        existing.maturity_stage_code = scored.maturity_stage
+        existing.candidate_score = Decimal(str(scored.score))
+        existing.nearest_job_role_id = nearest_role_id
+        existing.overlap_score = Decimal(str(overlap))
+        existing.classification_code = classification
+        existing.mechanical_card_json = mechanical
+        existing.risk_flags_json = list(scored.risk_flags)
+        db.query(CandidateScoreComponent).filter(
+            CandidateScoreComponent.emerging_role_candidate_id
+            == existing.emerging_role_candidate_id
+        ).delete(synchronize_session=False)
+        db.query(CandidateTechnology).filter(
+            CandidateTechnology.emerging_role_candidate_id == existing.emerging_role_candidate_id
+        ).delete(synchronize_session=False)
+        _persist_candidate_children(db, existing, scored, technology_ids, evidence)
+        db.flush()
+        return True
+
+    mechanical["first_seen_run_code"] = run.run_code
+    mechanical["last_seen_run_code"] = run.run_code
     candidate = EmergingRoleCandidate(
         discovery_run_id=run.discovery_run_id,
         task_community_id=community.task_community_id,
         candidate_code=f"candidate_{uuid4().hex[:20]}",
+        candidate_key=candidate_key,
         proposed_name=proposed_name,
         normalized_name=_normalize_name(proposed_name),
         maturity_stage_code=scored.maturity_stage,
@@ -950,6 +1020,29 @@ def _persist_candidate(
     )
     db.add(candidate)
     db.flush()
+    _persist_candidate_children(db, candidate, scored, technology_ids, evidence)
+    db.add(
+        ReviewTask(
+            task_code=f"review_discovery_{candidate.candidate_code}",
+            queue_code="job_discovery",
+            target_type_code="emerging_role",
+            target_id=candidate.emerging_role_candidate_id,
+            priority_score=candidate.candidate_score,
+            task_status_code="queued",
+            target_snapshot_json=candidate_snapshot(db, candidate),
+            reason_json={"risk_flags": list(scored.risk_flags)},
+        )
+    )
+    return False
+
+
+def _persist_candidate_children(
+    db: Session,
+    candidate: EmergingRoleCandidate,
+    scored,
+    technology_ids: tuple[int, ...],
+    evidence: _PairEvidence,
+) -> None:
     for component in scored.components:
         db.add(
             CandidateScoreComponent(
@@ -973,19 +1066,6 @@ def _persist_candidate(
                 evidence_count=per_tech_evidence,
             )
         )
-    db.add(
-        ReviewTask(
-            task_code=f"review_discovery_{candidate.candidate_code}",
-            queue_code="job_discovery",
-            target_type_code="emerging_role",
-            target_id=candidate.emerging_role_candidate_id,
-            priority_score=candidate.candidate_score,
-            task_status_code="queued",
-            target_snapshot_json=candidate_snapshot(db, candidate),
-            reason_json={"risk_flags": list(scored.risk_flags)},
-        )
-    )
-    return candidate
 
 
 def _run_name_inference(db: Session, run: DiscoveryRun) -> tuple[int, int]:
@@ -1029,6 +1109,7 @@ def _run_name_inference(db: Session, run: DiscoveryRun) -> tuple[int, int]:
         discovery_run_id=run.discovery_run_id,
         task_community_id=None,
         candidate_code=f"candidate_{uuid4().hex[:20]}",
+        candidate_key=hashlib.sha256(f"name_inference|{query}".encode()).hexdigest()[:64],
         proposed_name=proposed_name,
         normalized_name=query,
         maturity_stage_code="confirmed" if role else "potential",
@@ -1361,6 +1442,12 @@ def _representative_responsibility(rows: list[JobResponsibility]) -> JobResponsi
     return next(
         item for item in rows if (item.normalized_task_text or item.raw_text).strip() == text
     )
+
+
+def _candidate_key(mode_code: str, technology_ids: tuple[int, ...]) -> str:
+    """候选身份 = 推演模式 + 技术组合，与运行无关。"""
+    payload = f"{mode_code}|" + "-".join(str(item) for item in sorted(technology_ids))
+    return hashlib.sha256(payload.encode()).hexdigest()[:64]
 
 
 def _stable_digest(values: tuple[int, ...]) -> str:

@@ -152,9 +152,9 @@ def test_service_applies_valid_closed_set_decision_and_refreshes_feature() -> No
                 },
             )
 
-        result = LlmTechnologyReassessmentService(
-            session, generator=fake_generator
-        ).run(parse_run_code=parse_run_code, batch_size=1)
+        result = LlmTechnologyReassessmentService(session, generator=fake_generator).run(
+            parse_run_code=parse_run_code, batch_size=1
+        )
 
         session.refresh(assessment)
         audit = session.scalar(select(LlmTechnologyReassessment))

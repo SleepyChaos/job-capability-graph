@@ -98,19 +98,62 @@ def test_discovery_evidence_stays_within_its_clustering_generation() -> None:
             target_date=date(2026, 8, 10),
             parameters={"probe": "second-generation"},
         )
+        # 候选按技术组合去重，第二次运行复用同一行而非新建。
+        assert session.scalar(select(func.count()).select_from(EmergingRoleCandidate)) == 1
         refreshed = session.scalar(
-            select(EmergingRoleCandidate)
-            .join(
-                DiscoveryRun,
-                DiscoveryRun.discovery_run_id == EmergingRoleCandidate.discovery_run_id,
+            select(EmergingRoleCandidate).where(
+                EmergingRoleCandidate.candidate_code == candidate.candidate_code
             )
-            .where(DiscoveryRun.run_code == after.run_code)
         )
 
         # 新一代解析未被本次聚类采用，证据量不得因此膨胀。
         assert len(refreshed.mechanical_card_json["evidence_ids"]) == baseline_evidence
         assert refreshed.mechanical_card_json["job_count"] == baseline_jobs
+        assert refreshed.mechanical_card_json["last_seen_run_code"] == after.run_code
         assert baseline.run_code != after.run_code
+
+
+def test_settled_candidates_are_not_reproposed_on_later_runs() -> None:
+    """已处置的技术组合不再重复提出；未决的就地刷新而非新建。"""
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+        run_full_clustering(session, parse_run_code=parse_run_code)
+        first = run_discovery(session, mode_code="automatic", target_date=date(2026, 8, 10))
+        assert first.candidate_count == 1
+
+        candidate = session.scalar(select(EmergingRoleCandidate))
+        original_code = candidate.candidate_code
+
+        # 未决候选：再次推演应复用同一行。
+        second = run_discovery(
+            session,
+            mode_code="automatic",
+            target_date=date(2026, 8, 10),
+            parameters={"probe": "refresh"},
+        )
+        assert second.candidate_count == 0
+        assert session.scalar(select(func.count()).select_from(EmergingRoleCandidate)) == 1
+        assert session.scalar(select(EmergingRoleCandidate)).candidate_code == original_code
+
+        # 驳回后：同一组合不再被提出。
+        candidate = session.scalar(select(EmergingRoleCandidate))
+        candidate.workflow_status_code = "rejected"
+        session.commit()
+
+        third = run_discovery(
+            session,
+            mode_code="automatic",
+            target_date=date(2026, 8, 10),
+            parameters={"probe": "settled"},
+        )
+        assert third.candidate_count == 0
+        assert session.scalar(select(func.count()).select_from(EmergingRoleCandidate)) == 1
+        summary = session.scalar(
+            select(DiscoveryRun.result_summary_json).where(DiscoveryRun.run_code == third.run_code)
+        )
+        assert summary["skipped_settled_candidate_count"] == 1
 
 
 def test_discovery_is_replayable_and_publishes_separate_standard_jd() -> None:

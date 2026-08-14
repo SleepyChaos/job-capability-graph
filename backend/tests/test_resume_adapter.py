@@ -9,16 +9,11 @@ from app.modules.talent.resume_adapter import (
     sniff_mime,
 )
 
-RESUME_TEXT = (
-    "姓名：测试\n求职意向：机器人算法工程师\n"
-    "负责SLAM与运动规划模块开发，熟悉C++与ROS2。"
-)
+RESUME_TEXT = "姓名：测试\n求职意向：机器人算法工程师\n负责SLAM与运动规划模块开发，熟悉C++与ROS2。"
 
 
 def test_txt_extraction_utf8_and_gbk() -> None:
-    text, mime, input_type = extract_resume_text(
-        "resume.txt", RESUME_TEXT.encode("utf-8")
-    )
+    text, mime, input_type = extract_resume_text("resume.txt", RESUME_TEXT.encode("utf-8"))
     assert "机器人算法工程师" in text
     assert mime == "text/plain"
     assert input_type == "txt"
