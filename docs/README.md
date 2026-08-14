@@ -1,6 +1,6 @@
 # 项目文档入口
 
-> 当前基线：`codex/redesign-from-scratch` · `42ddabe` · 2026-08-12
+> 当前基线：`feat/role-evolution-and-discovery-calibration` · `74388e3` · 2026-08-14
 
 本目录只保留 6 份当前有效文档。开发、评审和任务分派应以这里的结论为准，不再从阶段报告中拼接现状。
 
