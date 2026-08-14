@@ -195,7 +195,7 @@ class JobParsingService:
                 context_evidence,
             )
             self._create_scenarios(
-                job, [item for item in segments if item.segment_type == "scenario"]
+                run, job, [item for item in segments if item.segment_type == "scenario"]
             )
             assessments, ambiguity_review_count = self._assess_technologies(
                 run,
@@ -413,11 +413,14 @@ class JobParsingService:
             result.append(responsibility)
         return result
 
-    def _create_scenarios(self, job: JobPosting, segments: list[ParsedJobSegment]) -> None:
+    def _create_scenarios(
+        self, run: JobParseRun, job: JobPosting, segments: list[ParsedJobSegment]
+    ) -> None:
         """设计 §7.1：把 JD 中的应用场景段落写入 rel_job_scenario（最多保留 6 条）。"""
         for number, segment in enumerate(segments[:6], start=1):
             self.session.add(
                 JobScenario(
+                    job_parse_run_id=run.job_parse_run_id,
                     job_posting_id=job.job_posting_id,
                     scenario_no=number,
                     scenario_text=segment.text[:2000],

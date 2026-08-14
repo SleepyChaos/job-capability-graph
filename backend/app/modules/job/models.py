@@ -215,9 +215,8 @@ class JobScenario(Base):
     __tablename__ = "rel_job_scenario"
 
     job_scenario_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
-    job_posting_id: Mapped[int] = mapped_column(
-        ForeignKey("biz_job_posting.job_posting_id")
-    )
+    job_parse_run_id: Mapped[int] = mapped_column(ForeignKey("biz_job_parse_run.job_parse_run_id"))
+    job_posting_id: Mapped[int] = mapped_column(ForeignKey("biz_job_posting.job_posting_id"))
     scenario_no: Mapped[int] = mapped_column(Integer)
     scenario_text: Mapped[str] = mapped_column(Text)
     normalized_scenario: Mapped[str] = mapped_column(String(500))
@@ -227,7 +226,11 @@ class JobScenario(Base):
     data_origin_code: Mapped[str] = mapped_column(String(32), default="source_fact")
 
     __table_args__ = (
-        UniqueConstraint("job_posting_id", "scenario_no", name="uk_job_scenario_no"),
+        # 场景是解析运行的派生物（同 JobResponsibility）。缺少 run 维度会让第二次
+        # 解析必然主键冲突，岗位能力更新因此从未跑通。
+        UniqueConstraint(
+            "job_parse_run_id", "job_posting_id", "scenario_no", name="uk_job_scenario_run_no"
+        ),
         Index("idx_job_scenario_posting", "job_posting_id"),
     )
 
@@ -547,9 +550,7 @@ class LlmTechnologyReassessmentRun(Base):
 
     reassessment_run_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
     run_code: Mapped[str] = mapped_column(String(64), unique=True)
-    job_parse_run_id: Mapped[int] = mapped_column(
-        ForeignKey("biz_job_parse_run.job_parse_run_id")
-    )
+    job_parse_run_id: Mapped[int] = mapped_column(ForeignKey("biz_job_parse_run.job_parse_run_id"))
     model_version: Mapped[str] = mapped_column(String(100))
     prompt_version: Mapped[str] = mapped_column(String(64))
     input_snapshot_hash: Mapped[str] = mapped_column(String(64))
@@ -583,9 +584,7 @@ class LlmTechnologyReassessment(Base):
         ForeignKey("biz_llm_technology_reassessment_run.reassessment_run_id")
     )
     technology_match_assessment_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            "biz_technology_match_assessment.technology_match_assessment_id"
-        )
+        ForeignKey("biz_technology_match_assessment.technology_match_assessment_id")
     )
     original_status_code: Mapped[str] = mapped_column(String(32))
     decision_code: Mapped[str] = mapped_column(String(32))
