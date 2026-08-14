@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 import pytest
 from sqlalchemy import create_engine, func, select
@@ -16,7 +16,37 @@ from app.modules.discovery.service import (
     review_candidate,
     run_discovery,
 )
+from app.modules.job.models import JobPosting
 from app.modules.taxonomy.models import TechnologyNode
+
+
+def test_replay_cache_detects_changed_job_collection_times() -> None:
+    """采集时间决定观测窗，改了它必须重算，不能命中上一次运行的重放缓存。"""
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+        run_full_clustering(session, parse_run_code=parse_run_code)
+        first = run_discovery(session, mode_code="automatic", target_date=date(2026, 8, 10))
+        assert (
+            run_discovery(
+                session, mode_code="automatic", target_date=date(2026, 8, 10)
+            ).already_completed
+            is True
+        )
+
+        # 时间戳仍在 cutoff 之前，因此"哪些技术评估可用"完全不变，只有观测窗变了。
+        moved = session.scalars(
+            select(JobPosting).where(JobPosting.source_collected_at.is_not(None))
+        ).all()
+        for posting in moved:
+            posting.source_collected_at = datetime(2026, 8, 1)
+        session.commit()
+
+        second = run_discovery(session, mode_code="automatic", target_date=date(2026, 8, 10))
+
+        assert second.already_completed is False
+        assert second.run_code != first.run_code
 
 
 def test_discovery_is_replayable_and_publishes_separate_standard_jd() -> None:

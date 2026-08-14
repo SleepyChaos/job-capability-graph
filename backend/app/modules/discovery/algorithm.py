@@ -94,10 +94,16 @@ class CandidateScore:
 def calculate_maturity(
     events: list[MaturityEventSignal],
     *,
-    alpha: float = 0.85,
+    alpha: float = 0.17,
     decay_lambda: float = 0.35,
     exploration_floor: float = 0.15,
 ) -> MaturityResult:
+    """按证据累积量计算技术成熟度。
+
+    alpha 决定饱和速度。实测语料的累积量分布在 1.3~17.3 之间，早期取值 0.85 会让
+    累积量超过 5 的技术全部压到 0.98 上限（15 个有证据节点里 8 个并列），成熟度这一维
+    失去区分度。0.17 使该区间映射到约 0.20~0.95，上限不再是绑定约束。
+    """
     contributions = []
     total = 0.0
     for event in events:

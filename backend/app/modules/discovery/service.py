@@ -57,11 +57,15 @@ from app.modules.job.models import (
 )
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_1"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_2"
 DEFAULT_PARAMETERS = {
     "min_pair_job_count": 2,
     "max_communities": 100,
     "exploration_floor": 0.15,
+    # 里程碑挂在 L1/L2，而 JD 证据和候选都在 L3。没有直接证据的节点沿父链继承祖先证据，
+    # 每上溯一层按该系数折减相关度，保证有直接证据的节点始终排在继承者前面。
+    "maturity_alpha": 0.17,
+    "ancestor_inheritance_decay": 0.6,
 }
 
 
@@ -376,9 +380,7 @@ EXPRESSION_PROMPT_VERSION = "candidate_expression_v1"
 def auto_candidate_expression(db: Session, *, candidate_code: str) -> EmergingRoleCandidate:
     """一键生成表达层：LLM 可用时生成并校验，否则规则降级（设计 §8.5、§12.3）。"""
     candidate = db.scalar(
-        select(EmergingRoleCandidate).where(
-            EmergingRoleCandidate.candidate_code == candidate_code
-        )
+        select(EmergingRoleCandidate).where(EmergingRoleCandidate.candidate_code == candidate_code)
     )
     if candidate is None:
         raise DiscoveryError("新岗位候选不存在")
@@ -471,14 +473,10 @@ def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | N
 
 def _rule_expression(card: dict, candidate, technologies: list[dict]) -> dict:
     required_names = [
-        item["technology_name"]
-        for item in technologies
-        if item["requirement_type"] == "required"
+        item["technology_name"] for item in technologies if item["requirement_type"] == "required"
     ][:5]
     bonus_names = [
-        item["technology_name"]
-        for item in technologies
-        if item["requirement_type"] != "required"
+        item["technology_name"] for item in technologies if item["requirement_type"] != "required"
     ][:5]
     job_count = int(card.get("job_count", 0))
     org_count = int(card.get("organization_count", 0))
@@ -507,7 +505,8 @@ def _rule_expression(card: dict, candidate, technologies: list[dict]) -> dict:
 def _run_evidence_discovery(
     db: Session, run: DiscoveryRun, selected_ids: list[int], parameters: dict
 ) -> tuple[int, int]:
-    maturity = _persist_maturity(db, run, selected_ids)
+    ancestors = _ancestor_chains(db, run.taxonomy_version_id)
+    maturity = _persist_maturity(db, run, selected_ids, parameters, ancestors)
     pair_evidence = _collect_pair_evidence(db, run, selected_ids)
     ranked = sorted(pair_evidence.items(), key=lambda item: (-len(item[1].job_ids), item[0]))[
         : int(parameters["max_communities"])
@@ -517,7 +516,7 @@ def _run_evidence_discovery(
     for technology_ids, evidence in ranked:
         if len(evidence.job_ids) < int(parameters["min_pair_job_count"]):
             continue
-        task = _persist_task(db, run, technology_ids, evidence, maturity)
+        task = _persist_task(db, run, technology_ids, evidence, maturity, ancestors)
         task_count += 1
         community = TaskCommunity(
             discovery_run_id=run.discovery_run_id,
@@ -541,7 +540,7 @@ def _run_evidence_discovery(
                 membership_score=Decimal("1"),
             )
         )
-        _persist_candidate(db, run, community, task, technology_ids, evidence, maturity)
+        _persist_candidate(db, run, community, task, technology_ids, evidence, maturity, ancestors)
         candidate_count += 1
     return candidate_count, task_count
 
@@ -608,7 +607,131 @@ def _collect_pair_evidence(
     return result
 
 
-def _persist_maturity(db: Session, run: DiscoveryRun, selected_ids: list[int]) -> dict[int, float]:
+def _ancestor_chains(db: Session, taxonomy_version_id: int) -> dict[int, tuple[int, ...]]:
+    """返回每个技术节点由近及远的祖先链，用于成熟度证据上溯。"""
+    parents = {
+        node_id: parent_id
+        for node_id, parent_id in db.execute(
+            select(
+                TechnologyNode.technology_node_id, TechnologyNode.parent_technology_node_id
+            ).where(
+                TechnologyNode.taxonomy_version_id == taxonomy_version_id,
+                TechnologyNode.governance_status_code == "active",
+            )
+        )
+    }
+    chains: dict[int, tuple[int, ...]] = {}
+    for node_id in parents:
+        chain = []
+        current = parents.get(node_id)
+        while current is not None and current in parents and current not in chain:
+            chain.append(current)
+            current = parents.get(current)
+        chains[node_id] = tuple(chain)
+    return chains
+
+
+def _milestone_signals_by_node(
+    db: Session, run: DiscoveryRun
+) -> dict[int, list[MaturityEventSignal]]:
+    """一次取回全部已核实里程碑，按技术节点分组，避免逐节点查询。"""
+    rows = db.execute(
+        select(
+            MilestoneTechnology.technology_node_id,
+            MilestoneEvent.milestone_event_id,
+            MilestoneEvent.milestone_type_code,
+            MilestoneEvent.event_date,
+            MilestoneEvent.event_year,
+            MilestoneTechnology.relevance_score,
+            func.avg(EvidenceSpan.source_reliability_score),
+        )
+        .join(
+            MilestoneTechnology,
+            MilestoneTechnology.milestone_event_id == MilestoneEvent.milestone_event_id,
+        )
+        .outerjoin(
+            MilestoneEvidence,
+            MilestoneEvidence.milestone_event_id == MilestoneEvent.milestone_event_id,
+        )
+        .outerjoin(
+            EvidenceSpan, EvidenceSpan.evidence_span_id == MilestoneEvidence.evidence_span_id
+        )
+        .where(
+            MilestoneEvent.verification_status_code == "verified",
+            _within_target_date(run.target_date),
+        )
+        .group_by(
+            MilestoneTechnology.technology_node_id,
+            MilestoneEvent.milestone_event_id,
+            MilestoneEvent.milestone_type_code,
+            MilestoneEvent.event_date,
+            MilestoneEvent.event_year,
+            MilestoneTechnology.relevance_score,
+        )
+    ).all()
+    grouped: dict[int, list[MaturityEventSignal]] = defaultdict(list)
+    for node_id, event_id, type_code, event_date, event_year, relevance, source_quality in rows:
+        grouped[node_id].append(
+            MaturityEventSignal(
+                event_id=event_id,
+                event_type_code=type_code,
+                age_years=_event_age_years(run.target_date, event_date, event_year),
+                relevance=float(relevance) / 100,
+                source_quality=float(source_quality or 60) / 100,
+            )
+        )
+    return grouped
+
+
+def _within_target_date(target_date: date):
+    """event_date 可空、event_year 必填，只有年份的里程碑同样是有效证据。"""
+    return or_(
+        MilestoneEvent.event_date <= target_date,
+        (MilestoneEvent.event_date.is_(None)) & (MilestoneEvent.event_year <= target_date.year),
+    )
+
+
+def _event_age_years(target_date: date, event_date: date | None, event_year: int) -> float:
+    if event_date is not None:
+        return max(0.0, (target_date - event_date).days / 365.25)
+    # 只知道年份时按年中取值，避免把整年证据当成年初或年末。
+    return max(0.0, target_date.year - event_year + 0.5)
+
+
+def _inherited_signals(
+    technology_id: int,
+    by_node: dict[int, list[MaturityEventSignal]],
+    ancestors: dict[int, tuple[int, ...]],
+    decay: float,
+) -> tuple[list[MaturityEventSignal], bool]:
+    """自身证据优先；缺失的部分按祖先距离折减后补入。返回 (信号, 是否有直接证据)。"""
+    signals: dict[int, MaturityEventSignal] = {
+        signal.event_id: signal for signal in by_node.get(technology_id, [])
+    }
+    direct = bool(signals)
+    for distance, ancestor_id in enumerate(ancestors.get(technology_id, ()), start=1):
+        factor = decay**distance
+        for signal in by_node.get(ancestor_id, []):
+            # 复合主键要求每个里程碑在一个快照里只出现一次，就近继承的权重更高。
+            if signal.event_id in signals:
+                continue
+            signals[signal.event_id] = MaturityEventSignal(
+                event_id=signal.event_id,
+                event_type_code=signal.event_type_code,
+                age_years=signal.age_years,
+                relevance=signal.relevance * factor,
+                source_quality=signal.source_quality,
+            )
+    return list(signals.values()), direct
+
+
+def _persist_maturity(
+    db: Session,
+    run: DiscoveryRun,
+    selected_ids: list[int],
+    parameters: dict,
+    ancestors: dict[int, tuple[int, ...]],
+) -> dict[int, float]:
     technology_ids = selected_ids or list(
         db.scalars(
             select(TechnologyNode.technology_node_id).where(
@@ -617,53 +740,27 @@ def _persist_maturity(db: Session, run: DiscoveryRun, selected_ids: list[int]) -
             )
         )
     )
+    by_node = _milestone_signals_by_node(db, run)
+    alpha = float(parameters.get("maturity_alpha", 0.17))
+    decay = float(parameters.get("ancestor_inheritance_decay", 0.6))
+    exploration_floor = float(parameters.get("exploration_floor", 0.15))
     result = {}
     for technology_id in technology_ids:
-        event_rows = db.execute(
-            select(
-                MilestoneEvent, MilestoneTechnology, func.avg(EvidenceSpan.source_reliability_score)
-            )
-            .join(
-                MilestoneTechnology,
-                MilestoneTechnology.milestone_event_id == MilestoneEvent.milestone_event_id,
-            )
-            .outerjoin(
-                MilestoneEvidence,
-                MilestoneEvidence.milestone_event_id == MilestoneEvent.milestone_event_id,
-            )
-            .outerjoin(
-                EvidenceSpan, EvidenceSpan.evidence_span_id == MilestoneEvidence.evidence_span_id
-            )
-            .where(
-                MilestoneTechnology.technology_node_id == technology_id,
-                MilestoneEvent.verification_status_code == "verified",
-                MilestoneEvent.event_date.is_not(None),
-                MilestoneEvent.event_date <= run.target_date,
-            )
-            .group_by(
-                MilestoneEvent.milestone_event_id,
-                MilestoneTechnology.milestone_event_id,
-                MilestoneTechnology.technology_node_id,
-            )
-        ).all()
-        signals = [
-            MaturityEventSignal(
-                event_id=event.milestone_event_id,
-                event_type_code=event.milestone_type_code,
-                age_years=max(0, (run.target_date - event.event_date).days / 365.25),
-                relevance=float(relation.relevance_score) / 100,
-                source_quality=float(source_quality or 60) / 100,
-            )
-            for event, relation, source_quality in event_rows
-        ]
-        maturity = calculate_maturity(signals)
+        signals, direct = _inherited_signals(technology_id, by_node, ancestors, decay)
+        maturity = calculate_maturity(signals, alpha=alpha, exploration_floor=exploration_floor)
+        if not signals:
+            status = "missing_verified_milestone"
+        elif direct:
+            status = "verified"
+        else:
+            status = "inherited_from_ancestor"
         snapshot = TechnologyMaturitySnapshot(
             discovery_run_id=run.discovery_run_id,
             technology_node_id=technology_id,
             maturity_raw_score=Decimal(str(maturity.raw)),
             maturity_explore_score=Decimal(str(maturity.explore)),
             verified_event_count=len(signals),
-            evidence_status_code="verified" if signals else "missing_verified_milestone",
+            evidence_status_code=status,
         )
         db.add(snapshot)
         db.flush()
@@ -689,6 +786,7 @@ def _persist_task(
     technology_ids: tuple[int, ...],
     evidence: _PairEvidence,
     maturity: dict[int, float],
+    ancestors: dict[int, tuple[int, ...]],
 ) -> IndustryTask:
     responsibility = _representative_responsibility(evidence.responsibilities)
     market = calculate_market_support(
@@ -696,7 +794,7 @@ def _persist_task(
         organization_count=len(evidence.organization_ids),
         source_count=len(evidence.source_ids),
         observation_window_count=len(evidence.observation_windows),
-        application_evidence_count=_application_evidence_count(db, run, technology_ids),
+        application_evidence_count=_application_evidence_count(db, run, technology_ids, ancestors),
     )
     coverage = _existing_role_coverage(db, technology_ids, run.target_date)
     evidence_strength = min(1.0, 0.35 + 0.08 * len(evidence.evidence_job_ids))
@@ -759,6 +857,7 @@ def _persist_candidate(
     technology_ids: tuple[int, ...],
     evidence: _PairEvidence,
     maturity: dict[int, float],
+    ancestors: dict[int, tuple[int, ...]],
 ) -> EmergingRoleCandidate:
     technologies = list(
         db.scalars(
@@ -769,7 +868,7 @@ def _persist_candidate(
     )
     names = [item.technology_name for item in technologies]
     proposed_name = "与".join(names[:2]) + "工程师"
-    application_count = _application_evidence_count(db, run, technology_ids)
+    application_count = _application_evidence_count(db, run, technology_ids, ancestors)
     raw_maturity = sum(maturity.get(item, 0) for item in technology_ids) / len(technology_ids)
     signals = CandidateSignals(
         technology_relevance=1.0,
@@ -1073,8 +1172,7 @@ def _build_input_snapshot(
             select(MilestoneEvent.milestone_event_id)
             .where(
                 MilestoneEvent.verification_status_code == "verified",
-                MilestoneEvent.event_date.is_not(None),
-                MilestoneEvent.event_date <= target_date,
+                _within_target_date(target_date),
             )
             .order_by(MilestoneEvent.milestone_event_id)
         )
@@ -1126,7 +1224,38 @@ def _build_input_snapshot(
         "approved_role_count": len(approved_version_ids),
         "accepted_technology_assessment_ids": accepted_assessment_ids,
         "accepted_technology_assessment_count": len(accepted_assessment_ids),
+        **_job_time_snapshot(db, cutoff),
         "parameters": parameters,
+    }
+
+
+def _job_time_snapshot(db: Session, cutoff: datetime) -> dict:
+    """JD 采集时间决定观测窗，必须进输入快照。
+
+    只记评估 ID 无法察觉时间戳变化：改采集时间不会改变"哪些评估通过 cutoff"，
+    于是两个截然不同的数据状态会算出同一个哈希，重放检查直接返回上一次的结果。
+    """
+    rows = db.execute(
+        select(JobPosting.job_posting_id, JobPosting.source_collected_at)
+        .where(
+            or_(
+                JobPosting.source_collected_at <= cutoff,
+                (JobPosting.source_collected_at.is_(None)) & (JobPosting.published_at <= cutoff),
+            )
+        )
+        .order_by(JobPosting.job_posting_id)
+    ).all()
+    digest = hashlib.sha256()
+    windows: set[str] = set()
+    for job_posting_id, collected_at in rows:
+        stamp = collected_at.isoformat() if collected_at else ""
+        digest.update(f"{job_posting_id}:{stamp}\0".encode())
+        if collected_at:
+            windows.add(collected_at.strftime("%Y-%m"))
+    return {
+        "job_collection_time_hash": digest.hexdigest(),
+        "job_collection_count": len(rows),
+        "job_observation_windows": sorted(windows),
     }
 
 
@@ -1146,16 +1275,24 @@ def _validate_selected_technologies(db: Session, taxonomy_version_id: int, ids: 
         raise DiscoveryError("选择的技术词不存在、未激活或不属于当前技术体系")
 
 
-def _application_evidence_count(db: Session, run: DiscoveryRun, ids: tuple[int, ...]) -> int:
+def _application_evidence_count(
+    db: Session,
+    run: DiscoveryRun,
+    ids: tuple[int, ...],
+    ancestors: dict[int, tuple[int, ...]] | None = None,
+) -> int:
+    # 与成熟度一致地上溯：应用类证据同样挂在 L1/L2，不展开则该门槛恒为 0。
+    lookup = set(ids)
+    for technology_id in ids:
+        lookup.update((ancestors or {}).get(technology_id, ()))
     return int(
         db.scalar(
             select(func.count(func.distinct(MilestoneEvent.milestone_event_id)))
             .join(MilestoneTechnology)
             .where(
-                MilestoneTechnology.technology_node_id.in_(ids),
+                MilestoneTechnology.technology_node_id.in_(sorted(lookup)),
                 MilestoneEvent.verification_status_code == "verified",
-                MilestoneEvent.event_date.is_not(None),
-                MilestoneEvent.event_date <= run.target_date,
+                _within_target_date(run.target_date),
                 MilestoneEvent.milestone_type_code.in_(
                     ["enterprise_application", "scaled_deployment", "product_release"]
                 ),

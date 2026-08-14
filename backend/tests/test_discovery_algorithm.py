@@ -22,8 +22,33 @@ def test_maturity_uses_verified_event_contributions_without_artificial_raw_floor
 
     assert empty.raw == 0
     assert empty.explore == 0.15
-    assert result.raw > 0.4
+    assert result.raw > 0
+    assert result.explore == 0.15  # 单条证据仍低于探索地板，不得被地板抬成"有成熟度"
     assert len(result.contributions) == 1
+
+
+def test_maturity_keeps_resolution_across_the_observed_accumulation_range() -> None:
+    """实测语料累积量在 1.3~17.3 之间，这一段必须保持单调且不撞上限。"""
+
+    def _at(count: int) -> float:
+        return calculate_maturity(
+            [
+                MaturityEventSignal(
+                    event_id=index,
+                    event_type_code="product_release",
+                    age_years=0,
+                    relevance=1.0,
+                    source_quality=0.6,
+                )
+                for index in range(count)
+            ]
+        ).raw
+
+    low, mid, high = _at(3), _at(10), _at(35)
+
+    assert low < mid < high
+    assert high < 0.98  # 0.98 是硬上限，观测区间内不应触顶
+    assert mid - low > 0.1 and high - mid > 0.1
 
 
 def test_candidate_stage_is_evidence_gated_independently_of_score() -> None:
