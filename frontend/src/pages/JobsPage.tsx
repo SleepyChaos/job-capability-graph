@@ -40,14 +40,13 @@ export function JobsPage({ notify }: { notify: (message: string) => void }) {
   const reviewerCode = window.localStorage.getItem('reviewer_code') ?? 'reviewer-demo'
 
   const reload = useCallback(async (signal?: AbortSignal) => {
-    // 每次推演都会生成整批候选，跨运行混在一起会出现大量同名重复项。
-    // 先取运行列表，再只拉最近一次成功运行的候选。
-    const runRows = await discoveryApi.runs('automatic', signal)
-    const latestRun = runRows.find((item) => item.run_status_code === 'success') ?? runRows[0]
-    const candidatePage = await discoveryApi.candidates(
-      { limit: 50, runCode: latestRun?.run_code },
-      signal,
-    )
+    // 候选按技术组合去重，同一组合始终只有一行，因此不按运行过滤：
+    // 复用的候选仍挂在首次发现的运行下，若只取最近一次运行会把它们全部漏掉。
+    // 按运行浏览历史请用「推演结果记录库」。
+    const [candidatePage, runRows] = await Promise.all([
+      discoveryApi.candidates({ limit: 50 }, signal),
+      discoveryApi.runs('automatic', signal),
+    ])
     setCandidates(candidatePage.items)
     setCandidateTotal(candidatePage.total)
     setRuns(runRows)
@@ -176,7 +175,7 @@ export function JobsPage({ notify }: { notify: (message: string) => void }) {
       {error ? <div className="empty-state"><ShieldAlert size={25} /><strong>加载失败</strong><span>{error}</span></div> : null}
 
       <div className="jobs-layout">
-        <Panel title="推演候选" subtitle={`最近一次推演共 ${candidateTotal} 个，按综合证据分排序`} className="candidate-list-panel">
+        <Panel title="推演候选" subtitle={`累计 ${candidateTotal} 个（按技术组合去重），按综合证据分排序`} className="candidate-list-panel">
           {loading ? <div className="empty-state"><RefreshCw className="spin" size={22} /><strong>正在加载候选…</strong></div> : (
             <div className="candidate-list">
               {candidates.map((candidate) => (
