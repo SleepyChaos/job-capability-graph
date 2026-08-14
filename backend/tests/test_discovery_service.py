@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from decimal import Decimal
 
 import pytest
 from sqlalchemy import create_engine, func, select
@@ -16,7 +17,12 @@ from app.modules.discovery.service import (
     review_candidate,
     run_discovery,
 )
-from app.modules.job.models import JobParseRun, JobPosting, TechnologyMatchAssessment
+from app.modules.job.models import (
+    JobParseRun,
+    JobPosting,
+    JobResponsibility,
+    TechnologyMatchAssessment,
+)
 from app.modules.taxonomy.models import TechnologyNode
 
 
@@ -154,6 +160,41 @@ def test_settled_candidates_are_not_reproposed_on_later_runs() -> None:
             select(DiscoveryRun.result_summary_json).where(DiscoveryRun.run_code == third.run_code)
         )
         assert summary["skipped_settled_candidate_count"] == 1
+
+
+def test_representative_responsibility_rejects_recruiter_boilerplate() -> None:
+    """样板文字跨 JD 重复而真实职责各不相同，纯频次排序会systematically选中样板。"""
+    from app.modules.discovery.service import _representative_responsibility
+
+    def _row(text, verb="优化", obj="对象", confidence=90):
+        return JobResponsibility(
+            job_parse_run_id=1,
+            job_posting_id=1,
+            responsibility_no=1,
+            raw_text=text,
+            normalized_task_text=text,
+            action_verb=verb,
+            task_object=obj,
+            extraction_method_code="rule",
+            confidence_score=Decimal(confidence),
+        )
+
+    rows = [
+        _row("猎聘APP 我是猎头 我是招聘方"),
+        _row("猎聘APP 我是猎头 我是招聘方"),
+        _row("猎聘APP 我是猎头 我是招聘方"),
+        _row("负责仿真平台与工具链的搭建与持续优化"),
+        _row("负责端到端大模型的训练流程设计"),
+    ]
+
+    picked = _representative_responsibility(rows)
+
+    assert picked is not None
+    assert "猎聘" not in picked.normalized_task_text
+
+    # 结构不完整或过短的条目同样不可作为代表。
+    assert _representative_responsibility([_row("方案", verb=None, obj=None)]) is None
+    assert _representative_responsibility([_row("及验证")]) is None
 
 
 def test_discovery_is_replayable_and_publishes_separate_standard_jd() -> None:

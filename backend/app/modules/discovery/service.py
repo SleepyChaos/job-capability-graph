@@ -861,12 +861,23 @@ def _persist_task(
         organization_count=len(evidence.organization_ids),
         market_support=market,
     )
-    text = responsibility.normalized_task_text if responsibility else None
+    text = (responsibility.normalized_task_text or "").strip() if responsibility else ""
+    # 没有可用职责时用技术名兜底，而不是拼技术节点 ID（ID 对使用者没有意义）。
+    fallback = (
+        " / ".join(
+            db.scalars(
+                select(TechnologyNode.technology_name)
+                .where(TechnologyNode.technology_node_id.in_(technology_ids))
+                .order_by(TechnologyNode.technology_code)
+            )
+        )
+        or "技术组合工程任务"
+    )
     task = IndustryTask(
         discovery_run_id=run.discovery_run_id,
         task_code=f"task_{_stable_digest(technology_ids)[:20]}",
-        task_name=text or " / ".join(str(item) for item in technology_ids),
-        normalized_task_text=text or "技术组合工程任务",
+        task_name=text or fallback,
+        normalized_task_text=text or fallback,
         action_verb=responsibility.action_verb if responsibility else None,
         task_object=responsibility.task_object if responsibility else None,
         expected_output=responsibility.expected_output if responsibility else None,
@@ -1434,14 +1445,51 @@ def _existing_role_coverage(db: Session, ids: tuple[int, ...], target_date: date
     return _nearest_role(db, ids, target_date)[1]
 
 
+# 招聘平台注入到 JD 正文里的导航与自荐语，不是岗位职责。
+RESPONSIBILITY_BOILERPLATE = (
+    "猎聘",
+    "我是猎头",
+    "我是招聘方",
+    "boss直聘",
+    "智联招聘",
+    "前程无忧",
+    "扫码",
+    "关注公众号",
+    "投递简历",
+    "简历发送",
+)
+MIN_RESPONSIBILITY_LENGTH = 8
+
+
+def _is_usable_responsibility(item: JobResponsibility) -> bool:
+    """结构完整、长度合理且不含招聘平台样板文字的职责才可作为代表。"""
+    text = (item.normalized_task_text or item.raw_text or "").strip()
+    if len(text) < MIN_RESPONSIBILITY_LENGTH:
+        return False
+    lowered = text.casefold()
+    if any(mark in lowered for mark in RESPONSIBILITY_BOILERPLATE):
+        return False
+    return bool((item.action_verb or "").strip()) and bool((item.task_object or "").strip())
+
+
 def _representative_responsibility(rows: list[JobResponsibility]) -> JobResponsibility | None:
-    if not rows:
+    """选一条能代表该技术组合的职责。
+
+    真实职责在各份 JD 中措辞互不相同、几乎都只出现一次，而招聘平台样板文字会
+    跨 JD 重复出现。纯按出现频次排序会系统性地选中样板文字（实测某候选的定义
+    被写成"负责猎聘APP 我是猎头 我是招聘方…"），因此先过滤不可用条目，
+    再在可用条目内按频次、信息量和置信度排序。
+    """
+    usable = [item for item in rows if _is_usable_responsibility(item)]
+    if not usable:
         return None
-    counts = Counter((item.normalized_task_text or item.raw_text).strip() for item in rows)
-    text = sorted(counts, key=lambda item: (-counts[item], item))[0]
-    return next(
-        item for item in rows if (item.normalized_task_text or item.raw_text).strip() == text
-    )
+    counts = Counter((item.normalized_task_text or item.raw_text).strip() for item in usable)
+
+    def rank(item: JobResponsibility) -> tuple:
+        text = (item.normalized_task_text or item.raw_text).strip()
+        return (-counts[text], -float(item.confidence_score or 0), -len(text), text)
+
+    return sorted(usable, key=rank)[0]
 
 
 def _candidate_key(mode_code: str, technology_ids: tuple[int, ...]) -> str:
