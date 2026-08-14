@@ -16,7 +16,7 @@ from app.modules.discovery.service import (
     review_candidate,
     run_discovery,
 )
-from app.modules.job.models import JobPosting
+from app.modules.job.models import JobParseRun, JobPosting, TechnologyMatchAssessment
 from app.modules.taxonomy.models import TechnologyNode
 
 
@@ -47,6 +47,70 @@ def test_replay_cache_detects_changed_job_collection_times() -> None:
 
         assert second.already_completed is False
         assert second.run_code != first.run_code
+
+
+def test_discovery_evidence_stays_within_its_clustering_generation() -> None:
+    """JD 更新会产生新的解析运行；推演的证据必须与其绑定的聚类运行同源。"""
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+        run_full_clustering(session, parse_run_code=parse_run_code)
+        baseline = run_discovery(session, mode_code="automatic", target_date=date(2026, 8, 10))
+        candidate = session.scalar(select(EmergingRoleCandidate))
+        baseline_evidence = len(candidate.mechanical_card_json["evidence_ids"])
+        baseline_jobs = candidate.mechanical_card_json["job_count"]
+
+        # 模拟"又解析了一次"：复制一份已接受评估挂到新的解析运行下。
+        old_run = session.scalar(select(JobParseRun))
+        newer = JobParseRun(
+            run_code="jdparse_second_generation",
+            target_date=old_run.target_date,
+            taxonomy_version_id=old_run.taxonomy_version_id,
+            parser_version=old_run.parser_version,
+            input_snapshot_hash="second-generation-hash",
+            run_status_code="completed",
+        )
+        session.add(newer)
+        session.flush()
+        for assessment in session.scalars(
+            select(TechnologyMatchAssessment).where(
+                TechnologyMatchAssessment.job_parse_run_id == old_run.job_parse_run_id
+            )
+        ).all():
+            session.add(
+                TechnologyMatchAssessment(
+                    job_parse_run_id=newer.job_parse_run_id,
+                    job_requirement_id=assessment.job_requirement_id,
+                    evidence_span_id=assessment.evidence_span_id,
+                    context_type_code=assessment.context_type_code,
+                    assessment_status_code="accepted",
+                    adjusted_support_score=assessment.adjusted_support_score,
+                    feature_weight=assessment.feature_weight,
+                    reason_code=assessment.reason_code,
+                )
+            )
+        session.commit()
+
+        after = run_discovery(
+            session,
+            mode_code="automatic",
+            target_date=date(2026, 8, 10),
+            parameters={"probe": "second-generation"},
+        )
+        refreshed = session.scalar(
+            select(EmergingRoleCandidate)
+            .join(
+                DiscoveryRun,
+                DiscoveryRun.discovery_run_id == EmergingRoleCandidate.discovery_run_id,
+            )
+            .where(DiscoveryRun.run_code == after.run_code)
+        )
+
+        # 新一代解析未被本次聚类采用，证据量不得因此膨胀。
+        assert len(refreshed.mechanical_card_json["evidence_ids"]) == baseline_evidence
+        assert refreshed.mechanical_card_json["job_count"] == baseline_jobs
+        assert baseline.run_code != after.run_code
 
 
 def test_discovery_is_replayable_and_publishes_separate_standard_jd() -> None:

@@ -57,7 +57,7 @@ from app.modules.job.models import (
 )
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_2"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_3"
 DEFAULT_PARAMETERS = {
     "min_pair_job_count": 2,
     "max_communities": 100,
@@ -506,8 +506,13 @@ def _run_evidence_discovery(
     db: Session, run: DiscoveryRun, selected_ids: list[int], parameters: dict
 ) -> tuple[int, int]:
     ancestors = _ancestor_chains(db, run.taxonomy_version_id)
+    parse_run_id = db.scalar(
+        select(JobClusteringRun.job_parse_run_id).where(
+            JobClusteringRun.clustering_run_id == run.clustering_run_id
+        )
+    )
     maturity = _persist_maturity(db, run, selected_ids, parameters, ancestors)
-    pair_evidence = _collect_pair_evidence(db, run, selected_ids)
+    pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id)
     ranked = sorted(pair_evidence.items(), key=lambda item: (-len(item[1].job_ids), item[0]))[
         : int(parameters["max_communities"])
     ]
@@ -546,8 +551,14 @@ def _run_evidence_discovery(
 
 
 def _collect_pair_evidence(
-    db: Session, run: DiscoveryRun, selected_ids: list[int]
+    db: Session, run: DiscoveryRun, selected_ids: list[int], parse_run_id: int
 ) -> dict[tuple[int, ...], _PairEvidence]:
+    """证据必须与本次推演绑定的聚类运行同源。
+
+    JD 更新后会产生新的解析运行，若不锁定解析运行，推演就会把多代解析的评估
+    混在一起：聚类结构来自上一代、技术证据来自新一代，两者口径不一致，且证据
+    片段会随解析次数累积虚高。
+    """
     cutoff = datetime.combine(run.target_date, datetime.max.time())
     accepted = db.execute(
         select(JobRequirement, JobPosting, TechnologyMatchAssessment.evidence_span_id)
@@ -558,6 +569,7 @@ def _collect_pair_evidence(
         )
         .where(
             JobRequirement.technology_node_id.is_not(None),
+            TechnologyMatchAssessment.job_parse_run_id == parse_run_id,
             TechnologyMatchAssessment.assessment_status_code == "accepted",
             or_(
                 JobPosting.source_collected_at <= cutoff,
@@ -573,7 +585,10 @@ def _collect_pair_evidence(
         jobs[posting.job_posting_id][2].add(evidence_id)
     responsibilities = defaultdict(list)
     for responsibility in db.scalars(
-        select(JobResponsibility).where(JobResponsibility.job_posting_id.in_(list(jobs) or [-1]))
+        select(JobResponsibility).where(
+            JobResponsibility.job_posting_id.in_(list(jobs) or [-1]),
+            JobResponsibility.job_parse_run_id == parse_run_id,
+        )
     ):
         responsibilities[responsibility.job_posting_id].append(responsibility)
     sources = defaultdict(set)
@@ -1200,6 +1215,7 @@ def _build_input_snapshot(
             )
             .join(JobPosting, JobPosting.job_posting_id == JobRequirement.job_posting_id)
             .where(
+                TechnologyMatchAssessment.job_parse_run_id == clustering_run.job_parse_run_id,
                 TechnologyMatchAssessment.assessment_status_code == "accepted",
                 or_(
                     JobPosting.source_collected_at <= cutoff,
@@ -1215,6 +1231,7 @@ def _build_input_snapshot(
         "taxonomy_version_id": taxonomy_version_id,
         "clustering_run_id": clustering_run.clustering_run_id,
         "clustering_input_hash": clustering_run.input_snapshot_hash,
+        "job_parse_run_id": clustering_run.job_parse_run_id,
         "selected_technology_ids": selected_ids,
         "query_role_name": (query_role_name or "").strip() or None,
         "query_description": (query_description or "").strip() or None,
