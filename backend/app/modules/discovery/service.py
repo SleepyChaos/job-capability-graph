@@ -58,7 +58,7 @@ from app.modules.job.models import (
 )
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_4"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_5"
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
@@ -70,6 +70,10 @@ DEFAULT_PARAMETERS = {
     # 每上溯一层按该系数折减相关度，保证有直接证据的节点始终排在继承者前面。
     "maturity_alpha": 0.17,
     "ancestor_inheritance_decay": 0.6,
+    # 技术词少于该数量的岗位版本不足以构成可比的岗位定义，不参与最近岗位比较。
+    "min_role_technology_count": 2,
+    # 反事实分析用：把这些岗位当作不存在（留出重发现实验）。
+    "excluded_role_ids": [],
 }
 
 
@@ -541,6 +545,8 @@ def _run_evidence_discovery(
     db: Session, run: DiscoveryRun, selected_ids: list[int], parameters: dict
 ) -> tuple[int, int, int, int]:
     """返回 (新建候选, 任务, 刷新候选, 因已处置而跳过)。"""
+    min_role_technology_count = int(parameters.get("min_role_technology_count", 2))
+    excluded_role_ids = frozenset(int(item) for item in parameters.get("excluded_role_ids") or [])
     ancestors = _ancestor_chains(db, run.taxonomy_version_id)
     parse_run_id = db.scalar(
         select(JobClusteringRun.job_parse_run_id).where(
@@ -569,7 +575,16 @@ def _run_evidence_discovery(
             # 已处置过的技术组合不再重复提出，也不必再落任务和社区。
             skipped_count += 1
             continue
-        task = _persist_task(db, run, technology_ids, evidence, maturity, ancestors)
+        task = _persist_task(
+            db,
+            run,
+            technology_ids,
+            evidence,
+            maturity,
+            ancestors,
+            min_role_technology_count,
+            excluded_role_ids,
+        )
         task_count += 1
         community = TaskCommunity(
             discovery_run_id=run.discovery_run_id,
@@ -603,6 +618,8 @@ def _run_evidence_discovery(
             maturity,
             ancestors,
             candidate_key=candidate_key,
+            min_role_technology_count=min_role_technology_count,
+            excluded_role_ids=excluded_role_ids,
             existing=existing,
         )
         if reused:
@@ -864,6 +881,8 @@ def _persist_task(
     evidence: _PairEvidence,
     maturity: dict[int, float],
     ancestors: dict[int, tuple[int, ...]],
+    min_role_technology_count: int,
+    excluded_role_ids: frozenset[int],
 ) -> IndustryTask:
     responsibility = _representative_responsibility(evidence.responsibilities)
     market = calculate_market_support(
@@ -873,7 +892,13 @@ def _persist_task(
         observation_window_count=len(evidence.observation_windows),
         application_evidence_count=_application_evidence_count(db, run, technology_ids, ancestors),
     )
-    coverage = _existing_role_coverage(db, technology_ids, run.target_date)
+    coverage = _existing_role_coverage(
+        db,
+        technology_ids,
+        run.target_date,
+        min_role_technology_count=min_role_technology_count,
+        excluded_role_ids=excluded_role_ids,
+    )
     evidence_strength = min(1.0, 0.35 + 0.08 * len(evidence.evidence_job_ids))
     maturity_score = sum(maturity.get(item, 0) for item in technology_ids) / len(technology_ids)
     gap = calculate_task_gap(
@@ -952,6 +977,8 @@ def _persist_candidate(
     maturity: dict[int, float],
     ancestors: dict[int, tuple[int, ...]],
     candidate_key: str,
+    min_role_technology_count: int,
+    excluded_role_ids: frozenset[int],
     existing: EmergingRoleCandidate | None = None,
 ) -> bool:
     """写入或刷新候选，返回是否复用了既有候选。"""
@@ -982,7 +1009,13 @@ def _persist_candidate(
         application_evidence_count=application_count,
     )
     scored = score_candidate(signals)
-    nearest_role_id, overlap = _nearest_role(db, technology_ids, run.target_date)
+    nearest_role_id, overlap = _nearest_role(
+        db,
+        technology_ids,
+        run.target_date,
+        min_role_technology_count=min_role_technology_count,
+        excluded_role_ids=excluded_role_ids,
+    )
     classification = (
         "existing_role"
         if overlap >= 0.75
@@ -1451,9 +1484,21 @@ def _application_evidence_count(
     )
 
 
-def _nearest_role(
-    db: Session, technology_ids: tuple[int, ...], target_date: date
-) -> tuple[int | None, float]:
+def _role_capability_profiles(
+    db: Session,
+    target_date: date,
+    *,
+    min_technology_count: int,
+    excluded_role_ids: frozenset[int] = frozenset(),
+) -> list[tuple[int, set[int]]]:
+    """取生效岗位版本的技术画像。
+
+    技术词过少的版本不足以构成可比的岗位定义：当前 118 个岗位里有 32 个只有 1 个
+    技术词（上游抽取稀疏所致），任何包含该词的技术组合与其重合度都会虚高，
+    据此判定"已被既有岗位覆盖"是错误的。这类版本不参与最近岗位比较。
+
+    excluded_role_ids 用于反事实分析（如留出重发现实验）：把指定岗位当作不存在。
+    """
     versions = list(
         db.scalars(
             select(JobRoleVersion).where(
@@ -1463,10 +1508,10 @@ def _nearest_role(
             )
         )
     )
-    best_role_id = None
-    best_overlap = 0.0
-    target = set(technology_ids)
+    profiles = []
     for version in versions:
+        if version.job_role_id in excluded_role_ids:
+            continue
         role_tech = set(
             db.scalars(
                 select(JobRoleVersionRequirement.technology_node_id).where(
@@ -1474,15 +1519,60 @@ def _nearest_role(
                 )
             )
         )
-        overlap = len(target & role_tech) / len(target | role_tech) if target | role_tech else 0.0
+        if len(role_tech) < min_technology_count:
+            continue
+        profiles.append((version.job_role_id, role_tech))
+    return profiles
+
+
+def _nearest_role(
+    db: Session,
+    technology_ids: tuple[int, ...],
+    target_date: date,
+    *,
+    min_role_technology_count: int = 2,
+    excluded_role_ids: frozenset[int] = frozenset(),
+) -> tuple[int | None, float]:
+    """候选技术组合被既有岗位覆盖的程度。
+
+    使用非对称覆盖率 |候选∩岗位| / |候选| 而非 Jaccard。所问的问题是"候选的能力
+    有多少已被既有岗位吸收"，与岗位自身还要求多少额外能力无关；Jaccard 会因岗位
+    技术词更多而错误地压低覆盖率——候选 {A,B} 面对要求 {A,B,C,D} 的岗位实际已被
+    完全覆盖，Jaccard 却只有 0.5。
+    """
+    target = set(technology_ids)
+    if not target:
+        return None, 0.0
+    best_role_id = None
+    best_overlap = 0.0
+    for role_id, role_tech in _role_capability_profiles(
+        db,
+        target_date,
+        min_technology_count=min_role_technology_count,
+        excluded_role_ids=excluded_role_ids,
+    ):
+        overlap = len(target & role_tech) / len(target)
         if overlap > best_overlap:
-            best_role_id = version.job_role_id
+            best_role_id = role_id
             best_overlap = overlap
     return best_role_id, best_overlap
 
 
-def _existing_role_coverage(db: Session, ids: tuple[int, ...], target_date: date) -> float:
-    return _nearest_role(db, ids, target_date)[1]
+def _existing_role_coverage(
+    db: Session,
+    ids: tuple[int, ...],
+    target_date: date,
+    *,
+    min_role_technology_count: int = 2,
+    excluded_role_ids: frozenset[int] = frozenset(),
+) -> float:
+    return _nearest_role(
+        db,
+        ids,
+        target_date,
+        min_role_technology_count=min_role_technology_count,
+        excluded_role_ids=excluded_role_ids,
+    )[1]
 
 
 # 招聘平台注入到 JD 正文里的导航与自荐语，不是岗位职责。

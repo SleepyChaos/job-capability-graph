@@ -7,7 +7,11 @@ from sqlalchemy.orm import Session
 from test_clustering_service import _seed_cluster_fixture
 
 from app.db.base import Base
-from app.modules.clustering.models import JobRole, JobRoleVersion
+from app.modules.clustering.models import (
+    JobRole,
+    JobRoleVersion,
+    JobRoleVersionRequirement,
+)
 from app.modules.clustering.service import run_full_clustering
 from app.modules.data_center.models import AppUser, ReviewTask
 from app.modules.discovery.models import DiscoveryRun, EmergingRoleCandidate, StandardJobDescription
@@ -195,6 +199,76 @@ def test_representative_responsibility_rejects_recruiter_boilerplate() -> None:
     # 结构不完整或过短的条目同样不可作为代表。
     assert _representative_responsibility([_row("方案", verb=None, obj=None)]) is None
     assert _representative_responsibility([_row("及验证")]) is None
+
+
+def test_existing_role_coverage_is_asymmetric_and_ignores_thin_roles() -> None:
+    """覆盖率问的是"候选能力有多少已被吸收"，与岗位额外要求多少能力无关。"""
+    from app.modules.discovery.service import _nearest_role
+
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        role_ids = {}
+        for name, techs in (("宽岗位", [1, 2, 3, 4]), ("单词岗位", [1])):
+            role = JobRole(
+                role_code=f"ROLE-{name}",
+                canonical_name=name,
+                normalized_name=name,
+                origin_type_code="cluster_derived",
+                lifecycle_status_code="active",
+            )
+            session.add(role)
+            session.flush()
+            role_ids[name] = role.job_role_id
+            version = JobRoleVersion(
+                job_role_id=role.job_role_id,
+                version_no=1,
+                valid_from=date(2026, 1, 1),
+                role_name=name,
+                one_line_definition="测试岗位",
+                core_responsibility_text="测试",
+                approval_status_code="approved",
+            )
+            session.add(version)
+            session.flush()
+            for tech in techs:
+                session.add(
+                    JobRoleVersionRequirement(
+                        job_role_version_id=version.job_role_version_id,
+                        technology_node_id=tech,
+                        requirement_type_code="required",
+                        long_term_importance_score=Decimal("80"),
+                        recent_activity_score=Decimal("50"),
+                        trend_status_code="insufficient_history",
+                        confidence_score=Decimal("80"),
+                    )
+                )
+        session.commit()
+
+        # 候选 {1,2} 完全落在宽岗位的 {1,2,3,4} 内 -> 已被完全覆盖。
+        # Jaccard 会给 2/4=0.5，非对称覆盖率给 1.0。
+        role_id, overlap = _nearest_role(session, (1, 2), date(2026, 8, 10))
+        assert overlap == 1.0
+        assert role_id == role_ids["宽岗位"]
+
+        # 只有单技术词岗位可比时，该岗位应被排除，覆盖率归零。
+        _, thin_only = _nearest_role(
+            session,
+            (1, 9),
+            date(2026, 8, 10),
+            excluded_role_ids=frozenset({role_ids["宽岗位"]}),
+        )
+        assert thin_only == 0.0
+
+        # 放宽门槛到 1 后单技术词岗位重新参与，虚高的 0.5 就回来了。
+        _, with_thin = _nearest_role(
+            session,
+            (1, 9),
+            date(2026, 8, 10),
+            min_role_technology_count=1,
+            excluded_role_ids=frozenset({role_ids["宽岗位"]}),
+        )
+        assert with_thin == 0.5
 
 
 def test_discovery_is_replayable_and_publishes_separate_standard_jd() -> None:

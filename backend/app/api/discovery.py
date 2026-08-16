@@ -298,9 +298,7 @@ def update_candidate_expression(
     return candidate_snapshot(db, candidate)
 
 
-@router.post(
-    "/role-discovery/candidates/{candidate_code}/expression/auto", response_model=dict
-)
+@router.post("/role-discovery/candidates/{candidate_code}/expression/auto", response_model=dict)
 def auto_expression(
     candidate_code: str,
     db: Annotated[Session, Depends(get_db)],
