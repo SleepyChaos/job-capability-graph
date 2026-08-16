@@ -50,7 +50,9 @@ from app.modules.job.models import (
 from app.modules.taxonomy.models import TechnologyDomain, TechnologyNode
 
 ALGORITHM_NAME = "explainable_sparse_multiview"
-ALGORITHM_VERSION = "baseline_sparse_multiview_v1"
+# v2：聚类入口新增低信息量 JD 机械过滤（min_technology_evidence_count），
+# 低于门槛的 JD 不参与聚类，行为与 v1 不同，必须隔离重放缓存。
+ALGORITHM_VERSION = "baseline_sparse_multiview_v2"
 CALCULATION_VERSION = "role_capability_stats_v1"
 
 
@@ -94,6 +96,8 @@ def run_full_clustering(
     parameters: ClusteringParameters | None = None,
 ) -> ClusteringRunResult:
     parameters = parameters or ClusteringParameters()
+    if parameters.min_technology_evidence_count < 0:
+        raise ClusteringError("min_technology_evidence_count 不能为负数")
     parse_run = db.scalar(
         select(JobParseRun).where(
             JobParseRun.run_code == parse_run_code,
@@ -186,7 +190,14 @@ def _execute_clustering_run(
     parameters: ClusteringParameters,
 ) -> ClusteringRunResult:
 
-    raw_features = [_raw_feature(feature, job) for feature, job in feature_rows]
+    clustered_rows, filtered_rows = _split_rows_by_evidence_count(
+        feature_rows, parameters.min_technology_evidence_count
+    )
+    if not clustered_rows:
+        raise ClusteringError(
+            "按min_technology_evidence_count过滤后没有可聚类的JD，请降低门槛后重试"
+        )
+    raw_features = [_raw_feature(feature, job) for feature, job in clustered_rows]
     output = cluster_jobs(raw_features, parameters)
     previous_run = db.scalar(
         select(JobClusteringRun)
@@ -220,6 +231,18 @@ def _execute_clustering_run(
         "grey_job_ratio": round(grey_count / len(raw_features), 6),
         "scenario_feature_status": "not_available",
         "trend_history_status": "insufficient_history",
+        "low_signal_filter": {
+            "min_technology_evidence_count": parameters.min_technology_evidence_count,
+            "filtered_job_count": len(filtered_rows),
+            "clustered_job_count": len(clustered_rows),
+            "filtered_evidence_count_histogram": {
+                str(count): jobs
+                for count, jobs in sorted(
+                    Counter(_evidence_count(feature) for feature, _job in filtered_rows).items()
+                )
+            },
+            "evidence_count_basis": "feature_snapshot_technology_weights",
+        },
     }
     run.run_status_code = "success"
     run.completed_at = datetime.now()
@@ -991,6 +1014,25 @@ def _requirement_value(requirement: JobRoleVersionRequirement | None) -> dict | 
         "coverage_rate": str(requirement.coverage_rate),
         "trend_status_code": requirement.trend_status_code,
     }
+
+
+def _evidence_count(feature: JobClusterFeatureSnapshot) -> int:
+    """低信息量过滤的计数口径：冻结特征快照中映射到技术节点的条目数。"""
+    return len(feature.technology_weights_json)
+
+
+def _split_rows_by_evidence_count(
+    feature_rows: list[tuple], min_count: int
+) -> tuple[list[tuple], list[tuple]]:
+    """按技术证据条数把聚类入口输入切成参与聚类/待治理两部分（任务组 3 机械版）。"""
+    clustered: list[tuple] = []
+    filtered: list[tuple] = []
+    for row in feature_rows:
+        if _evidence_count(row[0]) >= min_count:
+            clustered.append(row)
+        else:
+            filtered.append(row)
+    return clustered, filtered
 
 
 def _raw_feature(feature: JobClusterFeatureSnapshot, job: JobPosting) -> RawJobFeature:

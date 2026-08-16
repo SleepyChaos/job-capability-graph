@@ -1,10 +1,12 @@
 from datetime import date, datetime
 from decimal import Decimal
 
+import pytest
 from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session
 
 from app.db.base import Base
+from app.modules.clustering.algorithm import ClusteringParameters
 from app.modules.clustering.models import (
     JobClusteringRun,
     JobClusterMember,
@@ -12,7 +14,7 @@ from app.modules.clustering.models import (
     JobRoleVersion,
     JobRoleVersionRequirement,
 )
-from app.modules.clustering.service import run_full_clustering
+from app.modules.clustering.service import ClusteringError, run_full_clustering
 from app.modules.data_center.models import ReviewTask
 from app.modules.job.models import (
     DataSource,
@@ -49,9 +51,10 @@ def test_clustering_service_builds_replayable_role_candidate() -> None:
         assert repeated.already_completed is True
         assert repeated.run_code == result.run_code
         assert result.input_job_count == 4
-        assert result.cluster_count == 2
+        # 默认 min_technology_evidence_count=2：零证据 JD 不再产单例簇。
+        assert result.cluster_count == 1
         assert result.candidate_role_count == 1
-        assert session.scalar(select(func.count()).select_from(JobClusterMember)) == 4
+        assert session.scalar(select(func.count()).select_from(JobClusterMember)) == 3
         assert session.scalar(select(func.count()).select_from(JobRole)) == 1
         version = session.scalar(select(JobRoleVersion))
         assert version is not None and version.approval_status_code == "pending"
@@ -64,6 +67,121 @@ def test_clustering_service_builds_replayable_role_candidate() -> None:
             run is not None
             and run.quality_metric_json["scenario_feature_status"] == "not_available"
         )
+        assert run.algorithm_version == "baseline_sparse_multiview_v2"
+        assert run.parameter_json["min_technology_evidence_count"] == 2
+        assert run.quality_metric_json["low_signal_filter"] == {
+            "min_technology_evidence_count": 2,
+            "filtered_job_count": 1,
+            "clustered_job_count": 3,
+            "filtered_evidence_count_histogram": {"0": 1},
+            "evidence_count_basis": "feature_snapshot_technology_weights",
+        }
+
+
+def test_low_signal_filter_excludes_jobs_below_threshold() -> None:
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+
+        result = run_full_clustering(session, parse_run_code=parse_run_code)
+
+        filtered_job = session.scalar(
+            select(JobPosting).where(JobPosting.job_code == "JOB-CLUSTER-3")
+        )
+        assert filtered_job is not None
+        member_job_ids = set(session.scalars(select(JobClusterMember.job_posting_id)))
+        # 低于门槛的 JD 不产簇、不产生任何成员归属，也不参与相似度计算。
+        assert filtered_job.job_posting_id not in member_job_ids
+        run = session.scalar(
+            select(JobClusteringRun).where(JobClusteringRun.run_code == result.run_code)
+        )
+        assert run is not None
+        assert run.input_job_count == 4
+        assert run.assigned_job_count + run.grey_job_count == 3
+        metrics = run.quality_metric_json["low_signal_filter"]
+        assert metrics["min_technology_evidence_count"] == 2
+        assert metrics["filtered_job_count"] == 1
+        assert metrics["clustered_job_count"] == 3
+        assert metrics["filtered_evidence_count_histogram"] == {"0": 1}
+        assert metrics["evidence_count_basis"] == "feature_snapshot_technology_weights"
+
+
+def test_low_signal_filter_threshold_zero_matches_legacy_behavior() -> None:
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+
+        result = run_full_clustering(
+            session,
+            parse_run_code=parse_run_code,
+            parameters=ClusteringParameters(min_technology_evidence_count=0),
+        )
+
+        # 阈值 0 = 不过滤，等价旧行为口径：4 JD 全部参与，恢复含单例簇的 2 簇。
+        assert result.cluster_count == 2
+        assert session.scalar(select(func.count()).select_from(JobClusterMember)) == 4
+        run = session.scalar(
+            select(JobClusteringRun).where(JobClusteringRun.run_code == result.run_code)
+        )
+        assert run is not None
+        assert run.assigned_job_count + run.grey_job_count == 4
+        assert run.quality_metric_json["low_signal_filter"] == {
+            "min_technology_evidence_count": 0,
+            "filtered_job_count": 0,
+            "clustered_job_count": 4,
+            "filtered_evidence_count_histogram": {},
+            "evidence_count_basis": "feature_snapshot_technology_weights",
+        }
+
+
+def test_low_signal_filter_is_parameter_bound_for_replay() -> None:
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+
+        first = run_full_clustering(session, parse_run_code=parse_run_code)
+        replay = run_full_clustering(session, parse_run_code=parse_run_code)
+        unfiltered = run_full_clustering(
+            session,
+            parse_run_code=parse_run_code,
+            parameters=ClusteringParameters(min_technology_evidence_count=0),
+        )
+
+        # 同输入同参数命中重放缓存；不同阈值是不同输入快照，互不串味。
+        assert replay.already_completed is True
+        assert replay.run_code == first.run_code
+        assert unfiltered.already_completed is False
+        runs = list(session.scalars(select(JobClusteringRun)))
+        assert len(runs) == 2
+        assert len({item.input_snapshot_hash for item in runs}) == 2
+        assert {item.parameter_json["min_technology_evidence_count"] for item in runs} == {0, 2}
+
+
+def test_low_signal_filter_rejects_negative_threshold_and_empty_result() -> None:
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+
+        with pytest.raises(ClusteringError):
+            run_full_clustering(
+                session,
+                parse_run_code=parse_run_code,
+                parameters=ClusteringParameters(min_technology_evidence_count=-1),
+            )
+        with pytest.raises(ClusteringError):
+            run_full_clustering(
+                session,
+                parse_run_code=parse_run_code,
+                parameters=ClusteringParameters(min_technology_evidence_count=5),
+            )
+
+        # 负值在建 run 前被拦截；过高阈值产生一条可审计的 failed 运行记录。
+        runs = list(session.scalars(select(JobClusteringRun)))
+        assert [item.run_status_code for item in runs] == ["failed"]
 
 
 def _seed_cluster_fixture(session: Session) -> str:
@@ -266,7 +384,11 @@ def _seed_cluster_fixture(session: Session) -> str:
                 responsibility_tokens_json=(
                     ["机器人", "控制", "开发"] if similar else ["供应商", "采购", "管理"]
                 ),
-                technology_weights_json=({"SYNTH-T1-L3": 1.0} if similar else {}),
+                # 相似 JD 带 2 条技术权重（默认过滤门槛 2）；第二条无词表节点，
+                # 与真实快照中"节点事后下线"的形态一致，不参与能力指标。
+                technology_weights_json=(
+                    {"SYNTH-T1-L3": 1.0, "SYNTH-T1-L3-AUX": 1.0} if similar else {}
+                ),
                 domain_weights_json=({"T1": 1.0} if similar else {}),
                 level_code="middle",
                 sample_weight=Decimal("1"),
