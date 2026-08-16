@@ -26,6 +26,14 @@ EVENT_TYPE_MAP = {
     "技术突破": "breakthrough",
     "论文发表": "paper",
     "技术演示": "technology_demo",
+    # 四类技术突破信号框架中的专利与融资：旧实验库未使用这两类，
+    # 保留映射以便后续接入专利库与投融资数据源时无需再改导入器。
+    "专利授权": "patent",
+    "专利申请": "patent",
+    "专利": "patent",
+    "融资事件": "funding",
+    "融资": "funding",
+    "投融资": "funding",
     "其他": "other",
 }
 

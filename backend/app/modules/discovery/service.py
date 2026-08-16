@@ -31,6 +31,7 @@ from app.modules.discovery.algorithm import (
     calculate_market_support,
     calculate_maturity,
     calculate_task_gap,
+    estimate_transmission_lag,
     score_candidate,
 )
 from app.modules.discovery.models import (
@@ -386,7 +387,7 @@ def apply_candidate_expression(
     return candidate
 
 
-EXPRESSION_PROMPT_VERSION = "candidate_expression_v1"
+EXPRESSION_PROMPT_VERSION = "candidate_expression_v2_reliability_annotated"
 
 
 def auto_candidate_expression(db: Session, *, candidate_code: str) -> EmergingRoleCandidate:
@@ -442,22 +443,44 @@ def _card_fact_references(card: dict) -> list[str]:
 def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | None:
     from app.infrastructure.llm import generate, validate_schema
 
+    task_source = card.get("task_text_source") or "unknown"
+    # 逐字段标注可靠度：机械层的任务文本取自 JD 职责抽取，存在切分错误与
+    # 招聘平台样板文字的残留风险；数值类事实由确定性算法产出，可靠。
     facts = {
         "proposed_name": candidate.proposed_name,
-        "job_count": card.get("job_count"),
-        "organization_count": card.get("organization_count"),
-        "task_gap": card.get("task_gap"),
-        "maturity_raw": card.get("maturity_raw"),
         "technologies": [
             {"name": item["technology_name"], "requirement_type": item["requirement_type"]}
             for item in technologies[:12]
         ],
+        "evidence": {
+            "job_count": card.get("job_count"),
+            "organization_count": card.get("organization_count"),
+            "source_count": card.get("source_count"),
+            "observation_window_count": card.get("observation_window_count"),
+            "task_gap": card.get("task_gap"),
+            "maturity_raw": card.get("maturity_raw"),
+            "nearest_role_overlap": card.get("nearest_role_overlap"),
+        },
+        "representative_task_text": card.get("task_text"),
+        "field_reliability": {
+            "technologies": "high",
+            "evidence": "high",
+            "representative_task_text": (
+                "high" if task_source == "jd_responsibility" else "low_fallback_placeholder"
+            ),
+        },
     }
     system_prompt = (
-        "你是岗位研究助手。只能基于给定机械事实生成岗位表达，"
-        "不得新增事实、数字或技能；输出 JSON，包含键：proposed_name、"
-        "one_line_definition、core_responsibilities（数组）、formation_reason、"
-        "difference_explanation。"
+        "你是岗位研究助手，只做表达层改写。\n"
+        "硬约束：\n"
+        "1. 只能使用给定机械事实，不得新增技术、数字或技能。\n"
+        "2. field_reliability 标为 low 的字段可能来自抽取错误："
+        "只允许忽略该字段，禁止用推测内容替换它，也不得据此编造替代事实。\n"
+        "3. representative_task_text 是原始 JD 职责摘录，可能含切分错误或残缺句；"
+        "可提炼其语义，但不得把其中出现的公司名、平台名当作岗位职责。\n"
+        "4. 若可用事实不足以支撑某个字段，写明证据不足，不要编造。\n"
+        "输出 JSON，包含键：proposed_name、one_line_definition、"
+        "core_responsibilities（数组）、formation_reason、difference_explanation。"
     )
     result = generate(
         system_prompt=system_prompt,
@@ -888,7 +911,12 @@ def _persist_task(
         job_count=len(evidence.job_ids),
         organization_count=len(evidence.organization_ids),
         source_count=len(evidence.source_ids),
-        evidence_status_code=("traceable" if evidence.evidence_job_ids else "missing_span"),
+        evidence_status_code=(
+            ("traceable" if evidence.evidence_job_ids else "missing_span")
+            if text
+            # 无可用 JD 职责，任务文本由技术名兜底，语义可靠度低。
+            else "technology_fallback_text"
+        ),
     )
     db.add(task)
     db.flush()
@@ -963,7 +991,15 @@ def _persist_candidate(
         else "potential_new_role"
     )
     mechanical = {
-        "fact_schema_version": "mechanical_role_card_v1",
+        "fact_schema_version": "mechanical_role_card_v2",
+        "task_text": task.normalized_task_text,
+        # jd_responsibility：来自真实 JD 职责；technology_fallback：无可用职责，
+        # 由技术名拼接兜底，语义可靠度低，表达层应据此决定是否采用。
+        "task_text_source": (
+            "technology_fallback"
+            if task.evidence_status_code == "technology_fallback_text"
+            else "jd_responsibility"
+        ),
         "technology_node_ids": list(technology_ids),
         "technology_names": names,
         "task_ids": [task.industry_task_id],
@@ -975,6 +1011,10 @@ def _persist_candidate(
         "maturity_raw": raw_maturity,
         "task_gap": float(task.task_gap_score),
         "nearest_role_overlap": overlap,
+        # 先验估计，非本项目观测值：JD 侧尚无跨月真实采集，无法自行估计时滞。
+        "expected_transmission_lag": estimate_transmission_lag(
+            tuple(item.technology_code.split(".")[0] for item in technologies)
+        ),
         "evidence_ids": sorted(evidence.evidence_job_ids),
         "llm_boundary": "expression_only_no_fact_mutation",
     }

@@ -1,7 +1,9 @@
 from app.modules.discovery.algorithm import (
+    EVENT_TYPE_WEIGHTS,
     CandidateSignals,
     MaturityEventSignal,
     calculate_maturity,
+    estimate_transmission_lag,
     score_candidate,
 )
 
@@ -79,3 +81,37 @@ def _signals(**overrides) -> CandidateSignals:
     }
     values.update(overrides)
     return CandidateSignals(**values)
+
+
+def test_patent_and_funding_signals_sit_between_paper_and_product_release() -> None:
+    """四类信号框架要求专利与融资可用；其成熟度权重应落在论文与产品发布之间。"""
+    assert EVENT_TYPE_WEIGHTS["paper"] < EVENT_TYPE_WEIGHTS["patent"]
+    assert EVENT_TYPE_WEIGHTS["patent"] < EVENT_TYPE_WEIGHTS["product_release"]
+    assert EVENT_TYPE_WEIGHTS["paper"] < EVENT_TYPE_WEIGHTS["funding"]
+    assert EVENT_TYPE_WEIGHTS["funding"] < EVENT_TYPE_WEIGHTS["product_release"]
+
+    signal = MaturityEventSignal(
+        event_id=1, event_type_code="patent", age_years=0, relevance=1.0, source_quality=1.0
+    )
+    # 未知类型会退化为 other(0.35)，这里确认专利确实被识别而非兜底。
+    assert calculate_maturity([signal]).contributions[0].type_weight == EVENT_TYPE_WEIGHTS["patent"]
+
+
+def test_transmission_lag_reflects_technology_class_coefficients() -> None:
+    """硬件类时滞长于算法类；混合组合的上界被最慢的一类拖住。"""
+    algorithm = estimate_transmission_lag(("T1",))
+    hardware = estimate_transmission_lag(("T3",))
+    mixed = estimate_transmission_lag(("T1", "T3"))
+    integration = estimate_transmission_lag(("T5",))
+
+    assert algorithm["coefficient"] == 0.8
+    assert hardware["coefficient"] == 1.3
+    assert integration["coefficient"] == 1.0
+    assert algorithm["high_months"] < integration["high_months"] < hardware["high_months"]
+    # 混合组合下界靠近算法类、上界靠近硬件类。
+    assert algorithm["low_months"] <= mixed["low_months"] < hardware["low_months"]
+    assert mixed["high_months"] > integration["high_months"]
+
+    # 输出必须自我声明是先验估计，避免被当作实测时滞引用。
+    assert algorithm["status"] == "reference_prior"
+    assert estimate_transmission_lag(("T9",))["status"] == "unknown_domain"

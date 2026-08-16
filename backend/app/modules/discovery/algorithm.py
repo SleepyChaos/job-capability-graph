@@ -17,14 +17,43 @@ POSITIVE_WEIGHTS = {
 EVENT_TYPE_WEIGHTS = {
     "technology_demo": 0.45,
     "paper": 0.55,
+    # 专利在研发完成后、产品上市前申请，可证明技术可实现但不证明已部署，
+    # 因此高于论文、低于工程突破。注意专利自申请到公开有约 18 个月审查期，
+    # 采集到的 event_date 若取公开日会系统性晚于真实突破时点。
+    "patent": 0.60,
     "breakthrough": 0.68,
+    # 融资反映资本对商业化前景的判断，是技术突破与产品发布之间的中介信号，
+    # 对岗位涌现有较强前瞻性（融资完成后通常 3—6 个月开始批量招聘），
+    # 但其本身不构成技术成熟度证据，故低于产品发布。
+    "funding": 0.70,
+    "standard_policy": 0.72,
     "open_source": 0.76,
     "product_release": 0.84,
     "platform_release": 0.88,
     "scaled_deployment": 0.92,
     "enterprise_application": 0.92,
-    "standard_policy": 0.72,
     "other": 0.35,
+}
+
+# 技术域 → 技术类型。三类技术的工程化路径不同，传导节奏差异显著。
+DOMAIN_TECHNOLOGY_CLASS = {
+    "T1": "algorithm",  # 智能算法与模型
+    "T2": "hardware",  # 感知与传感
+    "T3": "hardware",  # 本体与核心零部件
+    "T4": "algorithm",  # 数据与仿真
+    "T5": "system_integration",  # 系统软件与工具链
+    "T6": "system_integration",  # 交互安全与评测标准
+    "T7": "system_integration",  # 应用与场景
+}
+
+# 各技术类型的传导时滞基线区间（月）与修正系数。
+# 基线取自外部参考研究的实测区间，属于先验参数而非本项目观测结果；
+# 本项目 JD 侧尚不具备跨月真实时间序列，无法自行估计，故标记为 reference_prior。
+# 待多月真实采集到位后应改由数据估计，并保留此处作为对照基线。
+TECHNOLOGY_CLASS_LAG_PRIOR = {
+    "algorithm": {"low_months": 10, "high_months": 15, "coefficient": 0.8},
+    "system_integration": {"low_months": 12, "high_months": 18, "coefficient": 1.0},
+    "hardware": {"low_months": 15, "high_months": 24, "coefficient": 1.3},
 }
 
 
@@ -234,6 +263,45 @@ def score_candidate(signals: CandidateSignals) -> CandidateScore:
         components=tuple(components),
         risk_flags=tuple(risks),
     )
+
+
+def estimate_transmission_lag(
+    domain_codes: tuple[str, ...],
+    *,
+    class_prior: dict | None = None,
+    domain_class_map: dict | None = None,
+) -> dict:
+    """按技术域构成估计"技术突破 → 岗位需求涌现"的传导时滞区间（月）。
+
+    这是**先验估计**而非本项目的观测结果：JD 侧目前没有跨月真实采集，
+    无法从数据估计时滞。输出用于前瞻标注与后续回测对照，不得当作实测值引用。
+
+    多技术组合按各自类型的区间取并集后再乘以加权修正系数——组合中只要含硬件类，
+    整体工程化节奏就会被最慢的一环拖住，因此上界取各类型的最大值。
+    """
+    prior = class_prior or TECHNOLOGY_CLASS_LAG_PRIOR
+    mapping = domain_class_map or DOMAIN_TECHNOLOGY_CLASS
+    classes = [mapping[code] for code in domain_codes if code in mapping]
+    if not classes:
+        return {
+            "status": "unknown_domain",
+            "technology_classes": [],
+            "low_months": None,
+            "high_months": None,
+            "coefficient": None,
+        }
+    counts = {item: classes.count(item) for item in set(classes)}
+    total = sum(counts.values())
+    coefficient = sum(prior[item]["coefficient"] * n for item, n in counts.items()) / total
+    low = min(prior[item]["low_months"] for item in counts)
+    high = max(prior[item]["high_months"] for item in counts)
+    return {
+        "status": "reference_prior",
+        "technology_classes": sorted(counts),
+        "low_months": round(low * coefficient, 1),
+        "high_months": round(high * coefficient, 1),
+        "coefficient": round(coefficient, 3),
+    }
 
 
 def saturating(value: int, target: int) -> float:
