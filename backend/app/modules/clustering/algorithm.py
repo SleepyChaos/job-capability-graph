@@ -11,6 +11,10 @@ class ClusteringParameters:
     top_k: int = 3
     max_cluster_size: int = 120
     max_block_candidates: int = 400
+    # 聚类入口的低信息量过滤门槛（任务组 3 机械版）：特征快照 technology_weights
+    # 条数低于该值的 JD 不参与聚类，进待治理池。默认 2 是临时值，窗口 B 词表
+    # 修复后需重新标定。0 表示不过滤。
+    min_technology_evidence_count: int = 2
 
     def as_dict(self) -> dict:
         return {
@@ -19,6 +23,7 @@ class ClusteringParameters:
             "top_k": self.top_k,
             "max_cluster_size": self.max_cluster_size,
             "max_block_candidates": self.max_block_candidates,
+            "min_technology_evidence_count": self.min_technology_evidence_count,
             "weights": {
                 "title": 0.20,
                 "responsibility": 0.30,
