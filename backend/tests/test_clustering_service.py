@@ -10,6 +10,7 @@ from app.modules.clustering.algorithm import ClusteringParameters
 from app.modules.clustering.models import (
     JobClusteringRun,
     JobClusterMember,
+    JobClusterVersion,
     JobRole,
     JobRoleVersion,
     JobRoleVersionRequirement,
@@ -398,3 +399,58 @@ def _seed_cluster_fixture(session: Session) -> str:
         )
     session.commit()
     return parse_run.run_code
+
+
+def test_unique_role_name_survives_repeated_runs_with_same_stable_code() -> None:
+    """稳定簇编码跨运行继承，两级兜底命名会撞唯一约束导致整次聚类失败。"""
+    from app.modules.clustering.service import _unique_role_name
+
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        cluster = JobClusterVersion(
+            clustering_run_id=1,
+            stable_cluster_code="JC-00000000001c95cc",
+            cluster_label="招聘专家",
+            cluster_description="测试",
+            member_count=3,
+            independent_organization_count=2,
+            centroid_json={},
+            representative_job_ids_json=[],
+            coherence_score=Decimal("70"),
+            cluster_status_code="active",
+        )
+        session.add(cluster)
+        session.flush()
+
+        first = _unique_role_name(session, "招聘专家", cluster)
+        session.add(
+            JobRole(
+                role_code="ROLE-1",
+                canonical_name=first,
+                normalized_name=first.casefold(),
+                origin_type_code="cluster_derived",
+                lifecycle_status_code="candidate",
+            )
+        )
+        session.flush()
+
+        second = _unique_role_name(session, "招聘专家", cluster)
+        session.add(
+            JobRole(
+                role_code="ROLE-2",
+                canonical_name=second,
+                normalized_name=second.casefold(),
+                origin_type_code="cluster_derived",
+                lifecycle_status_code="candidate",
+            )
+        )
+        session.flush()
+
+        # 第三次仍须给出未占用的名字，而不是重复第二次的结果。
+        third = _unique_role_name(session, "招聘专家", cluster)
+
+        assert len({first, second, third}) == 3
+        assert not session.scalar(
+            select(JobRole).where(JobRole.normalized_name == third.casefold())
+        )

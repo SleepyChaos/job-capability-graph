@@ -15,6 +15,12 @@ def main() -> None:
     parser.add_argument("--grey-threshold", type=float, default=0.24)
     parser.add_argument("--top-k", type=int, default=3)
     parser.add_argument("--max-cluster-size", type=int, default=120)
+    parser.add_argument(
+        "--min-technology-evidence-count",
+        type=int,
+        default=2,
+        help="低信息量过滤门槛；0 表示不过滤（与旧行为对照用）",
+    )
     args = parser.parse_args()
     if args.grey_threshold >= args.assign_threshold:
         parser.error("--grey-threshold must be lower than --assign-threshold")
@@ -27,6 +33,7 @@ def main() -> None:
                 grey_threshold=args.grey_threshold,
                 top_k=args.top_k,
                 max_cluster_size=args.max_cluster_size,
+            min_technology_evidence_count=args.min_technology_evidence_count,
             ),
         )
     print(json.dumps(result.__dict__, ensure_ascii=False, indent=2))

@@ -40,6 +40,8 @@ class ClusteringRunCreate(BaseModel):
     grey_threshold: float = Field(default=0.24, ge=0, le=1)
     top_k: int = Field(default=3, ge=1, le=10)
     max_cluster_size: int = Field(default=120, ge=2, le=1000)
+    # 低信息量过滤门槛：0 表示不过滤（用于与旧行为做对照）。
+    min_technology_evidence_count: int = Field(default=2, ge=0, le=50)
 
 
 class ClusteringRunResponse(BaseModel):
@@ -157,6 +159,7 @@ def create_clustering_run(payload: ClusteringRunCreate, db: Annotated[Session, D
                 grey_threshold=payload.grey_threshold,
                 top_k=payload.top_k,
                 max_cluster_size=payload.max_cluster_size,
+                min_technology_evidence_count=payload.min_technology_evidence_count,
             ),
         )
     except ClusteringError as exc:

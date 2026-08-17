@@ -1220,10 +1220,17 @@ def _unique_role_name(db: Session, label: str, cluster_version: JobClusterVersio
             JobClusterDomain.is_primary.is_(True),
         )
     )
-    candidate = f"{label} · {primary_domain}" if primary_domain else label
-    if not db.scalar(select(JobRole).where(JobRole.normalized_name == candidate.casefold())):
-        return candidate[:300]
-    return f"{candidate} · {cluster_version.stable_cluster_code[-6:]}"[:300]
+    base = f"{label} · {primary_domain}" if primary_domain else label
+    # 两级兜底不足以保证唯一：稳定簇编码跨运行继承，重跑聚类时同一后缀会再次出现，
+    # 触发 uq_biz_job_role_canonical_name 唯一约束导致整次聚类 500。逐级加后缀直到唯一。
+    suffixes = ["", f" · {cluster_version.stable_cluster_code[-6:]}"]
+    suffixes += [f" · {cluster_version.stable_cluster_code[-6:]}-{index}" for index in range(2, 50)]
+    for suffix in suffixes:
+        candidate = f"{base}{suffix}"[:300]
+        if not db.scalar(select(JobRole).where(JobRole.normalized_name == candidate.casefold())):
+            return candidate
+    # 极端情况下退回簇编码全码，它在同一次运行内唯一。
+    return f"{base} · {cluster_version.stable_cluster_code}"[:300]
 
 
 def _representative_responsibilities(
