@@ -1,0 +1,4267 @@
+{
+  "batch_id": "jd_annotation_batch_001",
+  "dataset_id": "jd_parsing_annotation_candidates_v1",
+  "purpose": "任务组 1.3 人工标注:expected_l3_codes = 标注者认定该 JD 应抽出的 L3 技术点代码列表",
+  "parse_run_code": "jdparse_9130d14a0c3689ee6567c471",
+  "input_snapshot_hash": "402e5d4a042a43adb3cdee2be81c1ef4982bba8db8d8b3adcba1ceb8bc79ff57",
+  "selection_method": "deterministic_stratified_t_domain_with_review_hard_cases",
+  "domain_distribution": {
+    "T1": 24,
+    "T2": 10,
+    "T3": 15,
+    "T4": 10,
+    "T5": 10,
+    "T6": 10,
+    "T7": 21
+  },
+  "caliber_note": "current_extraction 为 run jdparse_9130d14a0c3689ee6567c471（词表 v1.2）的冻结快照；expected_l3_codes 等人工标注字段未做任何改动。",
+  "role_type_options": {
+    "embodied_algo": "具身算法岗(感知/规划/控制/学习/VLA 等算法研发)",
+    "hardware": "硬件岗(整机/结构/电控/传感器/驱动等硬件研发)",
+    "engineering": "工程岗(部署/测试/数据/平台/嵌入式等工程实现)",
+    "non_technical": "非技术岗(销售/产品/运营/职能等)"
+  },
+  "warning": "候选清单必须经过双人标注与裁决后才能冻结为金标准。",
+  "samples": [
+    {
+      "sample_id": "jd_annotation_0001",
+      "job_code": "job_a566389e150c720e52b05513",
+      "job_title": "数据开发工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 1. 持续追踪具身智能领域开源数据集动态（HuggingFace、Papers with Code、顶会等），建立并维护数据集台账 2. 编写脚本完成主流具身数据集（Open X-Embodiment、DROID、RoboSet 等）的批量下载、格式解析与完整性校验 3. 建设标准化数据处理 pipeline，完成数据清洗、格式转换与 Schema 规范化，接入 DVC 进行版本管理 4. 维护开源数据集全景看板，定期更新统计指标，输出分析报告，支撑数据飞轮策略 任职要求 1. 计算机、自动化、机器人或 AI 相关专业 2. 熟练使用 Python 进行数据处理，熟悉 NumPy / Pandas / HuggingFace datasets 3. 了解 HDF5、RLDS/TFRecord 等具身数据格式 4. 有 DVC 或数据版本管理经验 5. 有机器人学基础或 VLA 模型数据预处理经验",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "VLA"
+          ]
+        },
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "Open X-Embodiment",
+            "RLDS",
+            "数据集"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "HuggingFace"
+          ]
+        },
+        {
+          "technology_code": "T5.03.08",
+          "technology_name": "MLOps与模型生命周期",
+          "status": "accepted",
+          "matched_terms": [
+            "DVC",
+            "数据版本管理"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.11",
+        "T4.01.04",
+        "T4.01.06",
+        "T4.05.01",
+        "T4.05.02"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: DVC/数据版本管理 - 任职要求'有DVC或数据版本管理经验';MISSING: RLDS/HDF5具身数据格式",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0002",
+      "job_code": "job_f7c4891f1e1ba0343a26cdb6",
+      "job_title": "ai算法工程师(大模型)",
+      "primary_domain": "T1",
+      "parse_quality_score": 90.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "岗位职责：\n 1、负责大模型(视觉或语言)的预训练开发和调优工作；\n 2、负责大模型在具体业务场景的适配和应用，如fine-tuning、prompt设计等；\n 3、负责大模型的推理优化和应用部署，如压缩量化、推理加速等。\n 4、负责跟进领域最新进展，预研和评估大模型在机器人领域的应用,如Gato、RT-1、PaLM-E。\n任职要求：\n 1、硕士及以上学历，985/211院校毕业优先。计算机相关专业，熟悉深度学习、计算机视觉、自然语言处理等领域的专业知识，具有3年以上工作经验；\n 2、熟悉Transformer、BERT、GPT系列、T5、PaLM等模型，对大模型的数据处理及训练技术有深入理解；\n 3、熟悉Pytorch/Tensorflow深度学习框架，至少掌握Python或C++其中一种编程语言；\n 4、熟悉常见的强化学习算法原理(如DQN、DDPG、A3C、PPO等)，有相关训练和开发经验者优先；\n 5、具有TensorRT、ONNX推理优化和部署经验者优先；\n 6、曾在AI、CV、NLP高级会议(如：AAAI、CVPR、ACL等)发表论文者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.05.02",
+          "technology_name": "强化学习",
+          "status": "accepted",
+          "matched_terms": [
+            "DDPG",
+            "DQN",
+            "PPO",
+            "强化学习"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow",
+            "深度学习框架"
+          ]
+        },
+        {
+          "technology_code": "T5.03.03",
+          "technology_name": "推理引擎与端侧部署",
+          "status": "accepted",
+          "matched_terms": [
+            "ONNX",
+            "TensorRT",
+            "推理优化",
+            "推理加速"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T1.01.11",
+        "T1.05.02",
+        "T1.05.04"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "RT-1/PaLM-E/Gato 归入VLA;TensorRT/ONNX归入大模型部署与推理优化",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0003",
+      "job_code": "job_e57c45854eda61623e1916a6",
+      "job_title": "具身模型算法工程师(预训练)",
+      "primary_domain": "T1",
+      "parse_quality_score": 35.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "负责人形机器人专属基础模型预训练与研究，探索更适合具身任务的模型架构；探索多模态（视觉-语言-动作）表征对齐与融合技术；推动视觉基础模型在导航/操作等下游任务迁移应用\n【任职要求】\n未展示",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "基础模型"
+          ]
+        },
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.11",
+        "T1.06.03",
+        "T3.01.08"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "'导航/操作等下游任务'为迁移举例非核心职责,按规则2不计入",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0004",
+      "job_code": "job_c93c0afdba4ed0ab557a5974",
+      "job_title": "上海 机器人端侧模型运行与性能工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 7,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 岗位介绍 -负责机器人端侧/边缘侧多模态模型运行系统的设计、开发与性能优化，将 LLM、VLM、Omni、ASR、TTS 等模型转化为可稳定运行、可双向流式调用、可低时延中断和可观测的系统级推理能力。 -你将重点参与原生多模态模型的组件拆分、轻量化适配、端云分层运行、双向流式 API 和运行时资源治理，为机器人实时交互系统建设低延迟、高可靠的模型运行底座。 -本岗位聚焦 Model Runtime、Inference Backend、Realtime Streaming 和 Performance Engineering，不同于常规模型转换或部署脚本开发，不负责上层 Agent 业务编排和机器人交互状态机。 岗位职责 1. 建设端侧多模态模型运行系统 负责 LLM、VLM、Omni、ASR、TTS 等模型的统一接入与稳定运行，完成模型拆分、轻量化适配、端云分层部署和推理引擎构建。 2.建设双向流式推理 API 基于 gRPC 双向流、WebSocket 等协议，支持音频、视频、文本流式输入和文本、语音增量输出，并管理 Session、Deadline、序列一致性和流量反压。 3. 建设模型流式中断能力 实现 Streaming Infer、Cancel、Abort 和 Timeout，支持用户插话时快速停止模型生成及音频输出，并保障 Buffer、队列和 KV Cache 等运行时资源状态一致。 4. 负责推理后端适配与性能优化 适配 TensorRT、TensorRT-LLM、vLLM、SGLang、ONNX Runtime 及厂商 NPU/DSP 工具链，开展模型导出、量化、精度对齐和性能优化。 5. 建设资源调度、性能与稳定性闭环 优化多模型资源分配和音视频数据通路，建立 TTFT、首音频输出延迟、Audio-to-Audio Latency、Cancel 响应时延及 P95/P99 等性能基线，完善 Trace、自动化回归和长稳测试，并支持真实机器人联调与 Demo 交付。 职位要求： 1. 本科及以上学历，计算机、软件工程、人工智能、电子信息、自动化、高性能计算等相关专业优先。 2. 具备 3 年以上 AI 推理系统、端侧模型运行、高性能计算、异构计算、实时音视频、机器人软件、智能座舱或大模型基础设施相关经验。 3. 熟练掌握 C++，具备良好的 Python 和 Linux 开发、调试及性能分析能力。 4. 在以下两个方向中，至少一个方向具备深入项目经验，并对另一方向有完整理解： * 模型推理 Runtime、推理后端、模型服务或端侧运行系统； * 双向流式协议、实时音视频、异步网络或低延迟流式系统。 5. 熟悉 TensorRT / TensorRT-LLM、vLLM / SGLang、ONNX Runtime、Triton、CUDA 或厂商 NPU/DSP 工具链中的至少一种。 6. 理解 Transformer、LLM、VLM 或 Omni 模型的基本推理流程，熟悉 Prefill / Decode、KV Cache、Streaming Generation 和动态/静态 Shape 等概念；具备多线程、异步任务、内存管理和性能 Profiling 能力。 加分项 1. 有 Qwen-Omni 或类似原生多模态、Any-to-Any、端到端语音交互模型的拆分、流式推理或端云分层运行经验。 2. 有 gRPC 双向流、WebSocket、RTC、Realtime API 或流式 SDK 设计经验。 3. 有请求级 Cancel、原生流式中断、Session 资源隔离、KV Cache 回收或 Deadline 管理经验。 4. 有 Jetson Orin、Thor、高通 SoC、地平线、昇腾等边缘 AI 平台的模型运行和性能优化经验。 5. 熟悉 FP8 / INT8 / INT4 量化、CUDA Kernel、TensorRT Plugin、计算图优化，或有机器人、智能座舱、自动驾驶等真实端侧项目交付经验。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.08.01",
+          "technology_name": "AI芯片",
+          "status": "accepted",
+          "matched_terms": [
+            "NPU"
+          ]
+        },
+        {
+          "technology_code": "T3.08.04",
+          "technology_name": "算力硬件",
+          "status": "accepted",
+          "matched_terms": [
+            "Jetson",
+            "Orin"
+          ]
+        },
+        {
+          "technology_code": "T5.02.03",
+          "technology_name": "通信中间件",
+          "status": "accepted",
+          "matched_terms": [
+            "gRPC"
+          ]
+        },
+        {
+          "technology_code": "T5.03.03",
+          "technology_name": "推理引擎与端侧部署",
+          "status": "accepted",
+          "matched_terms": [
+            "ONNX Runtime",
+            "TensorRT",
+            "推理引擎"
+          ]
+        },
+        {
+          "technology_code": "T5.03.04",
+          "technology_name": "模型量化与压缩",
+          "status": "accepted",
+          "matched_terms": [
+            "FP8",
+            "INT8"
+          ]
+        },
+        {
+          "technology_code": "T5.03.05",
+          "technology_name": "GPU并行计算与算子优化",
+          "status": "accepted",
+          "matched_terms": [
+            "CUDA"
+          ]
+        },
+        {
+          "technology_code": "T5.03.06",
+          "technology_name": "大模型推理服务与训练加速",
+          "status": "accepted",
+          "matched_terms": [
+            "KV Cache",
+            "SGLang",
+            "TensorRT-LLM",
+            "vLLM"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T2.03.01",
+        "T3.08.04",
+        "T5.04.02",
+        "T6.01.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: 推理引擎TensorRT/vLLM/ONNX Runtime(T1.01.06仅勉强覆盖);MISSING: gRPC/WebSocket实时流式通信",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0005",
+      "job_code": "job_35cd42ac13c301cdc3c4e3b9",
+      "job_title": "上海 语义动作生成算法工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 67.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 结合TTS（文本转语音）的韵律特征（音素时长、基频、能量），生成与语音同步的口型、头部姿态、手势等副语言动作 设计多模态对齐机制，确保动作生成与语音合成的节奏、停顿、情感表达精准同步 构建语音合成与动作生成的流式协同框架，支持实时对话场景下的低延迟、高同步度输出 将算法能力封装为可复用的动作生成SDK/服务，支撑多元业务场景 与机器人控制、交互系统团队紧密协作，推动技术方案的产品化落地 职位要求： •计算机、机器人学、图形学、人工智能等相关专业硕士及以上学历，博士优先，3年以上相关领域研究或开发经验 •扎实的深度学习基础，精通PyTorch，有生成模型（Diffusion、VAE、GAN、Flow-based）的实际项目经验 •深入了解动作生成领域，熟悉MotionGPT、HumanML3D、MotionDiffusion、PhysDiff、ASE等代表性工作 •熟悉机器人运动学、计算机图形学中的角色动画基础，了解正向/逆向运动学、骨骼动画原理 •具备语音合成（TTS）相关基础知识，了解声学模型、声码器、韵律建模 熟悉动作表示与处理：SMPL/SMPL-X、BVH、AMC、运动学图（Kinematic Trees）、四元数/旋转矩阵表示 加分项 •顶,级会议期刊论文发表 •有真实机器人平台或虚拟人引擎的实际落地经验 •熟悉实时动作生成管线，或有游戏/影视动画行业经验 •有语音合成（TTS）或语音识别（ASR）的深入研发经验，具备多模态联合训练经验 •熟悉物理驱动的动作生成、强化学习（RL）在动作控制中的应用 •有开源项目贡献或相关专利",
+      "current_extraction": [
+        {
+          "technology_code": "T1.05.02",
+          "technology_name": "强化学习",
+          "status": "accepted",
+          "matched_terms": [
+            "强化学习"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.07",
+        "T1.03.07",
+        "T1.05.04",
+        "T2.03.01",
+        "T6.01.02"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "MISSING: 正逆运动学/骨骼动画/SMPL动作表示 - 词表无运动学节点",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0006",
+      "job_code": "job_5dec427444926013c9d444db",
+      "job_title": "上海 强化学习算法工程师/专家(具身操作)",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 6,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1、负责机器人具身操作任务的强化学习算法设计、开发和优化； 2、研究多模态学习方法，结合视觉、触觉、力反馈提升机器人决策能力； 3、优化从模拟到现实（Sim2Real）的迁移技术，提升算法鲁棒性； 4、跟踪前沿技术，进行强化学习算法的调研、性能对比和评估； 5、根据需求完成算法开发与代码维护，协助测试团队优化算法性能。 职位要求： 1、硕士及以上学历，人工智能、计算机、机器人学等相关专业； 2、掌握强化学习理论，熟悉 PPO、DQN、SAC 等主流算法； 3、精通 Python，熟悉 PyTorch 或 TensorFlow 等深度学习框架； 4、熟悉 Mujoco、Isaac Gym、PyBullet 等机器人仿真工具； 5、熟悉LLM/VLM/VLA，了解RT-1/2、OpenVLA等多模态具身大模型经验者优先； 6、在顶会发表论文或具备 机器人 项目经验者优先； 7、工作积极主动，具备良好的团队合作与问题解决能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "OpenVLA",
+            "VLA",
+            "具身大模型"
+          ]
+        },
+        {
+          "technology_code": "T1.03.11",
+          "technology_name": "具身操作",
+          "status": "accepted",
+          "matched_terms": [
+            "具身操作"
+          ]
+        },
+        {
+          "technology_code": "T1.05.02",
+          "technology_name": "强化学习",
+          "status": "accepted",
+          "matched_terms": [
+            "DQN",
+            "PPO",
+            "SAC",
+            "强化学习"
+          ]
+        },
+        {
+          "technology_code": "T4.03.05",
+          "technology_name": "仿真平台与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "Isaac Gym",
+            "MuJoCo",
+            "PyBullet"
+          ]
+        },
+        {
+          "technology_code": "T4.04.12",
+          "technology_name": "Sim-to-Real虚实迁移",
+          "status": "accepted",
+          "matched_terms": [
+            "Sim2Real"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow",
+            "深度学习框架"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.11",
+        "T1.03.11",
+        "T1.05.02",
+        "T1.05.04",
+        "T1.06.03",
+        "T4.03.05",
+        "T4.04.12"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "Mujoco/IsaacGym/PyBullet归入仿真平台与工具链",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0007",
+      "job_code": "job_629bfc199dc5d85aa5748dc7",
+      "job_title": "vla模型算法工程师-具身智能方向(j10130)",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 7,
+      "review_cnt": 0,
+      "jd_text": "职责描述：\n1、核心模型研发：负责机器人VLA大模型的全链路研发，包括数据处理、模型预训练、后训练优化及真机部署，确保模型在实际场景中的高效性和准确性；\n2、数据工程建设：主导大规模机器人数据集的采集、清洗、标注和管理工作，构建高质量的多模态数据pipeline，为模型预训练提供坚实基础；\n3、端到端模型训练：参与VLA模型的预训练架构设计，并负责真机环境下的强化学习后训练，实现在线学习能力提升；\n4、前沿技术跟踪：持续跟踪具身智能和VLA领域的前沿进展（包括最新论文、开源项目等），快速验证并将先进技术落地到产品中，推动模型性能持续迭代。\n任职资格\n任职要求：\n1、必备条件专业背景：\n计算机、自动化、机器人或相关专业硕士及以上学历；\n2、核心技能：\n（1）深入理解机器人模仿学习（Imitation Learning）和强化学习（RL/RLHF）理论；\n（2）具备大规模机器人预训练模型或真机RL后训练的实际落地经验；\n（3）熟悉主流VLA架构（π系列, Gr00T, ACT, Diffusion Policy等）及其技术原理；\n（4）熟悉主流机器人构型（方舟，松灵，franka，UR，非夕等）。\n3、技术栈：\n（1）精通PyTorch/TensorFlow等深度学习框架；\n（2）熟悉ROS/MuJoCo/Isaac等机器人仿真和控制技术栈；\n（3）具备优秀的工程实践能力和代码规范意识。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "VLA",
+            "VLA大模型",
+            "VLA模型"
+          ]
+        },
+        {
+          "technology_code": "T1.05.02",
+          "technology_name": "强化学习",
+          "status": "accepted",
+          "matched_terms": [
+            "强化学习"
+          ]
+        },
+        {
+          "technology_code": "T1.05.03",
+          "technology_name": "模仿学习",
+          "status": "accepted",
+          "matched_terms": [
+            "Diffusion Policy",
+            "模仿学习"
+          ]
+        },
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "数据集"
+          ]
+        },
+        {
+          "technology_code": "T4.03.05",
+          "technology_name": "仿真平台与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "MuJoCo"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow",
+            "深度学习框架"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.11",
+        "T1.05.01",
+        "T1.05.02",
+        "T1.05.03",
+        "T3.03.09",
+        "T4.01.03",
+        "T4.01.04",
+        "T4.01.06",
+        "T4.03.05",
+        "T5.01.01"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "Diffusion Policy 明确点名归入扩散策略;franka/UR/非夕归入工业机械臂",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0008",
+      "job_code": "job_472f4211cd0c7dbb5a42f11a",
+      "job_title": "泰国 hse工程师(base泰国)",
+      "primary_domain": "T1",
+      "parse_quality_score": 82.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "职位描述 1. 3 年以上制造业 EHS 管理经验，其中有新建工厂 / 新产线 EHS 体系搭建、合规落地经验优先考虑； 2. 精通泰国《职业安全、健康与环境法》（OSH Act 2554）及 2022 部级条例，熟悉 ISO 14001、ISO 45001 体系搭建与认证流程； 3. 具备新建工厂 EHS 合规备案、环评审批、消防验收、危废处置许可等全流程办理经验； 4. 泰语流利（书面 + 口语），会中文更好，持有泰国安全官（Professional Level）注册证书优先； 岗位职责 一、法规合规与新建项目落地（核心） 1. 主导工厂新建期间 EHS 合规工作：完成安全官注册、环评备案 / 审批、消防设计审核与验收、危废处置资质申请等法定事项，确保项目符合泰国 相关法规要求； 2. 参与新建工厂规划阶段：提供 EHS 专业建议，优化车间布局、消防系统、通风设施、化学品仓库、应急通道等安全环保设计； 3. 搭建工厂 EHS 管理体系：制定安全操作规程（SOP）、应急预案、职业健康管理计划等制度，确保从项目建设到投产的全流程 EHS 标准化； 4. 对接泰国劳工部、工业部、环保部等机构，处理日常监管检查、投诉响应，确保工厂合法合规运营。 二、安全风险防控与现场管理 1. 开展新建工厂风险辨识：针对设备安装、试生产、人员入场等关键阶段，识别机械伤害、触电、火灾、化学品泄漏等风险，制定防控措施； 2. 组织安全培训：对新入职员工、施工方、外包人员开展泰国 EHS 法规、安全操作、应急技能等培训，确保全员具备上岗安全资质； 3. 实施现场隐患排查：每日巡检车间、仓库、施工现场，跟踪隐患整改闭环，重点管控特种设备、电气安全、化学品存储使用等关键环节； 4. 制定并演练应急预案：针对火灾、泄漏、工伤等事故，编制应急方案，组织定期演练，提升现场处置能力。 三、体系审核与持续改进 1. 主导 ISO 14001、ISO 45001 体系搭建与认证，准备客户验厂EHS 相关资料，确保审核通过； 2. 收集泰国 EHS 法规更新信息，及时调整工厂管理体系，保持合规性； 3. 分析 EHS 数据（工伤率、隐患整改率等），提出持续改进方案，推动工厂 EHS 管理水平提升。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "泰国EHS合规岗,与具身智能完全无关",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0009",
+      "job_code": "job_de7fe5293845404f4b201388",
+      "job_title": "上海 raas产品运营",
+      "primary_domain": "T1",
+      "parse_quality_score": 85.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1.跨部门对接协同：作为产品侧对接窗口，深度联动业务部、运营部开展日常沟通，收集业务端在机器人应用场景、功能使用、落地过程中的实际诉求、使用痛点；梳理业务侧零散需求，区分紧急与重要等级，同步反馈至产品团队，做好双向沟通，推动RaaS产品贴合业务实际落地应用，打通产研与业务之间协作壁。 2.全域数据管理与分析：搭建RaaS产品运营数据体系，统筹产品下单率、GMV等核心数据；定期整理数据报表，深度分析数据变化背后原因，识别模型短板、使用卡点、闲置场景，输出数据分析报告，给出可落地优化建议，用数据驱动产品迭代、运营策略优化。 3.落地产品运营闭环：跟进RaaS新版本上线、功能更新，组织业务部赋能培训；收集业务侧真实使用评价，沉淀优质落地案例、标准化PPT、场景化操作 SOP；针对业务人员开展产品培训，提升城市合伙人对RaaS产品满意度。 4.建立常态化运营机制：定期组织业务、运营开展复盘会议，跟进问题改善进度；持续完善产品使用反馈台账、需求排期台账、数据观测台账，形成「业务提需求‑数据验证‑产品优化‑落地复盘」闭环。 5.配合完成其他运营工作：输出产品使用说明、业务落地文档，同步整理运营成果，支撑内部汇报。 职位要求： 1.本科及以上学历，2‑3 年 AI 大模型、具身智能产品、To‑B 产品运营经验； 2.具备很强跨部门沟通协调能力，擅长对接业务端，能够把业务口语化诉求转化为产品可落地需求； 3.优秀的数据敏感度，熟练通过 Excel 或飞书表格做数据整理分析，能够从海量数据中发现问题，输出有价值分析结论； 4.逻辑清晰，执行力强，做事严谨务实，具备项目跟进能力，能推动跨部门问题落地闭环； 5.理解 B 端业务运营逻辑，熟悉机器人、企业服务行业优先；具备良好文档撰写能力，可输出分析报告。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "RaaS产品运营,职责全为跨部门协同与数据报表",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0010",
+      "job_code": "job_97097a936f9af9825be1c958",
+      "job_title": "深圳 模型部署工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 94.0,
+      "accepted_cnt": 5,
+      "review_cnt": 0,
+      "jd_text": "职位描述 负责人形机器人相关AI模型在边缘侧/端侧硬件平台（如Nvidia NX、Thor系列）的量化、加速和工程化部署，包括CV模型、多模态大模型、VLM/VLA模型等； 负责推理性能的优化，聚焦吞吐量、延迟、显存、功耗、精度等核心指标，设计并实现模型压缩、量化、蒸馏、混合精度推理等优化方法； 合理规划多个模型的部署方案，达成基于业务的动态调整和资源利用的最大化； 跟踪学术前沿和产业实践，并应用于实际项目中，建立完整推理性能评估与优化工具链，为项目团队提供标准化的优化工具和支持。 职位要求 计算机科学、数学、电子工程、软件工程等相关专业硕士及以上学历，2年以上深度学习推理或高性能计算优化相关工作经验； 熟悉主流模型量化与压缩方法，熟练使用至少一种深度学习框架，并了解其量化工具链； 熟练掌握C++/Python，具备扎实的CUDA编程经验，熟悉高性能计算和性能分析工具； 有机器人、自动驾驶、AR/VR、智能硬件等实际落地项目经验者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "VLA模型",
+            "多模态大模型"
+          ]
+        },
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "深度学习框架"
+          ]
+        },
+        {
+          "technology_code": "T5.03.04",
+          "technology_name": "模型量化与压缩",
+          "status": "accepted",
+          "matched_terms": [
+            "模型压缩",
+            "模型量化"
+          ]
+        },
+        {
+          "technology_code": "T5.03.05",
+          "technology_name": "GPU并行计算与算子优化",
+          "status": "accepted",
+          "matched_terms": [
+            "CUDA"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T1.01.11",
+        "T3.01.08",
+        "T3.08.04"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "Nvidia NX/Thor 归入算力硬件;'CV模型'泛指按规则2不计入",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0011",
+      "job_code": "job_498c0b7890d2b2fa082b43c7",
+      "job_title": "导航算法工程师",
+      "primary_domain": "T2",
+      "parse_quality_score": 67.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "负责现有定位/导航/建图算法维护与现场问题消缺；新定位/导航/建图算法引入\n【任职要求】\n具备定位/导航/建图算法知识体系；熟悉2D/3D激光雷达/IMU/RTK/UWB等传感器；C++开发经验；应届生可",
+      "current_extraction": [
+        {
+          "technology_code": "T1.04.04",
+          "technology_name": "多源融合定位",
+          "status": "accepted",
+          "matched_terms": [
+            "RTK",
+            "UWB"
+          ]
+        },
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "激光雷达"
+          ]
+        },
+        {
+          "technology_code": "T2.04.01",
+          "technology_name": "惯性测量单元(IMU)",
+          "status": "accepted",
+          "matched_terms": [
+            "IMU"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.04.01",
+        "T1.04.04",
+        "T1.04.09",
+        "T2.01.01",
+        "T2.04.01"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "MISSING: RTK/UWB 定位传感器",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0012",
+      "job_code": "job_bd75a0dc0b82c52eaf8bfeb4",
+      "job_title": "具身智能数采设备测试工程师",
+      "primary_domain": "T2",
+      "parse_quality_score": 97.27,
+      "accepted_cnt": 5,
+      "review_cnt": 0,
+      "jd_text": "负责数据采集手持设备（RGB-D相机、IMU、LiDAR等）精度评测，建立设备性能基准评价体系；设计并执行精度标定/校准/测试方案，输出量化报告；追踪数据质量根因，定位设备硬件或采集流程缺陷；建立设备选型评估标准，参与新设备引入验证与验收；与算法/数据团队协作优化采集策略\n【任职要求】\n本科及以上，自动化/测控/光学工程/计算机等相关专业；2年以上传感器/相机/数据采集设备评测经验；熟悉视觉/激光/IMU原理；熟练标定工具（Kalibr等）；熟悉RMSE/ATE/RPE/重投影误差；C++/Python自动化脚本、ROS/ROS2优先",
+      "current_extraction": [
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "LiDAR"
+          ]
+        },
+        {
+          "technology_code": "T2.04.01",
+          "technology_name": "惯性测量单元(IMU)",
+          "status": "accepted",
+          "matched_terms": [
+            "IMU"
+          ]
+        },
+        {
+          "technology_code": "T2.05.02",
+          "technology_name": "标定与同步采集",
+          "status": "accepted",
+          "matched_terms": [
+            "Kalibr"
+          ]
+        },
+        {
+          "technology_code": "T4.01.05",
+          "technology_name": "数据采集设备与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "数据采集设备"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS",
+            "ROS2"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T2.01.01",
+        "T2.01.02",
+        "T2.04.01",
+        "T2.05.02",
+        "T4.01.03",
+        "T4.01.05",
+        "T5.01.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: Kalibr标定工具;MISSING: RMSE/ATE/RPE 精度评测指标",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0013",
+      "job_code": "job_f9a0c5a2a7c89d45ee2a52a8",
+      "job_title": "非标自动化研发高级总监",
+      "primary_domain": "T2",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "主要职责： - 负责制定并实施非标自动化研发部门的研发策略，确保项目按照既定计划顺利进行； - 负责部门的日常运营，协调各部门之间的关系，确保项目进度和质量； - 负责研发团队的管理，包括人员的招聘、培训、激励、评估等； - 负责项目的需求分析、设计和开发工作，确保项目按时完成并达到预期目标； - 负责制定并执行项目的测试计划，确保项目质量； - 负责制定并执行部门的绩效考核计划，确保部门的整体绩效； - 负责与公司其他部门沟通，确保项目的开发工作与公司的其他业务领域保持一致； - 负责不断优化部门的研发流程，提高研发效率和质量； - 对行业动态和新技术保持敏感，推荐并应用先进技术，提升公司的技术水平。 职位要求： - 本科或以上学历，机械设计、自动化控制等相关专业； - 10年以上3C Apple客户非标自动化机械研发相关工作经验，有成功的项目开发经验； - 熟悉自动化设备、机器人、机器视觉，有非标自动化项目开发经验者尤佳； - 熟悉各种自动化开发工具，熟悉PLM/PDM管理系统等； - 具备良好的项目管理能力，具备团队管理经验； - 具备良好的沟通与协调能力，具备项目管理、团队管理经验； - 熟悉敏捷开发模式，具备跨领域项目开发经验。",
+      "current_extraction": [
+        {
+          "technology_code": "T2.02.07",
+          "technology_name": "机器视觉",
+          "status": "accepted",
+          "matched_terms": [
+            "机器视觉"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "非标自动化研发总监,职责全为管理;技术仅在任职要求中泛提,按规则2/4不计入",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0014",
+      "job_code": "job_d3294b17fbe52d03a4ca7605",
+      "job_title": "感知算法工程师(自主导航方向)",
+      "primary_domain": "T2",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 1. 负责具身智能机器人在工厂等真实环境中的导航感知算法研发，为定位、规划与控制提供稳定、可靠的环境理解能力； 2. 基于多传感器数据（2D相机/深度相机/激光雷达等），进行障碍物感知、可通行区域识别、动态目标检测与跟踪； 3. 参与构建导航相关的中间表达，如栅格地图、BEV表示、语义地图或占据表示，支撑下游规划与决策； 4. 与SLAM、规划控制团队协作，完成“感知 —＞ 建图 —＞ 定位 —＞ 规划”的系统联调与性能优化； 5. 结合真实场景数据，分析感知失败案例，持续提升系统在复杂工况下的稳定性与鲁棒性。 任职要求 1. 计算机、电子工程、机器人、自动化、人工智能等相关专业，硕士及以上学历（特别优秀的本科+4年以上相关项目经验可放宽）； 2. 熟悉常见感知算法方向之一或多个：障碍物检测/分割/跟踪；可通行区域识别；多传感器感知融合； 3. 具有BEV感知、占据网络（Occupancy）或构建代价地图的开发经验； 4. 熟悉C++/Python，具备良好的工程实现与调试能力； 5. 能理解导航系统对感知时延、稳定性和边界条件的要求； 6. 熟悉ROS/ROS2，有机器人或自动驾驶相关项目经验者优先； 7. 有真实机器人数据闭环调优经验者优先； 8. 有工业场景（工厂/仓储/商服）落地经验者优先。\"",
+      "current_extraction": [
+        {
+          "technology_code": "T1.04.01",
+          "technology_name": "SLAM",
+          "status": "accepted",
+          "matched_terms": [
+            "SLAM"
+          ]
+        },
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "激光雷达"
+          ]
+        },
+        {
+          "technology_code": "T2.01.02",
+          "technology_name": "深度相机",
+          "status": "accepted",
+          "matched_terms": [
+            "深度相机"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS",
+            "ROS2"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.04.01",
+        "T1.04.09",
+        "T1.06.05",
+        "T1.06.06",
+        "T1.06.08",
+        "T2.01.01",
+        "T2.01.02",
+        "T2.05.01",
+        "T5.01.01"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "BEV/占据表示归入空间表征与动作空间",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0015",
+      "job_code": "job_8a9ddc1f5708f4474614ffe3",
+      "job_title": "上海 点云感知算法工程师",
+      "primary_domain": "T2",
+      "parse_quality_score": 94.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "职位描述 1、负责激光雷达点云的前沿感知算法的研究和开发，基于传统算法和深度学习模型实现目标检测、环境建模、噪点分割、语义聚类等任务； 2、负责激光雷达感知算法在实际产品中的落地应用，包括但不限于内外参标定算法实现、深度模型的优化和部署等； 3、负责激光雷达的数据采集和标注方法的开发和维护，维护数据库的正确性和完整性； 4、结合激光雷达系统能力和点云感知算法，优化雷达性能表现并不断拓展激光雷达应用场景。 职位要求 1、有比较深厚的数理基础和编程能力，要求至少熟练掌握一门编程语言（Python/C/C#/Matlab等）; 2、要求熟悉深度学习框架（PyTorch/TensorFlow），并有相关模型训练和优化部署经验； 3、有做过激光雷达、摄像头、毫米波雷达等传感器相关标定、感知算法经验的优先； 4、有良好的沟通能力和团队协作精神；",
+      "current_extraction": [
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "激光雷达"
+          ]
+        },
+        {
+          "technology_code": "T2.05.02",
+          "technology_name": "标定与同步采集",
+          "status": "accepted",
+          "matched_terms": [
+            "外参标定"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow",
+            "深度学习框架"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.05.04",
+        "T1.06.05",
+        "T1.06.06",
+        "T2.01.01",
+        "T2.05.02",
+        "T2.05.05",
+        "T4.01.05"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0016",
+      "job_code": "job_4c862b1a1d73af567bebf590",
+      "job_title": "贴合工程师",
+      "primary_domain": "T2",
+      "parse_quality_score": 82.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1、工艺规划与优化：根据产品特性与生产要求，规划贴合工艺流程，确定***的贴合参数，如压力、温度、时间等，以保障贴合质量和效率，并持续优化工艺。例如在手机屏幕贴合中，通过反复测试找到最适合的贴合温度和压力值，减少气泡产生。 2、设备管理：参与贴合设备的选型、安装与调试，制定设备维护计划与操作规程，定期进行设备维护保养，及时处理设备故障，确保设备正常运行。如定期清洁贴合机的滚轴，检查压力传感器是否正常工作。 3、‘材料管控：评估与挑选合适的贴合材料，如胶水、膜材等，严格检验材料质量，把控材料库存与使用情况，避免材料浪费与积压。比如在光学镜片贴合时，筛选出透明度高、粘性稳定的胶水。 4、质量控制：构建贴合质量检测标准与流程，运用专业工具与方法检测贴合效果，包括贴合强度、精度、外观等，对质量问题进行分析与改进，保证产品贴合质量符合标准。若出现贴合不牢问题，分析是材料、工艺还是设备导致并加以解决。 5、生产协调与沟通：与生产、研发、采购等部门密切协作，提供贴合技术支持，协调解决生产中的技术难题，确保生产进度与产品质量。例如与研发部门合作改进新产品贴合工艺，和采购部门沟通材料采购需求与交期。 任职要求： - 2年以上相关工作经验，专科以上学历 - 有过G+G、G+F贴合经验，有过2.5D、3D贴合经验",
+      "current_extraction": [
+        {
+          "technology_code": "T2.02.01",
+          "technology_name": "六维力传感器",
+          "status": "accepted",
+          "matched_terms": [
+            "力传感器"
+          ]
+        },
+        {
+          "technology_code": "T6.03.04",
+          "technology_name": "检测认证",
+          "status": "accepted",
+          "matched_terms": [
+            "检测标准"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "消费电子贴合工艺岗,与具身智能无关",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0017",
+      "job_code": "job_4fe8ca04f15ee858eb105c17",
+      "job_title": "日本工业视觉大客户经理",
+      "primary_domain": "T2",
+      "parse_quality_score": 83.33,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "职责描述：\n1. 负责日本工业视觉重点大客户的开发与关系维护。\n2. 制定针对大客户的销售策略，计划和执行。\n3. 完成年度销售目标，管理客户全生命周期（从接触、技术方案对接到订单落地）。\n4. 协同技术团队为客户提供定制化解决方案，提升客户满意度。\n\n任职要求：\n1. 5年以上工业自动化/视觉传感器/机器视觉领域行业经验。\n2. 对工业传感器头部玩家有深入理解，熟悉其产品线、客户群体及销售模式。\n3. 具备技术理解力，能高效协同技术团队推进合作进展。\n4. 有基恩士、欧姆龙、康耐视等行业头部企业的产品经理经验或销售经验者优先。\n5. 了解日本商业文化及大客户决策流程，精通日语。",
+      "current_extraction": [
+        {
+          "technology_code": "T2.01.03",
+          "technology_name": "视觉传感器",
+          "status": "accepted",
+          "matched_terms": [
+            "视觉传感器"
+          ]
+        },
+        {
+          "technology_code": "T2.02.07",
+          "technology_name": "机器视觉",
+          "status": "accepted",
+          "matched_terms": [
+            "机器视觉"
+          ]
+        },
+        {
+          "technology_code": "T7.01.08",
+          "technology_name": "智能制造与工业自动化",
+          "status": "accepted",
+          "matched_terms": [
+            "工业自动化"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "工业视觉销售岗,机器视觉为行业背景",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0018",
+      "job_code": "job_600fdcd6384079fcdba03020",
+      "job_title": "机器视觉算法工程师",
+      "primary_domain": "T2",
+      "parse_quality_score": 85.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "图像预处理/去噪/分割，物体识别/图像分割等模型训练优化，机器视觉算法集成与机器人/PLC协同控制，机器视觉项目管理。\n【任职要求】\n计算机/数学/统计相关本科以上；精通Python，熟悉OpenCV/PIL；熟悉TensorFlow/PyTorch；熟悉Pandas/Numpy；了解机器人控制，工厂机器视觉经验优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T2.02.07",
+          "technology_name": "机器视觉",
+          "status": "accepted",
+          "matched_terms": [
+            "机器视觉"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow"
+          ]
+        },
+        {
+          "technology_code": "T5.03.07",
+          "technology_name": "视觉与点云算法库",
+          "status": "accepted",
+          "matched_terms": [
+            "OpenCV"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.05.04",
+        "T1.06.06",
+        "T2.02.07",
+        "T2.05.05"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0019",
+      "job_code": "job_a098dce40ff5b60b5b08777f",
+      "job_title": "上海 标定算法工程师",
+      "primary_domain": "T2",
+      "parse_quality_score": 94.0,
+      "accepted_cnt": 5,
+      "review_cnt": 0,
+      "jd_text": "职位描述 1. 研发、跟踪、改进量产和非量产场景下的多传感器静态和动态标定方案，包括但不限于激光雷达、相机、轮速计、IMU等的内外参、时间标定，推动标定算法在不同平台上的部署落地； 2. 研发、跟踪、改进多传感器在线失准检测方案与算法，主要包括激光雷达、相机等传感器，提升多场景下失准检测的完整性、准确性与灵敏度； 3. 推动标定、失准检测等算法的工程化落地实现，包括实车部署联调、算法性能指标评测、仿真平台建设等。 4. 参与相关工作的工程化落地实现，跟踪学术前沿技术的发展。 职位要求 1. 熟悉激光雷达、相机、轮速计、IMU、GNSS等传感器模型； 2. 熟悉基本的数据结构和算法， 熟悉C、 C++、Python、CUDA，具有良好的编码风格； 3. 熟悉点云处理、计算机视觉等知识和多传感器标定原理； 4. 有量产标定或者SLAM算法项目经验、优秀论文发表者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.04.01",
+          "technology_name": "SLAM",
+          "status": "accepted",
+          "matched_terms": [
+            "SLAM"
+          ]
+        },
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "激光雷达"
+          ]
+        },
+        {
+          "technology_code": "T2.04.01",
+          "technology_name": "惯性测量单元(IMU)",
+          "status": "accepted",
+          "matched_terms": [
+            "IMU"
+          ]
+        },
+        {
+          "technology_code": "T4.03.05",
+          "technology_name": "仿真平台与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "仿真平台"
+          ]
+        },
+        {
+          "technology_code": "T5.03.05",
+          "technology_name": "GPU并行计算与算子优化",
+          "status": "accepted",
+          "matched_terms": [
+            "CUDA"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.04.01",
+        "T2.01.01",
+        "T2.01.03",
+        "T2.04.01",
+        "T2.05.02",
+        "T4.03.05"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0020",
+      "job_code": "job_65c66522899f144e0132cafa",
+      "job_title": "上海 高级软件项目经理",
+      "primary_domain": "T2",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "职位描述 1、全面负责激光雷达软件项目的生命周期管理，包括项目立项、计划制定、进度追踪、风险控制、质量管理及交付验收； 2、协调内部多职能团队（算法、软件、测试、系统）与外部客户之间的沟通与合作，确保项目目标达成； 3、主导项目过程的体系化管理，确保符合ASPICE L2及以上软件开发流程要求；管理多个并行项目，合理配置资源并推动关键里程碑达成（DV/PV/SOP）； 4、识别并及时响应客户需求变更与问题，推动跨部门高效协同解决方案； 定期组织项目评审、发布状态报告，并向管理层提供决策支持； 5、持续优化项目管理流程和团队执行力，提升整体交付效率和质量。 职位要求 1、本科及以上学历，计算机、电子、自动化等相关专业背景； 2、5年以上软件项目管理经验，具备国内Tier1（乙方供应商）背景，主导或核心参与至少两个完整SOP项目交付； 3、熟悉整车客户从定点到SOP的开发流程，具备扎实的项目管理理论基础及实际操作能力； 4、熟悉ASPICE软件过程模型，具有ASPICE L1或L2项目管理/交付经验者优先； 5、具备海外项目合作经验者优先，有主机厂（OEM）工作经历者加分； 6、具备良好的组织协调能力、抗压能力和沟通能力，拥有成熟稳重的职业心态； 7、较强的学习能力与适应能力，能迅速理解新技术背景下的软件项目挑战并制定应对策略； 8、PMP、IPMP、敏捷Scrum Master等项目管理认证优先考虑。",
+      "current_extraction": [
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "激光雷达"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "软件项目管理岗,激光雷达为项目对象非技术要求",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0021",
+      "job_code": "job_4b04b6ed2e7af13378b1d8fa",
+      "job_title": "嵌入式软件开发工程师(j10008)",
+      "primary_domain": "T3",
+      "parse_quality_score": 65.0,
+      "accepted_cnt": 1,
+      "review_cnt": 1,
+      "jd_text": "1.无刷电机（BLDC）、永磁同步电机（PMSM）控制程序的开发。2.机电控制系统开发，嵌入式软件开发，相关传感器、结构等的开发。3.电机相关可靠性测试、研发及生产用测试台、治具等的开发。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.12",
+          "technology_name": "运动控制(通用)",
+          "status": "needs_review",
+          "matched_terms": [
+            "控制系统"
+          ]
+        },
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "BLDC",
+            "PMSM",
+            "无刷电机",
+            "永磁同步电机",
+            "电机"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.05.04",
+        "T3.08.03"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "MISSING: BLDC/PMSM/FOC 电机控制算法 - 词表仅有'电机与驱动'无控制算法节点",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0022",
+      "job_code": "job_f9677bf5762e3abc662c3410",
+      "job_title": "灵巧手销售经理",
+      "primary_domain": "T3",
+      "parse_quality_score": 60.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 1. 市场拓展与客户开发 ◦ 负责灵巧手产品在国内市场的销售工作，积极开拓新客户，挖掘潜在市场需求，完成公司制定的销售目标。 ◦ 深入了解灵巧手在工业自动化、医疗辅助、智能服务等领域的应用场景，针对性地推广灵巧手产品及解决方案，提升产品市场占有率。 ◦ 特别关注灵巧手在具身智能领域的应用，包括但不限于智能机器人、人形机器人、服务机器人等，探索“灵巧手+机械臂”“灵巧手+机器人”以及“灵巧手+具身智能系统”的市场机会，开发相关行业的标杆客户。 ◦ 参与行业展会、研讨会等活动，通过多种渠道收集潜在客户信息，建立并维护客户资源库。 2. 客户关系管理 ◦ 与现有客户保持密切沟通，及时了解客户需求变化，提供优质的售后服务支持，提高客户满意度和忠诚度。 ◦ 定期拜访重点客户，收集客户反馈意见，协助公司优化产品功能和服务流程。 ◦ 协调公司内部各部门资源，确保客户项目顺利推进，及时解决客户在使用过程中遇到的问题。 3. 销售项目管理 ◦ 负责灵巧手产品的报价、投标、合同签订等销售流程工作，确保销售合同的顺利履行。 ◦ 跟踪销售项目的进度，及时协调解决项目实施过程中出现的问题，确保项目按时交付并验收。 ◦ 收集和整理销售项目资料，定期向公司汇报销售进展情况和市场动态。 4. 市场信息收集与分析 ◦ 关注国内灵巧手行业市场动态，收集竞争对手信息，分析市场趋势和竞争态势，为公司产品策略和销售策略调整提供依据。 ◦ 重点关注灵巧手在新兴应用领域的市场潜力，如“灵巧手+机械臂”在高端制造中的应用、“灵巧手+机器人”在医疗康复中的应用，以及“灵巧手+具身智能系统”在智能服务、家庭陪伴等场景中的应用，为公司开拓新市场提供数据支持。 ◦ 协助市场部门进行市场调研工作，提供销售一线的市场反馈，参与制定市场推广方案。 可以base资源地",
+      "current_extraction": [
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.03.07",
+          "technology_name": "服务机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "服务机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.04.02",
+          "technology_name": "灵巧手(多指)",
+          "status": "accepted",
+          "matched_terms": [
+            "灵巧手"
+          ]
+        },
+        {
+          "technology_code": "T7.01.08",
+          "technology_name": "智能制造与工业自动化",
+          "status": "accepted",
+          "matched_terms": [
+            "工业自动化"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "灵巧手销售岗;现抽16条全部为误报,是本批最严重误报案例",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0023",
+      "job_code": "job_620d7884f5fdbe5261f7b703",
+      "job_title": "机器人灵巧手工程师",
+      "primary_domain": "T3",
+      "parse_quality_score": 95.71,
+      "accepted_cnt": 7,
+      "review_cnt": 0,
+      "jd_text": "负责公司人形机器人灵巧手（多指末端执行器）产品的总体研发，包括机械设计、驱动/传感方案、控制算法、材料与制造验证，实现类人抓取、在手操作与双手协同。 核心职责 1. 主导灵巧手总体架构设计：指骨机构、关节传动、传感布局、外覆材料与模块化接口。 2. 组织力控/触觉/视觉融合控制算法研发，实现稳定抓取与在手转位。 3. 统筹硬件样机、驱动板、电机与力矩传感模块开发。 4. 推动材料与仿生技术研究（柔性关节、触觉皮肤、仿生覆盖层）。 5. 建立灵巧手测试体系（力控精度、柔顺度、寿命、能效）。 6. 支撑双臂协作、末端工具与AI策略接口开发。 7. 管理团队（机械/电子/控制/算法），推进从原型到量产阶段。 任职要求 1、机械电子/机器人/控制工程硕士及以上学历； 2、2年以上灵巧手或末端执行器开发经验； 3、精通多指机构、微电机驱动、力矩/触觉传感； 4、熟悉ROS2/控制算法（阻抗/WBC/力控）； 5、熟悉材料与制造工艺（PA、TPU、柔性结构）； 6、有完整样机/产品落地经验者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.01",
+          "technology_name": "全身控制(WBC)",
+          "status": "accepted",
+          "matched_terms": [
+            "WBC"
+          ]
+        },
+        {
+          "technology_code": "T1.03.03",
+          "technology_name": "力控与柔顺控制",
+          "status": "accepted",
+          "matched_terms": [
+            "力控"
+          ]
+        },
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.04.02",
+          "technology_name": "灵巧手(多指)",
+          "status": "accepted",
+          "matched_terms": [
+            "灵巧手"
+          ]
+        },
+        {
+          "technology_code": "T3.04.03",
+          "technology_name": "末端执行器",
+          "status": "accepted",
+          "matched_terms": [
+            "末端执行器"
+          ]
+        },
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "电机"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS2"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.03.01",
+        "T1.03.03",
+        "T1.09.01",
+        "T1.09.04",
+        "T1.09.05",
+        "T2.02.02",
+        "T2.02.03",
+        "T2.02.04",
+        "T3.01.08",
+        "T3.04.01",
+        "T3.04.02",
+        "T3.04.03",
+        "T3.05.04",
+        "T5.01.01"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "14个超规则7建议上限,已自查均为明确职责/要求",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0024",
+      "job_code": "job_5215f52a274d93e75a49ef6c",
+      "job_title": "嵌入式软件工程师",
+      "primary_domain": "T3",
+      "parse_quality_score": 86.25,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "1、负责产品嵌入式代码的开发和维护；2、开发和维护用户软件、内部调试测试软件；3、编写用户手册、测试文档。\n【任职要求】\n1、本科及以上学历，计算机、自动化等相关专业；2、熟悉嵌入式C语言、STM32单片机，了解Cortex M0/M3/M4内核的ARM架构，熟悉Modbus RTU、CAN协议；3、熟悉PID控制原理和常用滤波算法；4、有电机控制相关经验者优先；5、有强烈的责任感，工作积极主动，有良好的团队精神，善于沟通。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "电机"
+          ]
+        },
+        {
+          "technology_code": "T3.08.03",
+          "technology_name": "嵌入式计算",
+          "status": "accepted",
+          "matched_terms": [
+            "STM32",
+            "单片机"
+          ]
+        },
+        {
+          "technology_code": "T5.02.02",
+          "technology_name": "实时工业总线",
+          "status": "accepted",
+          "matched_terms": [
+            "Modbus"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.05.04",
+        "T3.08.03"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: Modbus RTU/CAN 工业总线协议",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0025",
+      "job_code": "job_6ffd8ed2046caa7bbc8a9bbd",
+      "job_title": "嵌入式硬件工程师",
+      "primary_domain": "T3",
+      "parse_quality_score": 81.67,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "1、根据设计要求完成元器件选型、原理图设计、PCB设计及调试；2、编写STM32单片机驱动、通讯和应用代码；3、根据开发流程，编写设计文档及测试文档。\n【任职要求】\n1、本科及以上学历，电子、自动化、计算机相关专业；2、具有扎实的模拟电路、数字电路基础，可独立完成电路设计工作；3、熟练掌握常用电路设计软件，能够绘制4层电路板，有电机驱动电路设计经验者优先；4、能熟练使用示波器、万用表等进行硬件调试及故障排查；5、熟悉STM32单片机软硬件开发，有自动控制相关项目开发经验者优先；6、熟悉Modbus RTU、CAN、PROFINET、EtherCAT等通讯协议。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "电机"
+          ]
+        },
+        {
+          "technology_code": "T3.08.03",
+          "technology_name": "嵌入式计算",
+          "status": "accepted",
+          "matched_terms": [
+            "STM32",
+            "单片机"
+          ]
+        },
+        {
+          "technology_code": "T5.02.02",
+          "technology_name": "实时工业总线",
+          "status": "accepted",
+          "matched_terms": [
+            "EtherCAT",
+            "Modbus",
+            "PROFINET"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.05.04",
+        "T3.08.03"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "MISSING: PCB/原理图设计;MISSING: EtherCAT/PROFINET 工业总线",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0026",
+      "job_code": "job_f68690746b3d5a68f0a36983",
+      "job_title": "深圳 结构总监",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 职位描述 1、负责确保本体组的交付节点与交付质量。组建和管理机械技术团队，合理分配工作任务，监督项目进度和质量，主导整机风险识别，确保项目按时交付； 2、负责新产品的机械架构设计、结构设计和已开发产品的设计优化改进； 3、主导精密多关节串联和并联机器人的机械结构设计、建模与运动学仿真与设计优化； 4、负责或组织进行尺寸链分析、强度和负载校核、寿命分析等； 5、与项目团队、供应商及其他相关部门紧密协作，解决项目实施过程中遇到的技术难题和协调问题； 6、负责或主持编写和审核技术文档，包括设计图纸、技术规范、操作手册、设计标准等，确保文档的准确性和完整性； 职位要求： 1、有6年以上机器人或3C产品的开发经验，具备项目管理和团队管理经验； 2、具备站在整体交付目标、产品需求、多模块耦合的角度思考问题的能力； 3、具备成熟产品的量产开发经验，熟悉金属件和塑料件等的量产制造工艺，熟悉整机/单体性能与可靠性测试方法与流程，能够平衡零件的性能、工艺及成本； 4、熟悉自动化机械外购件（丝杆、同步带、齿轮、直线导轨）等选型计算； 5、掌握常规机械传动方式，如带传动、链传动、齿轮传动、滚珠丝杆、连杆传动等； 6、对机器人技术和行业趋势有独到的理解和热情，具有良好的团队合作意识。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.03.04",
+          "technology_name": "并联机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "并联机器人"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.03.04",
+        "T3.06.04",
+        "T3.07.01"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0027",
+      "job_code": "job_5581fcb38f534228dcb54bb5",
+      "job_title": "机械工程师",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 负责工业智能视觉检测设备的机械结构设计、3D 建模与工程图绘制。 针对玻璃盖板、手机 / 平板屏幕、汽车电子、泛精密件等产品，完成设备机架、传动、夹具、防护等方案设计与优化。 参与设备样机开发、装配调试、现场问题解决，提升设备稳定性与精度。 配合电气、视觉、光学团队完成整机联调，输出 BOM、技术文档及标准作业流程。 跟进项目进度，解决生产及客户现场的机械相关问题。 任职要求 机械设计、自动化、机电一体化等相关专业，本科及以上学历。 熟悉自动化设备结构设计，有视觉检测 / 精密传动 / 玻璃加工 / 面板检测相关经验优先。 熟练使用 SolidWorks/Creo/CATIA 等至少一种 3D 软件及 2D 出图。 了解气动、伺服、丝杆导轨、精密夹具设计，具备较强动手与问题解决能力。 工作严谨，能接受项目期内适度出差。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.06.04",
+          "technology_name": "精密传动",
+          "status": "accepted",
+          "matched_terms": [
+            "精密传动"
+          ]
+        },
+        {
+          "technology_code": "T7.01.04",
+          "technology_name": "汽车制造",
+          "status": "accepted",
+          "matched_terms": [
+            "汽车电子"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.06.04",
+        "T3.07.01",
+        "T6.03.02"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "边界案例:工业视觉检测设备机械岗,非具身智能但'工业检测'在词表内",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0028",
+      "job_code": "job_abcdf229b52295b8a82745ea",
+      "job_title": "机器人运控工程师(北/上/深)",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 9,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 1、负责机器人传统运动控制软件研发与维护，包含轨迹规划、插补运算、运动学解算、点位 / 连续运动逻辑开发，保障机器人平稳、精准、稳定运行。 2、负责 PID 等经典控制算法落地调试，完成伺服位置、速度、电流闭环控制逻辑开发，优化运动平顺性、定位精度与启停冲击问题。 3、负责机器人关节 / 伺服驱动器运动逻辑开发，结合编码器、IMU 等传感器数据采集、滤波与融合，完成运动状态监测与闭环校正。 4、基于 CAN、CANopen、EtherCAT 等工业总线，完成运动指令收发、轴组同步控制、实时数据交互开发与问题排查。 5、配合硬件、结构团队完成软硬件联调，解决运动抖动、超调、共振、低速爬行、轨迹跟随误差等常规运动控制问题。 6、负责运动控制相关功能迭代、问题闭环、现场调试与技术支撑，输出控制方案、调试文档与标准化控制流程。 7、配合产线与应用端，适配不同工况的运动参数整定、控制参数优化，落地标准化运动控制方案。 任职要求 1、本科及以上学历，自动化、电气工程、机电一体化、电子信息、控制工程等相关专业，3 年及以上工业 / 协作机器人传统运动控制开发经验。 2、熟练使用 C/C++ 嵌入式开发，熟悉 ARM Cortex-M/R 架构、实时中断、定时器、IO 外设开发，熟悉 RTOS 实时系统部署与调度优化。 3、扎实掌握机器人基础理论：运动学正逆解、直角坐标 / 关节空间轨迹规划、直线 / 圆弧插补、S 形加减速、多轴同步控制。 4、精通经典闭环控制原理，熟练 PID 参数整定、前馈控制、滤波算法，熟悉伺服电机、直流无刷电机驱动及运动闭环控制逻辑。 5、熟悉 CAN、CANopen、EtherCAT 等工业总线协议，具备总线驱动开发、轴控通讯调试、实时运动指令开发经验。 6、熟悉编码器、力控、IMU 等常用运动传感器原理与数据处理，能够独立完成运动异常问题定位、整改与性能优化。 7、具备独立项目落地能力，可独立完成运动控制模块设计、编码、调试、迭代；有机器人关节驱动器、伺服运控调试经验优先。 8、良好的问题分析能力，能接受现场调试，具备较强的软硬件协同沟通能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.03",
+          "technology_name": "力控与柔顺控制",
+          "status": "accepted",
+          "matched_terms": [
+            "力控"
+          ]
+        },
+        {
+          "technology_code": "T1.03.12",
+          "technology_name": "运动控制(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "运动控制"
+          ]
+        },
+        {
+          "technology_code": "T1.03.14",
+          "technology_name": "运动学与动力学解算",
+          "status": "accepted",
+          "matched_terms": [
+            "运动学正逆解"
+          ]
+        },
+        {
+          "technology_code": "T2.04.01",
+          "technology_name": "惯性测量单元(IMU)",
+          "status": "accepted",
+          "matched_terms": [
+            "IMU"
+          ]
+        },
+        {
+          "technology_code": "T3.03.01",
+          "technology_name": "协作机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "协作机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.05.02",
+          "technology_name": "关节驱动控制",
+          "status": "accepted",
+          "matched_terms": [
+            "关节驱动"
+          ]
+        },
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "伺服驱动",
+            "无刷电机",
+            "电机"
+          ]
+        },
+        {
+          "technology_code": "T3.08.03",
+          "technology_name": "嵌入式计算",
+          "status": "accepted",
+          "matched_terms": [
+            "RTOS",
+            "嵌入式开发"
+          ]
+        },
+        {
+          "technology_code": "T5.02.02",
+          "technology_name": "实时工业总线",
+          "status": "accepted",
+          "matched_terms": [
+            "CANopen",
+            "EtherCAT",
+            "工业总线"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.03.04",
+        "T1.03.09",
+        "T1.03.12",
+        "T2.04.01",
+        "T3.05.02",
+        "T3.08.03"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "MISSING: CAN/CANopen/EtherCAT;MISSING: 运动学正逆解(词表只有逆动力学)",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0029",
+      "job_code": "job_5f2c373b7087cb5b70388aa8",
+      "job_title": "ecu电路硬件工程师",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "岗位职责：\n1.根据系统方案，承担嵌入式控制器电路设计。 Undertake embedded controller circuit design according to the system scheme\n2.负责多款高密度电控系统的硬件开发，如多通道电机驱动、DCDC，多品类供电，触觉信号调理、高速通信等电路设计。Responsible for hardware development of multiple high-density electronic control systems, including circuit design for multi-channel motor drivers, DC-DC converters, multi-category power supplies, tactile signal conditioning, high-speed communication and other modules.\n3.承担EMC设计与测试（辐射发射/抗扰度）。 Undertake EMC design and testing (radiated emission/immunity).\n4.负责硬件单元调试，配合设计系统策略。 Responsible for hardware unit debugging and cooperating with the design of system strategies.\n5.编写详细硬件文档。Write detailed hardware documentation。\n\n任职要求：\n1.通信，电子，自动化等相关专业本科及以上学历。 Bachelor's degree or above in communication, electronics, automation or related majors;\n2.3年及以上相关工作经验。 With 3 years or more of relevant work experience；\n3.精通Altium Designer/Cadence工具，具备6+层板设计经验。Proficient in Altium Designer/Cadence, with experience in designing boards with over 6 layers；\n4.熟悉嵌入式系统电源架构（多路DC-DC/LDO），及电机驱动设计。Familiar with embedded system power architectures (multi-channel DC-DC/LDO) and motor driver design;",
+      "current_extraction": [
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "电机"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T2.02.05",
+        "T3.05.04",
+        "T3.08.02",
+        "T3.08.03"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "ECU 归入域控制器",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0030",
+      "job_code": "job_97083e4fffbdb1fe8cd8c052",
+      "job_title": "机械工程师(机械臂装配/3c) (mj001055)",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 6,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1. 方案设计：负责3C电子产品自动化装配线/单机的机械方案设计，包括核心机构选型、紧凑型结构设计及工程图纸输出； 2. 机器人集成：主导工业机械臂（6轴）、Scara或协作机器人在装配工位（如插接、锁螺丝、贴合、保压、上下料）的应用开发与末端执行器（夹爪/吸盘）设计； 3. 项目跟进：负责外购件清单（BOM）编制、加工件跟进，并指导技术员进行设备组装、现场调试与性能优化； 4. 标准对标：确保设计方案符合3C严格的技术标准、安全规范及制程能力（CPK/GR&R）要求； 5. 跨部门协同：与电气工程师、视觉算法工程师深度配合，完成复杂的电、气、机、算一体化装配逻辑实现。 任职要求： 1. 教育背景：机械制造及其自动化、机电一体化等相关专业，本科及以上学历； 2. 行业经验：具备3年以上非标自动化设计经验，必须拥有深厚的3C行业背景，熟悉A客户项目开发流程及技术规范； 3. 核心技能： - 精通 SolidWorks/Creo 等3D建模软件及工程图转换； - 机器人应用：熟悉主流品牌（如Epson, ABB, Fanuc, UR, 达明等）的性能参数，具备Scara或协作臂与精密装配工艺配合的实战案例； - 精密传动：精通常见传动机构（丝杠、导轨、凸轮、DD马达、气动元件）的计算与选型； - 工艺理解：熟悉CNC加工、钣金、表面处理及各类模具钢材性能，能根据装配精度要求合理标注公差； - 职业素质：具备良好的抗压能力与逻辑思维，能适应果链项目高峰期的出差及现场调试节奏。 加分项： 1. 具有精密视觉对位、高精度压力控制（Force Control）装配经验； 2. 熟悉DFM（面向制造的设计）和DFA（面向装配的设计）分析方法； 3. 具备良好的英文技术文档阅读能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.03",
+          "technology_name": "力控与柔顺控制",
+          "status": "accepted",
+          "matched_terms": [
+            "力控"
+          ]
+        },
+        {
+          "technology_code": "T3.03.01",
+          "technology_name": "协作机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "协作机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.03.09",
+          "technology_name": "工业机械臂",
+          "status": "accepted",
+          "matched_terms": [
+            "工业机械臂"
+          ]
+        },
+        {
+          "technology_code": "T3.04.03",
+          "technology_name": "末端执行器",
+          "status": "accepted",
+          "matched_terms": [
+            "末端执行器"
+          ]
+        },
+        {
+          "technology_code": "T3.04.04",
+          "technology_name": "夹爪",
+          "status": "accepted",
+          "matched_terms": [
+            "夹爪"
+          ]
+        },
+        {
+          "technology_code": "T3.06.04",
+          "technology_name": "精密传动",
+          "status": "accepted",
+          "matched_terms": [
+            "精密传动"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.03.01",
+        "T3.03.05",
+        "T3.03.09",
+        "T3.04.03",
+        "T3.04.04",
+        "T3.07.01",
+        "T7.01.08"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0031",
+      "job_code": "job_07c80322c87161e590abcd1e",
+      "job_title": "上海 【外包】golang 开发工程师",
+      "primary_domain": "T4",
+      "parse_quality_score": 91.27,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "参与公司 AI 数据平台及后端服务的功能设计，结合业务开发实现高可用的 API 接口。 负责现有模块的维护与重构，优化系统性能，解决线上潜在的技术问题（如数据一致性、并发处理等）。 参与海量数据（图片/视频/数据集）的存储、检索与流转逻辑开发，对接对象存储及数据流水线。 编写高质量的单元测试和集成测试，参与代码评审，确保代码符合规范且易于维护。 配合前端、算法及测试团队进行接口联调，撰写清晰的技术文档和 API 接口文档。 职位要求 计算机相关专业本科及以上学历，1~3 年 Golang 开发经验，基础扎实，深入理解 Goroutine、Channel、Slice、Map 等核心特性及底层原理。 熟练掌握至少一种主流 Golang Web 框架（如 GoFrame、Gin、Echo 等）。 熟悉 MySQL、PostgreSQL 等数据库设计与优化，熟练使用 GORM ；熟悉 Redis 缓存机制及常见应用场景（如分布式锁、队列）。 具备良好的代码编写习惯，熟悉 Git 工作流，了解 RESTful API 设计规范，重视代码质量与单元测试。",
+      "current_extraction": [
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "数据集"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "engineering",
+      "annotator_notes": "通用 Golang 后端,与具身智能技术无关",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0032",
+      "job_code": "job_b2fb172c19a5111af903ffac",
+      "job_title": "具身智能数据销售总监",
+      "primary_domain": "T4",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 业绩达成：负责具身智能数据（包括遥操作采集数据、多模态标注数据、合成数据等）的销售，完成年度及季度销售额与利润指标。 大客户开发：负责国内外头部人形机器人、自动驾驶、通用AI大模型公司及科研院所的客户开发与关系维护。 出海与全球化：负责拓展海外市场（北美、欧洲、日本等），挖掘海外模型公司对多样化场景、跨文化环境数据的需求，协调海外数采资源的销售落地。 全生命周期管理：从客户触达、需求确认、方案推介、招投标、合同签署到回款管理，负责商务全流程。 市场竞争分析：实时跟进行业定价、友商动态（如Appen,Scale AI,Labelbox等），为公司定价策略和产品迭代提供一线反馈。 任职要求： 行业背景：5年以上AI数据、云服务、或相关SaaS领域销售经验。 出海经验：具备具身数据或AI数据出海销售经验者优先，英语可作为工作语言，熟悉海外商务合规及数据隐私政策（如GDPR）。 技术理解力：能够理解具身智能基本概念，能与客户算法工程师讨论数据多样性、长尾场景、VLA模型等对数据的基本需求。 资源储备：在北京、上海、深圳或海外机器人集群有现成客户资源者优先。 素质：务实、极强的抗压能力，结果导向，适应高频出差。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "AI大模型",
+            "VLA模型"
+          ]
+        },
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T4.01.01",
+          "technology_name": "遥操作数据采集",
+          "status": "accepted",
+          "matched_terms": [
+            "遥操作"
+          ]
+        },
+        {
+          "technology_code": "T4.02.01",
+          "technology_name": "合成数据",
+          "status": "accepted",
+          "matched_terms": [
+            "合成数据"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "数据销售岗",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0033",
+      "job_code": "job_c325af40aa21fada451a0f83",
+      "job_title": "上海 数据闭环工程师(指标+数据集)",
+      "primary_domain": "T4",
+      "parse_quality_score": 67.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1、运营指标体系建设 -制定机器人的运营指标树 -开发运营指标和数据看板用于追踪机器人运营情况 2、交互质量保障 -开发交互运营指标和看板 -开发机器人交互的离线评测指标，结合用户行为数据优化测试方案，提升语音交互用户体验 -维护数据清洗和筛选的pipeline，用于测试数据集更新 3、数据分析 -从运营看板和指标中定期得出基础分析，指导后续的研发方向 4、协作与交付 与产品、开发团队协作，参与需求评审、测试计划制定及缺陷跟踪闭环 输出运营报告和测试报告，提供质量风险评估及改进建议，支持企业快速迭代 职位要求： 1、基础能力 -掌握sql，能够做的指标开发和看板搭建 -掌握python，熟悉常用库，例如：pyspark，requests，pytest的使用 2、加分技能 -熟悉语音交互流程和测试：覆盖ASR（语音识别）、NLU（自然语言理解）、TTS（语音合成） -熟悉Docker等工具，支持CI/CD流程集成 3、软性素质 -责任心强，能独立承担模块测试任务并推动问题解决。 -适应快节奏项目，具备跨团队沟通与多任务并行处理能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "数据集"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T2.03.01",
+        "T4.01.06",
+        "T4.05.01",
+        "T6.04.02"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0034",
+      "job_code": "job_a63958ea523e2bc168329c82",
+      "job_title": "运动规划算法工程师-机器人",
+      "primary_domain": "T4",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 6,
+      "review_cnt": 0,
+      "jd_text": "职位描述：\n负责机器人运动规划算法的研发与优化，包括但不限于以下方向：\n轨迹优化：从事时间优、能量优等性能指标下的轨迹生成，开发轨迹插补、前瞻、交融等在线规划算法；\n奇异规避算法：研究机器人奇异性问题，开发基于雅可比矩阵分析、数值优化或任务优先级策略的实时奇异规避与鲁棒穿越算法，确保轨迹在奇异点附近的连续性与可行性；\n操作空间控制：运用OSC策略，结合系统辨识技术，实现高动态性能的规划与控制\n多约束优化：融合动力学建模、接触建模等约束问题，采用数值优化方法（如QP、SQP、iLQR等）实现高效实时运动规划；\n几何碰撞检测：设计与实现高效、精确的静态与动态障碍物碰撞检测算法；\n视觉伺服控制：实现基于位置的视觉伺服（PBVS）与基于图像的视觉伺服（IBVS）算法；\n双臂协调规划：研究多臂协同任务分配、运动规划与闭链控制；\n振动抑制：设计前馈与反馈控制策略，抑制机械结构振动，提升运动平稳性。\n\n职位要求：\n学历背景：硕士及以上学历，机器人、控制工程、计算机科学、机械电子等相关专业；\n理论基础：掌握机器人学、优化理论、数值计算等相关知识，熟悉运动规划算法的数学原理；\n编程与工具：熟悉Ubuntu系统，熟练使用C++/Python等编程语言，熟练使用Git，Cmake等工具，了解ROS2，了解Mujoco, Issac Sim/Gym等仿真平台；\n优先考虑：具有自研机器人的实际开发经验，具有0-1工程落地经验，具有实时系统编程和性能优化实战经验。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.14",
+          "technology_name": "运动学与动力学解算",
+          "status": "accepted",
+          "matched_terms": [
+            "动力学建模",
+            "雅可比"
+          ]
+        },
+        {
+          "technology_code": "T1.03.15",
+          "technology_name": "碰撞检测与避障",
+          "status": "accepted",
+          "matched_terms": [
+            "碰撞检测"
+          ]
+        },
+        {
+          "technology_code": "T1.03.16",
+          "technology_name": "视觉伺服",
+          "status": "accepted",
+          "matched_terms": [
+            "IBVS",
+            "PBVS",
+            "视觉伺服"
+          ]
+        },
+        {
+          "technology_code": "T4.03.05",
+          "technology_name": "仿真平台与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "MuJoCo",
+            "仿真平台"
+          ]
+        },
+        {
+          "technology_code": "T4.04.04",
+          "technology_name": "系统辨识",
+          "status": "accepted",
+          "matched_terms": [
+            "系统辨识"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS2"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.03.04",
+        "T1.03.06",
+        "T1.03.07",
+        "T1.03.12",
+        "T1.09.01",
+        "T4.04.04"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "MISSING: 视觉伺服PBVS/IBVS;MISSING: 碰撞检测;MISSING: 振动抑制",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0035",
+      "job_code": "job_f8ea8f5030568feac9946ac1",
+      "job_title": "算法工程师(智能视觉方向) (mj000201)",
+      "primary_domain": "T4",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "工作职责： 1. 计算机视觉关键算法研发，包括目标检测、分类、分割、精细物体分类等核心算法研发; 2. 算法工具链的开发，包括模型压缩、知识蒸馏、模型量化、AutoML、图像处理、视频分析，NAS等； 3. 深度学习相关模型网络设计、优化及相关部署; 4. 计算机视觉/数字图像处理/图形学关键算法研发及嵌入式平台优化。 职位要求： 1、本科及以上学历，计算机科学、信息自动化、应用数学等相关专业优先; 2、熟练掌握计算机视觉和深度学习相关的理论知识和实践技能; 3、熟悉各种典型CNN网络的适用场景以及使用方法，熟悉TensorFlow、Caffe、MXNet、PyTorch等主流深度学习框架中的一种或多种;或熟练掌握数字图像处理、图形学相关算法; 4、拥有扎实的数学和编程功底，熟练使用C++、CUDA、Python等； 5、有较强的研究能力者优先，例如在国际顶尖会议或期刊（包括但不限于CVPR, ICCV, ECCV, NIPS, ICML, AAAI,TPAMI, IJCV等）上发表过论文; 6、有较强的代码能力者优先，获得过ACM或其他商业代码竞赛的荣誉，如ACM区域赛金牌、NOI银牌以上、百度之星决赛等，或代码开源在GitHub上并有较大影响; 7、有较强的比赛经验者或者在重要数据集的排行榜上排名靠前的优先，这些比赛包括但不限于ImageNet、COCO等相关竞赛、Kaggle等一些国内外商业比赛、亚太大学生/国际空中/Robomaster机器人大赛等; 8、有较丰富的相关经验者优先，如一年以上人工智能领域公司进行计算机视觉&机器学习方面的实习，或来自国内外计算机视觉/机器学习/计算机图形学/数据挖掘等领域内知名实验室。",
+      "current_extraction": [
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "数据集"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow",
+            "深度学习框架"
+          ]
+        },
+        {
+          "technology_code": "T5.03.04",
+          "technology_name": "模型量化与压缩",
+          "status": "accepted",
+          "matched_terms": [
+            "模型压缩",
+            "模型量化",
+            "知识蒸馏"
+          ]
+        },
+        {
+          "technology_code": "T5.03.05",
+          "technology_name": "GPU并行计算与算子优化",
+          "status": "accepted",
+          "matched_terms": [
+            "CUDA"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T1.05.04",
+        "T1.06.04",
+        "T1.06.06",
+        "T2.05.05",
+        "T3.08.03"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "模型压缩/蒸馏/量化归入T1.01.06(词表最接近节点,但该节点名为'大模型'部署,存在口径偏差)",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0036",
+      "job_code": "job_7f8449410e09bb5fbeb13113",
+      "job_title": "上海 灵巧手控制算法工程师",
+      "primary_domain": "T4",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 6,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 负责灵巧手的硬件调试，包括基础运动测试及控制； 完成灵巧手与机械臂的系统集成，确保协同控制稳定性； 开发和优化灵巧手数据采集系统； 参与数据采集、预处理等工作，构建灵巧手操作数据集； 开展算法在真机环境的性能对比测试； 根据需求完成算法开发与代码维护，协助测试团队优化算法性能。 职位要求： 本科及以上学历，机器人学、自动化、人工智能等相关专业； 具备机械臂、相机、灵巧手等硬件调试经验； 精通 Python，熟悉ROS，有相关使用经验； 具备真机模仿学习、强化学习训练经验者优先； 具备机器人项目经验者优先； 工作积极主动，具备良好的团队合作与问题解决能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.05.02",
+          "technology_name": "强化学习",
+          "status": "accepted",
+          "matched_terms": [
+            "强化学习"
+          ]
+        },
+        {
+          "technology_code": "T1.05.03",
+          "technology_name": "模仿学习",
+          "status": "accepted",
+          "matched_terms": [
+            "模仿学习"
+          ]
+        },
+        {
+          "technology_code": "T3.04.02",
+          "technology_name": "灵巧手(多指)",
+          "status": "accepted",
+          "matched_terms": [
+            "灵巧手"
+          ]
+        },
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "数据集"
+          ]
+        },
+        {
+          "technology_code": "T4.01.05",
+          "technology_name": "数据采集设备与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "数据采集系统"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.05.02",
+        "T1.05.03",
+        "T1.09.05",
+        "T2.01.03",
+        "T3.03.09",
+        "T3.04.02",
+        "T4.01.04",
+        "T4.01.05",
+        "T5.01.01"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0037",
+      "job_code": "job_e12012eff9c8d183148669f5",
+      "job_title": "senior research engineer, simulation (gear/gr00t)",
+      "primary_domain": "T4",
+      "parse_quality_score": 80.77,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "基于MuJoCo/Isaac Lab开发维护机器人研究仿真环境；实现并测试控制算法与XR遥操作接口；构建程序化生成管线；优化GPU物理仿真器性能；USD导入校验机器人资产；实现Sim2Real并部署到实体机器人。\n【任职要求】\n本科及以上；10年以上机器人/物理仿真工业经验；MuJoCo/Isaac Sim/PyBullet/Drake/Gazebo等；先进接触动力学与照片级渲染；仿真资产与Gym API；MS/PhD优先；自动驾驶/人形经验、RL、顶会论文加分。",
+      "current_extraction": [
+        {
+          "technology_code": "T4.01.01",
+          "technology_name": "遥操作数据采集",
+          "status": "accepted",
+          "matched_terms": [
+            "遥操作"
+          ]
+        },
+        {
+          "technology_code": "T4.03.05",
+          "technology_name": "仿真平台与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "Gazebo",
+            "Isaac Lab",
+            "Isaac Sim",
+            "MuJoCo",
+            "PyBullet",
+            "仿真环境"
+          ]
+        },
+        {
+          "technology_code": "T4.04.12",
+          "technology_name": "Sim-to-Real虚实迁移",
+          "status": "accepted",
+          "matched_terms": [
+            "Sim2Real"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.10",
+        "T1.05.02",
+        "T4.02.01",
+        "T4.03.04",
+        "T4.03.05",
+        "T4.04.12"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "英文标题JD;XR遥操作接口归入遥操作与端到端控制",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0038",
+      "job_code": "job_9f53395d41b3f73e7252f960",
+      "job_title": "资深仿真平台算法工程师",
+      "primary_domain": "T4",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1. 参与机器人云仿真的研发工作，搭建满足具身智能多场景的高并发云仿真平台; 2. 负责仿真平台后端架构设计与开发，确保平台的高可扩展性与高性能; 3. 开发并维护仿真引擎与场景数据管理等模块，支持大规模并行仿真计算; 4. 开发并维护数字资产管理系统，优化资产存储与检索效率; 5. 支持机器人仿真系统运行时引擎和配套工具链的设计和开发工作; 任职要求： 1. 硕士及以上学历，优先计算机科学、自动化、机器人、软件工程等相关专业； 2. 精通Linux和Docker开发环境，熟悉Golang、C++、Python等编程语言； 3. 有大规模分布式计算、并行计算等相关经验，能够处理高并发和大规模数据生产； 4. 熟悉高性能数据库的设计与实现，能够处理高效的数据存储与访问； 5. 熟悉虚拟仿真引擎（如Isaac Sim/Mujoco/Gazebo/CoppeliaSim等）及其API，能够进行定制化开发； 6. 熟悉ROS2/DDS等机器人、无人驾驶系统通信中间件； 7. 具备优秀的沟通能力，能够跨团队合作并有效解决技术难题。",
+      "current_extraction": [
+        {
+          "technology_code": "T4.03.05",
+          "technology_name": "仿真平台与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "CoppeliaSim",
+            "Gazebo",
+            "Isaac Sim",
+            "MuJoCo",
+            "仿真平台",
+            "仿真引擎"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS2"
+          ]
+        },
+        {
+          "technology_code": "T5.02.03",
+          "technology_name": "通信中间件",
+          "status": "accepted",
+          "matched_terms": [
+            "DDS",
+            "通信中间件"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T4.03.04",
+        "T4.03.05",
+        "T5.01.01",
+        "T5.04.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: DDS 通信中间件",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0039",
+      "job_code": "job_92b82ed8bd6e114f3e1c566a",
+      "job_title": "大数据架构师",
+      "primary_domain": "T4",
+      "parse_quality_score": 95.0,
+      "accepted_cnt": 6,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1.负责公司AI infra平台架构设计，主导建设AI全链路基础设施，包括数据采集和标注、数据集存储、数据处理、多GPU分布式训练基础平台、云端和端侧推理部署、模型评测、模型安全、模型轻量化、模型发布和维护和 MLOps平台等， 灵活支持算力分配调度、私有部署和云端部署。 2.和各部门紧密合作，沟通AI 平台需求以及工具集成。 3.跟踪业界在框架、算法、模型、硬件等方面最新进展，及时更新架构设计。 任职要求： 1.教育背景和工作经验：计算机科学、软件工程、电子信息工程、数学、自动化、机械电子工程或相关领域硕士及以上学历，8年以上相关行业工作经验。 2.编程能力：精通Python、C++、Go其中一种或多种编程语言。 3.精通Pytorch等深度学习框架，熟悉常用大模型训练和微调以及常用框架工具，比如DeepSpeed，Megatron-LM等。 4.精通模型推理部署和优化框架， 比如vLLM/SGLang/Lamma.cpp/Ollama/KServe/TensorRT/MindIE/OpenVINO等；精通模型量化、蒸馏、剪枝等轻量化工具。 5.熟悉MLOps框架，比如Mflow， KubeFlow等。 6.熟悉常用的数据采集，清洗和标注工具。 7.丰富的软件架构设计经验，精通常用的架构模式和设计模式，具有完整从端侧到云端系统架构的经验。 8.熟悉主流云原生工具和运维监测，比如k8s,Docker,service mesh，Harbor，OpenTelemetry， Prometheus，Grafana等。 9.加分项：①具有机器人、汽车、自动化、物联网、互联网、云计算等行业经验优先；②具有部署运维分布式GPU集群经验者优先。 10.软技能：①具备良好的跨团队沟通协作能力，能与产品、工程团队高效协同；②具备优秀的问题解决能力，能适应快速迭代的工作环境，逻辑严谨，擅长从复杂场景中抽象技术方案。",
+      "current_extraction": [
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "数据集"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "深度学习框架"
+          ]
+        },
+        {
+          "technology_code": "T5.03.03",
+          "technology_name": "推理引擎与端侧部署",
+          "status": "accepted",
+          "matched_terms": [
+            "OpenVINO",
+            "TensorRT"
+          ]
+        },
+        {
+          "technology_code": "T5.03.04",
+          "technology_name": "模型量化与压缩",
+          "status": "accepted",
+          "matched_terms": [
+            "模型量化"
+          ]
+        },
+        {
+          "technology_code": "T5.03.06",
+          "technology_name": "大模型推理服务与训练加速",
+          "status": "accepted",
+          "matched_terms": [
+            "DeepSpeed",
+            "Megatron",
+            "SGLang",
+            "vLLM",
+            "分布式训练"
+          ]
+        },
+        {
+          "technology_code": "T5.03.08",
+          "technology_name": "MLOps与模型生命周期",
+          "status": "accepted",
+          "matched_terms": [
+            "MLOps"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T1.05.04",
+        "T4.01.04",
+        "T4.01.06",
+        "T5.04.01",
+        "T5.04.02",
+        "T6.04.02"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: MLOps/模型全生命周期平台",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0040",
+      "job_code": "job_ef4817c27cc42d3b30f89909",
+      "job_title": "上海 golang 开发工程师",
+      "primary_domain": "T4",
+      "parse_quality_score": 91.27,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "参与公司 AI 数据平台及后端服务的功能设计，结合业务开发实现高可用的 API 接口。 负责现有模块的维护与重构，优化系统性能，解决线上潜在的技术问题（如数据一致性、并发处理等）。 参与海量数据（图片/视频/数据集）的存储、检索与流转逻辑开发，对接对象存储及数据流水线。 编写高质量的单元测试和集成测试，参与代码评审，确保代码符合规范且易于维护。 配合前端、算法及测试团队进行接口联调，撰写清晰的技术文档和 API 接口文档。 职位要求 计算机相关专业本科及以上学历，1~3 年 Golang 开发经验，基础扎实，深入理解 Goroutine、Channel、Slice、Map 等核心特性及底层原理。 熟练掌握至少一种主流 Golang Web 框架（如 GoFrame、Gin、Echo 等）。 熟悉 MySQL、PostgreSQL 等数据库设计与优化，熟练使用 GORM ；熟悉 Redis 缓存机制及常见应用场景（如分布式锁、队列）。 具备良好的代码编写习惯，熟悉 Git 工作流，了解 RESTful API 设计规范，重视代码质量与单元测试。",
+      "current_extraction": [
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "数据集"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "engineering",
+      "annotator_notes": "与0031为同一JD重复投放",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0041",
+      "job_code": "job_01ddf7f6dab19c3513e4ec9d",
+      "job_title": "上海 测试工艺工程师",
+      "primary_domain": "T5",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1、新产品试产、生产测试DFT设计,测试需求合理性、覆盖率、可量产性、制造风险等评审； 2、主导量产机器人生产测试工艺方案制定,协调统筹相关部门,按项目阶段目标完成测试工站落地； 3、试产成熟度收敛,达成量产生产良率、成本、DOA目标,保证高质量交付； 4、试产过程中不良分析,产线异常处理等试产问题,推动责任部门保证措施有效闭环； 5、主导工程变更,工站验收及稽查,出货风险评估,产品量产后重大风险监测及闭环； 6、负责来料&组件、主板链路&头部组件、PCAB测试、整机功能测试、行走&老化测试、出货前检查等工站的搭建、维护、失效分析； 7、负责量产机器人本体测试自动化框架的开发和维护。 职位要求： 1、学历及专业：本科及以上学历，自动化、机械工程、电子信息工程、机器人工程、测控技术与仪器等相关专业；有无人机 、机器人行业经验优先； 2、有带过至少1-2个完整智能硬件项目，从0→1经验的，有丰富的工艺文档输出，产测工站搭建、不良分析经验； 3、专业基础：了解机器人运动学基础、嵌入式系统原理及常见通信协议（CAN/EtherCAT/ROS优先），熟悉雷达、视觉等传感器测试及标定优先； 4、掌握Python等编程语言，示波器、CANoe、Robot Framework等测试工具使用经验者优先； 5、责任心强，具备较强沟通及协调能力，抗压能力强。",
+      "current_extraction": [
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS"
+          ]
+        },
+        {
+          "technology_code": "T5.02.02",
+          "technology_name": "实时工业总线",
+          "status": "accepted",
+          "matched_terms": [
+            "EtherCAT"
+          ]
+        },
+        {
+          "technology_code": "T7.08.01",
+          "technology_name": "无人机",
+          "status": "accepted",
+          "matched_terms": [
+            "无人机"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T2.05.02",
+        "T3.08.03",
+        "T5.01.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "边界:量产测试工艺岗,具身技术含量低",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0042",
+      "job_code": "job_00887aa45eef3f970cca963c",
+      "job_title": "现场技术支持工程师fae-深圳",
+      "primary_domain": "T5",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "职位描述 1. 负责客户设备故障排查与维修，制定故障排查与维修技术文档，协调备料，保证维修时效与质量； 2. 负责收集整理产品质量问题与客户痛点需求，跟进内部闭环落地，优化产品设计与业务流程； 3. 负责服务物料BOM制定，监控物料消耗，合理备料； 4. 编写产品FAQ，完善技术知识库； 5. 负责为客户提供产品技术培训与支持，负责设备的安装、调试、保养等。 职位要求 1. 本科及以上学历，电子、计算机、自动化等相关专业，5年以上机器人或智能硬件行业技术支持工作经验； 2. 熟悉电子产品组装及测试工艺流程，具备良好的故障排查和问题解决能力； 3. 熟悉Ubuntu操作系统及ROS； 4. 具备良好的沟通能力，学习能力和抗压能力，能够适应出差； 5. 英语可作为工作语言。",
+      "current_extraction": [
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T5.01.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "边界:FAE技术支持岗",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0043",
+      "job_code": "job_e4685d8eb95543a12a501682",
+      "job_title": "上海 后端开发工程师",
+      "primary_domain": "T5",
+      "parse_quality_score": 66.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "1、构建覆盖“开发 - 测试 - 诊断 - 迭代”全生命周期的机器人工具平台 2、使用 Golang / Python 开发高性能后端服务，支撑数据回放、Issue 管理、自动化测试、远程诊断等能力 3、主导基于 ROS 与 Foxglove（MCAP）的可视化与数据处理工具链建设 4、开发面向产测、售后、运维的一站式工具（如刷机、日志采集、故障恢复） 职位要求： 1、硕士研究生及以上学历，机器人、计算机、电子信息等相关专业，5年及以上工作经验优先 2、精通 Golang 或 Python，具备构建 CLI 工具、Web 服务及后台任务系统的经验 3、熟悉机器人数据格式（如 MCAP、ROS Bag），能高效处理大规模时序数据 4、能使用 Python 快速构建原型、自动化脚本或与 ROS 生态集成 5、熟悉 Kubernetes 基础设施，能将工具服务容器化并集成到 CI/CD 流程中 6、有 C++ 调试或日志解析经验者优先（如解析端侧 core dump 或 binary log） 注重开发者体验，擅长将复杂问题工具化、产品化",
+      "current_extraction": [
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T5.01.01",
+        "T5.03.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0044",
+      "job_code": "job_6f17328ce00240ba66da4d4d",
+      "job_title": "感知融合算法专家/工程师",
+      "primary_domain": "T5",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "职位描述 1. 将负责设计、实现和优化多传感器融合后的目标跟踪、状态估计、场景理解等核心算法，确保感知结果满足高实时性、高可靠性的要求； 2. 融合结果包括动态要素和静态要素，例如障碍物，占据栅格，静态矢量，还包括交通参与者行为预测等等； 3. 推动算法在嵌入式平台的部署效率和系统级的架构能力，从而优化计算效率和开发效率； 4. 分析实车测数据，定位感知瓶颈，驱动数据闭环迭代，与前端感知（检测/分割）、预测、规划模块协作，提升系统级性能。 职位要求 1. 计算机、 Robotics、自动化、电子工程等相关专业； 2. 具备扎实的C++/python编程能力，掌握多视图几何、状态估计，精通至少一种主流跟踪算法（SORT/DeepSORT/JDE, ByteTrack, MHT, GM-PHD等） 3. 熟悉自动驾驶或机器人架构（如Apollo/Autoware/ROS 2） 4. 有自动驾驶、机器人量产相关经验者优先。 5. 面对未知领域的问题，有很强的自学能力。 6. 在CVPR/ICCV/ECCV/NeurPS/ICLR/ACL/EMNLP等学术顶会有相关论文发表，或在相关国际竞赛中取得优异成绩者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.06.11",
+          "technology_name": "多目标跟踪",
+          "status": "accepted",
+          "matched_terms": [
+            "ByteTrack",
+            "DeepSORT",
+            "目标跟踪"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS 2"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.04.04",
+        "T1.06.05",
+        "T1.06.06",
+        "T1.06.08",
+        "T2.05.01",
+        "T3.08.03",
+        "T5.01.01"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "MISSING: 目标跟踪(SORT/DeepSORT/ByteTrack) - 词表有目标检测无目标跟踪",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0045",
+      "job_code": "job_d30f28de9bfe07f35368a217",
+      "job_title": "嵌入式软件开发",
+      "primary_domain": "T5",
+      "parse_quality_score": 97.0,
+      "accepted_cnt": 6,
+      "review_cnt": 0,
+      "jd_text": "1.负责主流边缘计算平台(如Nvidia Orin系列、Rockchip等)的U-Boot移植、Linux/RTOS内核裁剪与底层系统定 制。 2.负责多源传感器的底层驱动开发与ISP调优(重点为多路Camera及高频IMU)，确保MIPI、GMSL等高速接口的 数据稳定传输。 3.搭建高效的多媒体数据流水线，负责多路视频采集、硬件编解码与流媒体传输框架搭建，保障数据流的高吞吐 与极低延迟。 4.在OS内核层实现高精度的硬触发与软硬件协同的时间同步底座(如PPS、时间戳对齐机制)。 5.针对Egocentric和UMI的便携属性，进行系统级的动态功耗优化与确定性任务调度，实现硬件算力榨取与极限低 功耗运作的平衡。 【任职要求】 1.扎实的C/C++编程能力，熟悉ARM体系架构，深入理解Linux内核机制(内存、中断、设备树等)。 2.具备丰富的Camera Sensor驱动开发经验，熟悉V4L2架构及常见外设协议(I2C、SPI、USB、PCIe) 。 3.熟悉底层时间同步协议及硬件触发逻辑的软件端实现方法。 4.具备Nvidia或瑞芯微平台深度功耗优化经验，或有智能驾驶、机器人底层数据系统开发经验者优先。 5.有UMI或Egocentric感知系统量产级落地经验者优先考虑。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.06.10",
+          "technology_name": "感知认知(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "感知系统"
+          ]
+        },
+        {
+          "technology_code": "T2.04.01",
+          "technology_name": "惯性测量单元(IMU)",
+          "status": "accepted",
+          "matched_terms": [
+            "IMU"
+          ]
+        },
+        {
+          "technology_code": "T2.05.02",
+          "technology_name": "标定与同步采集",
+          "status": "accepted",
+          "matched_terms": [
+            "时间同步"
+          ]
+        },
+        {
+          "technology_code": "T3.08.03",
+          "technology_name": "嵌入式计算",
+          "status": "accepted",
+          "matched_terms": [
+            "RTOS"
+          ]
+        },
+        {
+          "technology_code": "T3.08.04",
+          "technology_name": "算力硬件",
+          "status": "accepted",
+          "matched_terms": [
+            "Orin"
+          ]
+        },
+        {
+          "technology_code": "T5.04.02",
+          "technology_name": "云边端协同",
+          "status": "accepted",
+          "matched_terms": [
+            "边缘计算"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T2.01.03",
+        "T2.04.01",
+        "T2.05.02",
+        "T3.08.03",
+        "T3.08.04",
+        "T4.01.05"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: MIPI/GMSL 高速接口;MISSING: ISP 调优",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0046",
+      "job_code": "job_c608310efb4fdd883a329b32",
+      "job_title": "上海 智元-云管产品经理",
+      "primary_domain": "T5",
+      "parse_quality_score": 89.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1. 负责云运营平台（CMP）及 AI 算力运营控制台的产品规划，梳理多租户管理、资源计量计费、自动化运维等核心业务闭环。 2. 深入调研政企及大模型客户需求，输出高质量的产品原型、PRD 文档及商业解决方案。 3. 协同研发与交付团队，推动产品功能迭代，跟进产品上线后的用户反馈与数据运营。 职位要求： 1. 3-5年以上云计算、PaaS 或 AI 算力平台产品经理经验。 2. 熟悉云原生架构、IaaS/PaaS 核心服务及 AI 算力调度逻辑。 3. 具备优秀的商业敏感度、需求抽象能力及跨部门沟通协调能力。 4. 有 B 端复杂系统或数据中台产品设计经验者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T5.04.01",
+          "technology_name": "算力基础设施",
+          "status": "accepted",
+          "matched_terms": [
+            "算力平台"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "云管产品经理",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0047",
+      "job_code": "job_fea755124da72ffebfa0e6b6",
+      "job_title": "现场技术支持工程师fae",
+      "primary_domain": "T5",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1. 负责客户设备故障排查与维修，制定故障排查与维修技术文档，协调备料，保证维修时效与质量； 2. 负责收集整理产品质量问题与客户痛点需求，跟进内部闭环落地，优化产品设计与业务流程； 3. 负责服务物料BOM制定，监控物料消耗，合理备料； 4. 编写产品FAQ，完善技术知识库； 5. 负责为客户提供产品技术培训与支持，负责设备的安装、调试、保养等。 职位要求： 1. 本科及以上学历，电子、计算机、自动化等相关专业，5年以上机器人或智能硬件行业技术支持工作经验； 2. 熟悉电子产品组装及测试工艺流程，具备良好的故障排查和问题解决能力； 3. 熟悉Ubuntu操作系统及ROS； 4. 具备良好的沟通能力，学习能力和抗压能力，能够适应出差； 5. 英语可作为工作语言。",
+      "current_extraction": [
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T5.01.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "与0042为同一JD重复投放",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0048",
+      "job_code": "job_c2409423304c83dc64dae0d7",
+      "job_title": "深圳 技术支持专家",
+      "primary_domain": "T5",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： - 核心技术支撑：承接前端售后团队、客户反馈的人工智能机器人各类技术问题，包括硬件故障、机上软件异常、运维故障、系统适配等，快速定位问题根源，提供精准解决方案，高效完成问题闭环。 - 中台赋能前端：作为技术中台核心力量，为前端售后工程师提供技术指导、培训与支援，解答一线服务中的技术难点；沉淀故障排查手册、解决方案、技术FAQ等资料，搭建并优化中台技术知识库，赋能团队提升整体技术服务能力。 - 复杂问题攻坚：负责处理前端无法解决的疑难、复杂技术故障，牵头组织问题复盘，分析故障根源，形成可复制的解决方案；跟踪机器人产品运行共性问题，联动研发、运维团队推进问题整改与优化。 - 产品运维支撑：配合团队完成机器人产品运维相关工作，协助推进机器人技改、系统升级落地，提供技术支持；监控产品运行核心技术指标，及时发现潜在技术风险，提前预警并制定应对方案。 - 技术流程优化：梳理技术支持全流程，识别流程痛点，提出优化建议，完善技术支持标准与规范；参与中台技术支撑体系搭建，推动技术支持工作标准化、高效化。 - 知识库与工具建设：编写和维护故障排查手册、技术案例库、常见问题解决方案（FAQ），赋能一线团队；开发或优化诊断工具、脚本，提升技术支持效率和自动化水平。 - 可维护性要求：结合客户需求及历史服务问题完成新产品可维护性设计，推进在产研&质量部门的落实。 任职要求： 1.本科及以上学历，计算机、自动化、 robotics、电子工程等相关专业。 2.至少4年以上机器人、人工智能、物联网或高端装备领域技术支持/研发/测试经验，有中台支持、技术赋能团队经验者优先。 3.熟悉机器人操作系统（ROS/ROS2）、Linux系统、网络通信及硬件接口技术；熟练使用Python/Shell等脚本语言进行工具开发或数据分析。 4.具备扎实的软硬件调试能力，能通过日志、代码、数据定位复杂问题。 5.了解机器学习/深度学习基础原理，具备AI模型部署或故障分析经验者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS",
+            "ROS2"
+          ]
+        },
+        {
+          "technology_code": "T5.01.02",
+          "technology_name": "机器人操作系统",
+          "status": "accepted",
+          "matched_terms": [
+            "机器人操作系统"
+          ]
+        },
+        {
+          "technology_code": "T5.03.03",
+          "technology_name": "推理引擎与端侧部署",
+          "status": "accepted",
+          "matched_terms": [
+            "模型部署"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "技术支持岗,全篇流程与服务,无具身技术深度要求",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0049",
+      "job_code": "job_23bf2332939795188e63c0bf",
+      "job_title": "slam算法(人形机器人 双休)",
+      "primary_domain": "T5",
+      "parse_quality_score": 76.5,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "基于ROS的SLAM算法集成调试与环境建图/自主定位；SLAM模块需求分析与方案设计(定位漂移/建图精度/动态环境)；ROS节点/话题/服务开发；传感器标定与设备联调。\n【任职要求】\n本科以上，计算机/自动化/机器人工程/电子信息相关；2年以上ROS经验，机器人/AGV/扫地机项目优先；精通C++/Python与ROS核心机制；熟悉GMapping/Cartographer/ORB-SLAM3/LIO-SAM。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.04.01",
+          "technology_name": "SLAM",
+          "status": "accepted",
+          "matched_terms": [
+            "Cartographer",
+            "SLAM"
+          ]
+        },
+        {
+          "technology_code": "T3.03.08",
+          "technology_name": "移动机器人(AMR/AGV)",
+          "status": "accepted",
+          "matched_terms": [
+            "AGV"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.04.01",
+        "T2.05.02",
+        "T3.01.08",
+        "T3.03.08",
+        "T5.01.01"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0050",
+      "job_code": "job_eb7e4d1501bcf1caf7c62f28",
+      "job_title": "深圳 高级c++工程师",
+      "primary_domain": "T5",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 5,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1. 参与建设自研机器人操作系统、以及开发者平台与生态，包括需求分析、实现、测试、文档等工作； 2. 参与建设端侧机器人平台模块，包括通信中间件、系统管理、OTA、端侧网络管理、研发工具链、Devops、传感器抽象集成、ethercat抽象集成、SOC内核镜像BSP调试等； 3. 参与机器人软件系统集成，与算法、硬件团队合作，集成算法、硬件驱动等模块； 4. 参与建设软件研效体系，提升软件研发质量与效率。 职位要求： 1. 计算机、电子、通信等相关领域本科及以上学位，2年以上相关工作经验； 2. 扎实的Modern C++、Linux、网络通信等基础； 3. 熟悉Python、Shell等脚本语言； 4. 良好的软件工程能力，代码清晰规整； 5. 熟悉ROS2、有机器人行业、自动驾驶行业相关经验者优先； 6. 良好的职业修养，善于思考，良好的沟通能力和团队协作精神。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.08.03",
+          "technology_name": "嵌入式计算",
+          "status": "accepted",
+          "matched_terms": [
+            "BSP"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS2"
+          ]
+        },
+        {
+          "technology_code": "T5.01.02",
+          "technology_name": "机器人操作系统",
+          "status": "accepted",
+          "matched_terms": [
+            "机器人操作系统"
+          ]
+        },
+        {
+          "technology_code": "T5.02.02",
+          "technology_name": "实时工业总线",
+          "status": "accepted",
+          "matched_terms": [
+            "EtherCAT"
+          ]
+        },
+        {
+          "technology_code": "T5.02.03",
+          "technology_name": "通信中间件",
+          "status": "accepted",
+          "matched_terms": [
+            "通信中间件"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.08.03",
+        "T5.01.01",
+        "T5.01.02",
+        "T5.03.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: EtherCAT 工业总线",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0051",
+      "job_code": "job_3bee7b60fef908ef86d54ebb",
+      "job_title": "电镀工程师",
+      "primary_domain": "T6",
+      "parse_quality_score": 89.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1、负责金刚石的分选及金刚石的下线处理。 2、负责电镀液的成分、配比、配置处理维护 3、参与化学品打样的SOP制作，制定清洗/退镀生产工艺 4、确保现场电镀液、打样电镀液生产稳定，发现问题及时解决问题。 5、负责砂轮棒化学分析工作：包含方法开发、分析检测及质量检测 6、负责组建理化检测室，含检测室日常的管理：包含化学品研发耗材管理，维护实验室相对应实验设施/设备 任职要求： 1、电化学、分析化学、材料化学等相关专业，本科以上学历 2、熟练各种分析检测手段，化学反应工程； 3、熟悉电镀行业加工工艺流程、掌握电镀工艺方法及各性能测试内容及针对不良作出有效改善 4、懂得电镀镍原理、结构、配置；有电镀液维护、配置，金刚石处理、分筛经验3年以上 5、要求工作细心、沉稳、对化学反应敏感，能自主进行滴定分析验证6、工作独立自主，善于沟通，具有一定的抗压能力；对新工艺有探索热情",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "电镀化工工艺岗;现抽4条全为误报",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0052",
+      "job_code": "job_e3b485f9a3acefbd2d708adc",
+      "job_title": "圆刀师傅",
+      "primary_domain": "T6",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "工作内容】 1、负责圆刀模切设备的日常操作与调试，精准控制模切压力、速度及定位参数； 2、严格执行生产作业指导书，完成原材料的排版优化、上料及成品下料工作； 3、实时监测设备运行状态，及时识别并处理模切毛边、连刀等质量异常问题； 4、配合技术部门进行刀具更换、模具保养及设备点检，确保产线连续稳定运行； 5、协助统计生产数据，如实记录产量与损耗，按时提交日报表并参与现场 5S 管理。 【任职要求】 1、电子制造或机械加工相关专业优先，具备 3年以上圆刀机实操经验； 2、熟悉 ETP、PET、铜箔等软性材料特性，掌握常用模切刀具规格及换刀流程； 3、能独立识读工艺图纸，熟练使用卡尺、千分尺等基础量具进行尺寸检测； 4、具备较强的质量意识与安全意识，能适应两班倒工作制及无尘车间作业环境； 5、工作严谨细致，服从生产调度安排，具备良好的团队协作精神及抗压能力。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "模切设备操作岗;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0053",
+      "job_code": "job_b3516d0c03124a1274d6fe65",
+      "job_title": "深圳 多模态交互大模型研究员/专家",
+      "primary_domain": "T6",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1、设计、构建、训练和优化面向机器人交互场景的端到端多模态大模型架构； 2、探索和实现模型对多模态输入（语音、文本、图像/视频、深度信息、传感器数据、环境上下文等） 的深度融合与理解； 3、研发模型生成多模态输出（语言语音、情绪、表情、移动、行为动作等） 的能力，确保输出的一致性与自然性； 4、重点攻克人机交互闭环中的关键问题：上下文记忆与理解、意图识别与澄清、个性化交互、情感感知与表达、长时程对话一致性、任务导向交互等； 职位要求： 1、本科及以上学历，计算机、人工智能、电子、数学等相关专业； 2、出色的问题分析和解决能力，自主探索新解决方案的能力强; 3、关注生成式 AI 和多模态交互技术，对推动人形机器人智能化有热情; 4、熟悉 VLM / VLA / VLP / MLM等多模态任务建模、具备跨模态模型设计与训练经验； 5、理解多模态对齐（如 cross-attention、token-level alignment）、条件生成、多模态融合机制； 加分项： 1、有端到端多模态大模型研究经验，或实际落地应用项目经验者； 2、在 CVPR、NeurIPS、ICLR、ACL 等会议发表多模态相关工作者优先； 3、具有优秀的代码能力和竞赛精神，ACM/ICPC、RoboMaster等比赛获奖者。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "VLA",
+            "多模态大模型"
+          ]
+        },
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T6.01.01",
+          "technology_name": "多模态交互",
+          "status": "accepted",
+          "matched_terms": [
+            "多模态交互"
+          ]
+        },
+        {
+          "technology_code": "T6.01.06",
+          "technology_name": "人机交互(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人机交互"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.11",
+        "T1.06.03",
+        "T1.07.02",
+        "T2.03.01",
+        "T3.01.08",
+        "T6.01.01",
+        "T6.01.02",
+        "T6.01.04"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0054",
+      "job_code": "job_4c38216c370d5fa910a578dd",
+      "job_title": "焊接工程师/技师",
+      "primary_domain": "T6",
+      "parse_quality_score": 61.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1.负责焊接工艺设计与优化，提升焊接质量合格率 2.制定焊接作业指导书，确保生产流程标准化执行率 3.解决生产现场焊接技术难题 4.监督焊接质量检测，控制不良率 任职要求： 1.大专及以上学历，焊接/材料工程相关专业，有液冷相关经验优先 2.精通焊接工艺，持有国际焊接工程师(IWE)证书优先 3.熟悉焊接标准，能独立完成焊接工艺评定(WPQ)",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "焊接工艺岗;疑似被'焊接机器人'误命中",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0055",
+      "job_code": "job_eab0c18ebe8765c7835c6068",
+      "job_title": "五轴抛光工程师",
+      "primary_domain": "T6",
+      "parse_quality_score": 88.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1.客户图纸要求可行性盒加工能力评估，不合理的设计建议性方案检讨提出； 2.打样资料制作：样品加工单、辅料图、SOP、BOM、QC工程图、验证单原始数据提供； 3.样品维护：负责抛光段样品异常处理，工艺验证、样品履历建立，对交期负责； 4.量产维护：量产前期良率提升，遗留异常处理及进度推进，不断简化工艺提升效率，制定目标达成； 5.文件标准化形成&落实； 6.上级交办事项完成及报告，挖掘优秀案例实施导入，新材料/新工艺开打，降低成本； 7.新工艺开发及验证； 8.新物料的开发验证； 9.新设备验证评估； 10.辅料/工装夹治具设计申请，常用易损易耗物品准备； 11.协助完善工序的品质标准建立、检测方法建立； 12.优秀案例的提出，四新专利的撰写。 岗位要求： 1.有3-5年铝合金手机中框镜面抛光或玻璃盖板、蓝宝石抛光经验； 2.熟悉五轴抛光机及机械手打磨抛光工艺及调试，及平面研磨调试工艺； 3.有一定的现场实操能力。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "抛光工艺岗;'机械手打磨抛光'为设备背景,按规则4不计入",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0056",
+      "job_code": "job_5f619542e78ff4e725c068e4",
+      "job_title": "刀具主管",
+      "primary_domain": "T6",
+      "parse_quality_score": 70.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1.负责刀具生产现场全面管理工作； 2.负责生产现场设备的正常运行，保证生产现场正常生产； 3.负责量产前期良率提升，遗留异常问题点处理及进度推进，不断简化工艺提升效率，制定目标达成；； 4.上级交办事项完成及报告，挖掘优秀案例实施导入； 5.协助完善工序的品质标准建立、检测方法建立；",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "刀具生产现场管理",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0057",
+      "job_code": "job_83a352e889e6b50d36f19e9a",
+      "job_title": "上海 模具供应商质量工程师(外包岗)年龄30以下",
+      "primary_domain": "T6",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 1. 模具设计质量评审：参与新模具开发项目的设计评审（DFM），审核模具结构、材料选型、加工工艺路线的合理性，从质量角度提出风险识别与改进建议。 2. 模具加工过程监控：监督模具加工（CNC、EDM、线切割、磨床等）关键工序的质量控制，审核关键尺寸检测报告，确保加工精度满足设计要求。 3. 试模过程质量管控：主导T0/T1/T2试模过程的质量跟踪，审核试模成型件的全尺寸报告（FAI）、外观检验报告，评估模具成型能力，推动模具问题整改直至达到验收标准。 4. 模具验收与放行：制定模具验收标准与检查清单，组织模具最终验收评审，确认模具尺寸精度、成型质量、使用寿命等关键指标达标后签署验收报告。 5. 量产模具质量监控：对量产阶段的模具进行定期巡检，监控模具磨损状态、成型件质量稳定性，识别模具老化或异常风险并推动预防性维护。 6. 模具维修质量确认：审核模具维修/改模方案，监督维修后的试模验证，确认维修效果，确保维修后模具质量稳定。 7. 模具变更管理：监督供应商的模具变更（如改模、换模、材料变更等），评估变更对产品质量的影响，验证变更后的试模结果并确认质量稳定性。 8. 质量问题分析与闭环：主导模具相关质量问题的根因分析（如飞边、缩水、变形、气泡、裂纹、尺寸超差、装配不良等），推动供应商制定8D报告，验证纠正预防措施的有效性并跟踪至闭环。 9. 供应商模具能力提升：针对供应商模具质量管理薄弱环节，制定赋能计划，通过培训、现场指导、标准导入等方式提升其模具设计、加工、试模及质量管理能力。 10. 质量数据与报告：收集、统计模具开发及量产阶段的质量数据（试模合格率、模具维修频次、成型件不良率等），定期输出质量报告，识别风险趋势并推动改善。 任职要求 · 学历：全日制大专及以上学历，模具设计与制造、材料成型及控制工程、机械设计制造及其自动化等相关专业。 · 经验：5年以上模具质量或模具工艺相关工作经验，其中至少3年以上注塑模具或压铸模具质量管控经验。有机器人、汽车零部件、消费电子或智能硬件行业经验者优先。 · 技能： · 精通注塑模具或压铸模具的结构原理、加工工艺（CNC、EDM、线切割、磨床等）及常见缺陷类型。 · 熟悉注塑成型工艺（温度、压力、速度、保压）或压铸成型工艺（压射参数、模具温度、冷却）及工艺参数对产品质量的影响。 · 熟练运用8D、5Why、鱼骨图等质量问题分析工具。 · 能看懂模具2D/3D图纸，理解模具公差配合要求及GD&T形位公差。 · 熟练使用三坐标测量机、影像测量仪、卡尺、千分尺等精密检测设备，具备模具及成型件尺寸检测能力。 · 熟悉模具验收流程及试模（T0/T1/T2）管控要点。 · 软素质：工作细致认真，执行力强，具备良好的逻辑思维、沟通协调能力和现场问题解决能力；能适应生产现场环境及必要的出差安排。 加分项 · 同时具备注塑模具和压铸模具质量管控经验。 · 有机器人结构件（外壳、关节壳体、底盘等）模具质量管理经验。 · 熟悉模具钢材选型、热处理工艺及模具表面处理工艺。 · 有模具设计背景，能使用UG、Pro/E、SolidWorks等三维设计软件进行模具结构查看。 · 有ISO/TS 16949或IATF 16949体系内审员资格。 · 熟悉模流分析（Moldflow）软件，能评估注塑成型可行性。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "模具质量工程师",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0058",
+      "job_code": "job_585a0e0a45a607b5a4fc8e6f",
+      "job_title": "上海 smt工艺工程师",
+      "primary_domain": "T6",
+      "parse_quality_score": 85.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "1、负责公司新项目的工艺评估和验证导入，及新产品在 DV/PV 阶段 DFM review 确认，反馈，改进。 2、熟悉SMT各个工艺制程，特别是检测设备性能及管制要点(AOI/SPI等)。 3、熟悉IPC 610 Class3级标准及允收要求。 4、熟悉钢网/治具等开法及优化， 具备SMT制程品质问题的解决方法及分析逻辑，对品质异常具备点，面的数据汇总及分析能力。 5、熟悉DFM，FMEA，CP，DOE，CAM/GC， AutoCAD软件，较强的团队合作能力，沟通能力强。 6、熟悉工艺参数优化，SPC 管控工艺制程。 职位要求： 1、本科及以上，在SMT行业至少8年工作经验,汽车电子Tier1优先考虑。 2、有责任心，思维灵活，逻辑清晰，为人踏实好学稳重，具备抗压力，配合度和较好的交流沟通，能承受一定的工作压力。",
+      "current_extraction": [
+        {
+          "technology_code": "T7.01.04",
+          "technology_name": "汽车制造",
+          "status": "accepted",
+          "matched_terms": [
+            "汽车电子"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "SMT工艺岗;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0059",
+      "job_code": "job_f53cc071b6ae702c777ca982",
+      "job_title": "数字ic设计工程师-npu",
+      "primary_domain": "T6",
+      "parse_quality_score": 71.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 负责AI神经网络处理器（NPU）的核心微架构设计与RTL实现，参与从微架构定义到流片量产的全流程。与架构、验证、物理设计团队紧密协作，交付高性能、低功耗的NPU计算单元。 岗位职责 1、负责神经网络引擎加速单元（如Tensor Core / 矩阵乘累加单元 / Vector处理单元）的微架构设计、RTL实现与优化 2、负责片上存储子系统（L1 Cache / Shared Memory / Scratchpad）的设计实现，优化访存带宽与延迟 独立完成模块级RTL代码编写，进行nlint语法检查、CDC跨时钟域检测、Lint/RDC检查及DC综合，确保设计质量满足tape-out标准 3、参与与验证团队协作制定模块级验证计划，支持functional verification、formal verification，协助定位设计bug 4、支持FPGA原型验证和emulation验证，配合软件团队完成驱动和runtime bring-up 任职资格： 1、硕士及以上学历，微电子、电子工程、计算机工程等相关专业 2、8年以上ASIC设计经验（硕士）或3年以上（博士），有成功流片并量产的经验 3、深入理解计算机体系结构，熟悉现代处理器设计原理（流水线/乱序执行/存储层次/一致性协议） 4、熟悉NPU/GPU高性能计算单元设计，包括但不限于Tensor Core、SIMD/SIMT向量单元、矩阵乘累加阵列等 5、熟悉AI算子特点（MatMul/Conv/Norm/Softmax/Attention），有AI加速器算力单元的设计与开发经历 6、精通Verilog/SystemVerilog，熟悉ASIC前端设计流程（Lint/CDC/Synthesis/STA） 7、具备良好的团队协作和沟通能力，能够跨团队推动问题解决\"",
+      "current_extraction": [
+        {
+          "technology_code": "T3.08.01",
+          "technology_name": "AI芯片",
+          "status": "accepted",
+          "matched_terms": [
+            "NPU"
+          ]
+        },
+        {
+          "technology_code": "T3.08.04",
+          "technology_name": "算力硬件",
+          "status": "accepted",
+          "matched_terms": [
+            "FPGA"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.08.01"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "NPU 数字IC设计;MISSING: RTL/微架构设计",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0060",
+      "job_code": "job_709cee7dbe53ac2364f10620",
+      "job_title": "抛光工程师",
+      "primary_domain": "T6",
+      "parse_quality_score": 88.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1.客户图纸要求可行性盒加工能力评估，不合理的设计建议性方案检讨提出； 2.打样资料制作：样品加工单、辅料图、SOP、BOM、QC工程图、验证单原始数据提供； 3.样品维护：负责抛光段样品异常处理，工艺验证、样品履历建立，对交期负责； 4.量产维护：量产前期良率提升，遗留异常处理及进度推进，不断简化工艺提升效率，制定目标达成； 5.文件标准化形成&落实； 6.上级交办事项完成及报告，挖掘优秀案例实施导入，新材料/新工艺开打，降低成本； 7.新工艺开发及验证； 8.新物料的开发验证； 9.新设备验证评估； 10.辅料/工装夹治具设计申请，常用易损易耗物品准备； 11.协助完善工序的品质标准建立、检测方法建立； 12.优秀案例的提出，四新专利的撰写。 岗位要求： 1.熟悉玻璃&晶圆&陶瓷&蓝宝石等脆性材料加工特性及各种磨机和异形抛光设备的加工原理； 2.熟练使用办公软件； 3.有一定的现场实操能力。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "脆性材料抛光工艺岗",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0061",
+      "job_code": "job_df02843cc74f45af4336ce1f",
+      "job_title": "供应商质量管理工程师(j10095)",
+      "primary_domain": "T7",
+      "parse_quality_score": 66.67,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "职责描述：\n1．供应商评估与选择：参与新供应商的评估和选择过程，对潜在供应商进行质量体系审核和现场考察。评估供应商的技术能力、生产能力、质量管理体系和交付能力等方面。\n2．供应商质量管理：建立和维护与供应商的良好合作关系，推动供应商持续改进质量；制定供应商质量目标和考核标准，定期对供应商进行质量绩效评估；监督供应商的生产过程，确保其符合公司的质量标准和工艺要求。\n3．问题解决与改进：及时处理供应商质量问题，协调相关部门采取纠正和预防措施；跟踪供应商质量问题的解决进度，确保问题得到有效解决；推动供应商进行质量改进活动，提高供应商的质量水平和稳定性。\n4．进货检验管理：制定进货检验标准和流程；对进货检验中发现的不合格品进行处理，包括退货、换货、挑选等；分析进货检验数据，提出改进建议，降低进货不良率。\n5．培训与沟通：对供应商进行质量培训，提高供应商的质量意识和质量管理能力；与内部相关部门保持良好的沟通，及时反馈供应商质量信息。\n任职要求：\n1．本科及以上学历，机械、电子相关专业，五年以上年供应商质量管理工作经验，有汽车、非标自动化等行业经验者优先；\n2．熟悉供应商质量管理流程和方法，具备质量体系审核能力；\n3．掌握熟悉质量管理体系和质量管理工具，如ISO9001、IATF16949、SPC、FMEA、MSA等；\n4．工作认真主动，能吃苦耐劳，有较强的责任心和良好的团队精神，具备良好的沟通协调能力和团队合作精神；\n5．熟练使用办公软件。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "供应商质量管理;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0062",
+      "job_code": "job_a47c3b55615127d85941af7c",
+      "job_title": "ai产品经理/总监(ai+职业教育方向) (mj000999)",
+      "primary_domain": "T7",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1、产品战略与规划： 负责职业教育领域人工智能类产品的产品路线，推动产品商业化落地。结合职业教育政策、行业趋势及用户需求，挖掘AI技术（如机器学习、计算机视觉、大模型、具身智能等）在教育场景的应用价值，设计创新解决方案。 2、需求分析与方案设计 深入调研职业院校的实训、科研、比赛等场景及需求，分析教师、学生、企业端痛点，输出产品需求文档及功能原型，设计AI驱动型教育产品功能。 3、市场与竞品分析 跟踪国内外AI+职业教育产品动态，分析竞品功能、商业模式及用户反馈，提炼差异化竞争策略。联合市场团队制定产品推广策略，提供销售工具支持，推动用户增长。 任职要求： 1、教育背景 本科及以上学历，计算机科学、机电一体化技术、人工智能等相关专业优先。 2、工作经验 有三年以上有AI教育产品、职业教育类产品设计或开发经验。熟悉AI技术应用逻辑，能与技术团队高效沟通需求。 3、核心能力 对职业教育行业有深刻理解，熟悉职业技能培训体系、产教融合模式及政策导向，出色的逻辑思维、用户洞察力及跨团队协作能力，能独立完成从0到1的产品落地。 4、具备教育行业资源（院校、渠道、行业协会等）优先。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "AI+职业教育产品经理;现抽7条全为误报(疑似ai教育/职业教育/具身智能/大模型等词命中)",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0063",
+      "job_code": "job_42aac2af83dfd03a003bb954",
+      "job_title": "网络安全专家",
+      "primary_domain": "T7",
+      "parse_quality_score": 89.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "岗位职责​ 主导企业工业网络安全体系搭建与优化，覆盖工业自动化、物联网场景全生命周期安全防护；​ 负责安全漏洞排查、渗透测试、应急响应，制定合规整改方案，确保符合行业安全标准；​ 跟进工业网络安全技术趋势，输出前瞻性安全策略，支撑业务数字化转型安全需求。 ​ 任职要求​ 本科及以上学历，计算机 / 网络安全相关专业，8 年以上网络安全工作经验，具备工业领域深耕背景者优先；​ 精通防火墙、入侵检测、漏洞扫描等防护技术，具备扎实的应急响应、渗透测试或安全方案设计能力；​ 熟悉工业安全合规标准（等保 2.0、IEC 62443 等），具备强技术攻坚与问题解决能力；​ 有工业自动化 / 物联网行业经验者优先，具备团队协作与跨部门技术支撑能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T7.01.08",
+          "technology_name": "智能制造与工业自动化",
+          "status": "accepted",
+          "matched_terms": [
+            "工业自动化"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "工业网络安全岗,非具身智能安全",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0064",
+      "job_code": "job_b08931a2eb305bd979aaf94a",
+      "job_title": "电气工程师",
+      "primary_domain": "T7",
+      "parse_quality_score": 60.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "【任职要求】： 1、机械/电子/汽车维修/电气维修相关专业； 2、维修电工经验，有操作证者优先考虑，主要负责设备的维修和异常故障处理； 3、熟悉非标设备电控调试/维修，有CCD调试经验，熟悉机器人示教器操作经验； 4、熟悉自动化设计，会三菱、发那科、西门子、欧姆龙等一种或两种PLC程序开发、组态、上位机程序开发、触摸屏程序开发及UI设计； 5、熟练运用制图软件绘制电气图纸：电气原理图、电控柜布局图。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "设备维修电工岗;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0065",
+      "job_code": "job_37f20bee41ae62f64b2135cc",
+      "job_title": "上海 商业分析专家",
+      "primary_domain": "T7",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 1、商业分析与增长机会挖掘 深入理解公司业务模式，围绕业务增长、商业化收入、线索转化、资产运营等核心场景开展专项分析。 通过数据分析发现业务增长机会、效率瓶颈及潜在风险，为管理层提供决策支持。 建立业务分析框架，持续监控核心经营指标，推动业务健康增长。 2、策略设计与效果评估 参与线索分配、定价机制、权益体系、评价机制、合作流转等核心策略设计。 建立策略评估体系，运用A/B Test、漏斗分析、用户分层分析等方法验证策略效果。 对业务运营动作、产品功能迭代、营销活动等进行效果评估，并输出优化建议。 3、经营分析与专项研究 定期输出周报、月报、季度经营分析报告。 针对重点业务开展专题研究，包括： 渠道经营分析 资产运营分析 商业化收入分析 供需匹配分析 客户转化分析 为业务负责人提供可落地的经营改善建议。 4、指标体系与数据体系建设 参与公司经营指标体系建设，统一核心指标口径。 协同数据团队搭建业务分析看板及监控体系。 推动分析结果沉淀为标准化分析模型和方法论。 5、跨部门协同与项目推动 深度协同业务、产品、运营、技术等团队，推动分析成果落地。 参与重点经营项目及增长项目，推动策略优化和业务改善。 跟踪策略落地效果，形成闭环复盘机制。 任职要求 基本要求 本科及以上学历，统计学、数学、经济学、计算机、软件工程、管理科学等相关专业优先。 5年以上商业分析、经营分析、策略分析、增长分析相关工作经验。 有互联网平台、科技企业、本地生活、电商、汽车互联网、房产互联网等行业经验优先。 专业能力 具备扎实的数据分析能力，熟练使用SQL。 熟悉Excel、Power BI、Tableau等分析工具。 熟悉漏斗分析、用户分层分析、留存分析、归因分析等分析方法。 能独立完成业务建模、经营分析及策略分析。 具备较强商业理解能力，能够从业务问题出发开展分析，而非停留在数据层面。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "商业分析;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0066",
+      "job_code": "job_3f9ad3b37344c9c6c1ba9d9b",
+      "job_title": "sqe工程师",
+      "primary_domain": "T7",
+      "parse_quality_score": 54.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "1、3年以上3C消费美电子/手机行业/汽车零部件的SQE品质管理工作经验，有对过A客户或华为工作经验； 2、熟悉苹果/华为产品的NPI导入阶段，了解PPAP介段和SQE流程； 3、熟悉FMEA/QC-七大手法/8D及相关品质手法: 4、熟悉VDA6.3,IS09001质量管理体系； 5、有一定团队管理经验，英语可读写邮件。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "SQE品质管理;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0067",
+      "job_code": "job_b923dd2a0132bc3b1169c839",
+      "job_title": "上海 机械结构工程师(外包)",
+      "primary_domain": "T7",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1.机械设计或者机械工程相关专业； 2.对注塑、铝合金压铸、滚塑等模具产品比较熟悉，且连续从事过两年半年以上清洁行业量产产品设计工作（优先考虑方向），对传动以及机构设计熟悉； 3.主导过2个以上从0到1量产项目，熟悉DFM（可制造性设计），成功解决过模具开模、供应链协同、成本优化等量产问题 ； 4.精通Solidworks/Creo/CAD/设计办公软件，对有限元计算分析软件熟悉的尤佳； 5.有传统清洁、商用、家用清洁结构设计经验尤佳，成功开发过商用或者家用产品并批量生产； 6.分析问题解决问题能力强，具有创新能力，具体5个以上发明专利； 7.具有一定抗压能力，能够适应创业公司的快节奏； 任职要求： 1.负责商用清洁机器人相关模块新品开发以及老产品维护，可以独立承担独立模块设计、研发测试、开模跟进、协助NPI导入量产； 2.负责相关元器件选型、计算、故障分析； 3.负责生产、售后、测试、供应商问题诊断分析和跟踪，跟相关团队沟通； 4.负责模块设计知识库建立和分享；",
+      "current_extraction": [
+        {
+          "technology_code": "T7.03.01",
+          "technology_name": "清洁机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "清洁机器人"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.06.04",
+        "T3.07.01",
+        "T7.03.01"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0068",
+      "job_code": "job_46297927beec2518b43d3516",
+      "job_title": "高级解决方案经理",
+      "primary_domain": "T7",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "主要职责 1、职业院校专业建设业务牵头人，为项目推进提供专业性建议，整合资源，主动牵引项目推进方向和推进节奏；2、负责标准化解决方案编制和推广。3、负责售前、销售及用户业务专题演讲，协助销售跟踪与推动重要样板项目；负责成功案例整理和推广；4、负责重大项目的售前支撑，包括直接客户沟通、项目方案规划、项目现场支持、方案沟通等；5、协调并驱动公司内部多个团队共同完成重要样板项目落地整体业务目标；项目招投标技术支持，技术谈判，售前方案编写等项目售前工作； 任职要求 1、硕士及以上学历，懂职业教育，对人工智能、机器人、智能制造等数字领域有产业认知基础； 2、8年以上解决方案、售前支持相关工作经验； 3、熟悉政府项目、高职高校业务拓展流程及大型项目公开招投标流程，具备大型公共实训基地、高职高校产业学院项目经验优先； 4、逻辑思维清晰，商务欲望强、沟通能力强、资源整合与协调能力强，方案规划与撰写能力优秀； 5、熟悉并掌握产教融合合作模式、市场运营策略。",
+      "current_extraction": [
+        {
+          "technology_code": "T7.01.08",
+          "technology_name": "智能制造与工业自动化",
+          "status": "accepted",
+          "matched_terms": [
+            "智能制造"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "售前解决方案经理",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0069",
+      "job_code": "job_2405661bb7963a9a5366c037",
+      "job_title": "海外销售总监 - 欧洲",
+      "primary_domain": "T7",
+      "parse_quality_score": 93.08,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "岗位核心职责 1. 海外战略制定与执行 根据产品矩阵，制定全球关键市场的进入与增长策略，对海外业务经营负责，完成销售目标、市场份额及品牌声量指标。 2. 海外团队搭建与管理 搭建海外团队，包括销售、市场、售后、本地化运营等职能。建立跨文化管理体系，制定本地化激励与考核机制，提升团队人效与凝聚力。 具备外籍员工招聘与管理经验，能融合中外团队协作。 3. 市场渠道建设与生态布局 开拓并管理多元化海外渠道网络，包括但不限于KA渠道、行业集成商、ISV生态（联合独立软件开发商，打造行业解决方案）、政企渠道； 建立渠道分级管理体系与合作伙伴赋能计划，实现渠道健康度与产出。 4. 具备跨行业整合能力 协调内外部资源（研发、产品、供应链、生态伙伴），为不同行业客户交付定制化的一体化解决方案。 5. 创新业务开拓能力 探索创新商业模式在海外市场的落地，推动机器人在非传统场景中的试点与复制。 任职资格 1. 硬性条件 学历：本科及以上，理工科背景优先 业绩：带领团队完成亿元以上业绩的成功经验 语言：英语流利（可作为工作语言），掌握第二外语者加分 2. 行业经验 品类经验：8年以上智能硬件（机器人、无人机、智能家居、高端消费电子）海外销售与市场操盘经验，其中至少3年海外区域负责人或同等管理岗位经验 团队搭建经验：有成功的海外分公司/区域团队从0到1搭建案例 渠道建设经验：有丰富的海外KA渠道、行业集成商或政企大客户资源，并能提供1-2个成功开拓的典型案例 3. 核心能力要求 跨行业整合能力：能够快速理解不同行业的业务痛点，并将其转化为机器人解决方案的能力 创新业务开拓能力：对RaaS、订阅制、生态赋能等新型商业模式有成功试点经验，或具备清晰的落地思路 战略视野：理解机器人行业主流商业演进路径，能制定分阶段的商业落地策略 抗压与适应能力：接受高频国际差旅，能在不同时区、文化背景下高效推进业务 4. 加分项 有具身智能相关行业海外业务负责人背景",
+      "current_extraction": [
+        {
+          "technology_code": "T7.08.01",
+          "technology_name": "无人机",
+          "status": "accepted",
+          "matched_terms": [
+            "无人机"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "海外销售总监",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0070",
+      "job_code": "job_360701b5fc9e851db2c71524",
+      "job_title": "上海 流程管理",
+      "primary_domain": "T7",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "职位描述 1. 营销服流程建设：负责公司toB，toC两类业务的营销服端到端流程体系建设，包括（LTC/ITR/IPMS）流程架构设计、关键流程开发，各一级流程的跨领域断点诊断与打通；与IT团队协作，实现流程规范要求的快速IT化 2. 流程运营：作为流程专家和运营代表，参与产研重大项目的开发活动，确保LTC/ITR/IPMS几大流程在各领域、各项目的有效落地和遵从；诊断流程与业务的适配性，识别业务的管理需求和问题、通过持续改进落实到流程体系中，支撑业务不断改善业务关键经营指标（质量、成本、效率等） 3. 流程绩效管理：设计并落实L1-L3各级流程绩效指标，周期性开展流程成熟度评估活动，通过指标牵引持续改善流程的业务适配性，进而提升业务运营质量 任职要求： 1. 学历背景： 本科及以上学历，计算机、电子信息、机械相关理工科专业或市场营销、国际贸易等商科专业。 2 .工作经验： --3年以上高科技企业（ICT、消费电子、智能汽车）工作经验 --1年以上公司变革管理、流程体系建设经验 --从事过GTM操盘、产品营销、销售、服务、渠道管理等一线相关工作者优先 3. 专业知识： --熟悉LTC/ITR/IPMS 流程，对其核心思想、关键特征和设计/执行要点有深入的理解 --熟练掌握流程设计/开发，流程管理的基础知识，并有相关实践经验 --参与过端到端产品操盘项目，熟悉其中关键环节及相关活动及要求 --具备出色的项目管理能力 4. 核心能力：出色的逻辑分析能力和问题解决能力；优秀的沟通表达和的团队协作能力；工作积极主动，有强烈的责任心和韧性 承担主要目标/关键任务 1. 0-1构建公司营销服流程体系，包括设计，开发、推广赋能 2. 负责营销服流程在各业务线、子公司的落地与持续改进，通过在具体项目的流程运营活动，确保流程遵从；定期开展流程评估活动，确保流程适配业务，持续改进",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "流程管理;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0071",
+      "job_code": "job_40cdc9c1d4a7651d559e5a8e",
+      "job_title": "ai算法工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 90.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "职责描述： \n1.负责大模型(视觉或语言)的预训练开发和调优工作； \n2.负责大模型在具体业务场景的适配和应用，如fine1000-tuning.prompt设计等； \n3.负责大模型的推理优化和应用部署，如压缩、量化、推理加速等。 \n4.负责跟进领域最新进展，预研和评估大模型在机器人领域的应用，如Gato、RT1000-1、PaLM1000-E。 \n\n任职要求: \n1.硕士及以上学历，985/211院校毕业优先。计算机相关专业，熟悉深度学习、计算机视觉、自然语言处理等领域的专业知识，具有3年以上工作经验； \n2.熟悉Transformer、BERT、GPT系列、T5、PaLM等模型，对大模型的数据处理及训练技术有深入理解； \n3.熟悉Pytorch/Tensorflow深度学习框架，至少掌握Python或C++其中一种编程语言；\n4.熟悉常见的强化学习算法原理(如DQN、DDPG、A3C、PPO等)，有相关训练和开发经验者优先； \n5.具有TensorRT、ONNX推理优化和部署经验者优先； \n6.曾在AI、CV、NLP顶会(如：AAAI、CVPR、ACL等)发表论文者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.05.02",
+          "technology_name": "强化学习",
+          "status": "accepted",
+          "matched_terms": [
+            "DDPG",
+            "DQN",
+            "PPO",
+            "强化学习"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow",
+            "深度学习框架"
+          ]
+        },
+        {
+          "technology_code": "T5.03.03",
+          "technology_name": "推理引擎与端侧部署",
+          "status": "accepted",
+          "matched_terms": [
+            "ONNX",
+            "TensorRT",
+            "推理优化",
+            "推理加速"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T1.01.11",
+        "T1.05.02",
+        "T1.05.04"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "与0002为同一JD重复投放(含乱码fine1000-tuning)",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0072",
+      "job_code": "job_f2d968c270be322924807fd8",
+      "job_title": "杭州 包装工程师(杭州)",
+      "primary_domain": "T7",
+      "parse_quality_score": 61.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1、包装设计与开发 ：包括材料包装设计、自动线体包装设计验证、体系流程搭建、包装设计 / 成本延申至供应链整体优化视角等不同层级的能力 2、包装方案设计与开发 ：能根据不同零部件的特点，设计相应的包装方案，如零部件的包装图纸绘制、精密 / 高危零部件的包装方案设计，ESD防护等 3、成本控制与优化 ：从按既定 BOM 清单领用包装材料到从商业模式创新角度降低包装成本，具备不同层次的成本控制能力 4、技术文件与标准体系建设 ：包括整理包装图纸、编制包装作业指导书、搭建包装设计标准体系、制定企业级包装战略规划等 5、供应链协同与供应商管理 ：从对接仓库人员到建立全球包装供应商网络，具备不同阶段的供应链协同与供应商管理能力 职位要求： 1、本科以上学历，包装设计/IE等相关专业背景 2、三年以上汽车行业/电子行业包装设计相关工作经验 3、熟练运用CAD/SolidWorks/ Illustrator等制图软件 4、掌握PE,EPE,PU,PET等包装材质特性，准确选用适用范围 5、具备充分考虑入厂 / 存储 / 上线 / 交付等各维度的包装可靠性及成本管控的能力",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "包装工程师;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0073",
+      "job_code": "job_1e10ad42f8381228d4795c12",
+      "job_title": "三维视觉算法工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 89.71,
+      "accepted_cnt": 16,
+      "review_cnt": 0,
+      "jd_text": "1. 多源传感器融合： 负责相机、LiDAR、IMU 及超声波等多传感器的时空同步与内外参标定。\n2. 地形建模：机器狗巡检场景中的深度估计、三维重建算法开发。\n3. 巡检场景多模态感知理解：包括但不限于 缺陷检测、 异常事件识别、动作识别。\n4. 目标定位与避障：包括但不限于 3DoF/6DoF定位、目标跟踪、视觉避障。\n5. 模型部署与压缩： 负责模型在嵌入式端或云端的部署。针对机器狗边缘算力平台进行模型压缩及推理加速。\n任职要求\n1. 3年以上工作经验，计算机、电子信息、人工智能等相关专业硕士及以上学历；\n2. 具备出色的工程落地能力，熟练掌握python及c++编程；\n3. 熟练掌握 AI Coding相关技能;\n4. 熟悉传感器（激光雷达、相机、IMU等）内外参标定；\n5. 精通传统图像处理算法及多模态相关深度学习算法；\n6. 具备丰富的边缘侧（jetson、rk3588、ryzen370）算法部署经验;\n7. 熟悉3D视觉相关算法。了解Nerf、3DGS算法原理;\n8. 熟悉BEV、Occupancy Network相关算法优先;\n9. 熟悉vslam/slam 、vln、vla相关算法者优先；\n10. 热门开源项目作者或贡献者优先;",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "VLA"
+          ]
+        },
+        {
+          "technology_code": "T1.03.15",
+          "technology_name": "碰撞检测与避障",
+          "status": "accepted",
+          "matched_terms": [
+            "避障"
+          ]
+        },
+        {
+          "technology_code": "T1.04.01",
+          "technology_name": "SLAM",
+          "status": "accepted",
+          "matched_terms": [
+            "SLAM",
+            "vSLAM"
+          ]
+        },
+        {
+          "technology_code": "T1.06.02",
+          "technology_name": "3D视觉感知",
+          "status": "accepted",
+          "matched_terms": [
+            "3D视觉"
+          ]
+        },
+        {
+          "technology_code": "T1.06.03",
+          "technology_name": "多模态感知融合",
+          "status": "accepted",
+          "matched_terms": [
+            "多模态感知"
+          ]
+        },
+        {
+          "technology_code": "T1.06.11",
+          "technology_name": "多目标跟踪",
+          "status": "accepted",
+          "matched_terms": [
+            "目标跟踪"
+          ]
+        },
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "LiDAR",
+            "激光雷达"
+          ]
+        },
+        {
+          "technology_code": "T2.04.01",
+          "technology_name": "惯性测量单元(IMU)",
+          "status": "accepted",
+          "matched_terms": [
+            "IMU"
+          ]
+        },
+        {
+          "technology_code": "T2.05.02",
+          "technology_name": "标定与同步采集",
+          "status": "accepted",
+          "matched_terms": [
+            "外参标定"
+          ]
+        },
+        {
+          "technology_code": "T2.05.03",
+          "technology_name": "3D重建",
+          "status": "accepted",
+          "matched_terms": [
+            "NeRF",
+            "三维重建"
+          ]
+        },
+        {
+          "technology_code": "T3.02.01",
+          "technology_name": "四足机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "机器狗"
+          ]
+        },
+        {
+          "technology_code": "T3.08.04",
+          "technology_name": "算力硬件",
+          "status": "accepted",
+          "matched_terms": [
+            "Jetson"
+          ]
+        },
+        {
+          "technology_code": "T4.03.01",
+          "technology_name": "高保真仿真(3DGS)",
+          "status": "accepted",
+          "matched_terms": [
+            "3DGS"
+          ]
+        },
+        {
+          "technology_code": "T5.03.03",
+          "technology_name": "推理引擎与端侧部署",
+          "status": "accepted",
+          "matched_terms": [
+            "推理加速",
+            "模型部署"
+          ]
+        },
+        {
+          "technology_code": "T5.03.04",
+          "technology_name": "模型量化与压缩",
+          "status": "accepted",
+          "matched_terms": [
+            "模型压缩"
+          ]
+        },
+        {
+          "technology_code": "T5.04.01",
+          "technology_name": "算力基础设施",
+          "status": "accepted",
+          "matched_terms": [
+            "算力平台"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T1.04.04",
+        "T1.06.02",
+        "T1.06.06",
+        "T2.01.01",
+        "T2.01.03",
+        "T2.04.01",
+        "T2.05.01",
+        "T2.05.02",
+        "T2.05.03",
+        "T3.02.01",
+        "T3.08.04",
+        "T7.01.01"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0074",
+      "job_code": "job_7388d7700b42029aea899ff9",
+      "job_title": "海外业务拓展专家",
+      "primary_domain": "T7",
+      "parse_quality_score": 94.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 岗位职责： 1. 战略制定与市场开拓：负责公司人形机器人产品在欧美、亚太等核心海外市场的业务拓展，主导完成从市场进入策略研究、本地化落地到规模化销售的全流程。 2. 生态渠道网络构建： 搭建并管理海外区域渠道和销售团队，深入分析海外市场动态、政策法规、竞争对手及渠道生态，制定差异化的竞争策略、定价模型与商业模式。 3. 关键客户与全场景落地：推动与海外头部政企客户的合作，引领人形机器人在工业自动化（如汽车、电子制造）、高端商业服务（如零售、酒店）、前沿科研教育等核心场景的解决方案落地与批量复制。管理从客户需求对接到POC验证、商务谈判、合同签订及交付回款的全周期，对重大项目落地负责。 4. 跨部门协同与品牌建设：协同总部产研、市场、交付团队，确保海外客户需求反馈闭环与产品本地化适配。主导策划并执行海外顶级行业展会、渠道合作伙伴峰会及高端市场活动，提升品牌专业影响力。 职位要求： 1. 经验背景：8年以上高端智能硬件（机器人、高端装备、工业自动化）、新能源汽车或人工智能等业务拓展经验，具备机器人或复杂机电产品海外销售经验者极优先。 2. 成功案例：拥有从0到1开拓重要海外市场拓展并实现规模化销售的成功案例。拥有成熟的海外政府、龙头企业及生态资源网络。 3. 能力素养：出色的战略思维、商务谈判与复杂项目运作能力，卓越的跨文化沟通、团队领导力和抗压能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T7.01.08",
+          "technology_name": "智能制造与工业自动化",
+          "status": "accepted",
+          "matched_terms": [
+            "工业自动化"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "海外业务拓展;现抽6条全为误报",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0075",
+      "job_code": "job_50237c7cb375a191565beb68",
+      "job_title": "电池工程师(bms硬件&充放电方向)",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "岗位职责：\n1、负责机器人电池系统及 BMS 软硬件方案设计，完成充放电、通讯、保护、均衡、采样等功能开发与调试；\n2、负责 BMS 软件策略开发，包括 SOC/SOH 估算、充放电控制、通讯协议、故障诊断、保护策略等，推动软件平台化；\n3、负责机器人充电管理方案设计与验证，包括充电器/充电桩、充电协议、自动回充、快充及充电安全；\n4、负责电池与关节系统联动设计，匹配电机驱动、运动控制、整机功耗及瞬时大电流需求；\n5、负责电池系统测试验证、整机联调、异常定位及优化，提升续航、安全性和动力输出稳定性。\n任职要求：\n1、本科及以上学历，电子、电气、自动化、能源动力、车辆工程、机电一体化等相关专业；\n2、3 年以上电池系统、BMS 设计开发或充放电管理经验，了解圆柱、软包等电芯应用；\n3、熟悉 BMS 软硬件开发，了解电子元器件和电路原理，掌握 SOC/SOH 算法、保护逻辑、通信、充放电控制及故障诊断；\n4、理解机器人或高动态负载供电需求，熟悉电池系统与电机驱动、运动控制、能量回收、整机功耗的匹配关系；\n5、具备沟通协调、系统联调、问题定位、数据分析和供应商管理能力，有汽车、机器人、无人机、AGV 项目经验优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.12",
+          "technology_name": "运动控制(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "运动控制"
+          ]
+        },
+        {
+          "technology_code": "T3.03.08",
+          "technology_name": "移动机器人(AMR/AGV)",
+          "status": "accepted",
+          "matched_terms": [
+            "AGV"
+          ]
+        },
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "电机"
+          ]
+        },
+        {
+          "technology_code": "T7.08.01",
+          "technology_name": "无人机",
+          "status": "accepted",
+          "matched_terms": [
+            "无人机"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.01.04",
+        "T3.05.04"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "MISSING: 电池系统/BMS/SOC-SOH估算 - 词表无电池相关节点",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0076",
+      "job_code": "job_06117dd9b7ea79ce82323119",
+      "job_title": "资深/高级项目经理(硬件)",
+      "primary_domain": "T7",
+      "parse_quality_score": 88.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "1、职位概述​ 高端复杂设备（如机器人、精密仪器、高端医疗设备或工业自动化装备）的硬件系统研发与交付,负责管理从概念、设计、原型、测试验证到量产导入的全过程，确保硬件平台在性能、可靠性、成本及时间进度上达到既定目标。​ 主要职责​ 项目全周期管理： 负责硬件项目（涵盖电子、电气、结构、传动、散热及供应链）的全程管理，确保项目从概念到量产的顺利过渡。作为硬件项目的核心驱动者，领导并协调电子、机械、软件、采购、质量及生产等团队，确保硬件开发与系统需求无缝对接。​ 技术规划与决策： 深入理解项目技术难点（如信号完整性、热设计、结构强度、EMC/EMI、安规等），参与关键硬件技术方案和供应商的评审与决策。​ 供应链与生产协同： 管理与关键元器件供应商、合同制造商的关系，主导制定物料策略，并协同生产团队完成小批量试产到大规模量产的顺利爬坡。​ ​ 2、任职要求​ 学历专业： 本科及以上学历，电子工程、机械工程、自动化或相关专业。​ 工作经验： 3~5年以上硬件研发或项目管理经验，其中至少1年负责管理高复杂度、多学科融合的设备硬件项目（如机器人、汽车电子、医疗设备、航空航天设备、高端消费电子等）。 ​ 流程与标准： 熟悉并能领导团队实践敏捷、瀑布或混合开发模式，精通IPD项目管理和风险管理方法论；",
+      "current_extraction": [
+        {
+          "technology_code": "T7.01.04",
+          "technology_name": "汽车制造",
+          "status": "accepted",
+          "matched_terms": [
+            "汽车电子"
+          ]
+        },
+        {
+          "technology_code": "T7.01.08",
+          "technology_name": "智能制造与工业自动化",
+          "status": "accepted",
+          "matched_terms": [
+            "工业自动化"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "硬件项目经理",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0077",
+      "job_code": "job_26e8370e760265dcedbc54f6",
+      "job_title": "上海 电气工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1. 电气系统设计：根据自动化设备的工艺流程及控制要求，完成电气控制系统的设计与开发，包括控制回路设计、元器件选型、图纸绘制及物料清单编制。 2. PLC 程序开发：主导 PLC 程序的设计、架构与评审，独立完成复杂系统的 PLC/HMI 编程、离线编程、虚拟调试、在线调试及优化。 3. 系统集成与联调：配合机械、自动化、机器人、MES 等团队完成设备联调与集成，负责通信联调及系统接口调试。 4. 项目全周期管理：负责 PLC 项目全周期管理，涵盖技术规划、成本估算与控制、资源调配及进度管理。 5. 技术文档编制：制作技术资料、使用手册、安全方案等关键文档，确保文档规范完整。 6. 现场支持与故障排查：解决现场实施过程中的电气技术问题，独立完成控制系统调试与故障排查，保障项目进度和质量。 职位要求： 1. 学历与经验：电气自动化、机电一体化及相关专业本科及以上学历，5 年以上非标设备电气设计经验。985/211优先考虑。 2. PLC 编程：精通西门子、AB 等主流 PLC 及 HMI 编程，有中大型项目编程调试经验；熟悉欧姆龙、三菱等品牌者优先。 3. 电气设计工具：熟练使用 EPLAN 进行电气图纸设计与修改，能独立完成硬件组态。 4. 运动控制与视觉：具备伺服 / 步进电机运动控制、气缸运动控制及相机视觉识别的集成应用经验。 5. 工业通信与数据采集：熟悉 Modbus RTU/TCP、OPC 等工业通信协议及 PROFINET、Ethernet TCP/IP 等主流现场总线；熟练组态 SCADA 系统，有西门子 WinCC、力控等软件使用经验者优先。 6. 电气元件应用：熟悉主流品牌低压电器、传感器、变频器、伺服系统等电气元件的选型与应用。 7. 独立调试能力：能独立完成控制系统调试与故障排查，思路清晰，目标明确。 8. 职业素养：工作认真负责，严格遵守安全规范与技术标准，有志于在非标自动化设备领域长期发展。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.03",
+          "technology_name": "力控与柔顺控制",
+          "status": "accepted",
+          "matched_terms": [
+            "力控"
+          ]
+        },
+        {
+          "technology_code": "T1.03.12",
+          "technology_name": "运动控制(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "控制系统",
+            "运动控制"
+          ]
+        },
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "电机"
+          ]
+        },
+        {
+          "technology_code": "T5.02.02",
+          "technology_name": "实时工业总线",
+          "status": "accepted",
+          "matched_terms": [
+            "Modbus",
+            "PROFINET",
+            "现场总线"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T7.01.08"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "自动化设备电气岗;'机器人'仅出现在协作团队列表中,按规则4为背景",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0078",
+      "job_code": "job_06533b6fd7d2c6f6c2650448",
+      "job_title": "人形软件架构师(j10162)",
+      "primary_domain": "T3",
+      "parse_quality_score": 98.57,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "职责描述：\n1、主导新型号人形机器人的整体软件架构设计，负责核心框架、基础组件与关键接口定义\n2、与硬件、电气、感知、运控、臂爪、交互等团队协同，推动软件与整机系统的一体化设计与落地\n3、负责系统级软件方案设计与技术路线制定，拆解系统指标并推进实现\n4、设计并实现机器人状态管理、任务调度、通信中间件及感知/控制算法的系统集成\n5、带领软件/算法工程师完成架构设计、核心模块开发、集成测试与交付\n6、支持导览、生产线物料搬运等典型应用场景的软件实现、集成与现场交付\n7、编写系统测试工具与技术文档，持续提升系统的稳定性、可维护性与可扩展性\n\n任职要求：\n1、具备机器人系统软件或控制软件的整体架构设计与工程落地经验，有完整产品或量产项目背景\n2、精通现代 C++（C++11 及以上），具备复杂系统的工程实现和重构能力\n3、熟悉 Linux 开发环境与工具链（GCC/GDB/CMake 等）\n4、熟悉 ROS2 架构及 DDS 通信机制，或具备等价的机器人/分布式通信经验\n5、对多线程、内存管理、系统性能与稳定性有深入理解\n6、具备较强的系统问题分析与定位能力，能使用 GDB、Valgrind、Wireshark 等工具进行系统级调试\n7、良好的跨团队沟通与协作能力，能够推动多模块协同落地\n\n加分项\n1、具备人形机器人或复杂多自由度机器人项目经验\n2、熟悉机器人控制软件的分层架构（感知 / 决策 / 控制 / 执行）及模块接口设计\n3、有大模型或智能交互相关软件的工程化应用经验\n4、参与过开源项目，或有技术博客、技术分享经历\n5、具备良好的软件工程意识（模块化设计、架构演进、系统重构）\n6、能够熟练使用 AI 工具辅助开发与设计",
+      "current_extraction": [
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS2"
+          ]
+        },
+        {
+          "technology_code": "T5.02.03",
+          "technology_name": "通信中间件",
+          "status": "accepted",
+          "matched_terms": [
+            "DDS",
+            "通信中间件"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.01.08",
+        "T5.01.02"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0079",
+      "job_code": "job_88adf2b543234b34b0ff0ed0",
+      "job_title": "上海 整机产品经理",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 5,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 1、对人形机器人产品的商业成功负责：包括产品开发（质量、成本、进度、特性）和按时保质的整体交付（产品、资料）； 2、进行通用人形机器人的市场洞察：系统跟踪 TAM/SAM/SOM、竞品架构与参数、供应链生态与价格带、法规与认证趋势，识别差异化机会，沉淀产品路线图与平台化策略； 3、进行需求分析与全流程管理：围绕目标场景与用户，完成价值与效益分析，形成产品需求文档（PRD）；结合行业技术与竞品评估，提出新产品与版本演进方向； 4、主导通用人形机器人整机定义并落地：对计算硬件（主控/AI加速/功耗/EMC等）、执行器系统（电机/减速器/编码器等）、结构（材料/装配/线束等）及ID/CMF（色材工艺/耐久/可维修性）进行参数权衡；与研发项目经理协作推进里程碑交付； 5、参与新产品的设计、加工、装配、测试和优化工作，直至产品定型，完成产品规格的制定； 6、进行产品全生命周期管理，包括产品线规划、信息管理（版本管理、BOM管理）等。 职位要求： 1、本科及以上学历：机器人、机械、电气、自动化、工业工程等相关专业优先；或有相关工作经验的其它专业。 2、5 年以上产品经理经验：至少主导一例从 0→1 并量产成功的整机产品（机器人/智能硬件优先）。 3、系统化产品能力：有较强的产品规划、需求分析、产品定义与版本管理能力；熟悉产品开发全流程。 4、跨团队推进与项目管理：具备良好的逻辑分析能力、沟通能力，有较强的项目管理能力和文档撰写能力； 5、商业与客户洞察：具备敏锐的商业意识，良好的客户需求分析、挖掘能力； 6、审美与设计素养：具备优秀的工业审美与品味，对ID/CMF、形体比例、色彩、质感一致性具备较高敏感度； 7、行业背景加分：有人形/足式/服务机器人、智能汽车或高端智能硬件经验者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人",
+            "通用人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.03.07",
+          "technology_name": "服务机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "服务机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.05.03",
+          "technology_name": "执行器",
+          "status": "accepted",
+          "matched_terms": [
+            "执行器"
+          ]
+        },
+        {
+          "technology_code": "T3.05.04",
+          "technology_name": "电机与驱动",
+          "status": "accepted",
+          "matched_terms": [
+            "电机"
+          ]
+        },
+        {
+          "technology_code": "T3.06.02",
+          "technology_name": "精密减速器",
+          "status": "accepted",
+          "matched_terms": [
+            "减速器"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "边界:整机产品经理,含部件参数权衡但主体为产品定义;现抽7条疑多为误报",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0080",
+      "job_code": "job_23547762cc894a6ea5bd8543",
+      "job_title": "上海 硬件系统工程师",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "岗位职责: 1.负责人形机器人系统硬件架构设计与开发； 2.负责机器人整机复杂硬件系统问题的分析、攻坚与闭环，包括但不限于供电异常、执行器异常、传 感器异常、通信不稳定、时序问题、接地/屏蔽/EMI/EMC问题、热与可靠性问题等； 3.负责人形机器人的系统调试、测试与验证，确保系统的稳定性、可靠性与安全性； 4.解决完善人形机器人领域的最新技术动态，进行技术研究与创新，提升系统性能与竞争力； 5.关注人形机器人领域的最新动态，进行技术研究与创新。 任职要求: 1、本科及以上学历,计算机科学与技术、自动化、电子工程或相关专业；具有5年以上硬件设计工作经验; 2.具备机器人、汽车电子、自动驾驶、工业设备、复杂智能硬件等相关领域经验，有较强的系统级问题分析与攻坚能力； 3.熟悉复杂机电系统的基本组成与耦合关系，对电源、执行器、传感器、嵌入式控制、通信总线、线束连接、接地屏蔽、热与可靠性等有较强理解； 4.具备系统性思维和实证分析能力，能够从复杂现象中设计验证路径，而不是停留在经验猜测； 5.对前沿技术有敏锐度，能不断挖掘新技术，并引入到机器人领域；擅长研究、评估新技术，并具备很好引入新技术的推动力； 6.具备良好的跨团队沟通能力，能够推动研发、测试、供应商等多方围绕同一问题形成有效协同。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.05.03",
+          "technology_name": "执行器",
+          "status": "accepted",
+          "matched_terms": [
+            "执行器"
+          ]
+        },
+        {
+          "technology_code": "T7.01.04",
+          "technology_name": "汽车制造",
+          "status": "accepted",
+          "matched_terms": [
+            "汽车电子"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T3.01.08",
+        "T3.05.03"
+      ],
+      "role_type": "hardware",
+      "annotator_notes": "MISSING: EMC/EMI 与热设计",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0081",
+      "job_code": "job_ba169b854a9a0f0c3e9da279",
+      "job_title": "杭州 资产管理技术员",
+      "primary_domain": "T7",
+      "parse_quality_score": 94.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "一、工作职责 1. 资产出入库管理 - 负责资产的日常入库、出库操作，确保账实一致 - 负责资产交接时，实物状态的确认与排查 - 维护资产管理系统台账，及时更新资产状态 2. 资源调拨与盘点 - 执行资产调拨流程，包括内部调拨、跨部门调拨的手续办理与实物移交 - 配合完成定期盘点及专项盘点，对异常情况及时上报 3. 资产管理支持 - 协助资产管理工程师处理资产报废、闲置公示、转移审批等事务 - 维护资产管理相关文档，确保资料完整可追溯 - 简单的设备故障处理 4. 日常运维与对接 - 与各业务部门对接，协助推进资产管理流程落地 - 完成领导交办的其他资产管理相关工作 - 仓库的6S管理 二、任职要求 - 本科及以上学历，机械、电子等相关专业优先； - 3年以上设备维护经验，汽车行业经验优先； - 熟练使用飞书多维表格、Excel等办公软件； - 细致认真，责任心强，有良好的沟通协调能力；",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "资产管理;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0082",
+      "job_code": "job_8c6ebb3f2eb0d283da75a0b2",
+      "job_title": "测试专家",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 14,
+      "review_cnt": 0,
+      "jd_text": "一、岗位职责\n1. 测试体系与标准搭建\n搭建覆盖零部件 - 关节模组 - 整机三级测试流程、规范、验收标准，输出测试计划模板、用例库、缺陷分级规范、测试报告模板；\n推进测试左移，参与需求、结构、硬件、软件方案评审，从可测试性、可靠性角度提出优化建议；\n建立质量度量指标：测试覆盖率、缺陷逃逸率、问题闭环周期、整机 MTBF、自动化测试占比，定期输出质量复盘报告。\n2. 项目全流程测试统筹\n针对人形 / 四足机器人制定整机测试策略，覆盖运动步态、力控抓取、SLAM 导航、多模态感知、EtherCAT 总线通信、OTA 升级、上位机交互等场景；\n统筹功能、性能、稳定性、耐久寿命、温湿度 / 振动环境、EMC、安全安规全类型验证，组织 HALT 加速老化、长期行走疲劳测试；\n管理项目测试排期，协调测试环境、台架、人员资源，把控版本发布准入门槛，识别重大质量风险并同步管理层；\n闭环全链路缺陷：协调机械、电控、嵌入式、算法、产品团队定位根因，跟踪回归验证，组织重大问题专项复盘。\n3. 自动化 & 仿真测试平台建设\n规划自动化测试技术路线，基于 Python/C++ 搭建整机自动化回归脚本，对接 CI/CD 实现版本快速自测；\n搭建仿真测试环境（Mujoco/Isaac Sim），依托数字孪生完成批量场景自动化验证，降低真机测试成本；\n统筹关节测试工装、整机测试台架、数据采集工具开发，沉淀测试工具链，持续提升测试效率。\n4. 跨部门协同与量产质量支撑\n联动研发、供应链、生产、品质部门，建立零部件来料检验标准，同步供应商测试规范；\n支撑 NPI 新品导入，输出量产出厂测试 SOP，配合产线搭建出厂自动化检测流程；\n对接售后客诉，复现现场故障，输出失效分析报告，推动研发迭代优化。\n\n5. 测试团队管理（不必公开或对外发布）\n负责测试团队人才规划、招聘配置，统筹正式测试工程师 + 批量测试外包人员分工、任务分配；\n制定团队绩效考核、技能培训体系，搭建硬件、嵌入式、算法、自动化测试分层培养路径。\n\n二、任职要求\n\n1、本科及以上，自动化、电子信息、计算机、机械、机器人工程相关专业；\n2、7年以上智能硬件 / 机器人整机测试经验，有管理经验优先；\n3、熟悉机器人整体架构：伺服关节、减速器、IMU、激光雷达、EtherCAT/CAN 总线、Linux 嵌入式、ROS/ROS2；\n4、掌握机器人核心测试方案：运动控制、导航、力控、整机耐久、环境可靠性测试，能独立设计量化性能指标；\n5、具备自动化测试落地能力，熟练使用 Python，可独立编写测试脚本，了解仿真测试、HIL 硬件在环优先；\n6、熟悉示波器、功率分析仪、高低温箱、振动台等测试设备使用，看懂原理图、机械装配图纸；\n7、具备强跨部门推动能力、问题根因分析能力，能统筹多项目并行测试；\n8、有人形 / 四足机器人、工业机械臂、伺服关节模组测试管理经验优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.03",
+          "technology_name": "力控与柔顺控制",
+          "status": "accepted",
+          "matched_terms": [
+            "力控"
+          ]
+        },
+        {
+          "technology_code": "T1.03.12",
+          "technology_name": "运动控制(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "运动控制"
+          ]
+        },
+        {
+          "technology_code": "T1.04.01",
+          "technology_name": "SLAM",
+          "status": "accepted",
+          "matched_terms": [
+            "SLAM"
+          ]
+        },
+        {
+          "technology_code": "T1.06.03",
+          "technology_name": "多模态感知融合",
+          "status": "accepted",
+          "matched_terms": [
+            "多模态感知"
+          ]
+        },
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "激光雷达"
+          ]
+        },
+        {
+          "technology_code": "T2.04.01",
+          "technology_name": "惯性测量单元(IMU)",
+          "status": "accepted",
+          "matched_terms": [
+            "IMU"
+          ]
+        },
+        {
+          "technology_code": "T3.02.01",
+          "technology_name": "四足机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "四足机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.03.09",
+          "technology_name": "工业机械臂",
+          "status": "accepted",
+          "matched_terms": [
+            "工业机械臂"
+          ]
+        },
+        {
+          "technology_code": "T3.05.01",
+          "technology_name": "一体化关节模组",
+          "status": "accepted",
+          "matched_terms": [
+            "关节模组"
+          ]
+        },
+        {
+          "technology_code": "T3.06.02",
+          "technology_name": "精密减速器",
+          "status": "accepted",
+          "matched_terms": [
+            "减速器"
+          ]
+        },
+        {
+          "technology_code": "T4.03.03",
+          "technology_name": "数字孪生",
+          "status": "accepted",
+          "matched_terms": [
+            "数字孪生"
+          ]
+        },
+        {
+          "technology_code": "T4.03.05",
+          "technology_name": "仿真平台与工具链",
+          "status": "accepted",
+          "matched_terms": [
+            "Isaac Sim",
+            "MuJoCo"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS",
+            "ROS2"
+          ]
+        },
+        {
+          "technology_code": "T5.02.02",
+          "technology_name": "实时工业总线",
+          "status": "accepted",
+          "matched_terms": [
+            "EtherCAT"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.03.03",
+        "T1.03.05",
+        "T1.04.01",
+        "T1.06.03",
+        "T3.01.08",
+        "T3.02.01",
+        "T3.05.01",
+        "T6.04.02"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "MISSING: EtherCAT;MISSING: HALT/可靠性验证方法",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0083",
+      "job_code": "job_e76133ece3fdc82a01e950a5",
+      "job_title": "深圳 灵巧手强化学习工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 5,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 ： 1. 负责灵巧手操作任务的强化学习算法设计与优化，覆盖从仿真到真机的全流程迭代 2. 研究多模态感知信息（视觉、触觉、力反馈等）与强化学习决策的结合方法 3. 探索将大模型能力与强化学习相结合的技术方案，提升操作精细度与泛化能力 4. 跟踪具身智能与强化学习领域前沿技术，推动算法在真实灵巧手平台持续落地 职位要求： 1. 基本要求：硕士及以上学历，计算机、人工智能、机器人、控制工程等相关专业；2年以上强化学习或机器人算法研发经验（含博士期间研究） 2. 技能要求：扎实的强化学习理论基础，熟悉主流策略优化算法 精通Python/PyTorch，具备在真实机器人上进行算法部署和调试的项目经验；了解机器人运动学、感知标定等基本知识，能与硬件团队顺畅协作 3. 加分项：有灵巧手或多指操作的真机强化学习经验；有大规模并行仿真与Sim-to-Real迁移经验；在机器人或机器学习学术会议发表过相关论文",
+      "current_extraction": [
+        {
+          "technology_code": "T1.05.02",
+          "technology_name": "强化学习",
+          "status": "accepted",
+          "matched_terms": [
+            "强化学习"
+          ]
+        },
+        {
+          "technology_code": "T1.06.03",
+          "technology_name": "多模态感知融合",
+          "status": "accepted",
+          "matched_terms": [
+            "多模态感知"
+          ]
+        },
+        {
+          "technology_code": "T3.04.02",
+          "technology_name": "灵巧手(多指)",
+          "status": "accepted",
+          "matched_terms": [
+            "灵巧手"
+          ]
+        },
+        {
+          "technology_code": "T4.04.12",
+          "technology_name": "Sim-to-Real虚实迁移",
+          "status": "accepted",
+          "matched_terms": [
+            "Sim-to-Real迁移"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.11",
+        "T1.05.02",
+        "T1.06.03",
+        "T1.09.05",
+        "T2.02.09",
+        "T3.04.02",
+        "T4.04.12"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0084",
+      "job_code": "job_505d7999ae03862a4b9a184f",
+      "job_title": "高级力控算法工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 50.0,
+      "accepted_cnt": 4,
+      "review_cnt": 0,
+      "jd_text": "与相关模块配合，负责机器人力控算法开发与调试（拖拽示教、导纳/阻抗控制、碰撞检测、力反馈控制、力位混合控制等）；输出设计文档，制定测试方案及用例；运控系统其他工作（轨迹规划、正逆动力学和正逆运动学建模、动力学前馈与反馈控制、系统辨识、参数调试）\n【任职要求】\n未展示",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.03",
+          "technology_name": "力控与柔顺控制",
+          "status": "accepted",
+          "matched_terms": [
+            "力控"
+          ]
+        },
+        {
+          "technology_code": "T1.03.14",
+          "technology_name": "运动学与动力学解算",
+          "status": "accepted",
+          "matched_terms": [
+            "逆运动学"
+          ]
+        },
+        {
+          "technology_code": "T1.03.15",
+          "technology_name": "碰撞检测与避障",
+          "status": "accepted",
+          "matched_terms": [
+            "碰撞检测"
+          ]
+        },
+        {
+          "technology_code": "T4.04.04",
+          "technology_name": "系统辨识",
+          "status": "accepted",
+          "matched_terms": [
+            "系统辨识"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.03.03",
+        "T1.03.04",
+        "T1.03.06",
+        "T1.03.12",
+        "T4.04.04"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "MISSING: 碰撞检测",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0085",
+      "job_code": "job_f9dce21c27d2b400d8a1a3a6",
+      "job_title": "大模型产品经理",
+      "primary_domain": "T1",
+      "parse_quality_score": 87.08,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "1、负责机器人相关大模型/具身智能产品（语音、视觉、多模态等）需求分析、产品策划、产品生命周期管理; 2、熟悉多模态大模型和AI agent搭建流程，可以从客户、用户及市场需求出发，设计创新的具身智能与agent产品； 3、设计与规划产品功能，业务流程、产品功能逻辑设计等工作； 4、负责产品交互界面、交互语音及流程原型设计； 5、协调技术开发团队，跟踪产品开发进度，完成产品开发、测试、版本管理，评审发布、产品上线等相关工作; 6、能有效挖掘用户需求、完成技术交流、方案撰写、方案演示、论证解决方案的可行性。 7、与客户对接，在场景里出解决方案。 任职需求 1、本科及以上学历，计算机科学、电子通讯、人工智能等相关专业; 2、2年以上大模型软件产品项目开发或者管理经验，有实际的项目规划、方案设计或研发产品落地案例； 3、对机器人、AI人工智能等领域技术和发展趋势有深入的理解。 4、熟练使用Axure、墨刀、mindmanager、visio、Project等工具，熟悉产品流程图绘制以及产品需求文档及技术功能描述文档的撰写; 5、具备优秀的UI/UE设计意识和表达能力，熟悉自主移动类机器人产品和软件开发、管理和运营流程 6、有人形机器人相关软件产品开发与管理经验者优先考虑，持有ACP、NPDP证书优先。 7、具备车厂或互联网大厂大模型产品独立设计或者主持设计经验，优先考虑。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "多模态大模型"
+          ]
+        },
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "大模型产品经理",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0086",
+      "job_code": "job_fdda85a121aaca864c8eef61",
+      "job_title": "上海 智能语音系统架构师",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "职位描述： 职位描述： 本岗位核心定位为打通传统语音技术与大模型Agent的融合路径，主导机器人智能语音系统端到端架构设计、技术选型与落地优化，兼顾系统稳定性与智能化，打造高效、可扩展的语音交互解决方案。 主要职责： 系统架构整体设计：主导机器人智能语音系统端到端架构设计，涵盖语音采集、预处理、ASR（自动语音识别）、NLP（自然语言处理）、TTS（语音合成）、对话管理、大模型Agent集成等全链路，兼顾传统语音架构的稳定性与大模型Agent的智能化，制定架构规范、技术标准与落地路线图。 传统语音架构优化与迭代：深入理解传统语音系统架构（如基于规则的对话管理、经典ASR/TTS模型部署、语音信号处理链路），负责现有架构的性能优化、瓶颈突破，解决传统语音系统在交互流畅度、场景适配性、多轮对话能力上的短板，保障系统高可用、低延迟。 大模型Agent融合落地：精通大模型Agent原理与应用，负责将大模型Agent与传统语音系统深度融合，设计Agent与ASR、TTS、对话管理模块的交互机制，实现“传统语音链路高效执行+大模型Agent智能决策”的协同模式，提升语音交互的上下文理解、意图识别、多场景适配及自主决策能力。 技术选型与方案论证：结合业务需求，选型传统语音技术（ASR/TTS引擎、信号处理算法、对话管理框架）与大模型Agent相关技术（大模型选型、Agent框架、记忆机制、工具调用），组织技术方案论证，评估技术可行性、成本与风险，输出技术方案。 项目落地与迭代优化：主导机器人智能语音系统架构落地实施，跟进项目进度，协调跨部门（产品、研发、测试）资源，确保项目按时交付；针对上线后系统的运行数据、用户反馈，结合技术发展趋势，持续优化架构设计，迭代大模型Agent与传统语音模块的融合策略，提升系统体验。 技术前沿探索与沉淀：关注语音技术、大模型Agent领域的前沿动态（如多模态语音交互、Agent自主学习、轻量化大模型部署），开展技术预研与试点验证，将成熟技术转化为产品能力；沉淀架构设计经验、技术方案与实践，形成可复用的技术资产。 跨部门协同与需求对接：与产品、业务部门深度对接，理解机器人业务场景的核心需求，将业务需求转化为架构设计方案，确保系统架构贴合业务实际；协同测试部门制定测试策略，保障系统质量。 职位要求： 1. 学历与专业背景 本科及以上学历，计算机科学与技术、电子信息工程、人工智能、语音工程等相关专业；5年及以上智能语音系统架构设计或相关研发经验，其中至少2年大模型Agent相关研发或架构设计经验（有传统语音与大模型融合项目经验者优先）。 2. 核心专业技能（传统语音架构） 精通传统智能语音系统全链路架构，深入理解ASR、TTS、NLP、对话管理（DM）的核心原理与技术细节，熟悉主流ASR/TTS引擎（如科大讯飞、百度语音、阿里语音、思必驰等）的部署与优化。 掌握语音信号处理技术（降噪、回声消除、端点检测、语速调整等），能独立设计并优化语音预处理链路，解决实际场景中的语音质量问题。 熟悉传统对话管理框架（如基于规则、状态机、统计学习的对话管理），能设计高可用、可扩展的对话流程，应对多场景、多意图的语音交互需求。 具备扎实的工程化能力，熟悉语音系统的分布式部署、负载均衡、高可用设计，能保障系统在高并发场景下的稳定运行。 3. 核心专业技能（大模型Agent） 精通大模型Agent的核心原理、架构设计与实现方式，熟悉Agent的记忆机制、规划能力、工具调用流程、多轮对话管理，能独立设计大模型Agent的交互逻辑与融合方案。 熟悉主流大模型（如GPT系列、LLaMA系列、通义千问、Minimax等）的特性与部署方式，具备大模型微调、量化、轻量化部署的相关经验，能根据业务需求选型并优化大模型。 掌握大模型Agent与传统系统（语音、数据库、业务接口）的集成方法，能设计高效的数据交互、指令传递机制，实现Agent与传统语音模块的无缝协同。 了解大模型Agent的评估体系，能制定Agent性能、交互效果的评估标准，持续优化Agent的智能决策能力。 4. 通用技术能力 具备扎实的编程基础，熟练掌握至少一种编程语言（如Python、C++、Java），熟悉主流框架（如TensorFlow、PyTorch、FastAPI等）。 熟悉分布式系统、微服务架构设计，了解容器化部署（Docker、K8s），具备良好的系统性能优化、问题排查能力。 具备较强的技术敏感度，能快速跟进语音技术、大模型Agent领域的新技术、新工具，并应用于实际工作。 5. 软技能 具备极强的架构设计能力与逻辑思维，能从业务视角出发，设计兼顾稳定性、扩展性、智能化的系统架构，解决复杂技术难题。 具备良好的跨部门沟通协调能力，能高效对接需求、推动项目落地。 具备高度的责任心、执行力与抗压能力，能应对多项目并行、技术攻坚等场景，确保项目按时高质量交付。 热爱AI与语音领域，具备较强的学习能力、创新意识与问题解决能力，愿意持续探索新技术、新方案。 6. 加分项 有大型智能语音系统（如智能客服、车载语音、智能家居、智能机器人交互）架构设计与落地经验，且有大模型Agent融合改造案例。 熟悉多模态语音交互（语音+文本+视觉）技术，有相关架构设计经验。 参与过开源大模型Agent项目或语音技术开源项目，有相关贡献者优先。 具备专利或核心技术论文（语音技术、大模型Agent相关）者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.06",
+          "technology_name": "大模型部署与推理优化",
+          "status": "accepted",
+          "matched_terms": [
+            "大模型部署"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow"
+          ]
+        },
+        {
+          "technology_code": "T5.03.03",
+          "technology_name": "推理引擎与端侧部署",
+          "status": "accepted",
+          "matched_terms": [
+            "模型部署"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.02.07",
+        "T2.03.01",
+        "T6.01.01"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0087",
+      "job_code": "job_9c62ddeb1ccfd6c42165f4e2",
+      "job_title": "大模型算法工程师",
+      "primary_domain": "T1",
+      "parse_quality_score": 94.0,
+      "accepted_cnt": 7,
+      "review_cnt": 0,
+      "jd_text": "主要职责: 1.负责大模型相关技术研发，包括纯语言/多模态大模型研发，基础大模型研发与大模型微调。 2, 负责具身大模型的相关技术研发，包括数据集构造，多模态对齐，基础模型研发与微调。 3, 负责大模型的量化推理部署方案研发，提升大模型推理效率，加速在具体业务中的落地与降低成本。 4. 跟进LLM算法的前沿发展,负责相关算法的迭代与工程实现，加速LLM技术在机器人领域的落地与优化。 任职要求: 1. CV/NLP/深度学习等相关专业硕士, 博士. 2. 有大模型训练与微调相关经验，熟练使用主流基础模型, llama2/3, chatglm,internVL等， 熟悉lora,Qlora等优化算法, 3. 有大模型量化和部署相关经验， 熟悉tensorRT, tensorRT-LLM, LLM量化等工具与相关算法，有在边缘端或大型集群部署LLM经验. 4, 有较强工程能力，熟练使用pytorch, deepspeed, vlm, 熟悉 hugginface, langchain, RAG等工具. 5在CVPR,ICCV, ICML, NeruIPS,TPAMI,TIP等A类会议期刊发表论文者优先。 6, 具有良好的学习能力，团队写作能力与沟通能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.05",
+          "technology_name": "具身推理机制",
+          "status": "accepted",
+          "matched_terms": [
+            "大模型推理"
+          ]
+        },
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "具身大模型",
+            "基础模型",
+            "多模态大模型"
+          ]
+        },
+        {
+          "technology_code": "T4.01.04",
+          "technology_name": "数据集",
+          "status": "accepted",
+          "matched_terms": [
+            "数据集"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch"
+          ]
+        },
+        {
+          "technology_code": "T5.03.03",
+          "technology_name": "推理引擎与端侧部署",
+          "status": "accepted",
+          "matched_terms": [
+            "TensorRT"
+          ]
+        },
+        {
+          "technology_code": "T5.03.04",
+          "technology_name": "模型量化与压缩",
+          "status": "accepted",
+          "matched_terms": [
+            "模型量化"
+          ]
+        },
+        {
+          "technology_code": "T5.03.06",
+          "technology_name": "大模型推理服务与训练加速",
+          "status": "accepted",
+          "matched_terms": [
+            "DeepSpeed",
+            "TensorRT-LLM"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T1.01.11",
+        "T1.05.04",
+        "T1.06.03",
+        "T4.01.04"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0088",
+      "job_code": "job_8358a5c14d096916fe4043b2",
+      "job_title": "机器人软件工程师/专家(ros方向)(j11099)",
+      "primary_domain": "T1",
+      "parse_quality_score": 92.27,
+      "accepted_cnt": 12,
+      "review_cnt": 0,
+      "jd_text": "职责描述：\n1、负责 RGBD 相机、LiDAR 等 3D 传感器在机器人终端的 ROS/ROS2 驱动开发、优化与维护，保证多传感器融合数据同步与标定稳定可靠；\n2、深入机器人客户现场，提前模拟真实集成场景，输出技术集成方案、Demo 及丰富实践，降低客户调试成本；\n3、开发基于 RGBD、LiDAR、机械臂及 AI 的端到端应用方案，覆盖视觉引导抓取、手眼标定、3D 语义分割、动态路径规划等典型场景；\n4、搭建感知-规划-执行闭环系统，沉淀可复用 Demo、技术白皮书及培训材料，反向驱动产品定义与优化。\n任职要求：\n1、5 年以上 ROS/ROS2 开发经验，主导过至少 2 个完整机器人项目的系统集成与落地；\n2、精通 ROS 核心机制及 ROS2 DDS 实时优化，具备深度相机、LiDAR、IMU 等传感器驱动与融合标定经验；\n3、熟悉 RGBD 成像原理及点云处理、视觉 SLAM/导航、3D 目标检测等技术，有机械臂（MoveIt!/手眼标定/轨迹规划）开发经验；\n4、有机器人客户现场支持或应用开发背景，能把客户需求转成可落地技术方案，熟悉服务/工业/AMR/人形机器人之一；\n5、具备强技术传播与跨团队协作能力，能独立撰写文档、培训客户，快速解决集成阻塞；\n6、有机械臂控制、AI 部署、多传感器融合 SLAM、机器人通信协议（EtherCAT/CANopen/Modbus）经验者优先；\n7、人选可选择Base佛山顺德，或深圳均可。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.03.04",
+          "technology_name": "运动规划",
+          "status": "accepted",
+          "matched_terms": [
+            "MoveIt"
+          ]
+        },
+        {
+          "technology_code": "T1.04.01",
+          "technology_name": "SLAM",
+          "status": "accepted",
+          "matched_terms": [
+            "SLAM"
+          ]
+        },
+        {
+          "technology_code": "T1.04.06",
+          "technology_name": "路径规划与轨迹",
+          "status": "accepted",
+          "matched_terms": [
+            "路径规划"
+          ]
+        },
+        {
+          "technology_code": "T2.01.01",
+          "technology_name": "激光雷达",
+          "status": "accepted",
+          "matched_terms": [
+            "LiDAR"
+          ]
+        },
+        {
+          "technology_code": "T2.01.02",
+          "technology_name": "深度相机",
+          "status": "accepted",
+          "matched_terms": [
+            "深度相机"
+          ]
+        },
+        {
+          "technology_code": "T2.04.01",
+          "technology_name": "惯性测量单元(IMU)",
+          "status": "accepted",
+          "matched_terms": [
+            "IMU"
+          ]
+        },
+        {
+          "technology_code": "T2.05.02",
+          "technology_name": "标定与同步采集",
+          "status": "accepted",
+          "matched_terms": [
+            "手眼标定"
+          ]
+        },
+        {
+          "technology_code": "T3.01.08",
+          "technology_name": "人形机器人(通用)",
+          "status": "accepted",
+          "matched_terms": [
+            "人形机器人"
+          ]
+        },
+        {
+          "technology_code": "T3.03.08",
+          "technology_name": "移动机器人(AMR/AGV)",
+          "status": "accepted",
+          "matched_terms": [
+            "AMR"
+          ]
+        },
+        {
+          "technology_code": "T5.01.01",
+          "technology_name": "ROS",
+          "status": "accepted",
+          "matched_terms": [
+            "ROS",
+            "ROS2"
+          ]
+        },
+        {
+          "technology_code": "T5.02.02",
+          "technology_name": "实时工业总线",
+          "status": "accepted",
+          "matched_terms": [
+            "CANopen",
+            "EtherCAT",
+            "Modbus"
+          ]
+        },
+        {
+          "technology_code": "T5.02.03",
+          "technology_name": "通信中间件",
+          "status": "accepted",
+          "matched_terms": [
+            "DDS"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.04.06",
+        "T1.09.04",
+        "T2.01.01",
+        "T2.01.02",
+        "T2.05.01",
+        "T2.05.02",
+        "T2.05.05",
+        "T3.03.09",
+        "T5.01.01"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0089",
+      "job_code": "job_61ee03d46aae7c9e707dc710",
+      "job_title": "大模型视觉算法专家(人形)",
+      "primary_domain": "T1",
+      "parse_quality_score": 90.0,
+      "accepted_cnt": 3,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1、负责目标检测、分割、位姿估计、人脸/人体等相关算法的研发与应用，围绕业务需求设计解决方案，并完成模型在端侧SDK的部署与落地； 2、承担前沿技术的研发，如多模态、大模型与机器人感知的结合，推动新技术落地到公司的产品。 任职资格 1、计算机/软件、通信工程、电子、自动化、数学等相关专业的硕士（含）以上学历，掌握机器视觉理论和主流视觉算法，5年以上相关经验； 2、在某个领域有较深入的工程实践经验/研究经历，包括但不限于图像分类与识别、人脸识别、人体检测姿态估计与跟踪、3D视觉、AIGC、多模态、大模型等； 3、有较强的编程能力和素养，熟练使用C/C 、Python等编程语言，有Linux开发经验； 4、熟悉一种或多种常用深度学习框架，如PyTorch、TensorFlow等； 5、有较好的计算机视觉和深度学习相关的科研学术积累、在顶会或顶刊有一作成果者优先； 6、逻辑思维能力强，英文水平好； 7、具有团队协作精神和良好的沟通能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.06.02",
+          "technology_name": "3D视觉感知",
+          "status": "accepted",
+          "matched_terms": [
+            "3D视觉"
+          ]
+        },
+        {
+          "technology_code": "T2.02.07",
+          "technology_name": "机器视觉",
+          "status": "accepted",
+          "matched_terms": [
+            "机器视觉"
+          ]
+        },
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow",
+            "深度学习框架"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.01.06",
+        "T1.05.04",
+        "T1.06.02",
+        "T1.06.03",
+        "T1.06.04",
+        "T1.06.06",
+        "T2.05.05"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0090",
+      "job_code": "job_f403dffd61148e785dab036d",
+      "job_title": "广州 商务拓展经理(广州)",
+      "primary_domain": "T7",
+      "parse_quality_score": 90.38,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "1. 业务拓展：负责华南地区的市场开拓，制定并执行针对性的业务拓展策略，积极挖掘潜在合作机会，建立广泛的客户资源网络，快速推动公司产品在华南地区市场的布局，确保业务目标的达成。 2. 客户关系：与华南地区客户和资源网络建立深入联系，深入了解客户需求和资源合作机会，及时响应客户反馈，协调公司内部资源，提供优质的产品解决方案，提升客户满意度与忠诚度，建立长期合作关系。 3. 项目推进：主导潜在业务机会布局和明确需求的招投标等商务活动，负责从线索到收入的全流程跟进，把控项目关键节点，协调公司研发、生产等部门确保项目顺利推进，实现产品按时交付与服务落地，确保合作项目按计划达成业务目标。 4. 市场洞察：密切关注华南地区市场动态、竞争对手情况，收集并分析市场信息，定期向公司管理层提供市场分析报告，为公司业务决策提供有力支持，助力公司及时调整市场策略，保持竞争优势。 5. 其他工作：负责华南运营中心办公室日常行政事务工作，对外需要与物业、政府、工商和银行等单位对接，对内需要与总部各职能部门对接。 职位要求： 1. 工作经验：1～3年商务拓展工作经验，有汽车零部件、智能硬件、人工智能等行业经验者优先，熟悉华南地区市场，有丰富的客户资源和成功的业务获取案例是加分项。 2. 技能要求：优秀的沟通协调能力，对外有效链接客户组织，洞察客户需求，对内整合公司资源，推动共赢合作；B2B大客户销售能力，理解大客户组织架构和决策流程，具备大客户业务拓展成功经验；熟练掌握市场分析方法，能够基于市场信息和数据做出决策建议；对英语、粤语或日语的能力是加分项。 3. 素质要求：具备敏锐的市场洞察力和商业敏感度，对新兴技术和行业趋势有浓厚兴趣并能快速学习；工作积极主动，具备强烈的责任心和自驱力，能够承受高强度工作压力，适应频繁出差。 4. 学历背景：本科及以上学历，市场营销、工商管理、电子电气、汽车工程等专业优先。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "商务拓展;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0091",
+      "job_code": "job_951c00ea97c3c4072efe71b7",
+      "job_title": "上海 技术项目经理(机械方向)",
+      "primary_domain": "T7",
+      "parse_quality_score": 84.41,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "1. 客户对接：负责机械专业的客户需求收集、澄清、分类与传递；客户技术评审的组织和跟进；客户技术文档（方案、报告）的编制与交付；客户日常沟通，维护客户关系； 2. 项目管理：负责机械开发计划制定与进度跟踪；项目风险识别、升级与推动解决；技术资料编制，向客户汇报进展；跨部门协调（光学、硬件、软件、测试等）； 3. 流程与规范：负责客户对接流程优化、机械开发规范在客户侧的推广、项目经验沉淀与复盘。 职位要求： 1. 至少2年以上汽车行业经验，熟悉整车布置及主机厂工作流程； 2. 良好的沟通表达能力，能够清晰描述技术方案与问题分析； 3. 具备英文听说读写能力，可与海外客户顺畅对接； 4. 愿意从事客户对接工作，具备较强抗压能力； 5. 追求卓越，有极强责任心和执行力； 6. 逻辑清晰、思维敏捷，乐于主动思考与问题解决； 7. 扎实的机械设计基础，深刻理解尺寸公差与配合； 8. 熟练掌握至少一款三维工程建模软件（NX/SolidWorks/CATIA等），可独立完成设计绘图。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "技术项目经理;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0092",
+      "job_code": "job_d8a2ed85f0c87b8902078b7a",
+      "job_title": "上海 失效分析专家",
+      "primary_domain": "T1",
+      "parse_quality_score": 91.25,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "我们正在寻找 一位对技术本质充满好奇心、具备跨学科视野的“全能失效探员”。在 Re²XLab，你面对的挑战横跨了精密电子组件与复杂的机械系统。我们不需要你只盯着一个零件，我们需要你能够通过物理表象抽丝剥茧，还原失效现场的真相。如果你热爱解开技术谜题，享受从现象到本质的推理过程，这里将是你施展才华的绝佳战场。 你将负责的工作 - 多维失效诊断： 负责电子组件、电路板（PCBA）及精密机械/机电系统的失效分析（FA），通过物理拆解、电性能测试及微观表征，对故障进行精准定位与深度原因挖掘。 - AI 赋能分析： 积极利用 AI 工具（如图像识别、数据建模、大语言模型等）优化失效分析流程。 探索如何通过 AI 提高显微图像识别精度，或利用历史数据进行失效模式的智能预测。 - 失效机理研究： 深入研究材料疲劳、环境应力、电磁干扰等失效诱因，与研发和工艺团队并 balance 协作，提供从设计端到工艺端的实质性改进建议。 - 护航产品可靠性： 在新产品诞生的早期阶段，从失效分析的视角提供专业预判，参与可靠性评审，帮助团队规避设计及工艺中的潜伏风险。 - 实验室知识资产化： 撰写逻辑清晰、证据详实的分析报告，将每一次“避坑经验”转化为实验室的知识财富，推动技术标准的建立。 - 分析方法创新： 探索并导入前沿的检测手段（如非破坏性分析、传感器融合监测等），提升分析精度与效率，让真相更快“收敛”。 我们希望你具备 - 专业背景： 电子、材料、机械或电气相关专业 硕士及以上学历。比起单纯的学历，我们更看重你对物理本质和跨学科基础知识的扎实理解。 - 实战经验： 拥有 5 年以上电子或机械系统的失效分析/可靠性经验。如果你在复杂机电产品或高精密设备领域有深厚的背景，那将是极大的加分项。 - AI & 数字化： 具备 AI 工具使用习惯。能够熟练使用大模型（如 Deepseek，Gemini, GPT 等）辅助技术文档编写、数据处理或代码开发。 - 技能： - 电子： 熟悉 IV、OM、SEM、CT、EMMI 或示波器等电学/微观分析工具。 - 机械： 具备较强的物理分析能力，能熟练运用相关工具进行材料表征、应力分析或失效模拟。 - 思维特质： 逻辑严密，能在复杂数据中保持冷静；严谨但不教条，能够从系统全局的角度看待局部失效。 - 沟通风格： 具备良好的文字功底和分享欲，能与不同背景的工程师高效对话，共同推进问题的彻底闭环。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.11",
+          "technology_name": "VLA端到端大模型",
+          "status": "accepted",
+          "matched_terms": [
+            "大语言模型"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "engineering",
+      "annotator_notes": "失效分析岗,与具身智能无关",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0093",
+      "job_code": "job_fd841ab5f58f4e2abedd6076",
+      "job_title": "深圳 汽车sqe工程师",
+      "primary_domain": "T7",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1、负责机器人结构物料的前期质量管理，与供应商进行沟通协调，确保零部件的质量符合公司标准； 2、参与产品开发过程中的质量规划（APQP），确保项目按时按质完成； 3、执行并监控供应商的生产过程控制计划（PPAP），确保供应商生产的零件符合质量要求； 4、进行供应商审核，评估供应商的生产能力和服务水平； 5、组织并参与供应商的质量改进活动，提高供应商的整体质量水平； 6、参与制定和完善质量管理体系文件； 7、项目开发问题的闭环管理及品质提升管理工作 岗位要求： 1、具有机器人及汽车行业结构物料或电子物料SQE工作经验，尤其有日系SQE经验者优先； 2、熟练掌握APQP、PPAP等质量管理工具； 3、具备良好的沟通能力和解决问题的能力； 4、能够适应一定的出差频率； 5、具备较强的团队协作精神和责任心； 6、能以结果为导向驱动工作开展； 7、具有良好的数据分析能力，能够通过数据支持决策； 8、具有很强的沟通能力，能够在工作中不断成长。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "汽车SQE;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0094",
+      "job_code": "job_bd4639becc3e61a9459000d0",
+      "job_title": "销售经理(agv)",
+      "primary_domain": "T7",
+      "parse_quality_score": 91.69,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "该岗位base地不限~居家办公\n\n岗位职责：\n1、根据企业整体销售计划与战略，制定自身的销售目标与策略，并按规定完成目标；\n2、系统整合客户资源，疏通销售渠道，全面负责产品的推广与销售；\n3、掌握客户需求，建设渠道，主动开拓，完成上级下达的任务指标；\n4、独立完成项目的策划与推广，项目合同的策划与撰写，建立和维护良好的客户关系；\n5、掌握市场动态，及时向销售主管汇报行情；\n6、完善客户管理体系和市场竞争体系，，稳固老客户，发掘新客户；\n7、评估、预测和控制销售成本，促使销售利润最大化；\n8、遵守公司的信贷制度，与客户协调货款回收，负责客户关系开拓、维护和沟通。\n岗位要求：\n1.本科以上学历，以机械，机电，计算机，以及车辆，自动化等工科背景，英文4级以上\n2.有3年以上销售工作经验，或AGV销售相关工作2年以上或者有3C，半导体，电子仓储物流，家电，电力配套设备，汽车配套等自动化集成商资源以及终端资源优先；\n3.具备良好的沟通能力、协调能力、计划与执行能力、文字组织能力、策划能力以及判断与决策能力\n4.能胜任压力、挑战性和疲劳性工作，接受出差",
+      "current_extraction": [
+        {
+          "technology_code": "T3.03.08",
+          "technology_name": "移动机器人(AMR/AGV)",
+          "status": "accepted",
+          "matched_terms": [
+            "AGV"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "AGV销售岗",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0095",
+      "job_code": "job_e40a7d3a1e79dd666aa5665f",
+      "job_title": "上海 资产定价",
+      "primary_domain": "T3",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "岗位职责 1. 行业研究与市场分析 1. 跟踪机器人租赁、服务机器人、具身智能、RaaS、设备租赁、融资租赁、资产运营平台等相关行业动态。 2. 研究机器人在不同场景下的租赁需求，包括政企、园区、商场、酒店、展厅、物业、文旅、工业、教育、公共服务等。 3. 分析竞品公司、机器人厂商、租赁平台、融资租赁机构、城市合伙人模式和资产运营模式。 4. 输出行业研究、竞品分析、客户需求分析、场景可行性分析等报告。 5. 协助判断不同城市、不同场景、不同客户类型的市场进入优先级。 2. 商业模式设计与测算 1. 负责机器人租赁业务不同模式的测算，包括长租、短租、租转售、保底分成、资产托管、城市合伙人代运营、国资持有、社会资本持有等。 2. 建立业务测算模型，覆盖采购成本、租金水平、押金比例、租期、回本周期、折旧、资金成本、维修成本、闲置率、坏账率、残值等核心参数。 3. 测算不同模式下的收入、成本、毛利、现金流、投资回收期、资产收益率和风险敞口。 4. 对不同业务方案进行横向比较，支持管理层判断优先推进模式。 5. 根据实际运营数据持续修正测算模型，提升模型准确性。 3. 资产收益模型建设 1. 建立单台机器人资产收益测算模型，评估机器人从采购、投放、起租、收租、维保、退租、二次投放到最终退出的全生命周期收益。 2. 参与制定不同型号机器人的租金定价、押金标准、回本周期、残值假设和二次流转规则。 3. 评估不同资产持有模式下的收益分配方式，包括公司自持、国资持有、金融机构持有、社会资本持有、城市合伙人参与持有等。 4. 协助资产端合作与落地岗位，为资产方提供收益测算、回款预测、风险说明和合作方案支持。 5. 定期复盘实际收益与测算收益之间的偏差，提出优化建议。 4. 业务结构与流程梳理 1. 梳理机器人租赁业务中的资产流、资金流、合同流、票据流、数据流和服务流。 2. 明确资产方、擎天租、城市合伙人、客户、供应商、维保方之间的角色分工和责任边界。 3. 协同资产运营部、财务、法务、业务团队梳理关键业务流程，包括签约、交付、起租、账单、收款、开票、维保、退租、回收、二次投放等。 4. 参与制定标准化业务流程、合作方案模板、测算模板和项目评估模板。 5. 对复杂合作项目进行业务结构拆解，识别潜在风险点和收益影响因素。 5. 项目可行性评估与决策支持 1. 支持重点城市、重点客户、重点资产方合作项目的可行性分析。 2. 针对国资合作、城市合伙人合作、批量资产投放等项目，输出项目测算和决策建议。 3. 协助制定项目合作方案，包括资产投入规模、租赁价格、收益分配、资金回收周期、风险控制建议等。 4. 为管理层会议、业务评审会、资产方沟通会提供数据和材料支持。 5. 协同资产运营部跟踪项目落地后的经营表现，形成复盘和改进建议。 任职要求 1. 本科及以上学历，金融、财务、经济、管理、产业研究、数据分析、工业工程、工商管理等相关专业优先。 2. 5年以上商业分析、经营分析、投资测算、财务分析、战略分析、产业研究、融资租赁、设备租赁、资产运营等相关经验。 3. 具备较强的商业建模能力，能够独立搭建 Excel 测算模型，完成收入、成本、现金流、回本周期、收益率、敏感性分析等测算。 4. 熟悉商业模式分析方法，能够从客户、资产、资金、合同、运营、风控、退出等角度拆解业务结构。 5. 具备良好的逻辑分析能力和结构化表达能力，能够将复杂业务问题转化为清晰的测算模型和汇报材料。 6. 具备一定财务基础，理解收入、成本、毛利、现金流、折旧、资金成本、应收账款、坏账、残值等基本概念。 7. 具备较强的跨部门沟通能力，能够与业务、财务、法务、交付维保、资产运营、城市经理等团队协作。 8. 熟练使用 Excel、PPT 等办公软件，能够独立完成测算模型和汇报材料。 9. 有融资租赁、经营租赁、设备租赁、汽车租赁、充换电资产运营、机器人租赁、共享设备、重资产运营平台经验者优先。 10. 有咨询公司、产业投资、企业战略、经营分析、财务 BP 或商业分析背景者优先。 加分项 1. 有机器人、智能硬件、设备租赁、RaaS、BaaS、充换电、电池银行、汽车金融、融资租赁等相关行业经验。 2. 能够进行敏感性分析，例如租金变化、维修成本变化、闲置率变化、残值变化、资金成本变化对收益率的影响。 3. 有向政府平台、国资公司、金融机构、投资人或管理层输出商业方案的经验。 4. 能够独立完成项目可研报告、商业计划书、测算模型、合作方案和汇报 PPT。 5. 对资产运营、现金流管理、合同结构、收益分配和风险控制有较强理解。",
+      "current_extraction": [
+        {
+          "technology_code": "T3.03.07",
+          "technology_name": "服务机器人",
+          "status": "accepted",
+          "matched_terms": [
+            "服务机器人"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "资产定价与商业模式研究",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0096",
+      "job_code": "job_95365b44b4519d1c495c8e33",
+      "job_title": "湘潭 组装设备工程师(汽车电子)",
+      "primary_domain": "T7",
+      "parse_quality_score": 88.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "工作内容】 1.负责车载组装设备的安装、调试及维护工作； 2.协助优化生产流程，提升设备运行效率与稳定性； 3.参与设备技术方案的设计与改进，确保符合生产工艺要求； 4.与生产、质量等部门协作，解决设备运行中的技术问题。 【任职要求】 1.1.大专及以上学历；具备汽车电子领域相关经验者优先； 2.5年以上车载组装设备维护和保养经验，3年以上车载产品生产经验；",
+      "current_extraction": [
+        {
+          "technology_code": "T7.01.04",
+          "technology_name": "汽车制造",
+          "status": "accepted",
+          "matched_terms": [
+            "汽车电子"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "组装设备维护;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0097",
+      "job_code": "job_a5309c7cbfcfb8468b967b69",
+      "job_title": "可靠性测试工程师",
+      "primary_domain": "T7",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "工作职责： 1、主导产品可靠度测试，含车载 / 消费性电子等相关产品 DV/PV 测试计划，测试 flow，测试周期，辅具（包括软硬件）需求及开发计划； 2、实验室定点及测试环境确认。跟进实验室定点进度，需要和相关单位对测试环境进行确认，必要时可以独立完成测试环境架设； 3、测试全流程落地跟进，输出各阶段测试进度，测试结果，对测试进度负责； 4、测试问题闭环跟进，FA 分析进度及有效性确认。输出对客测试报告。 任职要求： 1、熟悉行业（特别是车载）可靠性理论及相关标准体系，如 ISO16750（电气环境），AEC-100/104 等相关汽车电子认证标准。熟悉 IATF16949 对可靠性的相关体系要求； 2、熟悉汽车和消费电子件、机械件、系统整机的失效模式及寿命模型（尤其是车机 / 仪表 / 雷达等关键器件）、能分析出产品可靠性的薄弱点并制定有针对性的可靠性验证方法；熟悉 FA 失效分析手法，能跟踪问题闭环。掌握可靠性鉴定试验、增长试验、加速寿命试验及应力筛选等常用的可靠性试验方法论； 3、能独自完成 DV/PV 测试方案，测试计划并输出测试相关的辅助工作 / 软件工具需求计划。全程跟进测试进度，输出测试报告和闭环进展； 4、具备一定的外语读写能力和数据分析工具应用能力（minitab 等），良好的跨部门沟通能力。",
+      "current_extraction": [
+        {
+          "technology_code": "T7.01.04",
+          "technology_name": "汽车制造",
+          "status": "accepted",
+          "matched_terms": [
+            "汽车电子"
+          ]
+        }
+      ],
+      "expected_l3_codes": [],
+      "role_type": "engineering",
+      "annotator_notes": "车载可靠性测试,与具身智能无关;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0098",
+      "job_code": "job_11d0062d1043977124d5e892",
+      "job_title": "ai算法工程师(大模型)",
+      "primary_domain": "T1",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 1,
+      "review_cnt": 0,
+      "jd_text": "职位描述:\n1.负责机器学习大模型的设计、实现及优化\n2.完成数据预处理任务并参与数据清洗和特征工程\n3.使用深度学习框架(包括Transformer)进行相关开发工作\n4.解决算法上的问题，至少熟练一种大模型微调\n5.参与需求分析,制定方案并实施落地\n6.配合团队其它成员完成项目进度的推进与执行\n7.完成领导交办的其他相关工作\n\n职位要求:\n1.统招本科及以上学历,博士优先，计算机相关专业优先\n2.熟悉llm/cv/ml等相关方向,如文本分类、情感识别等\n3.熟悉神经网络设计流程和方法\n4.熟练掌握常用的机器学习框架(tensorflow、pytorch)的使用者优先\n5.具备较强的代码能力和良好的沟通能力\n6.具有扎实的数学基础和较强的逻辑思维能力\n7.AI、CV、NLP会议(AAAI、CVPR、ACL等)发表论文者优先。",
+      "current_extraction": [
+        {
+          "technology_code": "T5.03.02",
+          "technology_name": "深度学习训练框架",
+          "status": "accepted",
+          "matched_terms": [
+            "PyTorch",
+            "TensorFlow",
+            "深度学习框架"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.05.04"
+      ],
+      "role_type": "embodied_algo",
+      "annotator_notes": "通用ML岗,无具身技术;MISSING: 大模型微调",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0099",
+      "job_code": "job_fa550315795220b53acc6067",
+      "job_title": "湘潭 体系经理",
+      "primary_domain": "T7",
+      "parse_quality_score": 100.0,
+      "accepted_cnt": 0,
+      "review_cnt": 0,
+      "jd_text": "岗位职责： 1.根据质量管理体系标准及公司运营需求，制定公司整体（包括外部生产基地）的质量管理体系的实施方案，并组织实施和维护； 2.负责制定公司整体（包括外部生产基地）的质量体系评审方案和计划，开展质量管理体系内、外部评审工作，并跟踪改进效果； 3.为优化公司业务链各环节的质量体系有效性，识别并开展质量体系改进项目，推动各业务链质量体系内循环； 4.结合公司业务特点和质量工具运用的要求，策划公司质量工具的应用方案，并推动质量工具的实施及改进工作； 5.融合内、外部管理要求，落实质量协会、SAIC总公司等有关质量事宜的具体实施； 6.根据公司业务运行需求，支持公司产品/生产一致性认证，ISO14000及OHSAS18001管理体系的实施及内外审工作； 7.根据公司质量文化的发展需求，参与公司质量文化推进工作。 职位要求： 1.学历：全日制本科或以上学历，工程类相关专业； 2.工作经验：具备5年及以上3C消费类电子ISO9001及IATF16949质量管理体系策划、评审及改进的工作经验； 3.专业知识：具备五大质量工具理论及实践经验； 4.专业证书：获得IATF16949或VDA等汽车行业标准的审核资质证书； 5.英语能力：具备良好的英语听、说、读、写能力； 6.计算机：具备基本的应用能力。",
+      "current_extraction": [],
+      "expected_l3_codes": [],
+      "role_type": "non_technical",
+      "annotator_notes": "质量体系管理;现抽0条,正确",
+      "annotation_status": "annotated"
+    },
+    {
+      "sample_id": "jd_annotation_0100",
+      "job_code": "job_44197b64182d61f53f145fad",
+      "job_title": "ai agent软件工程师 (高级)开发岗",
+      "primary_domain": "T1",
+      "parse_quality_score": 95.0,
+      "accepted_cnt": 2,
+      "review_cnt": 0,
+      "jd_text": "工作职责 1. 负责 AI Agent、智能交互、具身智能等核心应用研发，完成算法模型与业务系统的高效集成，保障系统高可用、高扩展、易维护。 2. 构建与维护分布式训练平台，支持多任务并行调度、故障自动恢复、Checkpoint 管理、日志监控与告警，保障训练任务高效稳定执行。 3. 设计与开发模型自动化评估工具，搭建标准化评测流程，完成模型质量评估、上线验收、效果对比与问题回溯，持续提升线上模型体验。 任职要求。 1. 计算机、通信、电子信息、自动化、软件工程等相关专业，硕士以上学历 或 5年以上软件开发与系统设计研发经验。 2. 熟悉互联网后端开发、服务设计与大规模系统研发理念，具备大型软件或数据平台开发经验。 3. 具备 AI 应用落地经验，包括搜索、推荐、问答系统、智能客服、对话助手、AI Agent 等优先。 4. 熟悉 Linux、容器化、分布式任务调度、监控系统者优先。 加分项 1. 微软、字节、百度、阿里、腾讯等大厂大模型应用团队工作经验。 2. 深度参与对话系统、搜索引擎、AI Agent、大模型评估平台研发与上线。",
+      "current_extraction": [
+        {
+          "technology_code": "T1.01.06",
+          "technology_name": "大模型部署与推理优化",
+          "status": "accepted",
+          "matched_terms": [
+            "大模型应用"
+          ]
+        },
+        {
+          "technology_code": "T5.03.06",
+          "technology_name": "大模型推理服务与训练加速",
+          "status": "accepted",
+          "matched_terms": [
+            "分布式训练"
+          ]
+        }
+      ],
+      "expected_l3_codes": [
+        "T1.02.07",
+        "T5.04.01",
+        "T6.04.02"
+      ],
+      "role_type": "engineering",
+      "annotator_notes": "",
+      "annotation_status": "annotated"
+    }
+  ],
+  "annotator_id": "annotator_C_ai_single_pass",
+  "annotation_caveat": "单人标注,标注者为 AI 助手且非领域专家,未经双人独立标注与仲裁。仅作为一次性参考基线用于衡量抽取质量与对比词表版本,不得作为论文金标准。",
+  "previous_parse_run_code": "jdparse_e7328e6370fbee62e79d2098",
+  "taxonomy_version_code": "v1.2"
+}

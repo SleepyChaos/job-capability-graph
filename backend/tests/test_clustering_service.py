@@ -334,6 +334,7 @@ def _seed_cluster_fixture(session: Session) -> str:
         if similar:
             requirement = JobRequirement(
                 job_posting_id=job.job_posting_id,
+                taxonomy_version_id=taxonomy.taxonomy_version_id,
                 requirement_no=1,
                 requirement_type_code="required",
                 raw_term="合成机器人控制",

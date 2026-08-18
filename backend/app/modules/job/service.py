@@ -10,7 +10,7 @@ from decimal import Decimal
 from urllib.parse import urlparse
 
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session, aliased
+from sqlalchemy.orm import Session
 
 from app.modules.extraction.near_duplicate import near_duplicate_clusters
 from app.modules.extraction.publish_gate import (
@@ -18,16 +18,12 @@ from app.modules.extraction.publish_gate import (
     compute_publish_score,
     route_publish_score,
 )
-from app.modules.extraction.technology import (
-    TechnologyAliasMatcher,
-    TechnologyHit,
-    TechnologyPattern,
-)
 from app.modules.ingestion.models import (
     FileImportRowResult,
     FileImportRun,
     SpreadsheetRow,
 )
+from app.modules.job.extraction_service import build_alias_matcher, extract_requirements
 from app.modules.job.models import (
     DataSource,
     DocumentQuality,
@@ -37,15 +33,12 @@ from app.modules.job.models import (
     JobPosting,
     JobPostingDataSource,
     JobRequirement,
-    JobRequirementEvidence,
     Organization,
     OrganizationAlias,
     SourceDocument,
     SourceDocumentVersion,
 )
 from app.modules.taxonomy.models import (
-    TechnologyAlias,
-    TechnologyNode,
     TechnologyTaxonomyVersion,
 )
 
@@ -92,9 +85,6 @@ EXPERIENCE_RANGES = {
 }
 
 LEVEL_CODES = {"初级": "junior", "中级": "middle", "高级": "senior"}
-BONUS_MARKERS = ("加分", "优先", "优先考虑", "最好", "bonus", "preferred")
-
-
 class JobImportError(ValueError):
     pass
 
@@ -196,7 +186,7 @@ class JobImportService:
 
         sources = self._ensure_sources(import_run.file_asset_id)
         organizations = self._build_organizations(source_rows)
-        matcher = self._build_matcher(taxonomy_version.taxonomy_version_id)
+        matcher = build_alias_matcher(self.session, taxonomy_version.taxonomy_version_id)
         document_versions_by_hash: dict[str, list[SourceDocumentVersion]] = defaultdict(list)
         job_by_document_version: dict[int, JobPosting] = {}
 
@@ -362,7 +352,13 @@ class JobImportService:
             )
             document_versions_by_hash[content_hash].append(document_version)
             job_by_document_version[document_version.source_document_version_id] = job
-            self._extract_requirements(job, document_version, matcher)
+            extract_requirements(
+                self.session,
+                job=job,
+                document_version=document_version,
+                matcher=matcher,
+                taxonomy_version_id=taxonomy_version.taxonomy_version_id,
+            )
             self.session.add(
                 FileImportRowResult(
                     file_import_run_id=import_run.file_import_run_id,
@@ -511,86 +507,6 @@ class JobImportService:
                 aliases.add(key)
         self.session.flush()
         return organizations
-
-    def _build_matcher(self, taxonomy_version_id: int) -> TechnologyAliasMatcher:
-        l4_node = aliased(TechnologyNode)
-        l3_node = aliased(TechnologyNode)
-        rows = self.session.execute(
-            select(TechnologyAlias, l3_node.technology_node_id)
-            .join(l4_node, l4_node.technology_node_id == TechnologyAlias.technology_node_id)
-            .join(l3_node, l3_node.technology_node_id == l4_node.parent_technology_node_id)
-            .where(
-                l4_node.taxonomy_version_id == taxonomy_version_id,
-                l4_node.level_code == "L4",
-                l3_node.level_code == "L3",
-                TechnologyAlias.is_matchable.is_(True),
-            )
-        ).all()
-        patterns = [
-            TechnologyPattern(
-                alias_id=alias.technology_alias_id,
-                normalized_alias=alias.normalized_alias,
-                l3_technology_node_id=l3_id,
-            )
-            for alias, l3_id in rows
-            if alias.normalized_alias
-        ]
-        return TechnologyAliasMatcher(patterns)
-
-    def _extract_requirements(
-        self,
-        job: JobPosting,
-        document_version: SourceDocumentVersion,
-        matcher: TechnologyAliasMatcher,
-    ) -> None:
-        hits = matcher.find(job.jd_clean_text)
-        grouped: dict[tuple[int, str], list[TechnologyHit]] = defaultdict(list)
-        for hit in hits:
-            grouped[
-                (hit.l3_technology_node_id, self._requirement_type(job.jd_clean_text, hit))
-            ].append(hit)
-        for requirement_no, ((technology_node_id, requirement_type), group_hits) in enumerate(
-            sorted(grouped.items(), key=lambda item: (item[0][0], item[0][1])), start=1
-        ):
-            first_hit = group_hits[0]
-            requirement = JobRequirement(
-                job_posting_id=job.job_posting_id,
-                requirement_no=requirement_no,
-                requirement_type_code=requirement_type,
-                raw_term=first_hit.matched_text,
-                raw_text=self._snippet(
-                    job.jd_clean_text, first_hit.start_offset, first_hit.end_offset
-                ),
-                technology_node_id=technology_node_id,
-                mention_count=len(group_hits),
-                mapping_method_code="exact_alias_aho_v1",
-                confidence_score=Decimal("95"),
-            )
-            self.session.add(requirement)
-            self.session.flush()
-            for hit in group_hits:
-                evidence_hash = hashlib.sha256(
-                    f"{hit.start_offset}\0{hit.end_offset}\0{hit.alias_id}".encode()
-                ).hexdigest()
-                evidence = EvidenceSpan(
-                    source_document_version_id=document_version.source_document_version_id,
-                    span_type_code="requirement",
-                    start_offset=hit.start_offset,
-                    end_offset=hit.end_offset,
-                    evidence_text=job.jd_clean_text[hit.start_offset : hit.end_offset],
-                    evidence_hash=evidence_hash,
-                    source_reliability_score=Decimal("95"),
-                )
-                self.session.add(evidence)
-                self.session.flush()
-                self.session.add(
-                    JobRequirementEvidence(
-                        job_requirement_id=requirement.job_requirement_id,
-                        evidence_span_id=evidence.evidence_span_id,
-                        matched_alias_id=hit.alias_id,
-                        support_score=Decimal("95"),
-                    )
-                )
 
     def _create_duplicate_groups(
         self,
@@ -763,17 +679,6 @@ class JobImportService:
     def _source_codes(payload: dict) -> list[str]:
         value = JobImportService._text(payload, "来源列表")
         return [item.strip() for item in value.split(";") if item.strip()]
-
-    @staticmethod
-    def _requirement_type(text: str, hit: TechnologyHit) -> str:
-        context = text[
-            max(0, hit.start_offset - 30) : min(len(text), hit.end_offset + 30)
-        ].casefold()
-        return "bonus" if any(marker in context for marker in BONUS_MARKERS) else "required"
-
-    @staticmethod
-    def _snippet(text: str, start: int, end: int, radius: int = 45) -> str:
-        return text[max(0, start - radius) : min(len(text), end + radius)]
 
     @staticmethod
     def _text(payload: dict, field: str) -> str:

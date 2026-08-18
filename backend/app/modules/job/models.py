@@ -330,6 +330,11 @@ class JobRequirement(Base):
 
     job_requirement_id: Mapped[int] = mapped_column(primary_key_type, primary_key=True)
     job_posting_id: Mapped[int] = mapped_column(ForeignKey("biz_job_posting.job_posting_id"))
+    # 技术要求归属某个词表版本：同一份 JD 可以同时持有多版词表各自的抽取结果，
+    # 历史解析运行据此读回自己那一版的口径。
+    taxonomy_version_id: Mapped[int] = mapped_column(
+        ForeignKey("md_technology_taxonomy_version.taxonomy_version_id")
+    )
     requirement_no: Mapped[int] = mapped_column(Integer)
     requirement_type_code: Mapped[str] = mapped_column(String(32))
     raw_term: Mapped[str | None] = mapped_column(String(500))
@@ -345,12 +350,18 @@ class JobRequirement(Base):
     confidence_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
 
     __table_args__ = (
-        UniqueConstraint("job_posting_id", "requirement_no", name="uk_job_requirement_no"),
         UniqueConstraint(
+            "taxonomy_version_id",
+            "job_posting_id",
+            "requirement_no",
+            name="uk_job_requirement_version_no",
+        ),
+        UniqueConstraint(
+            "taxonomy_version_id",
             "job_posting_id",
             "technology_node_id",
             "requirement_type_code",
-            name="uk_job_requirement_technology_type",
+            name="uk_job_requirement_version_technology_type",
         ),
         Index(
             "idx_job_requirement_technology",
@@ -358,6 +369,8 @@ class JobRequirement(Base):
             "requirement_type_code",
             "job_posting_id",
         ),
+        # 唯一约束改为以 taxonomy_version_id 打头后，job_posting_id 外键失去支撑索引。
+        Index("idx_job_requirement_posting", "job_posting_id"),
     )
 
 

@@ -32,3 +32,6 @@ output/
 backend/.env
 frontend/.env
 !backend/.env.example
+
+# 词表评估的中间产物（由 tools/refresh_annotation_extraction.py 从数据库重生成）
+/data/annotation/

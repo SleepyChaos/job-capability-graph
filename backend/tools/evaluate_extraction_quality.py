@@ -37,11 +37,24 @@ ROLE_LABEL = {
 }
 
 
+# 受限口径：只在这批 L3 代码上计分。跨词表版本对比时必须用它把新版新增的技术点
+# 排除掉——标注是在旧版代码空间里做的，新代码在真值侧永远缺席，会被算成纯误报。
+CODE_UNIVERSE: set[str] | None = None
+
+
+def _restrict(codes: set[str]) -> set[str]:
+    return codes if CODE_UNIVERSE is None else codes & CODE_UNIVERSE
+
+
 def predicted_codes(sample: dict, include_review: bool) -> set[str]:
     statuses = {"accepted"} | ({"needs_review"} if include_review else set())
-    return {
-        row["technology_code"] for row in sample["current_extraction"] if row["status"] in statuses
-    }
+    return _restrict(
+        {
+            row["technology_code"]
+            for row in sample["current_extraction"]
+            if row["status"] in statuses
+        }
+    )
 
 
 def prf(tp: int, fp: int, fn: int) -> tuple[float, float, float]:
@@ -54,7 +67,7 @@ def prf(tp: int, fp: int, fn: int) -> tuple[float, float, float]:
 def confusion(samples: list[dict], include_review: bool) -> tuple[int, int, int]:
     tp = fp = fn = 0
     for sample in samples:
-        expected = set(sample["expected_l3_codes"])
+        expected = _restrict(set(sample["expected_l3_codes"]))
         predicted = predicted_codes(sample, include_review)
         tp += len(expected & predicted)
         fp += len(predicted - expected)
@@ -178,8 +191,17 @@ def main() -> int:
     parser.add_argument("--bootstrap-repeats", type=int, default=2000)
     parser.add_argument("--seed", type=int, default=20260816)
     parser.add_argument("--self-test", action="store_true")
+    parser.add_argument(
+        "--restrict-codes",
+        type=Path,
+        help="只在该 JSON 列表给出的 L3 代码上计分（跨词表版本对比用受限口径）",
+    )
     args = parser.parse_args()
 
+    if args.restrict_codes:
+        globals()["CODE_UNIVERSE"] = set(
+            json.loads(args.restrict_codes.read_text(encoding="utf-8"))
+        )
     if args.self_test:
         self_test()
         return 0
@@ -201,6 +223,8 @@ def main() -> int:
         packages.append((path, pkg))
 
     caliber = "accepted+needs_review" if args.include_review else "仅 accepted"
+    if CODE_UNIVERSE is not None:
+        caliber += f"；受限于 {len(CODE_UNIVERSE)} 个 L3 代码"
     print("# 抽取质量评估(标注对照)\n")
     print(f"- 标注包:{', '.join(str(p) for p, _ in packages)}")
     print(f"- 预测侧口径:{caliber};run {packages[0][1].get('parse_run_code', '?')},无 LLM 回写")
