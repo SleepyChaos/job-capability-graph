@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 560" width="980" height="560" font-family="Source Han Sans SC, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7c"/>
+    </marker>
+    <style>
+      .box{fill:#f7f9fb;stroke:#8fa3b8;stroke-width:1.4;rx:6}
+      .accent{fill:#eaf2fb;stroke:#3f7cc4;stroke-width:1.6;rx:6}
+      .gate{fill:#fdf3e7;stroke:#d08a35;stroke-width:1.6;rx:6}
+      .out{fill:#eef7ef;stroke:#4b9a5c;stroke-width:1.6;rx:6}
+      .t{font-size:14px;fill:#1f2b38}
+      .ti{font-size:15px;font-weight:600;fill:#12202e}
+      .s{font-size:11.5px;fill:#5b6b7c}
+      .lbl{font-size:11.5px;fill:#3f7cc4}
+      .ln{stroke:#5b6b7c;stroke-width:1.4;fill:none;marker-end:url(#a)}
+    </style>
+  </defs>
+
+  <text x="20" y="28" class="ti" font-size="17">图 4-1　新岗位发现的证据链与门控</text>
+  <text x="20" y="48" class="s">左侧为证据来源，中部为机械判定，右侧为人工决策。虚线框内为大模型唯一的合法位置。</text>
+
+  <!-- 证据源 -->
+  <rect x="20" y="80" width="176" height="72" class="box"/>
+  <text x="34" y="106" class="t">JD 语料</text>
+  <text x="34" y="126" class="s">技术点抽取 + 双重门控</text>
+  <text x="34" y="142" class="s">（职能门 / 语种门）</text>
+
+  <rect x="20" y="176" width="176" height="72" class="box"/>
+  <text x="34" y="202" class="t">技术里程碑</text>
+  <text x="34" y="222" class="s">论文 / 专利 / 突破</text>
+  <text x="34" y="238" class="s">融资 / 标准政策</text>
+
+  <rect x="20" y="272" width="176" height="72" class="box"/>
+  <text x="34" y="298" class="t">既有岗位库</text>
+  <text x="34" y="318" class="s">已批准岗位版本的</text>
+  <text x="34" y="334" class="s">能力画像</text>
+
+  <!-- 机械判定 -->
+  <rect x="262" y="80" width="200" height="72" class="accent"/>
+  <text x="276" y="106" class="t">频繁闭项集挖掘</text>
+  <text x="276" y="126" class="s">候选 = 3–5 个技术的</text>
+  <text x="276" y="142" class="s">能力组合</text>
+
+  <rect x="262" y="176" width="200" height="72" class="accent"/>
+  <text x="276" y="202" class="t">技术成熟度</text>
+  <text x="276" y="224" class="s">1 − exp(−α·Σ 时间衰减累积)</text>
+  <text x="276" y="240" class="s">α = 0.17（标定值）</text>
+
+  <rect x="262" y="272" width="200" height="72" class="accent"/>
+  <text x="276" y="298" class="t">非对称覆盖率</text>
+  <text x="276" y="320" class="s">|候选 ∩ 岗位| / |候选|</text>
+  <text x="276" y="336" class="s">三档分类</text>
+
+  <!-- 门控 -->
+  <rect x="528" y="132" width="196" height="164" class="gate"/>
+  <text x="542" y="158" class="t">证据门控分档</text>
+  <text x="542" y="180" class="s">合取判据，任一不满足即不升档</text>
+  <text x="542" y="204" class="s">· 支撑 JD 数 ≥ 3</text>
+  <text x="542" y="222" class="s">· 发布企业 ≥ 2 家</text>
+  <text x="542" y="240" class="s">· 数据来源 ≥ 2</text>
+  <text x="542" y="258" class="s">· 观测窗 ≥ 3 期</text>
+  <text x="542" y="276" class="s">· 成熟度 ≥ 0.35 · 落差 ≥ 0.25</text>
+
+  <rect x="528" y="316" width="196" height="60" class="box"/>
+  <text x="542" y="340" class="t">风险旗标</text>
+  <text x="542" y="360" class="s">未满足项显式呈现，不折算入分</text>
+
+  <!-- 表达层 -->
+  <rect x="528" y="404" width="196" height="76" class="box" stroke-dasharray="5 4"/>
+  <text x="542" y="428" class="t">表达层改写（LLM）</text>
+  <text x="542" y="448" class="s">机械事实卡 → 可读文本</text>
+  <text x="542" y="466" class="s">逐条引用事实，校验不过即降级</text>
+
+  <!-- 输出 -->
+  <rect x="790" y="132" width="170" height="164" class="out"/>
+  <text x="804" y="158" class="t">岗位候选</text>
+  <text x="804" y="182" class="s">potential　潜在</text>
+  <text x="804" y="202" class="s">budding　　萌芽</text>
+  <text x="804" y="222" class="s">emerging　 涌现</text>
+  <text x="804" y="252" class="s">按稳定键去重，</text>
+  <text x="804" y="270" class="s">已处置组合不再提出</text>
+
+  <rect x="790" y="404" width="170" height="76" class="out"/>
+  <text x="804" y="428" class="t">人工审核</text>
+  <text x="804" y="448" class="s">双栏对照：事实 / 文本</text>
+  <text x="804" y="466" class="s">通过后发布为岗位</text>
+
+  <!-- 连线 -->
+  <path class="ln" d="M196,116 L258,116"/>
+  <path class="ln" d="M196,212 L258,212"/>
+  <path class="ln" d="M196,308 L258,308"/>
+  <path class="ln" d="M462,116 L495,116 L495,196 L524,196"/>
+  <path class="ln" d="M462,212 L524,212"/>
+  <path class="ln" d="M462,308 L495,308 L495,240 L524,240"/>
+  <path class="ln" d="M724,214 L786,214"/>
+  <path class="ln" d="M626,296 L626,312"/>
+  <path class="ln" d="M875,296 L875,400"/>
+  <path class="ln" d="M724,442 L786,442"/>
+  <text x="742" y="206" class="lbl">分档</text>
+  <text x="884" y="330" class="lbl">机械事实卡</text>
+</svg>

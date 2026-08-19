@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 470" width="940" height="470" font-family="Source Han Sans SC, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7c"/>
+    </marker>
+    <style>
+      .c{fill:#eaf2fb;stroke:#3f7cc4;stroke-width:1.5;rx:5}
+      .c2{fill:#f7f9fb;stroke:#8fa3b8;stroke-width:1.4;rx:5}
+      .ti{font-size:17px;font-weight:600;fill:#12202e}
+      .h{font-size:14px;font-weight:600;fill:#1f2b38}
+      .t{font-size:13px;fill:#1f2b38}
+      .s{font-size:11.5px;fill:#5b6b7c}
+      .ln{stroke:#5b6b7c;stroke-width:1.5;fill:none;marker-end:url(#b)}
+      .lnc{stroke:#4b9a5c;stroke-width:2;fill:none;marker-end:url(#b)}
+      .lbl{font-size:11.5px;fill:#4b9a5c;font-weight:600}
+      .lbl2{font-size:11.5px;fill:#5b6b7c}
+    </style>
+  </defs>
+  <text x="20" y="28" class="ti">图 4-3　岗位连续性的判定：以成员集合而非名称</text>
+  <text x="20" y="48" class="s">名称在新兴领域高度不稳定，因此连续性由成员 JD 集合的 Jaccard 重合度判定（阈值 0.55）。</text>
+
+  <text x="60" y="90" class="h">上一次聚类</text>
+  <text x="640" y="90" class="h">本次聚类</text>
+
+  <rect x="50" y="106" width="180" height="56" class="c2"/>
+  <text x="64" y="130" class="t">簇 A（32 份 JD）</text>
+  <text x="64" y="150" class="s">"具身算法工程师"</text>
+
+  <rect x="50" y="188" width="180" height="56" class="c2"/>
+  <text x="64" y="212" class="t">簇 B（18 份 JD）</text>
+  <text x="64" y="232" class="s">"运控算法工程师"</text>
+
+  <rect x="50" y="270" width="180" height="56" class="c2"/>
+  <text x="64" y="294" class="t">簇 C（9 份 JD）</text>
+  <text x="64" y="314" class="s">"仿真平台工程师"</text>
+
+  <rect x="630" y="106" width="180" height="56" class="c"/>
+  <text x="644" y="130" class="t">簇 A′（35 份 JD）</text>
+  <text x="644" y="150" class="s">"VLA 模型算法工程师"</text>
+
+  <rect x="630" y="188" width="180" height="56" class="c"/>
+  <text x="644" y="212" class="t">簇 B′（14 份 JD）</text>
+
+  <rect x="630" y="252" width="180" height="56" class="c"/>
+  <text x="644" y="276" class="t">簇 B″（11 份 JD）</text>
+
+  <rect x="630" y="334" width="180" height="56" class="c"/>
+  <text x="644" y="358" class="t">簇 D（22 份 JD）</text>
+
+  <path class="lnc" d="M232,134 L626,134"/>
+  <text x="272" y="122" class="lbl">continued　J = 0.87　→ 产生岗位新版本</text>
+  <text x="272" y="150" class="lbl2">名称变了，成员没变 —— 仍是同一个岗位</text>
+
+  <path class="ln" d="M232,214 L626,214"/>
+  <path class="ln" d="M232,220 L430,220 L430,278 L626,278"/>
+  <text x="404" y="248" class="lbl2">split　一个旧簇分流到两个新簇</text>
+
+  <path class="ln" d="M232,298 L300,298 L300,392"/>
+  <text x="246" y="410" class="lbl2">ended　无匹配后继，岗位转为非活跃</text>
+
+  <path class="ln" d="M560,362 L626,362"/>
+  <text x="452" y="366" class="lbl2">born　无匹配前身</text>
+
+  <rect x="50" y="424" width="860" height="34" fill="#fdf3e7" stroke="#d08a35" stroke-width="1.2" rx="5"/>
+  <text x="64" y="446" class="s">口径说明：只有 continued 的簇产生岗位新版本，"岗位演化"因此有严格定义 —— 同一岗位标识下相邻两版之间的能力要求差异。</text>
+</svg>

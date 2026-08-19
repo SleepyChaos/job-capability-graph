@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 400" width="940" height="400" font-family="Source Han Sans SC, Microsoft YaHei, sans-serif">
+  <style>
+    .ti{font-size:17px;font-weight:600;fill:#12202e}
+    .h{font-size:14px;font-weight:600;fill:#1f2b38}
+    .t{font-size:13px;fill:#1f2b38}
+    .s{font-size:11.5px;fill:#5b6b7c}
+    .bad{fill:#fdeeee;stroke:#c05555;stroke-width:1.5;rx:6}
+    .good{fill:#eef7ef;stroke:#4b9a5c;stroke-width:1.5;rx:6}
+    .chip{fill:#ffffff;stroke:#8fa3b8;stroke-width:1.2;rx:11}
+    .pass{fill:#eef7ef;stroke:#4b9a5c;stroke-width:1.2;rx:11}
+    .fail{fill:#fdeeee;stroke:#c05555;stroke-width:1.2;rx:11}
+  </style>
+  <text x="20" y="28" class="ti">图 7-1　合取式证据门控 vs 单一评分阈值</text>
+  <text x="20" y="48" class="s">同一个候选：单一企业发布了 8 份高度相似的 JD，技术新颖度高。</text>
+
+  <rect x="30" y="72" width="420" height="300" class="bad"/>
+  <text x="48" y="100" class="h">单一评分阈值（本系统未采用）</text>
+  <text x="48" y="128" class="s">所有信号折算为一个分数：</text>
+  <text x="48" y="152" class="t">新颖度 0.9 · 技术相关 0.8 · 证据量 0.6</text>
+  <text x="48" y="174" class="t">企业集中度 0.1 · 时序历史 0.2</text>
+  <text x="48" y="206" class="t" font-weight="600">加权求和 = 67 分 ≥ 阈值 65</text>
+  <text x="48" y="234" class="t" fill="#a33">→ 判定为「涌现」</text>
+  <text x="48" y="268" class="s">问题：企业集中度与时序历史这两项</text>
+  <text x="48" y="288" class="s">严重不足，但被高新颖度补偿掉了，</text>
+  <text x="48" y="308" class="s">在最终分数里不可见。</text>
+  <text x="48" y="340" class="s" fill="#a33">审核者只看到「67 分」，无从判断风险所在。</text>
+
+  <rect x="490" y="72" width="420" height="300" class="good"/>
+  <text x="508" y="100" class="h">合取式证据门控（本系统）</text>
+  <text x="508" y="128" class="s">每项独立证据必须各自达标：</text>
+
+  <rect x="508" y="142" width="150" height="24" class="pass"/>
+  <text x="520" y="159" class="s">✓ 支撑 JD 数 8 ≥ 3</text>
+  <rect x="672" y="142" width="150" height="24" class="pass"/>
+  <text x="684" y="159" class="s">✓ 技术已验证</text>
+
+  <rect x="508" y="176" width="150" height="24" class="fail"/>
+  <text x="520" y="193" class="s">✗ 发布企业 1 &lt; 2</text>
+  <rect x="672" y="176" width="150" height="24" class="fail"/>
+  <text x="684" y="193" class="s">✗ 观测窗 1 &lt; 3</text>
+
+  <rect x="508" y="210" width="150" height="24" class="pass"/>
+  <text x="520" y="227" class="s">✓ 成熟度 0.41 ≥ 0.35</text>
+  <rect x="672" y="210" width="150" height="24" class="fail"/>
+  <text x="684" y="227" class="s">✗ 数据来源 1 &lt; 2</text>
+
+  <text x="508" y="264" class="t" font-weight="600" fill="#2c6b3f">→ 停留在「潜在」档</text>
+  <text x="508" y="292" class="s">并附带风险旗标：</text>
+  <text x="508" y="314" class="s">single_company_signal · single_source_signal</text>
+  <text x="508" y="334" class="s">insufficient_temporal_history</text>
+  <text x="508" y="360" class="s" fill="#2c6b3f">审核者直接看到「缺什么」，而非一个分数。</text>
+</svg>
