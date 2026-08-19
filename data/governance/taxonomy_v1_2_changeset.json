@@ -1,0 +1,1237 @@
+{
+  "base_version": "v1.1",
+  "target_version": "v1.2",
+  "effective_date": "2026-08-18",
+  "change_summary": "窗口 C 词表治理：下线过宽词、按词形收窄歧义词、补齐部署推理/实时通信/仿真栈/电机控制等工程实践类覆盖盲区。",
+  "provenance": {
+    "retire_terms": "docs/reports/过宽表面词排查报告.md 第 3 节判定清单",
+    "new_l3": "docs/reports/L3覆盖盲区排查报告.md 第 2 节候选清单 + annotator_C 标注的 MISSING 条目",
+    "new_terms": "同上；词形面向招聘语料（短词/英文缩写/在售称谓），学术长术语不再新增"
+  },
+  "scope_exclusions": [
+    {
+      "item": "电池系统/BMS/热管理/结构设计",
+      "reason": "通用机电工程，非具身智能技术点；L3覆盖盲区报告已标为『范围争议项』"
+    },
+    {
+      "item": "PCB/原理图/EMC/RTL/ISP/HALT",
+      "reason": "通用硬件工程实践，超出具身智能技术口径（任务书第 2 节边界 1）"
+    },
+    {
+      "item": "CVPR/ICRA/NeurIPS 等会议词",
+      "reason": "资质信号而非技术点，L3覆盖盲区报告建议不收"
+    },
+    {
+      "item": "整机在售型号词（宇树 G1/H1 等）",
+      "reason": "型号追踪不是本研究目标，且型号迭代快会造成词表快速过期"
+    },
+    {
+      "item": "robot/robotics 等英文整机泛称",
+      "reason": "触发面过宽，等价于不做区分"
+    }
+  ],
+  "retire_terms": [
+    {
+      "term": "大模型",
+      "l3_code": "T1.01.11",
+      "reason": "≠VLA；LLM 复核对同词接受率 0.4%，语境规则仍放行 168 条误报"
+    },
+    {
+      "term": "商业服务",
+      "l3_code": "T7.03.03",
+      "reason": "business services ≠ 商用服务机器人；命中全为销售/业务拓展岗"
+    },
+    {
+      "term": "职业教育",
+      "l3_code": "T7.07.03",
+      "reason": "泛教育行业词 ≠ 教育机器人；命中为渠道销售/课程教研"
+    },
+    {
+      "term": "AI教育",
+      "l3_code": "T7.07.03",
+      "reason": "同『职业教育』"
+    },
+    {
+      "term": "开源框架",
+      "l3_code": "T3.01.08",
+      "reason": "与『人形机器人(通用)』无语义关联，属词表错挂"
+    },
+    {
+      "term": "光学组件",
+      "l3_code": "T2.02.07",
+      "reason": "光学组件 ≠ 机器视觉；命中为 FA/抛光工程师"
+    },
+    {
+      "term": "检测",
+      "l3_code": "T6.03.04",
+      "reason": "通用动词；改由『检测认证/型式试验/第三方检测』等具体词形承接"
+    },
+    {
+      "term": "汽车",
+      "l3_code": "T7.01.04",
+      "reason": "通用领域词；改由『汽车制造/车规级/整车制造』等词形承接"
+    },
+    {
+      "term": "仓储物流",
+      "l3_code": "T7.02.02",
+      "reason": "泛行业词；改由『智能仓储/仓储机器人/仓储自动化』承接"
+    },
+    {
+      "term": "数据服务",
+      "l3_code": "T4.01.04",
+      "reason": "泛 IT 服务词错挂数据集；无对应窄词形，直接下线"
+    },
+    {
+      "term": "训练场",
+      "l3_code": "T4.01.02",
+      "reason": "歧义词；改由『机器人训练场/具身训练场/数字训练场』承接"
+    },
+    {
+      "term": "ACT",
+      "l3_code": "T1.01.11",
+      "reason": "英文常用词；匹配器大小写无关，改由『action chunking』承接"
+    }
+  ],
+  "new_l3": [
+    {
+      "code": "T5.02.02",
+      "name": "实时工业总线",
+      "l2_code": "T5.02",
+      "note": "EtherCAT/CANopen/Modbus 等机器人实时现场总线；135 份 JD 提及而词表整层缺失"
+    },
+    {
+      "code": "T5.02.03",
+      "name": "通信中间件",
+      "l2_code": "T5.02",
+      "note": "DDS/gRPC/MQTT 等机器人进程间与跨机通信中间件"
+    },
+    {
+      "code": "T5.03.02",
+      "name": "深度学习训练框架",
+      "l2_code": "T5.03",
+      "note": "PyTorch/TensorFlow/JAX；算法岗最高频工具词（149 JD）"
+    },
+    {
+      "code": "T5.03.03",
+      "name": "推理引擎与端侧部署",
+      "l2_code": "T5.03",
+      "note": "TensorRT/ONNX Runtime/OpenVINO/RKNN；部署岗核心（77 JD）"
+    },
+    {
+      "code": "T5.03.04",
+      "name": "模型量化与压缩",
+      "l2_code": "T5.03",
+      "note": "INT8/PTQ/QAT/剪枝/知识蒸馏；156 JD 提及"
+    },
+    {
+      "code": "T5.03.05",
+      "name": "GPU并行计算与算子优化",
+      "l2_code": "T5.03",
+      "note": "CUDA/cuDNN/算子开发；78 JD 提及"
+    },
+    {
+      "code": "T5.03.06",
+      "name": "大模型推理服务与训练加速",
+      "l2_code": "T5.03",
+      "note": "vLLM/TensorRT-LLM/DeepSpeed；41 JD 提及"
+    },
+    {
+      "code": "T5.03.07",
+      "name": "视觉与点云算法库",
+      "l2_code": "T5.03",
+      "note": "OpenCV/PCL/Open3D/Ceres/g2o；视觉与 SLAM 开发标配"
+    },
+    {
+      "code": "T5.03.08",
+      "name": "MLOps与模型生命周期",
+      "l2_code": "T5.03",
+      "note": "MLflow/DVC/模型版本管理；annotator_C MISSING 条目"
+    },
+    {
+      "code": "T1.03.14",
+      "name": "运动学与动力学解算",
+      "l2_code": "T1.03",
+      "note": "正逆运动学/雅可比/URDF；v1.1 只有『逆动力学』"
+    },
+    {
+      "code": "T1.03.15",
+      "name": "碰撞检测与避障",
+      "l2_code": "T1.03",
+      "note": "annotator_C 两次标注为 MISSING"
+    },
+    {
+      "code": "T1.03.16",
+      "name": "视觉伺服",
+      "l2_code": "T1.03",
+      "note": "PBVS/IBVS；annotator_C MISSING 条目"
+    },
+    {
+      "code": "T1.06.11",
+      "name": "多目标跟踪",
+      "l2_code": "T1.06",
+      "note": "v1.1 有『目标检测』无『目标跟踪』"
+    }
+  ],
+  "new_terms": [
+    {
+      "term": "ROS2",
+      "l3_code": "T5.01.01",
+      "type": "组合词",
+      "reason": "ASCII 词边界导致 ros 匹配不上 ros2，直接漏报 134 份 JD"
+    },
+    {
+      "term": "ROS 2",
+      "l3_code": "T5.01.01",
+      "type": "组合词"
+    },
+    {
+      "term": "ros1",
+      "l3_code": "T5.01.01",
+      "type": "组合词"
+    },
+    {
+      "term": "roscpp",
+      "l3_code": "T5.01.01",
+      "type": "组合词"
+    },
+    {
+      "term": "rclcpp",
+      "l3_code": "T5.01.01",
+      "type": "组合词"
+    },
+    {
+      "term": "rclpy",
+      "l3_code": "T5.01.01",
+      "type": "组合词"
+    },
+    {
+      "term": "rosbag",
+      "l3_code": "T5.01.01",
+      "type": "组合词"
+    },
+    {
+      "term": "nav2",
+      "l3_code": "T5.01.01",
+      "type": "组合词"
+    },
+    {
+      "term": "EtherCAT",
+      "l3_code": "T5.02.02",
+      "type": "组合词"
+    },
+    {
+      "term": "CANopen",
+      "l3_code": "T5.02.02",
+      "type": "组合词"
+    },
+    {
+      "term": "CAN总线",
+      "l3_code": "T5.02.02",
+      "type": "组合词"
+    },
+    {
+      "term": "CAN通信",
+      "l3_code": "T5.02.02",
+      "type": "组合词"
+    },
+    {
+      "term": "CAN bus",
+      "l3_code": "T5.02.02",
+      "type": "组合词"
+    },
+    {
+      "term": "PROFINET",
+      "l3_code": "T5.02.02",
+      "type": "组合词"
+    },
+    {
+      "term": "Modbus",
+      "l3_code": "T5.02.02",
+      "type": "组合词"
+    },
+    {
+      "term": "现场总线",
+      "l3_code": "T5.02.02",
+      "type": "细分词"
+    },
+    {
+      "term": "工业总线",
+      "l3_code": "T5.02.02",
+      "type": "细分词"
+    },
+    {
+      "term": "实时以太网",
+      "l3_code": "T5.02.02",
+      "type": "细分词"
+    },
+    {
+      "term": "DDS",
+      "l3_code": "T5.02.03",
+      "type": "组合词"
+    },
+    {
+      "term": "FastDDS",
+      "l3_code": "T5.02.03",
+      "type": "组合词"
+    },
+    {
+      "term": "CycloneDDS",
+      "l3_code": "T5.02.03",
+      "type": "组合词"
+    },
+    {
+      "term": "ZeroMQ",
+      "l3_code": "T5.02.03",
+      "type": "组合词"
+    },
+    {
+      "term": "gRPC",
+      "l3_code": "T5.02.03",
+      "type": "组合词"
+    },
+    {
+      "term": "MQTT",
+      "l3_code": "T5.02.03",
+      "type": "组合词"
+    },
+    {
+      "term": "Protobuf",
+      "l3_code": "T5.02.03",
+      "type": "组合词"
+    },
+    {
+      "term": "通信中间件",
+      "l3_code": "T5.02.03",
+      "type": "细分词"
+    },
+    {
+      "term": "PyTorch",
+      "l3_code": "T5.03.02",
+      "type": "组合词"
+    },
+    {
+      "term": "TensorFlow",
+      "l3_code": "T5.03.02",
+      "type": "组合词"
+    },
+    {
+      "term": "LibTorch",
+      "l3_code": "T5.03.02",
+      "type": "组合词"
+    },
+    {
+      "term": "PaddlePaddle",
+      "l3_code": "T5.03.02",
+      "type": "组合词"
+    },
+    {
+      "term": "MindSpore",
+      "l3_code": "T5.03.02",
+      "type": "组合词"
+    },
+    {
+      "term": "HuggingFace",
+      "l3_code": "T5.03.02",
+      "type": "组合词"
+    },
+    {
+      "term": "Hugging Face",
+      "l3_code": "T5.03.02",
+      "type": "组合词"
+    },
+    {
+      "term": "深度学习框架",
+      "l3_code": "T5.03.02",
+      "type": "细分词"
+    },
+    {
+      "term": "TensorRT",
+      "l3_code": "T5.03.03",
+      "type": "组合词"
+    },
+    {
+      "term": "ONNX",
+      "l3_code": "T5.03.03",
+      "type": "组合词"
+    },
+    {
+      "term": "ONNX Runtime",
+      "l3_code": "T5.03.03",
+      "type": "组合词"
+    },
+    {
+      "term": "OpenVINO",
+      "l3_code": "T5.03.03",
+      "type": "组合词"
+    },
+    {
+      "term": "TVM",
+      "l3_code": "T5.03.03",
+      "type": "组合词"
+    },
+    {
+      "term": "ncnn",
+      "l3_code": "T5.03.03",
+      "type": "组合词"
+    },
+    {
+      "term": "RKNN",
+      "l3_code": "T5.03.03",
+      "type": "组合词"
+    },
+    {
+      "term": "TFLite",
+      "l3_code": "T5.03.03",
+      "type": "组合词"
+    },
+    {
+      "term": "端侧部署",
+      "l3_code": "T5.03.03",
+      "type": "细分词"
+    },
+    {
+      "term": "模型部署",
+      "l3_code": "T5.03.03",
+      "type": "细分词"
+    },
+    {
+      "term": "推理引擎",
+      "l3_code": "T5.03.03",
+      "type": "细分词"
+    },
+    {
+      "term": "推理加速",
+      "l3_code": "T5.03.03",
+      "type": "细分词"
+    },
+    {
+      "term": "推理优化",
+      "l3_code": "T5.03.03",
+      "type": "细分词"
+    },
+    {
+      "term": "模型量化",
+      "l3_code": "T5.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "量化感知训练",
+      "l3_code": "T5.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "训练后量化",
+      "l3_code": "T5.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "INT8",
+      "l3_code": "T5.03.04",
+      "type": "指标词"
+    },
+    {
+      "term": "FP16",
+      "l3_code": "T5.03.04",
+      "type": "指标词"
+    },
+    {
+      "term": "FP8",
+      "l3_code": "T5.03.04",
+      "type": "指标词"
+    },
+    {
+      "term": "PTQ",
+      "l3_code": "T5.03.04",
+      "type": "组合词"
+    },
+    {
+      "term": "QAT",
+      "l3_code": "T5.03.04",
+      "type": "组合词"
+    },
+    {
+      "term": "模型剪枝",
+      "l3_code": "T5.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "知识蒸馏",
+      "l3_code": "T5.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "模型压缩",
+      "l3_code": "T5.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "CUDA",
+      "l3_code": "T5.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "cuDNN",
+      "l3_code": "T5.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "CUTLASS",
+      "l3_code": "T5.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "NCCL",
+      "l3_code": "T5.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "算子优化",
+      "l3_code": "T5.03.05",
+      "type": "细分词"
+    },
+    {
+      "term": "算子开发",
+      "l3_code": "T5.03.05",
+      "type": "细分词"
+    },
+    {
+      "term": "GPU加速",
+      "l3_code": "T5.03.05",
+      "type": "细分词"
+    },
+    {
+      "term": "vLLM",
+      "l3_code": "T5.03.06",
+      "type": "组合词"
+    },
+    {
+      "term": "SGLang",
+      "l3_code": "T5.03.06",
+      "type": "组合词"
+    },
+    {
+      "term": "TensorRT-LLM",
+      "l3_code": "T5.03.06",
+      "type": "组合词"
+    },
+    {
+      "term": "DeepSpeed",
+      "l3_code": "T5.03.06",
+      "type": "组合词"
+    },
+    {
+      "term": "Megatron",
+      "l3_code": "T5.03.06",
+      "type": "组合词"
+    },
+    {
+      "term": "LMDeploy",
+      "l3_code": "T5.03.06",
+      "type": "组合词"
+    },
+    {
+      "term": "KV Cache",
+      "l3_code": "T5.03.06",
+      "type": "组合词"
+    },
+    {
+      "term": "分布式训练",
+      "l3_code": "T5.03.06",
+      "type": "细分词"
+    },
+    {
+      "term": "OpenCV",
+      "l3_code": "T5.03.07",
+      "type": "组合词"
+    },
+    {
+      "term": "PCL",
+      "l3_code": "T5.03.07",
+      "type": "组合词"
+    },
+    {
+      "term": "Open3D",
+      "l3_code": "T5.03.07",
+      "type": "组合词"
+    },
+    {
+      "term": "Eigen",
+      "l3_code": "T5.03.07",
+      "type": "组合词"
+    },
+    {
+      "term": "Ceres",
+      "l3_code": "T5.03.07",
+      "type": "组合词"
+    },
+    {
+      "term": "g2o",
+      "l3_code": "T5.03.07",
+      "type": "组合词"
+    },
+    {
+      "term": "GTSAM",
+      "l3_code": "T5.03.07",
+      "type": "组合词"
+    },
+    {
+      "term": "MLOps",
+      "l3_code": "T5.03.08",
+      "type": "组合词"
+    },
+    {
+      "term": "MLflow",
+      "l3_code": "T5.03.08",
+      "type": "组合词"
+    },
+    {
+      "term": "DVC",
+      "l3_code": "T5.03.08",
+      "type": "组合词"
+    },
+    {
+      "term": "wandb",
+      "l3_code": "T5.03.08",
+      "type": "组合词"
+    },
+    {
+      "term": "模型版本管理",
+      "l3_code": "T5.03.08",
+      "type": "细分词"
+    },
+    {
+      "term": "数据版本管理",
+      "l3_code": "T5.03.08",
+      "type": "细分词"
+    },
+    {
+      "term": "正运动学",
+      "l3_code": "T1.03.14",
+      "type": "细分词"
+    },
+    {
+      "term": "逆运动学",
+      "l3_code": "T1.03.14",
+      "type": "细分词"
+    },
+    {
+      "term": "运动学正逆解",
+      "l3_code": "T1.03.14",
+      "type": "细分词"
+    },
+    {
+      "term": "运动学建模",
+      "l3_code": "T1.03.14",
+      "type": "细分词"
+    },
+    {
+      "term": "动力学建模",
+      "l3_code": "T1.03.14",
+      "type": "细分词"
+    },
+    {
+      "term": "雅可比",
+      "l3_code": "T1.03.14",
+      "type": "细分词"
+    },
+    {
+      "term": "URDF",
+      "l3_code": "T1.03.14",
+      "type": "组合词"
+    },
+    {
+      "term": "DH参数",
+      "l3_code": "T1.03.14",
+      "type": "组合词"
+    },
+    {
+      "term": "碰撞检测",
+      "l3_code": "T1.03.15",
+      "type": "细分词"
+    },
+    {
+      "term": "避障",
+      "l3_code": "T1.03.15",
+      "type": "细分词"
+    },
+    {
+      "term": "动态避障",
+      "l3_code": "T1.03.15",
+      "type": "细分词"
+    },
+    {
+      "term": "碰撞避免",
+      "l3_code": "T1.03.15",
+      "type": "细分词"
+    },
+    {
+      "term": "视觉伺服",
+      "l3_code": "T1.03.16",
+      "type": "细分词"
+    },
+    {
+      "term": "visual servoing",
+      "l3_code": "T1.03.16",
+      "type": "组合词"
+    },
+    {
+      "term": "PBVS",
+      "l3_code": "T1.03.16",
+      "type": "组合词"
+    },
+    {
+      "term": "IBVS",
+      "l3_code": "T1.03.16",
+      "type": "组合词"
+    },
+    {
+      "term": "目标跟踪",
+      "l3_code": "T1.06.11",
+      "type": "细分词"
+    },
+    {
+      "term": "多目标跟踪",
+      "l3_code": "T1.06.11",
+      "type": "细分词"
+    },
+    {
+      "term": "DeepSORT",
+      "l3_code": "T1.06.11",
+      "type": "组合词"
+    },
+    {
+      "term": "ByteTrack",
+      "l3_code": "T1.06.11",
+      "type": "组合词"
+    },
+    {
+      "term": "MPC",
+      "l3_code": "T1.03.02",
+      "type": "组合词"
+    },
+    {
+      "term": "模型预测控制",
+      "l3_code": "T1.03.02",
+      "type": "细分词"
+    },
+    {
+      "term": "WBC",
+      "l3_code": "T1.03.01",
+      "type": "组合词"
+    },
+    {
+      "term": "MoveIt",
+      "l3_code": "T1.03.04",
+      "type": "组合词"
+    },
+    {
+      "term": "PPO",
+      "l3_code": "T1.05.02",
+      "type": "组合词"
+    },
+    {
+      "term": "SAC",
+      "l3_code": "T1.05.02",
+      "type": "组合词"
+    },
+    {
+      "term": "DDPG",
+      "l3_code": "T1.05.02",
+      "type": "组合词"
+    },
+    {
+      "term": "TD3",
+      "l3_code": "T1.05.02",
+      "type": "组合词"
+    },
+    {
+      "term": "DQN",
+      "l3_code": "T1.05.02",
+      "type": "组合词"
+    },
+    {
+      "term": "奖励函数",
+      "l3_code": "T1.05.02",
+      "type": "细分词"
+    },
+    {
+      "term": "Diffusion Policy",
+      "l3_code": "T1.05.03",
+      "type": "组合词"
+    },
+    {
+      "term": "行为克隆",
+      "l3_code": "T1.05.03",
+      "type": "细分词"
+    },
+    {
+      "term": "action chunking",
+      "l3_code": "T1.01.11",
+      "type": "组合词",
+      "reason": "承接被下线的『ACT』"
+    },
+    {
+      "term": "IMU",
+      "l3_code": "T2.04.01",
+      "type": "组合词"
+    },
+    {
+      "term": "惯性测量单元",
+      "l3_code": "T2.04.01",
+      "type": "细分词"
+    },
+    {
+      "term": "陀螺仪",
+      "l3_code": "T2.04.01",
+      "type": "细分词"
+    },
+    {
+      "term": "加速度计",
+      "l3_code": "T2.04.01",
+      "type": "细分词"
+    },
+    {
+      "term": "惯导",
+      "l3_code": "T2.04.01",
+      "type": "细分词"
+    },
+    {
+      "term": "手眼标定",
+      "l3_code": "T2.05.02",
+      "type": "细分词"
+    },
+    {
+      "term": "相机标定",
+      "l3_code": "T2.05.02",
+      "type": "细分词"
+    },
+    {
+      "term": "内参标定",
+      "l3_code": "T2.05.02",
+      "type": "细分词"
+    },
+    {
+      "term": "外参标定",
+      "l3_code": "T2.05.02",
+      "type": "细分词"
+    },
+    {
+      "term": "联合标定",
+      "l3_code": "T2.05.02",
+      "type": "细分词"
+    },
+    {
+      "term": "时间同步",
+      "l3_code": "T2.05.02",
+      "type": "细分词"
+    },
+    {
+      "term": "Kalibr",
+      "l3_code": "T2.05.02",
+      "type": "组合词"
+    },
+    {
+      "term": "NeRF",
+      "l3_code": "T2.05.03",
+      "type": "组合词"
+    },
+    {
+      "term": "三维重建",
+      "l3_code": "T2.05.03",
+      "type": "细分词"
+    },
+    {
+      "term": "点云配准",
+      "l3_code": "T2.05.03",
+      "type": "细分词"
+    },
+    {
+      "term": "3DGS",
+      "l3_code": "T4.03.01",
+      "type": "组合词"
+    },
+    {
+      "term": "高斯泼溅",
+      "l3_code": "T4.03.01",
+      "type": "细分词"
+    },
+    {
+      "term": "MuJoCo",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "Isaac Sim",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "Isaac Gym",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "Isaac Lab",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "Gazebo",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "PyBullet",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "Webots",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "CoppeliaSim",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "SAPIEN",
+      "l3_code": "T4.03.05",
+      "type": "组合词"
+    },
+    {
+      "term": "仿真环境",
+      "l3_code": "T4.03.05",
+      "type": "细分词"
+    },
+    {
+      "term": "Sim2Real",
+      "l3_code": "T4.04.12",
+      "type": "组合词"
+    },
+    {
+      "term": "sim to real",
+      "l3_code": "T4.04.12",
+      "type": "组合词"
+    },
+    {
+      "term": "虚实迁移",
+      "l3_code": "T4.04.12",
+      "type": "细分词"
+    },
+    {
+      "term": "仿真到现实",
+      "l3_code": "T4.04.12",
+      "type": "细分词"
+    },
+    {
+      "term": "RTOS",
+      "l3_code": "T3.08.03",
+      "type": "组合词"
+    },
+    {
+      "term": "FreeRTOS",
+      "l3_code": "T3.08.03",
+      "type": "组合词"
+    },
+    {
+      "term": "实时操作系统",
+      "l3_code": "T3.08.03",
+      "type": "细分词"
+    },
+    {
+      "term": "STM32",
+      "l3_code": "T3.08.03",
+      "type": "型号词"
+    },
+    {
+      "term": "MCU",
+      "l3_code": "T3.08.03",
+      "type": "组合词"
+    },
+    {
+      "term": "单片机",
+      "l3_code": "T3.08.03",
+      "type": "细分词"
+    },
+    {
+      "term": "嵌入式Linux",
+      "l3_code": "T3.08.03",
+      "type": "组合词"
+    },
+    {
+      "term": "BSP",
+      "l3_code": "T3.08.03",
+      "type": "组合词"
+    },
+    {
+      "term": "交叉编译",
+      "l3_code": "T3.08.03",
+      "type": "细分词"
+    },
+    {
+      "term": "Jetson",
+      "l3_code": "T3.08.04",
+      "type": "型号词"
+    },
+    {
+      "term": "Orin",
+      "l3_code": "T3.08.04",
+      "type": "型号词"
+    },
+    {
+      "term": "AGX Orin",
+      "l3_code": "T3.08.04",
+      "type": "型号词"
+    },
+    {
+      "term": "Orin NX",
+      "l3_code": "T3.08.04",
+      "type": "型号词"
+    },
+    {
+      "term": "FPGA",
+      "l3_code": "T3.08.04",
+      "type": "组合词"
+    },
+    {
+      "term": "端侧算力",
+      "l3_code": "T3.08.04",
+      "type": "细分词"
+    },
+    {
+      "term": "NPU",
+      "l3_code": "T3.08.01",
+      "type": "组合词"
+    },
+    {
+      "term": "FOC",
+      "l3_code": "T3.05.04",
+      "type": "组合词"
+    },
+    {
+      "term": "PMSM",
+      "l3_code": "T3.05.04",
+      "type": "组合词"
+    },
+    {
+      "term": "BLDC",
+      "l3_code": "T3.05.04",
+      "type": "组合词"
+    },
+    {
+      "term": "无刷电机",
+      "l3_code": "T3.05.04",
+      "type": "细分词"
+    },
+    {
+      "term": "永磁同步电机",
+      "l3_code": "T3.05.04",
+      "type": "细分词"
+    },
+    {
+      "term": "磁场定向控制",
+      "l3_code": "T3.05.04",
+      "type": "细分词"
+    },
+    {
+      "term": "电机控制算法",
+      "l3_code": "T3.05.04",
+      "type": "细分词"
+    },
+    {
+      "term": "AGV",
+      "l3_code": "T3.03.08",
+      "type": "组合词"
+    },
+    {
+      "term": "humanoid",
+      "l3_code": "T3.01.08",
+      "type": "组合词"
+    },
+    {
+      "term": "VIO",
+      "l3_code": "T1.04.04",
+      "type": "组合词"
+    },
+    {
+      "term": "视觉惯性里程计",
+      "l3_code": "T1.04.04",
+      "type": "细分词"
+    },
+    {
+      "term": "组合导航",
+      "l3_code": "T1.04.04",
+      "type": "细分词"
+    },
+    {
+      "term": "RTK",
+      "l3_code": "T1.04.04",
+      "type": "组合词"
+    },
+    {
+      "term": "UWB",
+      "l3_code": "T1.04.04",
+      "type": "组合词"
+    },
+    {
+      "term": "视觉SLAM",
+      "l3_code": "T1.04.01",
+      "type": "组合词"
+    },
+    {
+      "term": "vSLAM",
+      "l3_code": "T1.04.01",
+      "type": "组合词"
+    },
+    {
+      "term": "ORB-SLAM",
+      "l3_code": "T1.04.01",
+      "type": "组合词"
+    },
+    {
+      "term": "Cartographer",
+      "l3_code": "T1.04.01",
+      "type": "组合词"
+    },
+    {
+      "term": "回环检测",
+      "l3_code": "T1.04.01",
+      "type": "细分词"
+    },
+    {
+      "term": "RLDS",
+      "l3_code": "T4.01.04",
+      "type": "组合词"
+    },
+    {
+      "term": "Open X-Embodiment",
+      "l3_code": "T4.01.04",
+      "type": "组合词"
+    },
+    {
+      "term": "第三方检测",
+      "l3_code": "T6.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "型式试验",
+      "l3_code": "T6.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "认证测试",
+      "l3_code": "T6.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "检测标准",
+      "l3_code": "T6.03.04",
+      "type": "细分词"
+    },
+    {
+      "term": "汽车制造",
+      "l3_code": "T7.01.04",
+      "type": "细分词",
+      "reason": "承接被下线的『汽车』"
+    },
+    {
+      "term": "整车制造",
+      "l3_code": "T7.01.04",
+      "type": "细分词"
+    },
+    {
+      "term": "汽车产线",
+      "l3_code": "T7.01.04",
+      "type": "细分词"
+    },
+    {
+      "term": "车规级",
+      "l3_code": "T7.01.04",
+      "type": "细分词"
+    },
+    {
+      "term": "汽车电子",
+      "l3_code": "T7.01.04",
+      "type": "细分词"
+    },
+    {
+      "term": "智能仓储",
+      "l3_code": "T7.02.02",
+      "type": "细分词",
+      "reason": "承接被下线的『仓储物流』"
+    },
+    {
+      "term": "仓储机器人",
+      "l3_code": "T7.02.02",
+      "type": "细分词"
+    },
+    {
+      "term": "机器人训练场",
+      "l3_code": "T4.01.02",
+      "type": "细分词",
+      "reason": "承接被下线的『训练场』"
+    },
+    {
+      "term": "具身训练场",
+      "l3_code": "T4.01.02",
+      "type": "细分词"
+    },
+    {
+      "term": "数据训练场",
+      "l3_code": "T4.01.02",
+      "type": "细分词"
+    }
+  ],
+  "already_present_in_v1_1": [
+    {
+      "term": "Sim-to-Real",
+      "l3_code": "T4.04.12",
+      "note": "v1.1 已收录该词形，本次仅下线对应宽词，无需新增"
+    },
+    {
+      "term": "仓储自动化",
+      "l3_code": "T7.02.02",
+      "note": "v1.1 已收录该词形，本次仅下线对应宽词，无需新增"
+    },
+    {
+      "term": "双足机器人",
+      "l3_code": "T3.01.08",
+      "note": "v1.1 已收录该词形，本次仅下线对应宽词，无需新增"
+    },
+    {
+      "term": "商用服务机器人",
+      "l3_code": "T7.03.03",
+      "note": "v1.1 已收录该词形，本次仅下线对应宽词，无需新增"
+    },
+    {
+      "term": "扩散策略",
+      "l3_code": "T1.05.03",
+      "note": "v1.1 已收录该词形，本次仅下线对应宽词，无需新增"
+    },
+    {
+      "term": "教育机器人",
+      "l3_code": "T7.07.03",
+      "note": "v1.1 已收录该词形，本次仅下线对应宽词，无需新增"
+    },
+    {
+      "term": "检测认证",
+      "l3_code": "T6.03.04",
+      "note": "v1.1 已收录该词形，本次仅下线对应宽词，无需新增"
+    },
+    {
+      "term": "激光SLAM",
+      "l3_code": "T1.04.01",
+      "note": "v1.1 已收录该词形，本次仅下线对应宽词，无需新增"
+    }
+  ],
+  "pending_next_version": [
+    {
+      "action": "retire",
+      "term": "汽车电子",
+      "l3_code": "T7.01.04",
+      "reason": "映射错误：汽车电子（车载电子部件/行业方向）≠ 汽车制造。v1.2 评估中它单独贡献 6 条误报，是新增词里最大的误报来源。发现于 C-7 评估，按版本纪律不回改已发布的 v1.2，留待下一版。"
+    }
+  ]
+}

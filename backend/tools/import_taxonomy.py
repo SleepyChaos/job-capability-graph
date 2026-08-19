@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--version-name", required=True)
     parser.add_argument("--effective-date", type=date.fromisoformat, required=True)
     parser.add_argument("--domain-version", required=True)
+    parser.add_argument("--change-summary")
     return parser.parse_args()
 
 
@@ -41,6 +42,7 @@ def main() -> None:
             version_name=args.version_name,
             effective_date=args.effective_date,
             domain_version=args.domain_version,
+            change_summary=args.change_summary,
         )
     print(json.dumps(asdict(result), ensure_ascii=False))
 

@@ -31,7 +31,11 @@ from app.modules.talent.models import (
     CandidateSkillEvidence,
     ResumeDocument,
 )
-from app.modules.taxonomy.models import TechnologyAlias, TechnologyNode
+from app.modules.taxonomy.models import (
+    TechnologyAlias,
+    TechnologyNode,
+    TechnologyTaxonomyVersion,
+)
 
 PROFILE_PARSER_VERSION = "candidate_profile_rules_v1"
 MATCH_ALGORITHM_VERSION = "evidence_match_p1_v1"
@@ -880,8 +884,20 @@ def _rule_match_explanation(result, dimensions: list[dict], gaps) -> str:
 
 
 def _extract_skill_evidence(db: Session, version: CandidateProfileVersion, text: str) -> None:
+    # 词表多版并存后必须限定版本，否则同一技能会被 v1.1 与 v1.2 的别名各命中一次。
+    taxonomy_version_id = db.scalar(
+        select(TechnologyTaxonomyVersion.taxonomy_version_id)
+        .where(TechnologyTaxonomyVersion.version_status_code == "active")
+        .order_by(TechnologyTaxonomyVersion.effective_date.desc())
+        .limit(1)
+    )
     active_nodes = list(
-        db.scalars(select(TechnologyNode).where(TechnologyNode.governance_status_code == "active"))
+        db.scalars(
+            select(TechnologyNode).where(
+                TechnologyNode.governance_status_code == "active",
+                TechnologyNode.taxonomy_version_id == taxonomy_version_id,
+            )
+        )
     )
     node_by_id = {node.technology_node_id: node for node in active_nodes}
     aliases = db.execute(
@@ -893,6 +909,7 @@ def _extract_skill_evidence(db: Session, version: CandidateProfileVersion, text:
         .where(
             TechnologyAlias.is_matchable.is_(True),
             TechnologyNode.governance_status_code == "active",
+            TechnologyNode.taxonomy_version_id == taxonomy_version_id,
         )
     ).all()
     lower_text = text.casefold()
@@ -1056,7 +1073,11 @@ def _cluster_requirement_profile(
             JobRequirement.requirement_type_code,
             JobRequirement.technology_node_id,
             JobRequirement.confidence_score,
-        ).where(JobRequirement.job_posting_id.in_(member_ids))
+        ).where(
+            JobRequirement.job_posting_id.in_(member_ids),
+            # 技术要求按词表版本并存，只取本次投影上下文那一版的节点。
+            JobRequirement.technology_node_id.in_(set(nodes) or {-1}),
+        )
     ).all()
     required: set[int] = set()
     bonus: set[int] = set()

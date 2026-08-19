@@ -129,10 +129,13 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert not first.already_published
         assert second.already_published
         assert parsing_first.parsed_job_count == 3718
-        assert parsing_first.review_job_count == 687
+        # 窗口 C-5 起歧义规则升到 v2：语境窗口从整段收紧到同句、检测/汽车/大模型三条规则
+        # 退场（对应词形已在 v1.2 下线），需复核的命中因此从 735 降到 126，
+        # 连带 review_job_count 从 687 降到 325。基线随规则版本一起更新。
+        assert parsing_first.review_job_count == 325
         assert parsing_first.responsibility_count == 16719
         assert parsing_first.assessment_count == 7591
-        assert parsing_first.ambiguity_review_count == 735
+        assert parsing_first.ambiguity_review_count == 126
         assert parsing_first.feature_count == 3718
         assert parsing_first.eligible_feature_count == 3534
         assert not parsing_first.already_completed
@@ -183,13 +186,18 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert all(technology["evidence"] for technology in detail.json()["technologies"])
         assert parsing_summary.status_code == 200
         assert parsing_summary.json()["run"]["parsed_job_count"] == 3718
-        assert parsing_summary.json()["ambiguity_review_count"] == 735
+        assert parsing_summary.json()["ambiguity_review_count"] == 126
         assert parsing_summary.json()["eligible_feature_count"] == 3534
         assert parsing_reviews.status_code == 200
-        assert parsing_reviews.json()["total"] == 687
+        assert parsing_reviews.json()["total"] == 325
         assert parsing_excluded.status_code == 200
         assert parsing_excluded.json()["total"] == 184
         assert parsing_detail.status_code == 200
         assert parsing_detail.json()["cluster_feature"]["version"] == "cluster_features_v1"
         assert ambiguity_rules.status_code == 200
-        assert len(ambiguity_rules.json()) == 4
+        # v2 只保留 3 条在用规则（控制系统/多模态大模型/基础模型）；检测/汽车/大模型三条
+        # 已随词形下线而退场（存量库里的旧行会被停用，全新库直接不建）。
+        assert sum(item["active"] for item in ambiguity_rules.json()) == 3
+        assert {item["context_scope"] for item in ambiguity_rules.json() if item["active"]} == {
+            "sentence"
+        }

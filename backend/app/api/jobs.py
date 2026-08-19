@@ -21,9 +21,20 @@ from app.modules.job.models import (
     Organization,
     SourceDocumentVersion,
 )
-from app.modules.taxonomy.models import TechnologyNode
+from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
+
+
+def current_taxonomy_version_id(db: Session) -> int:
+    """技术要求按词表版本并存，展示口径统一取生效日期最新的 active 版本。"""
+    version_id = db.scalar(
+        select(TechnologyTaxonomyVersion.taxonomy_version_id)
+        .where(TechnologyTaxonomyVersion.version_status_code == "active")
+        .order_by(TechnologyTaxonomyVersion.effective_date.desc())
+        .limit(1)
+    )
+    return version_id if version_id is not None else -1
 
 
 class JobSummaryResponse(BaseModel):
@@ -99,6 +110,7 @@ def duplicate_group_subquery():
 
 @router.get("/summary", response_model=JobSummaryResponse)
 def job_summary(db: Annotated[Session, Depends(get_db)]) -> JobSummaryResponse:
+    taxonomy_version_id = current_taxonomy_version_id(db)
     return JobSummaryResponse(
         total_jobs=db.scalar(select(func.count()).select_from(JobPosting)) or 0,
         organization_count=db.scalar(select(func.count()).select_from(Organization)) or 0,
@@ -124,10 +136,17 @@ def job_summary(db: Annotated[Session, Depends(get_db)]) -> JobSummaryResponse:
         )
         or 0,
         technology_covered_job_count=db.scalar(
-            select(func.count(func.distinct(JobRequirement.job_posting_id)))
+            select(func.count(func.distinct(JobRequirement.job_posting_id))).where(
+                JobRequirement.taxonomy_version_id == taxonomy_version_id
+            )
         )
         or 0,
-        requirement_count=db.scalar(select(func.count()).select_from(JobRequirement)) or 0,
+        requirement_count=db.scalar(
+            select(func.count())
+            .select_from(JobRequirement)
+            .where(JobRequirement.taxonomy_version_id == taxonomy_version_id)
+        )
+        or 0,
     )
 
 
@@ -150,6 +169,7 @@ def list_jobs(
             JobRequirement.job_posting_id.label("requirement_job_id"),
             func.count(func.distinct(JobRequirement.technology_node_id)).label("technology_count"),
         )
+        .where(JobRequirement.taxonomy_version_id == current_taxonomy_version_id(db))
         .group_by(JobRequirement.job_posting_id)
         .subquery()
     )
@@ -194,6 +214,7 @@ def list_jobs(
                 )
                 .where(
                     JobRequirement.job_posting_id == JobPosting.job_posting_id,
+                    JobRequirement.taxonomy_version_id == current_taxonomy_version_id(db),
                     TechnologyNode.technology_code == technology_code,
                 )
             )
@@ -268,7 +289,10 @@ def job_detail(job_code: str, db: Annotated[Session, Depends(get_db)]) -> JobDet
             TechnologyNode,
             TechnologyNode.technology_node_id == JobRequirement.technology_node_id,
         )
-        .where(JobRequirement.job_posting_id == job.job_posting_id)
+        .where(
+            JobRequirement.job_posting_id == job.job_posting_id,
+            JobRequirement.taxonomy_version_id == current_taxonomy_version_id(db),
+        )
         .order_by(JobRequirement.requirement_no)
     ).all()
     technologies = []

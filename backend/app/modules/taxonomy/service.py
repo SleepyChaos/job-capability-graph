@@ -33,11 +33,17 @@ DOMAIN_COLORS = {
     "T7": "#94a3b8",
 }
 
-EXPECTED_SHEET_COUNTS = {
-    "L1技术域": 7,
-    "L2技术类": 43,
-    "L3技术点": 229,
-    "L4技术词": 1872,
+SHEET_NAMES = ("L1技术域", "L2技术类", "L3技术点", "L4技术词")
+
+# 只对已冻结的历史版本卡死行数，作为回归护栏；治理新版的行数由变更集决定，
+# 不在这里写死（否则每次升版都要改代码）。
+EXPECTED_SHEET_COUNTS_BY_VERSION = {
+    "v1.1": {
+        "L1技术域": 7,
+        "L2技术类": 43,
+        "L3技术点": 229,
+        "L4技术词": 1872,
+    },
 }
 
 REQUIRED_FIELDS = {
@@ -98,6 +104,7 @@ class TaxonomyImportService:
         version_name: str,
         effective_date: date,
         domain_version: str,
+        change_summary: str | None = None,
     ) -> TaxonomyImportResult:
         import_run = self.session.get(FileImportRun, file_import_run_id)
         if import_run is None:
@@ -113,14 +120,14 @@ class TaxonomyImportService:
             return self._result(existing_version, already_published=True)
 
         rows = self._load_rows(import_run.file_asset_id)
-        self._validate(rows)
+        self._validate(rows, version_code)
         version = TechnologyTaxonomyVersion(
             version_code=version_code,
             version_name=version_name,
             source_file_asset_id=import_run.file_asset_id,
             effective_date=effective_date,
             version_status_code="draft",
-            change_summary="由技术词主数据工作簿v1.1首次可追溯导入。",
+            change_summary=change_summary or f"由技术词主数据工作簿{version_code}可追溯导入。",
         )
         self.session.add(version)
         self.session.flush()
@@ -234,7 +241,7 @@ class TaxonomyImportService:
                         "source_hit": payload.get("命中来源"),
                         "source_detail": payload.get("来源明细(留痕)"),
                     },
-                    is_matchable=source_type != "碎片词",
+                    is_matchable=self._is_matchable(payload, source_type),
                 )
             )
             self._link_domain(node, domains[domain_code], source_row)
@@ -256,14 +263,18 @@ class TaxonomyImportService:
                     .order_by(SpreadsheetRow.source_row_number)
                 )
             )
-            for sheet in EXPECTED_SHEET_COUNTS
+            for sheet in SHEET_NAMES
         }
 
-    def _validate(self, rows: dict[str, list[SpreadsheetRow]]) -> None:
+    def _validate(self, rows: dict[str, list[SpreadsheetRow]], version_code: str) -> None:
         errors: list[str] = []
-        for sheet, expected_count in EXPECTED_SHEET_COUNTS.items():
-            if len(rows[sheet]) != expected_count:
+        expected_counts = EXPECTED_SHEET_COUNTS_BY_VERSION.get(version_code, {})
+        for sheet in SHEET_NAMES:
+            expected_count = expected_counts.get(sheet)
+            if expected_count is not None and len(rows[sheet]) != expected_count:
                 errors.append(f"{sheet}应有{expected_count}行，实际{len(rows[sheet])}行")
+            if not rows[sheet]:
+                errors.append(f"{sheet}没有任何数据行")
             for source_row in rows[sheet]:
                 missing = REQUIRED_FIELDS[sheet] - source_row.row_payload_json.keys()
                 if missing:
@@ -385,6 +396,18 @@ class TaxonomyImportService:
             domain_relation_count=relation_count,
             already_published=already_published,
         )
+
+    @staticmethod
+    def _is_matchable(payload: dict, source_type: str) -> bool:
+        """L4 是否参与 JD 匹配：工作簿写了「可匹配」列就以它为准，否则沿用碎片词规则。
+
+        词表治理需要在保留节点与谱系的前提下把过宽词下线（而不是删行），
+        这一列就是下线开关。
+        """
+        declared = payload.get("可匹配")
+        if declared in (None, ""):
+            return source_type != "碎片词"
+        return str(declared).strip().casefold() not in {"否", "no", "false", "0", "n"}
 
     @staticmethod
     def _text(payload: dict, field: str) -> str:

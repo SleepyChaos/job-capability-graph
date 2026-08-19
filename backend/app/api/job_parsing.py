@@ -112,12 +112,19 @@ class ParsedJobDetail(ParsedJobItem):
     cluster_feature: FeatureItem
 
 
+class AmbiguityMarker(BaseModel):
+    term: str
+    weight: float
+
+
 class AmbiguityRuleItem(BaseModel):
     rule_code: str
     alias: str
     technology_code: str
     technology_name: str
-    positive_markers: list[str]
+    # v2 起语境词带权重（需同句累计到阈值才放行）；v1 存的是纯字符串列表，按权重 1.0 兼容。
+    positive_markers: list[AmbiguityMarker]
+    context_scope: str
     missing_context_decision: str
     review_weight: Decimal
     version: str
@@ -374,7 +381,13 @@ def ambiguity_rules(db: Annotated[Session, Depends(get_db)]) -> list[AmbiguityRu
             alias=rule.normalized_alias,
             technology_code=technology.technology_code,
             technology_name=technology.technology_name,
-            positive_markers=rule.positive_markers_json,
+            positive_markers=[
+                AmbiguityMarker(term=item["term"], weight=float(item["weight"]))
+                if isinstance(item, dict)
+                else AmbiguityMarker(term=str(item), weight=1.0)
+                for item in rule.positive_markers_json
+            ],
+            context_scope="sentence" if rule.rule_version.endswith("_v2") else "segment",
             missing_context_decision=rule.missing_context_decision_code,
             review_weight=rule.review_weight,
             version=rule.rule_version,

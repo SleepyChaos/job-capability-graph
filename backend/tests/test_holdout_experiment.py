@@ -115,6 +115,7 @@ def _seed_experiment_world(session: Session) -> int:
     for index, posting in enumerate(similar):
         requirement = JobRequirement(
             job_posting_id=posting.job_posting_id,
+            taxonomy_version_id=parse_run.taxonomy_version_id,
             requirement_no=2,
             requirement_type_code="required",
             raw_term="合成机器视觉",

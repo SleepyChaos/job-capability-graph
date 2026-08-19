@@ -1,0 +1,36 @@
+{
+  "extension_id": "annotator_C_v1_2_new_code_extension",
+  "base_package": "jd_annotation_batch_001.annotator_C.json",
+  "purpose": "v1.2 新增 13 个 L3 技术点，原标注是在 v1.1 的 229 个代码空间里做的，这些新代码在真值侧永远缺席。本扩展只对新代码补标注，v1.1 代码上的原判定逐字不改。",
+  "annotator_id": "annotator_C_ai_single_pass",
+  "caveat": "⚠️ 本扩展在看过 v1.2 抽取结果之后完成，**与被评估系统不独立**，存在确认偏差，全口径数字系统性偏乐观。跨版本对比请以受限口径（限定在 v1.1 的 229 个代码上）为准。",
+  "conventions": [
+    "沿用原标注对非技术岗的口径：非技术岗 expected 集合保持为空，即使 JD 里出现技术词（例：jd_annotation_0048『AI模型部署经验者优先』不计入）。",
+    "泛义用词不计入：『输出量化报告』『设计量化性能指标』的『量化』不是模型量化；『产品生命周期』不是 MLOps。",
+    "芯片侧算子设计（jd_annotation_0059 数字IC-NPU）不计入 T5.03.05（GPU 算子优化），该 JD 的算力硬件语义由 T3.08 承接。"
+  ],
+  "additions": {
+    "T5.02.02": ["jd_annotation_0024", "jd_annotation_0025", "jd_annotation_0028", "jd_annotation_0041", "jd_annotation_0050", "jd_annotation_0077", "jd_annotation_0082", "jd_annotation_0088"],
+    "T5.02.03": ["jd_annotation_0004", "jd_annotation_0038", "jd_annotation_0050", "jd_annotation_0078", "jd_annotation_0088"],
+    "T5.03.02": ["jd_annotation_0001", "jd_annotation_0002", "jd_annotation_0005", "jd_annotation_0006", "jd_annotation_0007", "jd_annotation_0010", "jd_annotation_0015", "jd_annotation_0018", "jd_annotation_0035", "jd_annotation_0039", "jd_annotation_0071", "jd_annotation_0083", "jd_annotation_0086", "jd_annotation_0087", "jd_annotation_0089", "jd_annotation_0098"],
+    "T5.03.03": ["jd_annotation_0002", "jd_annotation_0004", "jd_annotation_0039", "jd_annotation_0071", "jd_annotation_0073", "jd_annotation_0086", "jd_annotation_0087"],
+    "T5.03.04": ["jd_annotation_0002", "jd_annotation_0004", "jd_annotation_0010", "jd_annotation_0035", "jd_annotation_0039", "jd_annotation_0071", "jd_annotation_0073", "jd_annotation_0086", "jd_annotation_0087"],
+    "T5.03.05": ["jd_annotation_0004", "jd_annotation_0010", "jd_annotation_0019", "jd_annotation_0035"],
+    "T5.03.06": ["jd_annotation_0004", "jd_annotation_0039", "jd_annotation_0087", "jd_annotation_0100"],
+    "T5.03.07": ["jd_annotation_0018"],
+    "T5.03.08": ["jd_annotation_0001", "jd_annotation_0039"],
+    "T1.03.14": ["jd_annotation_0005", "jd_annotation_0026", "jd_annotation_0028", "jd_annotation_0034", "jd_annotation_0041", "jd_annotation_0083", "jd_annotation_0084"],
+    "T1.03.15": ["jd_annotation_0034", "jd_annotation_0073", "jd_annotation_0084"],
+    "T1.03.16": ["jd_annotation_0034"],
+    "T1.06.11": ["jd_annotation_0044", "jd_annotation_0073"]
+  },
+  "notes": {
+    "jd_annotation_0002": "『压缩量化、推理加速』——量化未被抽到，词表只收了『模型量化』未收『压缩量化』",
+    "jd_annotation_0071": "同 0002",
+    "jd_annotation_0086": "『大模型微调、量化、轻量化部署』——同上",
+    "jd_annotation_0005": "『了解正向/逆向运动学』——词表收的是『正运动学/逆运动学』，词形差一个『向』字",
+    "jd_annotation_0026": "『机械结构设计、建模与运动学仿真』——结构岗但运动学是显式要求",
+    "jd_annotation_0041": "『了解机器人运动学基础』",
+    "jd_annotation_0083": "『了解机器人运动学、感知标定等基本知识』"
+  }
+}
