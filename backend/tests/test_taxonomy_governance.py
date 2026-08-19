@@ -107,3 +107,29 @@ def test_marker_weight_needs_two_weak_markers_or_one_strong() -> None:
 
 def test_marker_weight_accepts_legacy_string_markers() -> None:
     assert JobParsingService._marker_weight("具身智能方向", ["具身", "vla"]) == 1.0
+
+
+def test_occupation_gate_separates_non_embodied_roles() -> None:
+    """职能门判的是「非具身智能技术岗」，不是「非技术岗」。"""
+    from app.modules.extraction.occupation import classify_occupation
+
+    for title in ("灵巧手销售经理", "上海 整机产品经理", "上海 smt工艺工程师", "高级云运维工程师"):
+        decision = classify_occupation(title)
+        assert not decision.is_embodied_technical
+        assert decision.reason_code.startswith("non_embodied_occupation:")
+        assert decision.matched_term
+
+    technical = ("slam算法工程师", "嵌入式软件开发工程师", "机器人运控工程师")
+    for title in technical:
+        decision = classify_occupation(title)
+        assert decision.is_embodied_technical
+        assert decision.reason_code is None
+
+
+def test_occupation_gate_is_deterministic_across_multi_category_hits() -> None:
+    """同时命中多个类别时取字典序最小的类别，保证同输入同结果（可重放）。"""
+    from app.modules.extraction.occupation import classify_occupation
+
+    title = "销售项目经理"  # commercial(销售) 与 product_ops(项目经理) 同时命中
+    assert classify_occupation(title).category == "commercial"
+    assert classify_occupation(title) == classify_occupation(title)

@@ -11,10 +11,15 @@ class ClusteringParameters:
     top_k: int = 3
     max_cluster_size: int = 120
     max_block_candidates: int = 400
-    # 聚类入口的低信息量过滤门槛（任务组 3 机械版）：特征快照 technology_weights
-    # 条数低于该值的 JD 不参与聚类，进待治理池。默认 2 是临时值，窗口 B 词表
-    # 修复后需重新标定。0 表示不过滤。
-    min_technology_evidence_count: int = 2
+    # 聚类入口的低信息量过滤门槛：特征快照 technology_weights 条数低于该值的 JD
+    # 不参与聚类，进待治理池。0 表示不过滤。
+    #
+    # 默认 1 由窗口 B 在词表 v1.2 上重新标定得出（tools/calibrate_domain_gate.py）：
+    # 门槛 1 把单例簇 JD 比从 48.9% 压到 20.2%、一致性从 64.2 提到 83.6；再往上加门槛
+    # 单例比反而回升、灰区激增，是幸存者偏差而非质量改善。
+    # 注意：这个门槛管的是**聚类形态**，不是非技术岗过滤——后者由特征快照的
+    # 职能岗位判别（extraction/occupation.py）负责，两者口径不可混用。
+    min_technology_evidence_count: int = 1
 
     def as_dict(self) -> dict:
         return {
