@@ -62,8 +62,10 @@ from app.modules.job.models import (
 )
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
-# v1_6：候选粒度由技术对改为频繁闭项集（技术组合），输出与 v1_5 不同，必须隔离重放缓存。
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_6"
+# v1_6：候选粒度由技术对改为频繁闭项集（技术组合）。
+# v1_7：候选排序改为「JD 数 × 组合大小」（纯按支持度排会让名额被最小组合占满），
+#       且与既有岗位的重合度改按技术编码比较（节点 id 逐词表版本独立，跨版本恒为空集）。
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_7"
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
@@ -565,9 +567,7 @@ def _run_evidence_discovery(
     )
     maturity = _persist_maturity(db, run, selected_ids, parameters, ancestors)
     pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id, parameters)
-    ranked = sorted(pair_evidence.items(), key=lambda item: (-len(item[1].job_ids), item[0]))[
-        : int(parameters["max_communities"])
-    ]
+    ranked = _rank_candidate_combinations(pair_evidence, parameters)
     candidate_count = 0
     refreshed_count = 0
     skipped_count = 0
@@ -637,6 +637,26 @@ def _run_evidence_discovery(
         else:
             candidate_count += 1
     return candidate_count, task_count, refreshed_count, skipped_count
+
+
+def _rank_candidate_combinations(
+    evidence: dict[tuple[int, ...], _PairEvidence], parameters: dict
+) -> list[tuple[tuple[int, ...], _PairEvidence]]:
+    """给候选组合排序并截断到本次推演的名额。
+
+    **不能单纯按支持度排。** 项集的支持度沿子集单调不减，纯按 JD 数排序会让名额
+    几乎全被最小的组合占满——实测 100 个名额里 82 个是二元组，粒度提升等于没做。
+    这里按「覆盖的 JD 数 × 组合大小」排序：它同时奖励证据充足与能力集完整，
+    量纲上等价于该组合在语料中支撑的「技术-岗位」证据格点数。
+
+    同分时按技术 id 元组升序，保证可重放。
+    """
+    max_communities = int(parameters["max_communities"])
+    ranked = sorted(
+        evidence.items(),
+        key=lambda item: (-(len(item[1].job_ids) * len(item[0])), item[0]),
+    )
+    return ranked[:max_communities]
 
 
 def _collect_pair_evidence(
@@ -1542,6 +1562,11 @@ def _role_capability_profiles(
     据此判定"已被既有岗位覆盖"是错误的。这类版本不参与最近岗位比较。
 
     excluded_role_ids 用于反事实分析（如留出重发现实验）：把指定岗位当作不存在。
+
+    **按技术编码而非节点 id 比较。** 节点 id 是逐词表版本独立的，既有岗位版本的
+    技术要求可能产自旧词表，而本次推演的候选来自新词表；按 id 比较会得到恒为空的
+    交集，于是每个候选都被判成"全新岗位"。技术编码（T1.03.02 这类）跨版本稳定，
+    是唯一可比的口径。
     """
     versions = list(
         db.scalars(
@@ -1558,7 +1583,13 @@ def _role_capability_profiles(
             continue
         role_tech = set(
             db.scalars(
-                select(JobRoleVersionRequirement.technology_node_id).where(
+                select(TechnologyNode.technology_code)
+                .join(
+                    JobRoleVersionRequirement,
+                    JobRoleVersionRequirement.technology_node_id
+                    == TechnologyNode.technology_node_id,
+                )
+                .where(
                     JobRoleVersionRequirement.job_role_version_id == version.job_role_version_id
                 )
             )
@@ -1584,7 +1615,13 @@ def _nearest_role(
     技术词更多而错误地压低覆盖率——候选 {A,B} 面对要求 {A,B,C,D} 的岗位实际已被
     完全覆盖，Jaccard 却只有 0.5。
     """
-    target = set(technology_ids)
+    target = set(
+        db.scalars(
+            select(TechnologyNode.technology_code).where(
+                TechnologyNode.technology_node_id.in_(technology_ids or [-1])
+            )
+        )
+    )
     if not target:
         return None, 0.0
     best_role_id = None

@@ -208,6 +208,21 @@ def test_existing_role_coverage_is_asymmetric_and_ignores_thin_roles() -> None:
     engine = create_engine("sqlite+pysqlite:///:memory:")
     Base.metadata.create_all(engine)
     with Session(engine, expire_on_commit=False) as session:
+        # 覆盖率按技术编码比较（编码跨词表版本稳定，节点 id 不稳定），
+        # 所以节点必须真实存在，否则 id → 编码 的映射为空。
+        for node_id in (1, 2, 3, 4, 9):
+            session.add(
+                TechnologyNode(
+                    technology_node_id=node_id,
+                    taxonomy_version_id=1,
+                    technology_code=f"T9.99.{node_id:02d}",
+                    source_spreadsheet_row_id=node_id,
+                    level_code="L3",
+                    technology_name=f"技术{node_id}",
+                    normalized_name=f"技术{node_id}",
+                )
+            )
+        session.flush()
         role_ids = {}
         for name, techs in (("宽岗位", [1, 2, 3, 4]), ("单词岗位", [1])):
             role = JobRole(
