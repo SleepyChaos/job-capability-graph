@@ -16,6 +16,10 @@ from app.modules.extraction.job_structure import (
     cluster_tokens,
     task_parts,
 )
+from app.modules.extraction.occupation import (
+    OCCUPATION_RULE_VERSION,
+    classify_occupation,
+)
 from app.modules.job.models import (
     EvidenceSpan,
     JobClusterFeatureSnapshot,
@@ -41,7 +45,8 @@ from app.modules.taxonomy.models import (
 )
 
 PARSER_VERSION = "jd_structure_rules_v1"
-FEATURE_VERSION = "cluster_features_v1"
+# v2（窗口 B）：特征快照新增职能岗位判别，非具身智能技术岗不再进入聚类与画像聚合。
+FEATURE_VERSION = "cluster_features_v2"
 # v2（窗口 C-5）相对 v1 的三处变化：
 # 1. 语境窗口从「整个段落」收紧到「命中词所在的句子」——同段共现不再构成证据；
 # 2. 正向语境词带权重，需累计 ≥1.0 才放行，高频泛触发词（机器人/多模态）降权；
@@ -190,6 +195,7 @@ class JobParsingService:
         run_code = stable_code(
             "jdparse",
             f"{taxonomy.taxonomy_version_id}\0{parser_version}\0{AMBIGUITY_RULE_VERSION}"
+            f"\0{FEATURE_VERSION}\0{OCCUPATION_RULE_VERSION}"
             f"\0{target_date}\0{snapshot_hash}",
         )
         existing = self.session.scalar(select(JobParseRun).where(JobParseRun.run_code == run_code))
@@ -208,6 +214,7 @@ class JobParsingService:
                 "feature_version": FEATURE_VERSION,
                 "ambiguity_rule_version": AMBIGUITY_RULE_VERSION,
                 "ambiguity_rule_count": len(AMBIGUITY_RULE_DEFINITIONS),
+                "occupation_rule_version": OCCUPATION_RULE_VERSION,
             },
             input_job_count=len(jobs),
         )
@@ -648,6 +655,11 @@ class JobParsingService:
             exclusions.append("no_structured_cluster_signal")
         if quality_score < Decimal("25"):
             exclusions.append("parse_quality_too_low")
+        # 职能岗位判别：非具身智能技术岗（销售/产品职能/制造工艺/IT运维）不进入聚类与
+        # 岗位画像聚合。抽取结果与证据完整保留，只是不纳入统计——理由逐条写进排除原因。
+        occupation = classify_occupation(job.job_title_normalized)
+        if occupation.reason_code:
+            exclusions.append(occupation.reason_code)
         payload = {
             "title_tokens": title_tokens,
             "responsibility_tokens": responsibility_tokens,

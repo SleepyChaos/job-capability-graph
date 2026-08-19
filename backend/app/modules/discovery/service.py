@@ -5,7 +5,6 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from decimal import Decimal
-from itertools import combinations
 from uuid import uuid4
 
 from sqlalchemy import func, or_, select
@@ -34,6 +33,11 @@ from app.modules.discovery.algorithm import (
     estimate_transmission_lag,
     score_candidate,
 )
+from app.modules.discovery.itemsets import (
+    ITEMSET_ALGORITHM_VERSION,
+    assign_transactions,
+    mine_closed_itemsets,
+)
 from app.modules.discovery.models import (
     CandidateScoreComponent,
     CandidateTechnology,
@@ -58,12 +62,20 @@ from app.modules.job.models import (
 )
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_5"
+# v1_6：候选粒度由技术对改为频繁闭项集（技术组合）。
+# v1_7：候选排序改为「JD 数 × 组合大小」（纯按支持度排会让名额被最小组合占满），
+#       且与既有岗位的重合度改按技术编码比较（节点 id 逐词表版本独立，跨版本恒为空集）。
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_7"
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
 DEFAULT_PARAMETERS = {
+    # 候选组合的支持度下限（按 JD 条数计）与大小区间。
+    # 候选粒度从技术对提到技术组合后，覆盖率 |候选∩岗位|/|候选| 的分母不再恒为 2，
+    # classification_code 的 0.45/0.75 两个阈值才有分档能力。
     "min_pair_job_count": 2,
+    "min_combination_size": 2,
+    "max_combination_size": 5,
     "max_communities": 100,
     "exploration_floor": 0.15,
     # 里程碑挂在 L1/L2，而 JD 证据和候选都在 L3。没有直接证据的节点沿父链继承祖先证据，
@@ -554,10 +566,8 @@ def _run_evidence_discovery(
         )
     )
     maturity = _persist_maturity(db, run, selected_ids, parameters, ancestors)
-    pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id)
-    ranked = sorted(pair_evidence.items(), key=lambda item: (-len(item[1].job_ids), item[0]))[
-        : int(parameters["max_communities"])
-    ]
+    pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id, parameters)
+    ranked = _rank_candidate_combinations(pair_evidence, parameters)
     candidate_count = 0
     refreshed_count = 0
     skipped_count = 0
@@ -629,8 +639,32 @@ def _run_evidence_discovery(
     return candidate_count, task_count, refreshed_count, skipped_count
 
 
+def _rank_candidate_combinations(
+    evidence: dict[tuple[int, ...], _PairEvidence], parameters: dict
+) -> list[tuple[tuple[int, ...], _PairEvidence]]:
+    """给候选组合排序并截断到本次推演的名额。
+
+    **不能单纯按支持度排。** 项集的支持度沿子集单调不减，纯按 JD 数排序会让名额
+    几乎全被最小的组合占满——实测 100 个名额里 82 个是二元组，粒度提升等于没做。
+    这里按「覆盖的 JD 数 × 组合大小」排序：它同时奖励证据充足与能力集完整，
+    量纲上等价于该组合在语料中支撑的「技术-岗位」证据格点数。
+
+    同分时按技术 id 元组升序，保证可重放。
+    """
+    max_communities = int(parameters["max_communities"])
+    ranked = sorted(
+        evidence.items(),
+        key=lambda item: (-(len(item[1].job_ids) * len(item[0])), item[0]),
+    )
+    return ranked[:max_communities]
+
+
 def _collect_pair_evidence(
-    db: Session, run: DiscoveryRun, selected_ids: list[int], parse_run_id: int
+    db: Session,
+    run: DiscoveryRun,
+    selected_ids: list[int],
+    parse_run_id: int,
+    parameters: dict | None = None,
 ) -> dict[tuple[int, ...], _PairEvidence]:
     """证据必须与本次推演绑定的聚类运行同源。
 
@@ -679,15 +713,11 @@ def _collect_pair_evidence(
         sources[job_id].add(source_id)
     result = {}
     selected = set(selected_ids)
+    keys_by_job = _candidate_keys_by_job(jobs, selected, selected_ids, parameters or {})
     for job_id, (posting, technology_ids, evidence_ids) in jobs.items():
         if selected and not selected.issubset(technology_ids):
             continue
-        if selected:
-            keys = [tuple(selected_ids)]
-        elif len(technology_ids) == 1:
-            keys = [tuple(sorted(technology_ids))]
-        else:
-            keys = list(combinations(sorted(technology_ids), 2))
+        keys = keys_by_job.get(job_id, ())
         for key in keys:
             bucket = result.setdefault(key, _PairEvidence(set(), set(), set(), set(), [], {}))
             bucket.job_ids.add(job_id)
@@ -699,6 +729,38 @@ def _collect_pair_evidence(
             bucket.responsibilities.extend(responsibilities[job_id])
             bucket.evidence_job_ids.update({evidence_id: job_id for evidence_id in evidence_ids})
     return result
+
+
+def _candidate_keys_by_job(
+    jobs: dict[int, tuple[JobPosting, set[int], set[int]]],
+    selected: set[int],
+    selected_ids: list[int],
+    parameters: dict,
+) -> dict[int, tuple[tuple[int, ...], ...]]:
+    """决定每份 JD 的技术证据挂到哪些候选键上。
+
+    技术定向模式下键就是用户选定的组合，无须挖掘。自动模式下用频繁闭项集把候选
+    从「任意两个技术的共现」提到「反复共现的能力集合」——这是覆盖率测量能有分辨率
+    的前提（见 `discovery/itemsets.py` 的说明）。
+    """
+    if selected:
+        return {job_id: (tuple(selected_ids),) for job_id in jobs}
+
+    transactions = {job_id: set(technology_ids) for job_id, (_, technology_ids, _) in jobs.items()}
+    mined = mine_closed_itemsets(
+        transactions,
+        min_support=max(1, int(parameters.get("min_pair_job_count", 2))),
+        min_size=int(parameters.get("min_combination_size", 2)),
+        max_size=int(parameters.get("max_combination_size", 5)),
+    )
+    assigned = assign_transactions(
+        transactions, mined.itemsets, min_size=int(parameters.get("min_combination_size", 2))
+    )
+    keys_by_job: dict[int, list[tuple[int, ...]]] = defaultdict(list)
+    for key, job_ids in assigned.items():
+        for job_id in job_ids:
+            keys_by_job[job_id].append(key)
+    return {job_id: tuple(sorted(keys)) for job_id, keys in keys_by_job.items()}
 
 
 def _ancestor_chains(db: Session, taxonomy_version_id: int) -> dict[int, tuple[int, ...]]:
@@ -1407,6 +1469,8 @@ def _build_input_snapshot(
         "accepted_technology_assessment_ids": accepted_assessment_ids,
         "accepted_technology_assessment_count": len(accepted_assessment_ids),
         **_job_time_snapshot(db, cutoff),
+        # 候选粒度由项集挖掘算法决定，换算法必然换候选，必须进输入快照。
+        "itemset_algorithm_version": ITEMSET_ALGORITHM_VERSION,
         "parameters": parameters,
     }
 
@@ -1498,6 +1562,11 @@ def _role_capability_profiles(
     据此判定"已被既有岗位覆盖"是错误的。这类版本不参与最近岗位比较。
 
     excluded_role_ids 用于反事实分析（如留出重发现实验）：把指定岗位当作不存在。
+
+    **按技术编码而非节点 id 比较。** 节点 id 是逐词表版本独立的，既有岗位版本的
+    技术要求可能产自旧词表，而本次推演的候选来自新词表；按 id 比较会得到恒为空的
+    交集，于是每个候选都被判成"全新岗位"。技术编码（T1.03.02 这类）跨版本稳定，
+    是唯一可比的口径。
     """
     versions = list(
         db.scalars(
@@ -1514,7 +1583,13 @@ def _role_capability_profiles(
             continue
         role_tech = set(
             db.scalars(
-                select(JobRoleVersionRequirement.technology_node_id).where(
+                select(TechnologyNode.technology_code)
+                .join(
+                    JobRoleVersionRequirement,
+                    JobRoleVersionRequirement.technology_node_id
+                    == TechnologyNode.technology_node_id,
+                )
+                .where(
                     JobRoleVersionRequirement.job_role_version_id == version.job_role_version_id
                 )
             )
@@ -1540,7 +1615,13 @@ def _nearest_role(
     技术词更多而错误地压低覆盖率——候选 {A,B} 面对要求 {A,B,C,D} 的岗位实际已被
     完全覆盖，Jaccard 却只有 0.5。
     """
-    target = set(technology_ids)
+    target = set(
+        db.scalars(
+            select(TechnologyNode.technology_code).where(
+                TechnologyNode.technology_node_id.in_(technology_ids or [-1])
+            )
+        )
+    )
     if not target:
         return None, 0.0
     best_role_id = None

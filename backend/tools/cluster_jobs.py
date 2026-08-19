@@ -18,8 +18,8 @@ def main() -> None:
     parser.add_argument(
         "--min-technology-evidence-count",
         type=int,
-        default=2,
-        help="低信息量过滤门槛；0 表示不过滤（与旧行为对照用）",
+        default=1,
+        help="低信息量过滤门槛（窗口 B 在词表 v1.2 上标定为 1）；0 表示不过滤",
     )
     args = parser.parse_args()
     if args.grey_threshold >= args.assign_threshold:

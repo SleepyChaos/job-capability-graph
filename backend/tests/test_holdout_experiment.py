@@ -47,7 +47,27 @@ def _candidate(code: str, score: float, technologies: set[int]) -> CandidateProf
     )
 
 
+def _seed_technology_nodes(session: Session, node_ids: list[int]) -> None:
+    """岗位画像按技术编码比较，节点必须真实存在才能把 id 映射成编码。"""
+    for node_id in node_ids:
+        if session.get(TechnologyNode, node_id) is not None:
+            continue
+        session.add(
+            TechnologyNode(
+                technology_node_id=node_id,
+                taxonomy_version_id=1,
+                technology_code=f"T9.99.{node_id:02d}",
+                source_spreadsheet_row_id=node_id,
+                level_code="L3",
+                technology_name=f"技术{node_id}",
+                normalized_name=f"技术{node_id}",
+            )
+        )
+    session.flush()
+
+
 def _seed_role(session: Session, name: str, technologies: list[int]) -> int:
+    _seed_technology_nodes(session, technologies)
     role = JobRole(
         role_code=f"ROLE-HOLDOUT-{name}",
         canonical_name=name,

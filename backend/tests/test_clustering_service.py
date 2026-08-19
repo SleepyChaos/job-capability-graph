@@ -52,7 +52,7 @@ def test_clustering_service_builds_replayable_role_candidate() -> None:
         assert repeated.already_completed is True
         assert repeated.run_code == result.run_code
         assert result.input_job_count == 4
-        # 默认 min_technology_evidence_count=2：零证据 JD 不再产单例簇。
+        # 默认 min_technology_evidence_count=1：零证据 JD 不再产单例簇。
         assert result.cluster_count == 1
         assert result.candidate_role_count == 1
         assert session.scalar(select(func.count()).select_from(JobClusterMember)) == 3
@@ -69,9 +69,10 @@ def test_clustering_service_builds_replayable_role_candidate() -> None:
             and run.quality_metric_json["scenario_feature_status"] == "not_available"
         )
         assert run.algorithm_version == "baseline_sparse_multiview_v2"
-        assert run.parameter_json["min_technology_evidence_count"] == 2
+        # 默认门槛由窗口 B 在词表 v1.2 上重新标定为 1（见 calibrate_domain_gate 实测）。
+        assert run.parameter_json["min_technology_evidence_count"] == 1
         assert run.quality_metric_json["low_signal_filter"] == {
-            "min_technology_evidence_count": 2,
+            "min_technology_evidence_count": 1,
             "filtered_job_count": 1,
             "clustered_job_count": 3,
             "filtered_evidence_count_histogram": {"0": 1},
@@ -101,7 +102,7 @@ def test_low_signal_filter_excludes_jobs_below_threshold() -> None:
         assert run.input_job_count == 4
         assert run.assigned_job_count + run.grey_job_count == 3
         metrics = run.quality_metric_json["low_signal_filter"]
-        assert metrics["min_technology_evidence_count"] == 2
+        assert metrics["min_technology_evidence_count"] == 1
         assert metrics["filtered_job_count"] == 1
         assert metrics["clustered_job_count"] == 3
         assert metrics["filtered_evidence_count_histogram"] == {"0": 1}
@@ -158,7 +159,7 @@ def test_low_signal_filter_is_parameter_bound_for_replay() -> None:
         runs = list(session.scalars(select(JobClusteringRun)))
         assert len(runs) == 2
         assert len({item.input_snapshot_hash for item in runs}) == 2
-        assert {item.parameter_json["min_technology_evidence_count"] for item in runs} == {0, 2}
+        assert {item.parameter_json["min_technology_evidence_count"] for item in runs} == {0, 1}
 
 
 def test_low_signal_filter_rejects_negative_threshold_and_empty_result() -> None:

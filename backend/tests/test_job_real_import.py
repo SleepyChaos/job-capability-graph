@@ -137,7 +137,9 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert parsing_first.assessment_count == 7591
         assert parsing_first.ambiguity_review_count == 126
         assert parsing_first.feature_count == 3718
-        assert parsing_first.eligible_feature_count == 3534
+        # 窗口 B 起特征快照带职能岗位判别：3,718 份里 802 份被判为非具身智能技术岗
+        # （销售/产品职能/制造工艺/IT运维），不进聚类，故可聚类特征从 3,534 降到 2,732。
+        assert parsing_first.eligible_feature_count == 2732
         assert not parsing_first.already_completed
         assert parsing_second.already_completed
 
@@ -187,13 +189,14 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert parsing_summary.status_code == 200
         assert parsing_summary.json()["run"]["parsed_job_count"] == 3718
         assert parsing_summary.json()["ambiguity_review_count"] == 126
-        assert parsing_summary.json()["eligible_feature_count"] == 3534
+        assert parsing_summary.json()["eligible_feature_count"] == 2732
         assert parsing_reviews.status_code == 200
         assert parsing_reviews.json()["total"] == 325
         assert parsing_excluded.status_code == 200
-        assert parsing_excluded.json()["total"] == 184
+        # 184 条原有排除（无结构信号/解析质量过低）+ 802 条职能判别排除。
+        assert parsing_excluded.json()["total"] == 986
         assert parsing_detail.status_code == 200
-        assert parsing_detail.json()["cluster_feature"]["version"] == "cluster_features_v1"
+        assert parsing_detail.json()["cluster_feature"]["version"] == "cluster_features_v2"
         assert ambiguity_rules.status_code == 200
         # v2 只保留 3 条在用规则（控制系统/多模态大模型/基础模型）；检测/汽车/大模型三条
         # 已随词形下线而退场（存量库里的旧行会被停用，全新库直接不建）。
