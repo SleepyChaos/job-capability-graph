@@ -50,9 +50,10 @@ from app.modules.job.models import (
 from app.modules.taxonomy.models import TechnologyDomain, TechnologyNode
 
 ALGORITHM_NAME = "explainable_sparse_multiview"
-# v2：聚类入口新增低信息量 JD 机械过滤（min_technology_evidence_count），
-# 低于门槛的 JD 不参与聚类，行为与 v1 不同，必须隔离重放缓存。
-ALGORITHM_VERSION = "baseline_sparse_multiview_v2"
+# v2：聚类入口新增低信息量 JD 机械过滤（min_technology_evidence_count）。
+# v3：相似度摘掉恒为 0 的 scenario 通道并归一化权重、层级改为序数相似度、
+#     单遍贪心之后追加 Lloyd 式迭代重分配。三处都改变输出，必须隔离重放缓存。
+ALGORITHM_VERSION = "baseline_sparse_multiview_v3"
 CALCULATION_VERSION = "role_capability_stats_v1"
 
 
@@ -199,17 +200,27 @@ def _execute_clustering_run(
         )
     raw_features = [_raw_feature(feature, job) for feature, job in clustered_rows]
     output = cluster_jobs(raw_features, parameters)
+    # 谱系前身**不按算法版本过滤**。延续与否是用成员集合的 Jaccard 判定的，这个判据
+    # 与算法内部无关；一旦按版本过滤，每次算法升版都会让全部簇找不到前身而被判为
+    # born，进而把所有岗位当成新岗位重建——对一个以追踪岗位演化为目的的模块，
+    # 这等于每升一次版就丢掉全部历史。实测：v2→v3 升版那次运行 515 个簇全部判为
+    # born、0 个 continued，下一次同版本运行才恢复成 515 个 continued（重叠度 0.998），
+    # 说明簇本身根本没变，断裂纯粹是这个过滤条件造成的。
+    #
+    # 跨算法版本的比较结果记在谱系边的说明里，供下游区分「真实演化」与「换算法」。
     previous_run = db.scalar(
         select(JobClusteringRun)
         .where(
             JobClusteringRun.run_status_code == "success",
-            JobClusteringRun.algorithm_version == ALGORITHM_VERSION,
             JobClusteringRun.clustering_run_id != run.clustering_run_id,
             JobClusteringRun.target_date <= run.target_date,
         )
         .order_by(JobClusteringRun.target_date.desc(), JobClusteringRun.clustering_run_id.desc())
     )
-    persisted, decision_by_job = _persist_clusters(db, run, output, previous_run, parameters)
+    cross_version = previous_run is not None and previous_run.algorithm_version != ALGORITHM_VERSION
+    persisted, decision_by_job = _persist_clusters(
+        db, run, output, previous_run, parameters, cross_version=cross_version
+    )
     candidate_roles = 0
     for cluster, version in persisted:
         if _propose_role(db, run, cluster, version, decision_by_job):
@@ -229,7 +240,11 @@ def _execute_clustering_run(
         "median_cluster_size": statistics.median(sizes),
         "p90_cluster_size": _percentile(sizes, 0.9),
         "grey_job_ratio": round(grey_count / len(raw_features), 6),
-        "scenario_feature_status": "not_available",
+        # 场景特征从未被填充。v3 起它已从相似度公式里摘掉（原先恒为 0 却占 8% 权重，
+        # 让有效满分只有 0.92），这里保留状态位供前端与审计识别。
+        "scenario_feature_status": "removed_from_similarity",
+        # 迭代重分配的收敛过程：逐轮移动数、簇数、清空簇数，可复核是否真的收敛。
+        "reassignment": output.reassign_stats,
         "trend_history_status": "insufficient_history",
         "low_signal_filter": {
             "min_technology_evidence_count": parameters.min_technology_evidence_count,
@@ -380,8 +395,16 @@ def _persist_clusters(
     output: ClusteringOutput,
     previous_run: JobClusteringRun | None,
     parameters: ClusteringParameters,
+    *,
+    cross_version: bool = False,
 ) -> tuple[list[tuple[ClusterDraft, JobClusterVersion]], dict[int, object]]:
     previous_clusters, previous_members = _previous_clusters(db, previous_run)
+    # 跨算法版本的谱系边要能被认出来：它的差异里混着算法变更，不能当作纯粹的岗位演化。
+    version_note = (
+        f"（跨算法版本比较：{previous_run.algorithm_version} → {ALGORITHM_VERSION}）"
+        if cross_version and previous_run is not None
+        else ""
+    )
     matches = _continued_matches(output.clusters, previous_clusters, previous_members)
     versions_by_draft: dict[int, JobClusterVersion] = {}
     persisted = []
@@ -430,7 +453,7 @@ def _persist_clusters(
                     to_cluster_version_id=version.job_cluster_version_id,
                     lineage_type_code="continued",
                     member_overlap_score=decimal_score(overlap),
-                    explanation_text="成员Jaccard重叠达到稳定簇延续阈值。",
+                    explanation_text=f"成员Jaccard重叠达到稳定簇延续阈值。{version_note}",
                 )
             )
         else:
@@ -477,7 +500,7 @@ def _persist_clusters(
                             ].job_cluster_version_id,
                             lineage_type_code="split",
                             member_overlap_score=decimal_score(overlap_score),
-                            explanation_text="历史簇成员分流到多个新簇，发生拆分。",
+                            explanation_text=f"历史簇成员分流到多个新簇，发生拆分。{version_note}",
                         )
                     )
         for draft_id, version in versions_by_draft.items():
@@ -490,7 +513,7 @@ def _persist_clusters(
                             to_cluster_version_id=version.job_cluster_version_id,
                             lineage_type_code="merged",
                             member_overlap_score=decimal_score(overlap_score),
-                            explanation_text="新簇同时吸收多个历史簇的成员，发生合并。",
+                            explanation_text=f"新簇同时吸收多个历史簇的成员，发生合并。{version_note}",
                         )
                     )
 

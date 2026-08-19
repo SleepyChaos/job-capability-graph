@@ -66,9 +66,9 @@ def test_clustering_service_builds_replayable_role_candidate() -> None:
         run = session.scalar(select(JobClusteringRun))
         assert (
             run is not None
-            and run.quality_metric_json["scenario_feature_status"] == "not_available"
+            and run.quality_metric_json["scenario_feature_status"] == "removed_from_similarity"
         )
-        assert run.algorithm_version == "baseline_sparse_multiview_v2"
+        assert run.algorithm_version == "baseline_sparse_multiview_v3"
         # 默认门槛由窗口 B 在词表 v1.2 上重新标定为 1（见 calibrate_domain_gate 实测）。
         assert run.parameter_json["min_technology_evidence_count"] == 1
         assert run.quality_metric_json["low_signal_filter"] == {

@@ -34,15 +34,23 @@ from app.modules.taxonomy.models import TechnologyDomain, TechnologyNode
 router = APIRouter(tags=["job-clustering"])
 
 
+# 默认值一律从 ClusteringParameters 取，不在这里重述字面量——同一个默认值曾经分散在
+# 算法、CLI、API 三处，改了算法层而漏改入口层导致标定结果实际没生效。
+_DEFAULTS = ClusteringParameters()
+
+
 class ClusteringRunCreate(BaseModel):
     parse_run_code: str
-    assign_threshold: float = Field(default=0.36, ge=0, le=1)
-    grey_threshold: float = Field(default=0.24, ge=0, le=1)
-    top_k: int = Field(default=3, ge=1, le=10)
-    max_cluster_size: int = Field(default=120, ge=2, le=1000)
+    assign_threshold: float = Field(default=_DEFAULTS.assign_threshold, ge=0, le=1)
+    grey_threshold: float = Field(default=_DEFAULTS.grey_threshold, ge=0, le=1)
+    top_k: int = Field(default=_DEFAULTS.top_k, ge=1, le=10)
+    max_cluster_size: int = Field(default=_DEFAULTS.max_cluster_size, ge=2, le=1000)
     # 低信息量过滤门槛：0 表示不过滤（用于与旧行为做对照）。
-    # 默认 1 由窗口 B 在词表 v1.2 上标定（tools/calibrate_domain_gate.py）；0 表示不过滤。
-    min_technology_evidence_count: int = Field(default=1, ge=0, le=50)
+    min_technology_evidence_count: int = Field(
+        default=_DEFAULTS.min_technology_evidence_count, ge=0, le=50
+    )
+    # 迭代重分配轮次：0 表示关闭，退回单遍贪心。
+    max_reassign_rounds: int = Field(default=_DEFAULTS.max_reassign_rounds, ge=0, le=50)
 
 
 class ClusteringRunResponse(BaseModel):
@@ -161,6 +169,7 @@ def create_clustering_run(payload: ClusteringRunCreate, db: Annotated[Session, D
                 top_k=payload.top_k,
                 max_cluster_size=payload.max_cluster_size,
                 min_technology_evidence_count=payload.min_technology_evidence_count,
+                max_reassign_rounds=payload.max_reassign_rounds,
             ),
         )
     except ClusteringError as exc:

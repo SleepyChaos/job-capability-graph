@@ -35,10 +35,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="标定聚类入口的低信息量过滤门槛。")
     parser.add_argument("--parse-run-code", required=True)
     parser.add_argument("--thresholds", default="0,1,2,3,4,5")
-    parser.add_argument("--assign-threshold", type=float, default=0.36)
-    parser.add_argument("--grey-threshold", type=float, default=0.24)
-    parser.add_argument("--top-k", type=int, default=3)
-    parser.add_argument("--max-cluster-size", type=int, default=120)
+    defaults = ClusteringParameters()
+    parser.add_argument("--assign-threshold", type=float, default=defaults.assign_threshold)
+    parser.add_argument("--grey-threshold", type=float, default=defaults.grey_threshold)
+    parser.add_argument("--top-k", type=int, default=defaults.top_k)
+    parser.add_argument("--max-cluster-size", type=int, default=defaults.max_cluster_size)
+    parser.add_argument("--max-reassign-rounds", type=int, default=defaults.max_reassign_rounds)
     parser.add_argument("--format", choices=["json", "markdown"], default="markdown")
     return parser.parse_args()
 
@@ -54,6 +56,7 @@ def measure(rows: list[tuple], threshold: int, args: argparse.Namespace) -> dict
         top_k=args.top_k,
         max_cluster_size=args.max_cluster_size,
         min_technology_evidence_count=threshold,
+        max_reassign_rounds=args.max_reassign_rounds,
     )
     output = cluster_jobs([_raw_feature(feature, job) for feature, job in kept], parameters)
     sizes = sorted(len(cluster.members) for cluster in output.clusters)
