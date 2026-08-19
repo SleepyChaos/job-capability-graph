@@ -638,16 +638,22 @@ def _propose_role(
         )
         db.add(role)
         db.flush()
+        # 唯一约束建在 normalized_alias 上，所以去重也必须按归一化后的值——
+        # 「3D视觉算法工程师」与「3d视觉算法工程师」显示名不同但归一化相同，
+        # 按显示名去重会插入两条而撞唯一键，整次聚类直接失败。
+        seen_aliases: set[str] = set()
         for alias in _representative_titles(cluster):
-            normalized = alias.casefold().strip()
-            if normalized:
-                db.add(
-                    JobRoleAlias(
-                        job_role_id=role.job_role_id,
-                        alias_text=alias,
-                        normalized_alias=normalized,
-                    )
+            normalized = _normalize_alias(alias)
+            if not normalized or normalized in seen_aliases:
+                continue
+            seen_aliases.add(normalized)
+            db.add(
+                JobRoleAlias(
+                    job_role_id=role.job_role_id,
+                    alias_text=alias,
+                    normalized_alias=normalized,
                 )
+            )
     db.add(
         JobClusterRole(
             job_cluster_version_id=cluster_version.job_cluster_version_id,
@@ -1109,6 +1115,14 @@ def _usable_title(title: str) -> bool:
         return False
     mojibake = sum(lowered.count(char) for char in ("ã", "î", "ê", "¸", "º", "æ"))
     return mojibake < 2
+
+
+# 零宽字符在招聘平台的标题里很常见，肉眼不可见却会让两个同名岗位被当成不同别名。
+_INVISIBLE_CHARACTERS = str.maketrans({code: None for code in (0x200B, 0x200C, 0x200D, 0xFEFF)})
+
+
+def _normalize_alias(alias: str) -> str:
+    return alias.translate(_INVISIBLE_CHARACTERS).casefold().strip()
 
 
 def _representative_titles(cluster: ClusterDraft) -> list[str]:

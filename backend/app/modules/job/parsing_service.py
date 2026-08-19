@@ -17,8 +17,10 @@ from app.modules.extraction.job_structure import (
     task_parts,
 )
 from app.modules.extraction.occupation import (
+    LANGUAGE_RULE_VERSION,
     OCCUPATION_RULE_VERSION,
     classify_occupation,
+    is_supported_language,
 )
 from app.modules.job.models import (
     EvidenceSpan,
@@ -46,7 +48,9 @@ from app.modules.taxonomy.models import (
 
 PARSER_VERSION = "jd_structure_rules_v1"
 # v2（窗口 B）：特征快照新增职能岗位判别，非具身智能技术岗不再进入聚类与画像聚合。
-FEATURE_VERSION = "cluster_features_v2"
+# v3（窗口 D）：中文词元由「连续汉字块」改为字符二元组、英文加停用词过滤。
+#     原先两句同义职责因切点不同而 token 交集为空，权重最高的职责通道一直在空转。
+FEATURE_VERSION = "cluster_features_v3"
 # v2（窗口 C-5）相对 v1 的三处变化：
 # 1. 语境窗口从「整个段落」收紧到「命中词所在的句子」——同段共现不再构成证据；
 # 2. 正向语境词带权重，需累计 ≥1.0 才放行，高频泛触发词（机器人/多模态）降权；
@@ -195,7 +199,7 @@ class JobParsingService:
         run_code = stable_code(
             "jdparse",
             f"{taxonomy.taxonomy_version_id}\0{parser_version}\0{AMBIGUITY_RULE_VERSION}"
-            f"\0{FEATURE_VERSION}\0{OCCUPATION_RULE_VERSION}"
+            f"\0{FEATURE_VERSION}\0{OCCUPATION_RULE_VERSION}\0{LANGUAGE_RULE_VERSION}"
             f"\0{target_date}\0{snapshot_hash}",
         )
         existing = self.session.scalar(select(JobParseRun).where(JobParseRun.run_code == run_code))
@@ -215,6 +219,7 @@ class JobParsingService:
                 "ambiguity_rule_version": AMBIGUITY_RULE_VERSION,
                 "ambiguity_rule_count": len(AMBIGUITY_RULE_DEFINITIONS),
                 "occupation_rule_version": OCCUPATION_RULE_VERSION,
+                "language_rule_version": LANGUAGE_RULE_VERSION,
             },
             input_job_count=len(jobs),
         )
@@ -660,6 +665,9 @@ class JobParsingService:
         occupation = classify_occupation(job.job_title_normalized)
         if occupation.reason_code:
             exclusions.append(occupation.reason_code)
+        # 语种门：特征管线面向中文语料，英文 JD 只能与彼此匹配、会聚成一个假岗位。
+        if not is_supported_language(job.jd_clean_text):
+            exclusions.append("unsupported_feature_language")
         payload = {
             "title_tokens": title_tokens,
             "responsibility_tokens": responsibility_tokens,

@@ -52,4 +52,18 @@ def test_task_parts_and_cluster_tokens() -> None:
     assert action == "负责"
     assert task_object == "开发机器人控制系统"
     assert expected == "实时稳定运行"
-    assert cluster_tokens("机器人控制 ROS 2 / C++") == ["ros", "c++", "机器人控制"]
+    # 中文切成字符二元组：两句同义职责的切点不同也能对上（原先「连续汉字块」做不到）。
+    assert cluster_tokens("机器人控制 ROS 2 / C++") == [
+        "ros",
+        "c++",
+        "机器",
+        "器人",
+        "人控",
+        "控制",
+    ]
+    # 英文虚词不作为特征，否则英文 JD 会靠 and/for 互相吸引成一堆。
+    assert cluster_tokens("design and control for robots") == ["design", "control", "robots"]
+    # 同义中文职责必须有非空交集——这正是修分词器要解决的问题。
+    left = set(cluster_tokens("负责具身智能机器人运动控制算法的设计与实现"))
+    right = set(cluster_tokens("负责人形机器人运动控制算法开发与调优"))
+    assert {"运动", "控制", "算法", "机器", "器人"} <= left & right

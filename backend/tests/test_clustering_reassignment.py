@@ -188,3 +188,14 @@ def test_algorithm_version_bump_keeps_cluster_lineage(monkeypatch) -> None:
         assert continued, f"升版后谱系全断：{[row.lineage_type_code for row in edges]}"
         # 跨版本的谱系边要能被认出来，否则下游分不清「真实演化」与「换算法」。
         assert any("跨算法版本比较" in (row.explanation_text or "") for row in continued)
+
+
+def test_role_alias_dedup_uses_the_normalized_key() -> None:
+    """去重口径必须与唯一约束一致，否则一次聚类会因撞唯一键整体失败。"""
+    from app.modules.clustering.service import _normalize_alias
+
+    # 大小写不同、显示名不同，归一化后相同。
+    assert _normalize_alias("3D视觉算法工程师") == _normalize_alias("3d视觉算法工程师")
+    # 零宽字符肉眼不可见，但会让同名岗位被当成不同别名。
+    assert _normalize_alias("‌3d视觉算法工程师") == _normalize_alias("3d视觉算法工程师")
+    assert _normalize_alias("  ﻿嵌入式软件工程师 ") == "嵌入式软件工程师"

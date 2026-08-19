@@ -133,3 +133,16 @@ def test_occupation_gate_is_deterministic_across_multi_category_hits() -> None:
     title = "销售项目经理"  # commercial(销售) 与 product_ops(项目经理) 同时命中
     assert classify_occupation(title).category == "commercial"
     assert classify_occupation(title) == classify_occupation(title)
+
+
+def test_language_gate_keeps_english_jds_out_of_the_feature_space() -> None:
+    """英文 JD 在中文特征管线里只能与彼此匹配，会聚成一个假岗位。"""
+    from app.modules.extraction.occupation import chinese_character_ratio, is_supported_language
+
+    chinese = "负责具身智能机器人运动控制算法的设计与实现，参与整机联调。"
+    english = "Design and implement whole-body control algorithms for humanoid robots."
+    assert is_supported_language(chinese)
+    assert not is_supported_language(english)
+    assert chinese_character_ratio("") == 0.0
+    # 中英混排但以中文为主的 JD 仍然支持。
+    assert is_supported_language("负责 ROS2 与 MoveIt 的机器人运动规划开发，熟悉 C++。")

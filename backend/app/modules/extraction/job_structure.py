@@ -278,9 +278,41 @@ def task_parts(text: str) -> tuple[str | None, str, str | None]:
     return action, task_object[:500], expected[:500] if expected else None
 
 
+# 英文功能词：它们在任意 JD 里都出现，作为特征只会让英文 JD 互相吸引。
+# 实测中 `and` 是职责通道第 11 高频的 token，是英文 JD 被聚成一堆的直接原因。
+ASCII_STOPWORDS = frozenset(
+    """a an the and or of for to in on at with by from as is are be been being
+    will would shall should can could may might must have has had do does did
+    this that these those it its you your we our they their he she his her
+    not no nor but if then than so such other others any all both each more most
+    some who whom which what when where why how about into over under again
+    further once here there when both few own same too very just also""".split()
+)
+
+# 中文一律切成字符二元组。中文没有空格分词，原先按「连续汉字块」取词等于取任意长度
+# 的切片：两句几乎同义的职责——「负责具身智能机器人运动控制算法的设计与实现」与
+# 「负责人形机器人运动控制算法开发与调优」——切点不同，token 交集为空，
+# 而它们明明都含「运动控制算法」。实测 31,565 个职责 token 里 74% 只出现在一份 JD 中，
+# 权重最高的职责通道（0.326）因此一直在空转。
+# 二元组会产生噪声词，但 IDF 加权会把高频二元组压下去，这是无分词器场景的标准做法。
+CHINESE_BIGRAM_MIN_RUN = 2
+MAX_CLUSTER_TOKENS = 400
+
+
+def chinese_bigrams(run: str) -> list[str]:
+    return [run[index : index + 2] for index in range(len(run) - 1)]
+
+
 def cluster_tokens(text: str) -> list[str]:
     lowered = text.casefold()
-    ascii_tokens = re.findall(r"[a-z][a-z0-9+#.\-]{1,30}", lowered)
-    chinese_chunks = re.findall(r"[\u4e00-\u9fff]{2,12}", lowered)
-    tokens = ascii_tokens + chinese_chunks
-    return list(dict.fromkeys(tokens))[:80]
+    ascii_tokens = [
+        token
+        for token in re.findall(r"[a-z][a-z0-9+#.\-]{1,30}", lowered)
+        if token not in ASCII_STOPWORDS
+    ]
+    chinese_tokens: list[str] = []
+    for run in re.findall(r"[\u4e00-\u9fff]+", lowered):
+        if len(run) >= CHINESE_BIGRAM_MIN_RUN:
+            chinese_tokens.extend(chinese_bigrams(run))
+    tokens = ascii_tokens + chinese_tokens
+    return list(dict.fromkeys(tokens))[:MAX_CLUSTER_TOKENS]

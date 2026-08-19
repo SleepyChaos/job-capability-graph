@@ -19,6 +19,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 OCCUPATION_RULE_VERSION = "occupation_title_rules_v1"
@@ -128,3 +129,32 @@ def classify_occupation(job_title: str) -> OccupationDecision:
         return OccupationDecision(is_embodied_technical=True, category=None, matched_term=None)
     category, term = min(matches)
     return OccupationDecision(is_embodied_technical=False, category=category, matched_term=term)
+
+
+LANGUAGE_RULE_VERSION = "feature_language_gate_v1"
+
+# 中文字符占比低于该值的 JD，特征管线无法给出可用表示。
+MIN_CHINESE_CHARACTER_RATIO = 0.10
+
+_CHINESE_PATTERN = re.compile(r"[\u4e00-\u9fff]")
+
+
+def chinese_character_ratio(text: str) -> float:
+    stripped = (text or "").strip()
+    if not stripped:
+        return 0.0
+    return len(_CHINESE_PATTERN.findall(stripped)) / len(stripped)
+
+
+def is_supported_language(jd_text: str) -> bool:
+    """JD 正文是否落在特征管线支持的语种内。
+
+    整条特征管线是面向中文语料建的：中文切字符二元组、英文只留实词。语料里 96% 是
+    中文，英文 JD 拿到的是稀疏向量，只能和彼此匹配——实测它们会聚成一个 65 份的簇，
+    其中 62% 是英文 JD，而其余同等规模的簇英文占比为 0。那不是一个岗位，是
+    「特征管线表示不了的 JD」的残余桶，一旦被晋升为岗位就是纯粹的假阳性。
+
+    这类 JD 与职能门一样：抽取结果与证据完整保留，只是不纳入聚类与画像聚合，
+    理由逐条记进排除原因。代价是这部分岗位在图谱中没有覆盖，必须随结论声明。
+    """
+    return chinese_character_ratio(jd_text) >= MIN_CHINESE_CHARACTER_RATIO
