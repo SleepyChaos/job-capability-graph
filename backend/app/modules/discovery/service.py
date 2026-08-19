@@ -5,7 +5,6 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from decimal import Decimal
-from itertools import combinations
 from uuid import uuid4
 
 from sqlalchemy import func, or_, select
@@ -34,6 +33,11 @@ from app.modules.discovery.algorithm import (
     estimate_transmission_lag,
     score_candidate,
 )
+from app.modules.discovery.itemsets import (
+    ITEMSET_ALGORITHM_VERSION,
+    assign_transactions,
+    mine_closed_itemsets,
+)
 from app.modules.discovery.models import (
     CandidateScoreComponent,
     CandidateTechnology,
@@ -58,12 +62,18 @@ from app.modules.job.models import (
 )
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_5"
+# v1_6：候选粒度由技术对改为频繁闭项集（技术组合），输出与 v1_5 不同，必须隔离重放缓存。
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_6"
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
 DEFAULT_PARAMETERS = {
+    # 候选组合的支持度下限（按 JD 条数计）与大小区间。
+    # 候选粒度从技术对提到技术组合后，覆盖率 |候选∩岗位|/|候选| 的分母不再恒为 2，
+    # classification_code 的 0.45/0.75 两个阈值才有分档能力。
     "min_pair_job_count": 2,
+    "min_combination_size": 2,
+    "max_combination_size": 5,
     "max_communities": 100,
     "exploration_floor": 0.15,
     # 里程碑挂在 L1/L2，而 JD 证据和候选都在 L3。没有直接证据的节点沿父链继承祖先证据，
@@ -554,7 +564,7 @@ def _run_evidence_discovery(
         )
     )
     maturity = _persist_maturity(db, run, selected_ids, parameters, ancestors)
-    pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id)
+    pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id, parameters)
     ranked = sorted(pair_evidence.items(), key=lambda item: (-len(item[1].job_ids), item[0]))[
         : int(parameters["max_communities"])
     ]
@@ -630,7 +640,11 @@ def _run_evidence_discovery(
 
 
 def _collect_pair_evidence(
-    db: Session, run: DiscoveryRun, selected_ids: list[int], parse_run_id: int
+    db: Session,
+    run: DiscoveryRun,
+    selected_ids: list[int],
+    parse_run_id: int,
+    parameters: dict | None = None,
 ) -> dict[tuple[int, ...], _PairEvidence]:
     """证据必须与本次推演绑定的聚类运行同源。
 
@@ -679,15 +693,11 @@ def _collect_pair_evidence(
         sources[job_id].add(source_id)
     result = {}
     selected = set(selected_ids)
+    keys_by_job = _candidate_keys_by_job(jobs, selected, selected_ids, parameters or {})
     for job_id, (posting, technology_ids, evidence_ids) in jobs.items():
         if selected and not selected.issubset(technology_ids):
             continue
-        if selected:
-            keys = [tuple(selected_ids)]
-        elif len(technology_ids) == 1:
-            keys = [tuple(sorted(technology_ids))]
-        else:
-            keys = list(combinations(sorted(technology_ids), 2))
+        keys = keys_by_job.get(job_id, ())
         for key in keys:
             bucket = result.setdefault(key, _PairEvidence(set(), set(), set(), set(), [], {}))
             bucket.job_ids.add(job_id)
@@ -699,6 +709,38 @@ def _collect_pair_evidence(
             bucket.responsibilities.extend(responsibilities[job_id])
             bucket.evidence_job_ids.update({evidence_id: job_id for evidence_id in evidence_ids})
     return result
+
+
+def _candidate_keys_by_job(
+    jobs: dict[int, tuple[JobPosting, set[int], set[int]]],
+    selected: set[int],
+    selected_ids: list[int],
+    parameters: dict,
+) -> dict[int, tuple[tuple[int, ...], ...]]:
+    """决定每份 JD 的技术证据挂到哪些候选键上。
+
+    技术定向模式下键就是用户选定的组合，无须挖掘。自动模式下用频繁闭项集把候选
+    从「任意两个技术的共现」提到「反复共现的能力集合」——这是覆盖率测量能有分辨率
+    的前提（见 `discovery/itemsets.py` 的说明）。
+    """
+    if selected:
+        return {job_id: (tuple(selected_ids),) for job_id in jobs}
+
+    transactions = {job_id: set(technology_ids) for job_id, (_, technology_ids, _) in jobs.items()}
+    mined = mine_closed_itemsets(
+        transactions,
+        min_support=max(1, int(parameters.get("min_pair_job_count", 2))),
+        min_size=int(parameters.get("min_combination_size", 2)),
+        max_size=int(parameters.get("max_combination_size", 5)),
+    )
+    assigned = assign_transactions(
+        transactions, mined.itemsets, min_size=int(parameters.get("min_combination_size", 2))
+    )
+    keys_by_job: dict[int, list[tuple[int, ...]]] = defaultdict(list)
+    for key, job_ids in assigned.items():
+        for job_id in job_ids:
+            keys_by_job[job_id].append(key)
+    return {job_id: tuple(sorted(keys)) for job_id, keys in keys_by_job.items()}
 
 
 def _ancestor_chains(db: Session, taxonomy_version_id: int) -> dict[int, tuple[int, ...]]:
@@ -1407,6 +1449,8 @@ def _build_input_snapshot(
         "accepted_technology_assessment_ids": accepted_assessment_ids,
         "accepted_technology_assessment_count": len(accepted_assessment_ids),
         **_job_time_snapshot(db, cutoff),
+        # 候选粒度由项集挖掘算法决定，换算法必然换候选，必须进输入快照。
+        "itemset_algorithm_version": ITEMSET_ALGORITHM_VERSION,
         "parameters": parameters,
     }
 
