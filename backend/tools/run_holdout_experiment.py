@@ -85,6 +85,8 @@ class CandidateProfile:
     score: float
     technology_codes: frozenset[str]
     classification_code: str
+    # 支撑该候选的 JD 数。解耦实验要用它做「只按支撑量排序」的对照臂。
+    support: int = 0
 
 
 @dataclass(frozen=True)
@@ -97,6 +99,10 @@ class RoleMatch:
     best_candidate_code: str | None
     best_jaccard: float
     best_rank: int | None
+    # 最早越过阈值的候选排名。Recall@K 问的是「前 K 个里有没有命中过」，
+    # 用它而不是 best_rank——后者是相似度最高那个的位置，会惩罚
+    # 「早早给出够格匹配、但最佳匹配靠后」的排序。
+    hit_rank: int | None
     matched: bool
 
 
@@ -215,6 +221,7 @@ def load_run_candidates(db: Session, run_code: str) -> list[CandidateProfile]:
             score=float(candidate.candidate_score),
             technology_codes=frozenset(technology_map[candidate.emerging_role_candidate_id]),
             classification_code=candidate.classification_code,
+            support=int((candidate.mechanical_card_json or {}).get("job_count", 0)),
         )
         for candidate in rows
     ]
@@ -276,12 +283,15 @@ def evaluate(
         best_jaccard = 0.0
         best_rank: int | None = None
         best_code: str | None = None
+        hit_rank: int | None = None
         for rank, candidate in enumerate(ranked_candidates, start=1):
             overlap = similarity_fn(role_technologies, candidate.technology_codes)
             if overlap > best_jaccard:
                 best_jaccard = overlap
                 best_rank = rank
                 best_code = candidate.candidate_code
+            if hit_rank is None and overlap >= jaccard_threshold:
+                hit_rank = rank
         matches.append(
             RoleMatch(
                 role_id=role_id,
@@ -290,10 +300,11 @@ def evaluate(
                 best_candidate_code=best_code,
                 best_jaccard=best_jaccard,
                 best_rank=best_rank,
+                hit_rank=hit_rank,
                 matched=best_jaccard >= jaccard_threshold,
             )
         )
-    recall = _recall_curve([(match.best_rank, match.matched) for match in matches], ks)
+    recall = _recall_curve([(match.hit_rank, match.matched) for match in matches], ks)
     # 随机排序基线:同一候选集合、同一最佳匹配判定,只把排名换成同种子洗牌。
     shuffled = list(ranked_candidates)
     random.Random(seed).shuffle(shuffled)
@@ -305,7 +316,7 @@ def evaluate(
         ],
         ks,
     )
-    matched_ranks = [match.best_rank for match in matches if match.matched]
+    matched_ranks = [match.hit_rank for match in matches if match.matched]
     jaccards = [match.best_jaccard for match in matches]
     return {
         "masked_role_count": len(matches),
@@ -335,6 +346,7 @@ def evaluate(
                 "best_candidate_code": match.best_candidate_code,
                 "best_jaccard": match.best_jaccard,
                 "best_rank": match.best_rank,
+                "hit_rank": match.hit_rank,
                 "matched": match.matched,
             }
             for match in matches

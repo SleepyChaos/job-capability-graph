@@ -368,10 +368,66 @@ def arm_metrics(
 
 
 ARMS = (
-    ("system", "本方法（频繁闭项集 + 非对称覆盖率）"),
-    ("frequency", "频次基线（JD 技术集合按频次）"),
-    ("title", "名称基线（按岗位名称归纳）"),
+    ("system", "本方法：闭项集生成 + 证据门控排序"),
+    ("hybrid", "混合臂：闭项集生成 + 支撑量排序"),
+    ("frequency", "频次基线：JD 集合生成 + 支撑量排序"),
+    ("title", "名称基线：按岗位名称归纳"),
+    ("oracle", "oracle 排序（上界，仅供参照）"),
 )
+
+
+def oracle_metrics(
+    candidates: list[CandidateProfile],
+    masked_roles: dict[int, tuple[str, frozenset[str]]],
+    args: argparse.Namespace,
+) -> dict:
+    """排序上界：把候选按「与任一被遮蔽岗位的最佳匹配度」降序排。
+
+    它不是一个可实现的方法（用到了答案），只用来界定「改排序最多能到哪」。
+    两种判据各自有自己的最优排序，因此分别排一次。
+    """
+
+    def ranked_by(similarity_fn) -> list[CandidateProfile]:
+        """贪心集合覆盖：每次挑「能新命中最多尚未命中岗位」的候选。
+
+        不能简单按最佳匹配度降序排——那会把匹配同一个岗位的候选全堆在前面，
+        而 Recall@K 数的是命中了多少**不同**的岗位。按覆盖增量贪心才是
+        Recall@K 的正确上界近似。
+        """
+        remaining = {
+            role_id: tech for role_id, (_name, tech) in masked_roles.items()
+        }
+        pool = sorted(candidates, key=lambda item: item.candidate_code)
+        ordered: list[CandidateProfile] = []
+        while pool and remaining:
+            best_candidate = None
+            best_hits: list[int] = []
+            for candidate in pool:
+                hits = [
+                    role_id
+                    for role_id, tech in remaining.items()
+                    if similarity_fn(tech, candidate.technology_codes) >= args.jaccard_threshold
+                ]
+                if len(hits) > len(best_hits):
+                    best_candidate, best_hits = candidate, hits
+            if best_candidate is None or not best_hits:
+                break
+            ordered.append(best_candidate)
+            pool.remove(best_candidate)
+            for role_id in best_hits:
+                remaining.pop(role_id, None)
+        return ordered + pool
+
+    metrics = arm_metrics(ranked_by(jaccard), masked_roles, args)
+    # 包含度口径下的上界要用包含度自己的最优排序，否则低估天花板。
+    metrics["containment"] = evaluate(
+        ranked_by(containment),
+        masked_roles,
+        jaccard_threshold=args.jaccard_threshold,
+        seed=args.seed,
+        similarity_fn=containment,
+    )
+    return metrics
 
 
 def run_one_seed(session: Session, args: argparse.Namespace, seed: int) -> dict:
@@ -411,17 +467,35 @@ def run_one_seed(session: Session, args: argparse.Namespace, seed: int) -> dict:
         target_date=args.target_date,
         parameters={"excluded_role_ids": masked_ids},
     )
+    if discovery.already_completed:
+        # 候选按稳定键全局去重，last_seen_run_code 会被后跑的运行覆盖；命中重放缓存时
+        # 推演不刷新候选，读回来的候选集会残缺甚至为空，指标全是垃圾。
+        # 这类污染在结果里表现为「候选数骤降、技术数均值接近 0」，很容易被当成结论。
+        raise SystemExit(
+            f"种子 {seed} 的推演命中重放缓存（run_code={discovery.run_code}）。"
+            "多轮实验必须使用从未跑过的种子，请换一组 --seeds。"
+        )
     system = load_run_candidates(session, discovery.run_code)
     legacy_total = len(system)
     if args.current_algorithm_only:
         system = filter_current_algorithm(session, system)
     system = system[: args.candidate_limit]
 
+    # 混合臂：与本方法完全相同的候选集合，只把排序换成支撑 JD 数。
+    # 它把「生成」与「排序」分开——两臂候选一致，差异只能来自排序。
+    hybrid = sorted(system, key=lambda item: (-item.support, item.candidate_code))
     candidates_by_arm = {
         "system": system,
+        "hybrid": hybrid,
         "frequency": frequency_candidates(jobs, args.candidate_limit),
         "title": title_candidates(jobs, args.candidate_limit),
     }
+    arms = {
+        key: arm_metrics(candidates_by_arm[key], masked_roles, args)
+        for key, _label in ARMS
+        if key in candidates_by_arm
+    }
+    arms["oracle"] = oracle_metrics(system, masked_roles, args)
     return {
         "seed": seed,
         "discovery_run_code": discovery.run_code,
@@ -431,9 +505,7 @@ def run_one_seed(session: Session, args: argparse.Namespace, seed: int) -> dict:
         "masked_target_count": len(masked_roles),
         "candidate_pool_before_filter": legacy_total,
         "masked_profile_sizes": sorted(len(t) for _n, t in masked_roles.values()),
-        "arms": {
-            key: arm_metrics(candidates_by_arm[key], masked_roles, args) for key, _label in ARMS
-        },
+        "arms": arms,
     }
 
 
