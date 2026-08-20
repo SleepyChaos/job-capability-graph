@@ -56,6 +56,10 @@ ALGORITHM_NAME = "explainable_sparse_multiview"
 ALGORITHM_VERSION = "baseline_sparse_multiview_v3"
 CALCULATION_VERSION = "role_capability_stats_v1"
 
+# 簇被判定为「同一岗位的延续」所需的成员集合 Jaccard 重合度。
+# 名称在新兴领域不稳定，因此连续性只能由成员集合判定（见 docs/11 §4.2.1）。
+CONTINUED_LINEAGE_JACCARD = 0.55
+
 
 class ClusteringError(ValueError):
     """A user-correctable clustering or role-evolution error."""
@@ -1227,14 +1231,21 @@ def _continued_matches(
     clusters: tuple[ClusterDraft, ...],
     previous_clusters: dict[int, JobClusterVersion],
     previous_members: dict[int, set[int]],
+    *,
+    threshold: float = CONTINUED_LINEAGE_JACCARD,
 ) -> dict[int, tuple[int, float]]:
+    """按成员集合重合度把新簇匹配到前身簇，贪心取重合度最高的一对一配对。
+
+    `threshold` 暴露出来是为了让抽样稳定性实验能扫描它，而不必另写一份判定逻辑——
+    实验与线上必须共用同一个判据，否则测出来的敏感性说明不了线上的行为。
+    """
     candidates = []
     for cluster in clusters:
         current = {item.raw.job_posting_id for item in cluster.members}
         for old_id in previous_clusters:
             old = previous_members[old_id]
             overlap = len(current & old) / len(current | old) if current | old else 0.0
-            if overlap >= 0.55:
+            if overlap >= threshold:
                 candidates.append((overlap, cluster.draft_id, old_id))
     matches = {}
     used_old = set()
