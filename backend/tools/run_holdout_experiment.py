@@ -43,6 +43,7 @@ from app.modules.discovery.models import (
     EmergingRoleCandidate,
 )
 from app.modules.discovery.service import DEFAULT_PARAMETERS, run_discovery
+from app.modules.taxonomy.models import TechnologyNode
 
 PROTOCOL_VERSION = "holdout_rediscovery_v1"
 RECALL_KS = (10, 25, 50, 100)
@@ -82,7 +83,7 @@ class CandidateProfile:
 
     candidate_code: str
     score: float
-    technology_ids: frozenset[int]
+    technology_codes: frozenset[str]
     classification_code: str
 
 
@@ -101,12 +102,17 @@ class RoleMatch:
 
 def eligible_mask_roles(
     db: Session, target_date: date, min_technology_count: int
-) -> dict[int, tuple[str, frozenset[int]]]:
-    """返回有资格进入遮蔽采样池的岗位:{role_id: (岗位名, 技术词集合)}。
+) -> dict[int, tuple[str, frozenset[str]]]:
+    """返回有资格进入遮蔽采样池的岗位:{role_id: (岗位名, 技术编码集合)}。
 
     口径与推演侧的岗位画像一致:岗位活跃、版本已审批且在 target_date 生效;
     存在技术词数 >= min_technology_count 的生效版本即视为参与最近岗位比较,
     技术集合取其中 version_no 最大的版本(与画像中实际参与比较的版本对应)。
+
+    **技术集合用编码而不是节点 id。** 节点 id 逐词表版本独立,岗位版本的技术要求
+    可能产自旧词表而候选来自新词表,按 id 比较会得到恒空的交集,使每个被遮蔽岗位
+    都测出 Jaccard 0——那不是「找不回来」,是两边根本不在同一个标识空间里。
+    技术编码(T1.03.02 这类)跨版本稳定,是唯一可比的口径。
     """
     rows = list(
         db.execute(
@@ -126,21 +132,26 @@ def eligible_mask_roles(
     if not rows:
         return {}
     version_ids = sorted({version.job_role_version_id for version, _ in rows})
-    tech_by_version: dict[int, set[int]] = {version_id: set() for version_id in version_ids}
-    for version_id, technology_id in db.execute(
+    tech_by_version: dict[int, set[str]] = {version_id: set() for version_id in version_ids}
+    for version_id, technology_code in db.execute(
         select(
             JobRoleVersionRequirement.job_role_version_id,
-            JobRoleVersionRequirement.technology_node_id,
-        ).where(JobRoleVersionRequirement.job_role_version_id.in_(version_ids))
+            TechnologyNode.technology_code,
+        )
+        .join(
+            TechnologyNode,
+            TechnologyNode.technology_node_id == JobRoleVersionRequirement.technology_node_id,
+        )
+        .where(JobRoleVersionRequirement.job_role_version_id.in_(version_ids))
     ):
-        tech_by_version[version_id].add(technology_id)
-    versions_by_role: dict[int, list[tuple[JobRoleVersion, str, frozenset[int]]]] = {}
+        tech_by_version[version_id].add(technology_code)
+    versions_by_role: dict[int, list[tuple[JobRoleVersion, str, frozenset[str]]]] = {}
     for version, role in rows:
         technologies = frozenset(tech_by_version[version.job_role_version_id])
         versions_by_role.setdefault(version.job_role_id, []).append(
             (version, role.canonical_name, technologies)
         )
-    eligible: dict[int, tuple[str, frozenset[int]]] = {}
+    eligible: dict[int, tuple[str, frozenset[str]]] = {}
     for role_id, versions in versions_by_role.items():
         qualifying = [item for item in versions if len(item[2]) >= min_technology_count]
         if not qualifying:
@@ -183,21 +194,26 @@ def load_run_candidates(db: Session, run_code: str) -> list[CandidateProfile]:
     ]
     if not rows:
         return []
-    technology_map: dict[int, set[int]] = {
+    technology_map: dict[int, set[str]] = {
         candidate.emerging_role_candidate_id: set() for candidate in rows
     }
-    for candidate_id, technology_id in db.execute(
+    for candidate_id, technology_code in db.execute(
         select(
             CandidateTechnology.emerging_role_candidate_id,
-            CandidateTechnology.technology_node_id,
-        ).where(CandidateTechnology.emerging_role_candidate_id.in_(list(technology_map)))
+            TechnologyNode.technology_code,
+        )
+        .join(
+            TechnologyNode,
+            TechnologyNode.technology_node_id == CandidateTechnology.technology_node_id,
+        )
+        .where(CandidateTechnology.emerging_role_candidate_id.in_(list(technology_map)))
     ):
-        technology_map[candidate_id].add(technology_id)
+        technology_map[candidate_id].add(technology_code)
     profiles = [
         CandidateProfile(
             candidate_code=candidate.candidate_code,
             score=float(candidate.candidate_score),
-            technology_ids=frozenset(technology_map[candidate.emerging_role_candidate_id]),
+            technology_codes=frozenset(technology_map[candidate.emerging_role_candidate_id]),
             classification_code=candidate.classification_code,
         )
         for candidate in rows
@@ -205,8 +221,8 @@ def load_run_candidates(db: Session, run_code: str) -> list[CandidateProfile]:
     return sorted(profiles, key=lambda item: (-item.score, item.candidate_code))
 
 
-def jaccard(left: frozenset[int], right: frozenset[int]) -> float:
-    """技术集合的对称 Jaccard 重合度;空并集(双方皆空)定义为 0。"""
+def jaccard(left: frozenset[str], right: frozenset[str]) -> float:
+    """技术编码集合的对称 Jaccard 重合度;空并集(双方皆空)定义为 0。"""
     union = left | right
     if not union:
         return 0.0
@@ -226,15 +242,34 @@ def _recall_curve(rows: list[tuple[int | None, bool]], ks) -> dict[str, float]:
     }
 
 
+def containment(role: frozenset[str], candidate: frozenset[str]) -> float:
+    """非对称包含度 |候选 ∩ 岗位| / |候选|:候选有多少能力落在该岗位画像内。
+
+    与推演侧的距离度量同一口径(docs 4.1.2)。对称 Jaccard 会因岗位画像技术词更多而
+    系统性压低匹配分——候选只有 3 个技术而画像有 7 个时,即使候选完全落在画像内,
+    Jaccard 也只有 0.43。两种口径都报,避免单一判据把结论带偏。
+
+    参数顺序与 evaluate() 的调用一致:先岗位画像,后候选;分母始终是候选。
+    """
+    if not candidate:
+        return 0.0
+    return len(role & candidate) / len(candidate)
+
+
 def evaluate(
     ranked_candidates: list[CandidateProfile],
-    masked_roles: dict[int, tuple[str, frozenset[int]]],
+    masked_roles: dict[int, tuple[str, frozenset[str]]],
     *,
     jaccard_threshold: float,
     seed: int,
     ks: tuple[int, ...] = RECALL_KS,
+    similarity_fn=None,
 ) -> dict:
-    """纯函数指标计算:不触库,可用已知排名的假候选直接验证数值。"""
+    """纯函数指标计算:不触库,可用已知排名的假候选直接验证数值。
+
+    `similarity_fn` 默认对称 Jaccard;传入 containment 可换成非对称包含度。
+    """
+    similarity_fn = similarity_fn or jaccard
     matches: list[RoleMatch] = []
     for role_id in sorted(masked_roles):
         role_name, role_technologies = masked_roles[role_id]
@@ -242,7 +277,7 @@ def evaluate(
         best_rank: int | None = None
         best_code: str | None = None
         for rank, candidate in enumerate(ranked_candidates, start=1):
-            overlap = jaccard(role_technologies, candidate.technology_ids)
+            overlap = similarity_fn(role_technologies, candidate.technology_codes)
             if overlap > best_jaccard:
                 best_jaccard = overlap
                 best_rank = rank

@@ -42,7 +42,7 @@ def _candidate(code: str, score: float, technologies: set[int]) -> CandidateProf
     return CandidateProfile(
         candidate_code=code,
         score=score,
-        technology_ids=frozenset(technologies),
+        technology_codes=frozenset(technologies),
         classification_code="potential_new_role",
     )
 
@@ -260,7 +260,9 @@ def test_excluded_role_ids_keep_masked_roles_out_of_profile_pool() -> None:
 
         eligible = eligible_mask_roles(session, date(2026, 8, 10), 2)
         assert set(eligible) == {wide, other}
-        assert eligible[wide] == ("宽岗位", frozenset({1, 2, 3, 4}))
+        # 技术集合以编码表示（跨词表版本稳定），夹具里节点 n 的编码是 T9.99.0n。
+        assert eligible[wide] == ("宽岗位", frozenset({"T9.99.01", "T9.99.02",
+                                                      "T9.99.03", "T9.99.04"}))
         assert thin not in eligible
 
         masked = build_mask_set(sorted(eligible), 1.0, seed=3)
