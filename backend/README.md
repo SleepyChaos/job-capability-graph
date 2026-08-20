@@ -13,6 +13,24 @@ uv run uvicorn app.main:app --reload
 
 默认配置见 `.env.example`。通过 `APP_DATABASE_URL` 切换数据库；DeepSeek 使用 `APP_LLM_API_KEY`、`APP_LLM_BASE_URL` 和 `APP_LLM_MODEL`，默认模型为 `deepseek-v4-flash`。密钥不得提交到仓库。
 
+### DeepSeek 简历抽取
+
+本地运行后端时，将 `backend/.env.example` 复制为 `backend/.env`，只在
+`backend/.env` 中填写：
+
+```dotenv
+APP_LLM_API_KEY=你的_DeepSeek_API_Key
+APP_LLM_BASE_URL=https://api.deepseek.com/v1
+APP_LLM_MODEL=deepseek-v4-flash
+```
+
+使用根目录 Docker Compose 时，改为将根目录 `.env.example` 复制成根目录 `.env`，
+填写同一个 `APP_LLM_API_KEY` 后重启容器。两个 `.env` 文件都已被 Git 忽略。
+
+DeepSeek 只负责从简历中抽取带原文证据的姓名、学历、工作经历、项目和技能关键词。
+技术词映射、十维评分、差距排序与学习路径均由本地确定性代码完成；模型置信度不会进入
+匹配分。无 Key、超时、非 JSON 或证据无法回指原文时，自动降级为规则抽取。
+
 启动后：
 
 - 健康检查：<http://127.0.0.1:8000/api/v1/health>

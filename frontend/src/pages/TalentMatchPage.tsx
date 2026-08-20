@@ -35,9 +35,13 @@ export function TalentMatchPage({ hasProfiles, onProfileCreated, onNavigate, not
   }
 
   const afterParsed = (next: ProfileDetail) => {
+    const extraction = next.facts.extraction as { method?: string; model?: string } | undefined
+    const method = extraction?.method === 'deepseek_evidence_locked'
+      ? `DeepSeek（${extraction.model || '模型版本待确认'}）证据抽取`
+      : '规则降级抽取'
     setProfile(next)
     setMessages([
-      { role: 'assistant', text: `已解析《${next.source_name}》，识别到 ${next.skill_count} 项标准技术能力。事实、推断和用户补充会分别保存。` },
+      { role: 'assistant', text: `已通过${method}解析《${next.source_name}》，识别到 ${next.skill_count} 项标准技术能力。模型只提取原文事实；技术映射与后续评分全部由本地确定性规则完成。` },
       ...(next.next_question ? [{ role: 'assistant' as const, text: next.next_question.question_text }] : []),
     ])
   }

@@ -43,7 +43,9 @@ def llm_available() -> bool:
     return bool(settings.llm_api_key)
 
 
-def _post_chat(messages: list[dict], *, json_mode: bool) -> str:
+def _post_chat(
+    messages: list[dict], *, json_mode: bool, timeout_seconds: int | None = None
+) -> str:
     settings = get_settings()
     payload: dict[str, Any] = {
         "model": settings.llm_model,
@@ -61,8 +63,9 @@ def _post_chat(messages: list[dict], *, json_mode: bool) -> str:
         },
         method="POST",
     )
+    timeout = timeout_seconds if timeout_seconds is not None else settings.llm_timeout_seconds
     try:
-        with urllib.request.urlopen(request, timeout=settings.llm_timeout_seconds) as response:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             body = json.loads(response.read().decode("utf-8"))
     except (urllib.error.URLError, OSError, ValueError) as exc:
         raise LLMUnavailableError(str(exc)) from exc
@@ -78,8 +81,13 @@ def generate(
     user_prompt: str,
     prompt_version: str,
     json_mode: bool = False,
+    timeout_seconds: int | None = None,
 ) -> LLMResult | None:
-    """调用 LLM；不可用或失败时返回 None（调用方降级），不抛异常。"""
+    """调用 LLM；不可用或失败时返回 None（调用方降级），不抛异常。
+
+    timeout_seconds 为 None 时使用全局设置（APP_LLM_TIMEOUT_SECONDS，默认 30s）；
+    重负载任务（如简历证据抽取的 JSON 长输出）应传入专用超时避免误降级。
+    """
     if not llm_available():
         logger.info("LLM 网关无 API Key，返回 None 触发规则降级（prompt=%s）", prompt_version)
         return None
@@ -91,6 +99,7 @@ def generate(
                 {"role": "user", "content": user_prompt},
             ],
             json_mode=json_mode,
+            timeout_seconds=timeout_seconds,
         )
     except LLMUnavailableError as exc:
         logger.warning("LLM 调用失败（prompt=%s）：%s", prompt_version, exc)

@@ -53,3 +53,44 @@ def test_chat_completions_request_uses_v4_flash(monkeypatch) -> None:
         "response_format": {"type": "json_object"},
     }
     assert captured["timeout"] == 30
+
+
+def test_post_chat_explicit_timeout_overrides_global_setting(monkeypatch) -> None:
+    captured: dict[str, object] = {}
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps(
+                {"choices": [{"message": {"content": "ok"}}]}
+            ).encode("utf-8")
+
+    def fake_urlopen(request, *, timeout: int):
+        captured["timeout"] = timeout
+        return FakeResponse()
+
+    monkeypatch.setattr(
+        llm,
+        "get_settings",
+        lambda: SimpleNamespace(
+            llm_model="deepseek-v4-flash",
+            llm_base_url="https://api.deepseek.com/v1",
+            llm_api_key="test-key",
+            llm_timeout_seconds=30,
+        ),
+    )
+    monkeypatch.setattr(llm.urllib.request, "urlopen", fake_urlopen)
+
+    content = llm._post_chat(
+        [{"role": "user", "content": "ping"}],
+        json_mode=False,
+        timeout_seconds=180,
+    )
+
+    assert content == "ok"
+    assert captured["timeout"] == 180

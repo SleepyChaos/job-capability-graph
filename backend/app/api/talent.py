@@ -8,17 +8,20 @@ from app.db.session import get_db
 from app.modules.talent.resume_adapter import ResumeFileError, extract_resume_text, virus_scan
 from app.modules.talent.service import (
     TalentWorkflowError,
+    answer_match_evidence_question,
     answer_profile_question,
     create_learning_path,
     create_profile_draft,
     create_profile_version,
     delete_profile_family,
     export_profiles_masked,
+    get_match_evidence_question,
     get_profile,
     list_profiles,
     match_explanation,
     publish_profile,
     run_matching,
+    save_job_requirement_expression,
 )
 
 router = APIRouter(tags=["talent-matching"])
@@ -43,6 +46,10 @@ class ProfileVersionCreate(BaseModel):
     experience_summary: str | None = Field(default=None, max_length=5000)
 
 
+class RequirementExpressionCreate(BaseModel):
+    expression: dict
+
+
 def _call(action):
     try:
         return action()
@@ -64,12 +71,12 @@ def create_profile(payload: ProfileDraftCreate, db: Annotated[Session, Depends(g
 
 
 @router.post("/talent/profiles/upload", response_model=dict, status_code=201)
-async def upload_profile(
+def upload_profile(
     db: Annotated[Session, Depends(get_db)],
     file: Annotated[UploadFile, File()],
 ):
-    """多格式简历上传（txt/pdf/docx）：MIME 嗅探 + 扩展名白名单 + 病毒扫描接口预留。"""
-    data = await file.read()
+    """上传简历并做 DeepSeek 证据抽取；无 Key/失败时自动走规则降级。"""
+    data = file.file.read()
     scan = virus_scan(data)
     if scan["status"] == "infected":
         raise HTTPException(status_code=422, detail="文件未通过安全扫描，已拒绝")
@@ -153,6 +160,53 @@ def match_profile(
     limit: Annotated[int, Query(ge=1, le=10)] = 5,
 ):
     return _call(lambda: run_matching(db, version_code=version_code, limit=limit))
+
+
+@router.post(
+    "/talent/job-clusters/{job_cluster_version_id}/requirement-expressions",
+    response_model=dict,
+    status_code=201,
+)
+def create_requirement_expression(
+    job_cluster_version_id: int,
+    payload: RequirementExpressionCreate,
+    db: Annotated[Session, Depends(get_db)],
+):
+    """保存经人工确认的可执行岗位规则新版本；不会覆盖历史版本。"""
+    return _call(
+        lambda: save_job_requirement_expression(
+            db,
+            job_cluster_version_id=job_cluster_version_id,
+            expression_payload=payload.expression,
+        )
+    )
+
+
+@router.get("/talent/matches/{result_code}/evidence-question", response_model=dict)
+def get_evidence_question(
+    result_code: str,
+    db: Annotated[Session, Depends(get_db)],
+):
+    """返回机械规划器选择的岗位相关补证问题；LLM 不参与问题选择。"""
+    return _call(lambda: get_match_evidence_question(db, result_code=result_code))
+
+
+@router.post("/talent/matches/{result_code}/evidence-answer", response_model=dict)
+def answer_evidence_question(
+    result_code: str,
+    payload: DialogueAnswer,
+    db: Annotated[Session, Depends(get_db)],
+    limit: Annotated[int, Query(ge=1, le=10)] = 5,
+):
+    """将回答写入新的不可变画像版本，并重新执行纯机械匹配。"""
+    return _call(
+        lambda: answer_match_evidence_question(
+            db,
+            result_code=result_code,
+            answer_text=payload.answer_text,
+            limit=limit,
+        )
+    )
 
 
 @router.post("/talent/matches/{result_code}/learning-path", response_model=dict, status_code=201)
