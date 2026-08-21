@@ -32,6 +32,38 @@ export interface ClusterPage {
   items: ClusterListItem[]
 }
 
+export interface ClusterMemberItem {
+  job_code: string
+  title: string
+  company: string | null
+  source_collected_at_date: string | null
+  technology_evidence_count: number
+  similarity_score: string
+  assignment_status: string
+  assignment_confidence: string | null
+  is_representative: boolean
+  top_candidates: unknown[]
+}
+
+export interface ClusterCapabilityRankingItem {
+  technology_code: string
+  technology_name: string
+  requirement_type: string
+  supporting_job_count: number
+  organization_count: number
+  importance_weight: string
+  coverage_rate: string | null
+}
+
+export interface ClusterDetail extends ClusterListItem {
+  description: string | null
+  centroid: Record<string, unknown>
+  members: ClusterMemberItem[]
+  capability_rankings: ClusterCapabilityRankingItem[]
+  grey_zone_member_count: number
+  grey_zone_representative_titles: string[]
+}
+
 export const clusteringApi = {
   clusters(params: { limit?: number; offset?: number } = {}, signal?: AbortSignal) {
     const query = new URLSearchParams()
@@ -40,10 +72,11 @@ export const clusteringApi = {
     query.set('limit', String(limit))
     query.set('offset', String(offset))
     return getJson<ClusterPage>(`/job-clusters?${query}`, signal).catch((error: Error) => {
-      // A fresh runtime database has no successful clustering snapshot yet;
-      // keep overview cards usable while preserving other API failures.
       if (NO_CLUSTERING_RUN_MESSAGES.has(error.message)) return { total: 0, limit, offset, items: [] }
       throw error
     })
+  },
+  clusterDetail(code: string, signal?: AbortSignal) {
+    return getJson<ClusterDetail>(`/job-clusters/${encodeURIComponent(code)}`, signal)
   },
 }

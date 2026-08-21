@@ -2,11 +2,18 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
-from sqlalchemy import and_, func, or_, select
+from sqlalchemy import and_, distinct, func, or_, select
 from sqlalchemy.orm import Session, aliased
 
 from app.db.session import get_db
+from app.modules.clustering.models import (
+    JobClusterMember,
+    JobClusterVersion,
+    JobClusteringRun,
+    JobRoleVersionRequirement,
+)
 from app.modules.ingestion.models import SpreadsheetRow
+from app.modules.job.models import JobPosting, JobRequirement
 from app.modules.taxonomy.models import (
     TechnologyAlias,
     TechnologyDomain,
@@ -56,6 +63,21 @@ class TechnologyNodePage(BaseModel):
     limit: int
     offset: int
     items: list[TechnologyNodeResponse]
+
+
+class TechnologyNodeDetailResponse(BaseModel):
+    node_id: int
+    code: str
+    name: str
+    level_code: str
+    definition_text: str | None
+    alias_text: list[str]
+    deprecated: bool
+    replaced_by_code: str | None
+    review_status_code: str
+    referenced_job_count: int
+    referenced_organization_count: int
+    referenced_role_cluster_count: int
 
 
 def active_version(db: Session, version_code: str | None) -> TechnologyTaxonomyVersion:
@@ -219,3 +241,257 @@ def list_nodes(
         for node, parent_code_value, domain, source_sheet, source_row_number, alias_count in rows
     ]
     return TechnologyNodePage(total=total, limit=limit, offset=offset, items=items)
+
+
+class TaxonomyTreeNode(BaseModel):
+    node_id: int
+    code: str
+    name: str
+    level_code: str
+    domain_code: str
+    parent_code: str | None
+    referenced_job_count: int
+    referenced_organization_count: int
+    referenced_role_cluster_count: int
+    children: list["TaxonomyTreeNode"]
+
+
+TaxonomyTreeNode.model_rebuild()
+
+
+@router.get("/tree", response_model=dict)
+def get_taxonomy_tree(
+    db: Annotated[Session, Depends(get_db)],
+    version_code: str | None = None,
+    max_depth: Literal["L1", "L2", "L3", "L4"] = "L3",
+) -> dict:
+    """T1→L2→L3→L4 技术树（支持前端展开/收起），每个节点带三类引用计数供下钻。"""
+    version = active_version(db, version_code)
+    depth_code = {"L1": 1, "L2": 2, "L3": 3, "L4": 4}[max_depth]
+    parent = aliased(TechnologyNode)
+    rows = db.execute(
+        select(
+            TechnologyNode.technology_node_id,
+            TechnologyNode.technology_code,
+            TechnologyNode.technology_name,
+            TechnologyNode.level_code,
+            TechnologyDomain.domain_code,
+            parent.technology_code,
+        )
+        .outerjoin(parent, parent.technology_node_id == TechnologyNode.parent_technology_node_id)
+        .outerjoin(
+            TechnologyNodeDomain,
+            TechnologyNodeDomain.technology_node_id == TechnologyNode.technology_node_id,
+        )
+        .outerjoin(TechnologyDomain, TechnologyDomain.technology_domain_id == TechnologyNodeDomain.technology_domain_id)
+        .where(
+            TechnologyNode.taxonomy_version_id == version.taxonomy_version_id,
+            TechnologyNode.level_code.in_(
+                ["L1", "L2", "L3", "L4"][:depth_code]
+            ),
+        )
+        .order_by(TechnologyNode.level_code, TechnologyNode.sort_order, TechnologyNode.technology_code)
+    ).all()
+    nodes: dict[int, TaxonomyTreeNode] = {}
+    tids = [tid for tid, *_ in rows]
+    counts: dict[int, tuple[int, int, int]] = {}
+    if tids:
+        # referenced_job_count
+        j_rows = db.execute(
+            select(JobRequirement.technology_node_id, func.count(distinct(JobRequirement.job_posting_id)))
+            .where(JobRequirement.technology_node_id.in_(tids))
+            .group_by(JobRequirement.technology_node_id)
+        ).all()
+        # referenced_organization_count
+        o_rows = db.execute(
+            select(JobRequirement.technology_node_id, func.count(distinct(JobPosting.organization_id)))
+            .join(JobPosting, JobPosting.job_posting_id == JobRequirement.job_posting_id)
+            .where(
+                JobRequirement.technology_node_id.in_(tids),
+                JobPosting.organization_id.is_not(None),
+            )
+            .group_by(JobRequirement.technology_node_id)
+        ).all()
+        c_rows = db.execute(
+            select(
+                JobRoleVersionRequirement.technology_node_id,
+                func.count(distinct(JobRoleVersionRequirement.job_cluster_version_id)),
+            )
+            .where(JobRoleVersionRequirement.technology_node_id.in_(tids))
+            .group_by(JobRoleVersionRequirement.technology_node_id)
+        ).all()
+        jmap: dict[int, int] = {int(t): int(c) for t, c in j_rows}
+        omap: dict[int, int] = {int(t): int(c) for t, c in o_rows}
+        cmap: dict[int, int] = {int(t): int(c) for t, c in c_rows}
+        for tid in tids:
+            counts[int(tid)] = (jmap.get(int(tid), 0), omap.get(int(tid), 0), cmap.get(int(tid), 0))
+    code_to_tid: dict[str, int] = {}
+    for tid, code, name, level, dcode, pcode in rows:
+        jc, oc, cc = counts.get(int(tid), (0, 0, 0))
+        node = TaxonomyTreeNode(
+            node_id=int(tid),
+            code=str(code),
+            name=str(name),
+            level_code=str(level),
+            domain_code=str(dcode or "T7"),
+            parent_code=str(pcode) if pcode is not None else None,
+            referenced_job_count=int(jc),
+            referenced_organization_count=int(oc),
+            referenced_role_cluster_count=int(cc),
+            children=[],
+        )
+        nodes[int(tid)] = node
+        code_to_tid[str(code)] = int(tid)
+    # Attach children to parent (L2→L1 parent_code is L1's code... depends on actual structure; TechnologyNode has parent_technology_node_id)
+    # So rather than pcode, join by parent id again
+    parent_rows = db.execute(
+        select(TechnologyNode.technology_node_id, TechnologyNode.parent_technology_node_id)
+        .where(TechnologyNode.technology_node_id.in_(tids))
+    ).all()
+    child_rel: dict[int, int] = {}
+    for tid, pid in parent_rows:
+        if pid:
+            child_rel[int(tid)] = int(pid)
+    roots: list[TaxonomyTreeNode] = []
+    for tid, node in nodes.items():
+        pid = child_rel.get(tid)
+        if pid and pid in nodes:
+            nodes[pid].children.append(node)
+        else:
+            roots.append(node)
+    # Sort each level
+    def _sort(level: str, items: list[TaxonomyTreeNode]):
+        if level == "L1":
+            order = ["T1", "T2", "T3", "T4", "T5", "T6", "T7"]
+            items.sort(key=lambda n: (order.index(n.code if n.code in order else "T7"), n.name))
+        else:
+            items.sort(key=lambda n: (-(n.referenced_job_count + n.referenced_role_cluster_count), n.code))
+        for node in items:
+            if node.children:
+                next_level = "L" + str({"L1": 2, "L2": 3, "L3": 4, "L4": 4}.get(level, 2))
+                _sort(next_level, node.children)
+    _sort("L1", roots)
+    return {
+        "version_code": version.version_code,
+        "max_depth": max_depth,
+        "total_nodes": len(nodes),
+        "root_count": len(roots),
+        "roots": [r.model_dump() for r in roots],
+    }
+
+
+@router.get("/nodes/{code}/detail", response_model=TechnologyNodeDetailResponse)
+def node_detail(
+    code: str,
+    db: Annotated[Session, Depends(get_db)],
+    version_code: str | None = None,
+) -> TechnologyNodeDetailResponse:
+    version = active_version(db, version_code)
+    parent = aliased(TechnologyNode)
+    node_row = db.execute(
+        select(
+            TechnologyNode,
+            parent.technology_code,
+            TechnologyNodeDomain.review_status_code,
+        )
+        .outerjoin(parent, parent.technology_node_id == TechnologyNode.parent_technology_node_id)
+        .outerjoin(
+            TechnologyNodeDomain,
+            and_(
+                TechnologyNodeDomain.technology_node_id == TechnologyNode.technology_node_id,
+                TechnologyNodeDomain.is_primary.is_(True),
+            ),
+        )
+        .where(
+            TechnologyNode.taxonomy_version_id == version.taxonomy_version_id,
+            TechnologyNode.technology_code == code,
+        )
+    ).one_or_none()
+    if node_row is None:
+        raise HTTPException(status_code=404, detail="技术词不存在")
+    node, _parent_code, review_status = node_row
+    aliases = list(
+        db.scalars(
+            select(TechnologyAlias.alias_text).where(
+                TechnologyAlias.technology_node_id == node.technology_node_id
+            )
+        )
+    )
+    l2_l3_node_ids = {node.technology_node_id}
+    if node.level_code == "L2":
+        descendant_rows = db.scalars(
+            select(TechnologyNode.technology_node_id).where(
+                TechnologyNode.taxonomy_version_id == version.taxonomy_version_id,
+                TechnologyNode.parent_technology_node_id == node.technology_node_id,
+                TechnologyNode.level_code.in_(["L3", "L4"]),
+            )
+        )
+        l2_l3_node_ids.update(descendant_rows)
+    elif node.level_code == "L3":
+        descendant_rows = db.scalars(
+            select(TechnologyNode.technology_node_id).where(
+                TechnologyNode.taxonomy_version_id == version.taxonomy_version_id,
+                TechnologyNode.parent_technology_node_id == node.technology_node_id,
+                TechnologyNode.level_code == "L4",
+            )
+        )
+        l2_l3_node_ids.update(descendant_rows)
+    referenced_job_count = (
+        db.scalar(
+            select(func.count(distinct(JobRequirement.job_posting_id))).where(
+                JobRequirement.technology_node_id.in_(list(l2_l3_node_ids))
+            )
+        )
+        or 0
+    )
+    referenced_organization_count = (
+        db.scalar(
+            select(func.count(distinct(JobPosting.organization_id)))
+            .join(JobPosting, JobPosting.job_posting_id == JobRequirement.job_posting_id)
+            .where(JobRequirement.technology_node_id.in_(list(l2_l3_node_ids)))
+        )
+        or 0
+    )
+    latest_clustering_run = db.scalar(
+        select(JobClusteringRun)
+        .where(JobClusteringRun.run_status_code == "success")
+        .order_by(JobClusteringRun.target_date.desc(), JobClusteringRun.clustering_run_id.desc())
+        .limit(1)
+    )
+    referenced_role_cluster_count = 0
+    if latest_clustering_run:
+        referenced_role_cluster_count = (
+            db.scalar(
+                select(func.count(distinct(JobClusterVersion.job_cluster_version_id)))
+                .join(
+                    JobClusterMember,
+                    JobClusterMember.job_cluster_version_id
+                    == JobClusterVersion.job_cluster_version_id,
+                )
+                .join(
+                    JobRequirement,
+                    JobRequirement.job_posting_id == JobClusterMember.job_posting_id,
+                )
+                .where(
+                    JobClusterVersion.clustering_run_id
+                    == latest_clustering_run.clustering_run_id,
+                    JobRequirement.technology_node_id.in_(list(l2_l3_node_ids)),
+                )
+            )
+            or 0
+        )
+    deprecated = node.governance_status_code in {"deprecated", "superseded"}
+    return TechnologyNodeDetailResponse(
+        node_id=node.technology_node_id,
+        code=node.technology_code,
+        name=node.technology_name,
+        level_code=node.level_code,
+        definition_text=node.definition_text,
+        alias_text=aliases,
+        deprecated=deprecated,
+        replaced_by_code=None,
+        review_status_code=review_status or "unreviewed",
+        referenced_job_count=referenced_job_count,
+        referenced_organization_count=referenced_organization_count,
+        referenced_role_cluster_count=referenced_role_cluster_count,
+    )

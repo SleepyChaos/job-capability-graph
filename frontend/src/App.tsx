@@ -44,7 +44,7 @@ const pageTitles: Record<PageId, string> = {
 }
 
 function getInitialPage(): PageId {
-  const value = window.location.hash.replace('#/', '') as PageId
+  const value = window.location.hash.replace('#/', '').split('?')[0] as PageId
   return value in pageTitles ? value : 'overview'
 }
 
@@ -61,7 +61,7 @@ export default function App() {
   const [managementQuery, setManagementQuery] = useState('')
 
   useEffect(() => {
-    window.location.hash = `/${page}`
+    if (getInitialPage() !== page) window.location.hash = `/${page}`
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [page])
 

@@ -9,6 +9,7 @@ from app.modules.graph.service import (
     cluster_capability_graph,
     cluster_graph_list,
     heatmap_graph,
+    industry_chain_summary,
     relation_graph,
     relation_graph_neighbors,
 )
@@ -50,6 +51,22 @@ def test_graph_projections_share_governed_evidence_and_visual_ledger() -> None:
         assert heatmap["detail_series"][0]["total_trigger_documents"] == 3
         assert heatmap["window"]["data_status"] == "partial"
         assert heatmap["data_version"] == relations["data_version"]
+
+
+def test_industry_chain_summary_is_a_stable_graph_navigation_index() -> None:
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    with Session(engine, expire_on_commit=False) as session:
+        parse_run_code = _seed_cluster_fixture(session)
+        run_full_clustering(session, parse_run_code=parse_run_code)
+
+        summary = industry_chain_summary(session)
+
+        assert [stage["code"] for stage in summary["stages"]] == [
+            "upstream", "midstream", "downstream", "support", "unclassified"
+        ]
+        assert sum(stage["job_count"] for stage in summary["stages"]) > 0
+        assert summary["data_version"] != "uninitialized"
 
 
 def test_relation_graph_keeps_role_filter_independent_from_capability_filter() -> None:
@@ -98,7 +115,11 @@ def test_relation_graph_keeps_governed_l2_nodes_without_current_evidence() -> No
         )
 
         assert orphan_node["evidence_count"] == 0
-        assert all(edge["target"] != orphan_node["id"] for edge in relations["edges"])
+        business_edges = [
+            edge for edge in relations["edges"]
+            if edge["relation_type"] == "important_technology"
+        ]
+        assert all(edge["target"] != orphan_node["id"] for edge in business_edges)
 
 
 def test_relation_graph_respects_node_budget_and_support_threshold() -> None:
@@ -117,11 +138,15 @@ def test_relation_graph_respects_node_budget_and_support_threshold() -> None:
         assert len(relations["role_nodes"]) == 1
         assert len(relations["capability_nodes"]) == 1
         assert relations["capability_nodes"][0]["evidence_count"] == 0
-        assert relations["edges"] == []
+        business_edges = [
+            edge for edge in relations["edges"]
+            if edge["relation_type"] == "important_technology"
+        ]
+        assert business_edges == []
         assert relations["filters"]["node_budget"] == 2
 
 
-def test_relation_graph_uses_budget_for_all_role_clusters_before_capabilities() -> None:
+def test_relation_graph_reserves_budget_for_capabilities() -> None:
     engine = create_engine("sqlite+pysqlite:///:memory:")
     Base.metadata.create_all(engine)
     with Session(engine, expire_on_commit=False) as session:
@@ -145,11 +170,12 @@ def test_relation_graph_uses_budget_for_all_role_clusters_before_capabilities() 
             )
         session.commit()
 
-        role_budget = len(initial["role_nodes"]) + 2
-        relations = relation_graph(session, node_budget=role_budget, cluster_limit=1000)
+        node_budget = min(20, max(4, len(initial["role_nodes"]) + 2))
+        relations = relation_graph(session, node_budget=node_budget, cluster_limit=1000)
 
-        assert len(relations["role_nodes"]) == role_budget
-        assert relations["capability_nodes"] == []
+        assert len(relations["role_nodes"]) <= node_budget // 2
+        assert len(relations["capability_nodes"]) <= node_budget - len(relations["role_nodes"])
+        assert len(relations["role_nodes"]) + len(relations["capability_nodes"]) <= node_budget
 
 
 def test_relation_graph_focus_mode_returns_requested_cluster() -> None:

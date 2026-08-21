@@ -13,6 +13,8 @@ from app.modules.job.models import (
     DuplicateDocumentGroup,
     DuplicateDocumentMember,
     EvidenceSpan,
+    JobParseRun,
+    JobParseResult,
     JobPosting,
     JobPostingDataSource,
     JobRequirement,
@@ -20,6 +22,8 @@ from app.modules.job.models import (
     JobScenario,
     Organization,
     SourceDocumentVersion,
+    TechnologyAmbiguityRule,
+    TechnologyMatchAssessment,
 )
 from app.modules.taxonomy.models import TechnologyNode
 
@@ -71,14 +75,33 @@ class JobTechnologyRequirement(BaseModel):
     mention_count: int
     confidence: Decimal
     evidence: list[str]
+    assessment_status: str | None
+    ambiguity_reason_label: str | None
 
 
 class JobDetailResponse(JobListItem):
+    level_code: str | None
+    time_quality_code: str | None
+    source_collected_at_date: str | None
+    published_at_date: str | None
+    duplicate_group_code: str | None
+    parse_status_code: str | None
+    review_required: bool
+    ambiguity_review_count: int
     salary: str | None
     jd_text: str
     source_codes: list[str]
     technologies: list[JobTechnologyRequirement]
     scenarios: list[str] = []
+    career_direction: str | None = None
+    career_type: str | None = None
+    industry_chain_level: str | None = None
+    company_subfield: str | None = None
+    funding_round: str | None = None
+    company_region: str | None = None
+    company_headquarters_city: str | None = None
+    source_skill_tags: str | None = None
+    source_url: str | None = None
 
 
 def duplicate_group_subquery():
@@ -239,18 +262,28 @@ def list_jobs(
 def job_detail(job_code: str, db: Annotated[Session, Depends(get_db)]) -> JobDetailResponse:
     duplicate_group = duplicate_group_subquery()
     row = db.execute(
-        select(JobPosting, Organization.canonical_name, duplicate_group.c.duplicate_group_code)
+        select(
+            JobPosting,
+            Organization.canonical_name,
+            duplicate_group.c.duplicate_group_code,
+            SourceDocumentVersion.published_at,
+        )
         .outerjoin(Organization, Organization.organization_id == JobPosting.organization_id)
         .outerjoin(
             duplicate_group,
             duplicate_group.c.duplicate_document_version_id
             == JobPosting.source_document_version_id,
         )
+        .outerjoin(
+            SourceDocumentVersion,
+            SourceDocumentVersion.source_document_version_id
+            == JobPosting.source_document_version_id,
+        )
         .where(JobPosting.job_code == job_code)
     ).one_or_none()
     if row is None:
         raise HTTPException(status_code=404, detail="JD不存在")
-    job, company, duplicate_code = row
+    job, company, duplicate_code, published_at = row
     source_codes = list(
         db.scalars(
             select(DataSource.source_code)
@@ -262,6 +295,20 @@ def job_detail(job_code: str, db: Annotated[Session, Depends(get_db)]) -> JobDet
             .order_by(JobPostingDataSource.source_order)
         )
     )
+    latest_parse_run = db.scalar(
+        select(JobParseRun)
+        .where(JobParseRun.run_status_code == "success")
+        .order_by(JobParseRun.target_date.desc(), JobParseRun.job_parse_run_id.desc())
+        .limit(1)
+    )
+    parse_result = None
+    if latest_parse_run:
+        parse_result = db.scalar(
+            select(JobParseResult).where(
+                JobParseResult.job_parse_run_id == latest_parse_run.job_parse_run_id,
+                JobParseResult.job_posting_id == job.job_posting_id,
+            )
+        )
     requirement_rows = db.execute(
         select(JobRequirement, TechnologyNode)
         .join(
@@ -271,6 +318,34 @@ def job_detail(job_code: str, db: Annotated[Session, Depends(get_db)]) -> JobDet
         .where(JobRequirement.job_posting_id == job.job_posting_id)
         .order_by(JobRequirement.requirement_no)
     ).all()
+    assessment_by_requirement: dict[int, tuple[str | None, str | None, int | None]] = {}
+    if latest_parse_run:
+        assessment_rows = db.execute(
+            select(
+                TechnologyMatchAssessment.job_requirement_id,
+                TechnologyMatchAssessment.assessment_status_code,
+                TechnologyMatchAssessment.reason_code,
+                TechnologyMatchAssessment.ambiguity_rule_id,
+            ).where(
+                TechnologyMatchAssessment.job_parse_run_id == latest_parse_run.job_parse_run_id,
+                TechnologyMatchAssessment.job_requirement_id.in_(
+                    [req.job_requirement_id for req, _ in requirement_rows]
+                ),
+            )
+        ).all()
+        for req_id, status_code, reason_code, rule_id in assessment_rows:
+            assessment_by_requirement[req_id] = (status_code, reason_code, rule_id)
+    ambiguity_rule_labels: dict[int, str] = {}
+    rule_ids = [rule_id for _, _, rule_id in assessment_by_requirement.values() if rule_id]
+    if rule_ids:
+        rule_rows = db.execute(
+            select(
+                TechnologyAmbiguityRule.technology_ambiguity_rule_id,
+                TechnologyAmbiguityRule.rule_code,
+            ).where(TechnologyAmbiguityRule.technology_ambiguity_rule_id.in_(rule_ids))
+        ).all()
+        for rule_id, rule_code in rule_rows:
+            ambiguity_rule_labels[rule_id] = rule_code
     technologies = []
     for requirement, technology in requirement_rows:
         evidence = list(
@@ -284,6 +359,15 @@ def job_detail(job_code: str, db: Annotated[Session, Depends(get_db)]) -> JobDet
                 .order_by(EvidenceSpan.start_offset)
             )
         )
+        assessment_info = assessment_by_requirement.get(requirement.job_requirement_id)
+        status_code = None
+        reason_label = None
+        if assessment_info:
+            status_code, _reason_code, rule_id = assessment_info
+            if rule_id and rule_id in ambiguity_rule_labels:
+                reason_label = ambiguity_rule_labels[rule_id]
+            elif _reason_code:
+                reason_label = _reason_code
         technologies.append(
             JobTechnologyRequirement(
                 requirement_no=requirement.requirement_no,
@@ -294,6 +378,8 @@ def job_detail(job_code: str, db: Annotated[Session, Depends(get_db)]) -> JobDet
                 mention_count=requirement.mention_count,
                 confidence=requirement.confidence_score,
                 evidence=evidence,
+                assessment_status=status_code,
+                ambiguity_reason_label=reason_label,
             )
         )
     technology_count = len(
@@ -311,13 +397,35 @@ def job_detail(job_code: str, db: Annotated[Session, Depends(get_db)]) -> JobDet
             .order_by(JobScenario.scenario_no)
         )
     )
+    source_collected_at_date = None
+    if job.source_collected_at is not None:
+        source_collected_at_date = job.source_collected_at.date().isoformat()
+    elif published_at is not None:
+        source_collected_at_date = published_at.date().isoformat()
+    published_at_date = published_at.date().isoformat() if published_at is not None else None
     return JobDetailResponse(
         **item.model_dump(),
+        level_code=job.job_level_code,
+        time_quality_code=job.time_quality_code,
+        source_collected_at_date=source_collected_at_date,
+        published_at_date=published_at_date,
+        parse_status_code=parse_result.parse_status_code if parse_result else None,
+        review_required=bool(parse_result.review_required) if parse_result else False,
+        ambiguity_review_count=parse_result.ambiguity_review_count if parse_result else 0,
         salary=job.salary_text,
         jd_text=job.jd_clean_text,
         source_codes=source_codes,
         technologies=technologies,
         scenarios=scenarios,
+        career_direction=(job.source_metadata_json or {}).get("career_direction"),
+        career_type=(job.source_metadata_json or {}).get("career_type"),
+        industry_chain_level=(job.source_metadata_json or {}).get("industry_chain_level"),
+        company_subfield=(job.source_metadata_json or {}).get("company_subfield"),
+        funding_round=(job.source_metadata_json or {}).get("funding_round"),
+        company_region=(job.source_metadata_json or {}).get("company_region"),
+        company_headquarters_city=(job.source_metadata_json or {}).get("company_headquarters_city"),
+        source_skill_tags=(job.source_metadata_json or {}).get("source_skill_tags"),
+        source_url=(job.source_metadata_json or {}).get("source_url_raw"),
     )
 
 

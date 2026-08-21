@@ -54,13 +54,33 @@ export interface JobTechnologyRequirement {
   mention_count: number
   confidence: string
   evidence: string[]
+  assessment_status: string | null
+  ambiguity_reason_label: string | null
 }
 
 export interface JobDetail extends JobListItem {
+  level_code: string | null
+  time_quality_code: string | null
+  source_collected_at_date: string | null
+  published_at_date: string | null
+  duplicate_group_code: string | null
+  parse_status_code: string | null
+  review_required: boolean
+  ambiguity_review_count: number
   salary: string | null
   jd_text: string
   source_codes: string[]
   technologies: JobTechnologyRequirement[]
+  scenarios: string[]
+  career_direction: string | null
+  career_type: string | null
+  industry_chain_level: string | null
+  company_subfield: string | null
+  funding_round: string | null
+  company_region: string | null
+  company_headquarters_city: string | null
+  source_skill_tags: string | null
+  source_url: string | null
 }
 
 export const jobsApi = {

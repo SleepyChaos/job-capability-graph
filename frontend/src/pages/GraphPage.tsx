@@ -5,9 +5,9 @@ import { MetricStrip, Panel, StatusTag } from '../components/ui'
 import type { PageId } from '../types'
 
 const viewEntries: { id: PageId; title: string; description: string; icon: typeof Activity; meta: string }[] = [
-  { id: 'graph-heatmap', title: '能力热力图', description: '以 21×15 日格汇总七个技术域过去 45 天的材料触发次数，并下钻标准技术层级。', icon: Activity, meta: '矩阵比较 · 45 天固定窗口' },
-  { id: 'graph-relations', title: '岗位—能力关联图', description: '全局展示岗位聚类与技术能力，并连接各岗位簇的高频重要能力。', icon: Network, meta: '节点关系 · 表格降级' },
-  { id: 'graph-clusters', title: '聚类岗位能力图谱', description: '选择岗位聚类，以距离查看能力重要性，以颜色深浅查看近期活跃度。', icon: GitBranch, meta: '距离 = 长期重要性 · 深浅 = 近期活跃' },
+  { id: 'graph-relations', title: '产业链全局图谱', description: '从上游、中游、下游和横向支撑进入企业、岗位簇与技能关系，并继续下钻真实 JD。', icon: Network, meta: '统一入口 · 跨图跳转 · URL 可分享' },
+  { id: 'graph-clusters', title: '岗位簇技能星图', description: '从产业链或全局关系图进入单个岗位簇，查看核心能力、企业覆盖和真实岗位证据。', icon: GitBranch, meta: '岗位簇局部视角 · 返回全局' },
+  { id: 'graph-heatmap', title: '能力时间热力图', description: '以 21×15 日格汇总七个技术域过去 45 天的材料触发次数，并下钻标准技术层级。', icon: Activity, meta: '时间视角 · 45 天固定窗口' },
 ]
 
 interface OverviewData {
@@ -48,7 +48,7 @@ export function GraphPage({ onNavigate }: { onNavigate: (page: PageId) => void }
   ]
 
   return <div className="page-stack capability-home">
-    <div className="page-intro"><div><h2>动态岗位能力图谱</h2><p>从热度、全局关联和单岗位聚类三个视角读取同一份受治理 JD 技术证据。</p></div><button className="secondary-button" onClick={refresh}><RefreshCw size={15} />刷新图谱快照</button></div>
+    <div className="page-intro"><div><h2>动态岗位能力图谱</h2><p>以产业链为统一入口，在全局关系、岗位簇技能和时间热度之间连续下钻同一份 JD 证据。</p></div><button className="secondary-button" onClick={refresh}><RefreshCw size={15} />刷新图谱快照</button></div>
     <MetricStrip items={metrics} />
     <section className="graph-view-entry-grid" aria-label="能力图谱分析入口">{viewEntries.map(({ id, title, description, icon: Icon, meta }) => <button key={id} onClick={() => onNavigate(id)}><Icon size={23} /><div><h3>{title}</h3><p>{description}</p><span>{meta}</span></div><ArrowRight size={17} /></button>)}</section>
     <div className="graph-home-grid">

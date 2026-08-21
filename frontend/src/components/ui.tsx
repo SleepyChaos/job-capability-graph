@@ -31,8 +31,8 @@ export function Panel({
   )
 }
 
-export function StatusTag({ children, tone = 'neutral' }: { children: ReactNode; tone?: StatusTone }) {
-  return <span className={`status-tag status-tag--${tone}`}>{children}</span>
+export function StatusTag({ children, tone = 'neutral', style }: { children: ReactNode; tone?: StatusTone; style?: React.CSSProperties }) {
+  return <span className={`status-tag status-tag--${tone}`} style={style}>{children}</span>
 }
 
 export function ScoreBar({ value, tone = 'teal', label }: { value: number; tone?: 'teal' | 'amber' | 'blue'; label?: string }) {

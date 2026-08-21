@@ -1,0 +1,927 @@
+{
+  "具身基础模型与VLA": {
+    "esco_skill_labels": ["transformer models", "deep learning", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "VLA端到端大模型": {
+    "esco_skill_labels": ["transformer models", "deep learning", "reinforcement learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "世界模型与预测推理": {
+    "esco_skill_labels": ["simulation modelling", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "世界模型架构": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "运动规划与控制": {
+    "esco_skill_labels": ["motion control", "control algorithms", "path planning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "运动控制(通用)": {
+    "esco_skill_labels": ["motion control", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "人形机器人(通用)": {
+    "esco_skill_labels": ["robotics manipulation", "industrial robotics", "collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "具身推理机制": {
+    "esco_skill_labels": ["knowledge graph", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "Sim-to-Real虚实迁移": {
+    "esco_skill_labels": ["simulation modelling", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "知识图谱构建与更新": {
+    "esco_skill_labels": ["knowledge graph"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "触觉感知算法": {
+    "esco_skill_labels": ["sensor fusion", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "全身控制(WBC)": {
+    "esco_skill_labels": ["motion control", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "灵巧操作": {
+    "esco_skill_labels": ["robotics manipulation", "grasping"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "双足行走与步态": {
+    "esco_skill_labels": ["motion control", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "学习驱动运动控制": {
+    "esco_skill_labels": ["motion control", "reinforcement learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "多模态传感融合": {
+    "esco_skill_labels": ["sensor fusion", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "合成数据": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "动作表示与分词": {
+    "esco_skill_labels": ["transformer models", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "空间表征与动作空间": {
+    "esco_skill_labels": ["3d vision", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "想象训练与Rollout": {
+    "esco_skill_labels": ["reinforcement learning", "simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "具身推理与ECoT": {
+    "esco_skill_labels": ["knowledge graph", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.8
+  },
+  "灵巧手(多指)": {
+    "esco_skill_labels": ["robotics manipulation", "grasping"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "力控与柔顺控制": {
+    "esco_skill_labels": ["force control", "motion control", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "灵巧抓取": {
+    "esco_skill_labels": ["grasping", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "图神经网络与嵌入": {
+    "esco_skill_labels": ["knowledge graph", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "世界模型推理与加速": {
+    "esco_skill_labels": ["simulation modelling", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "电机与驱动": {
+    "esco_skill_labels": ["servo drive", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "伺服电机": {
+    "esco_skill_labels": ["servo drive"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "一体化关节模组": {
+    "esco_skill_labels": ["servo drive", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "视触觉传感与融合": {
+    "esco_skill_labels": ["sensor fusion", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "意图预测与信任校准": {
+    "esco_skill_labels": ["machine learning", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "数据质量与增强": {
+    "esco_skill_labels": ["machine learning", "simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.8
+  },
+  "遥操作数据采集": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "3D重建": {
+    "esco_skill_labels": ["3d vision", "computer vision", "point cloud processing"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "学习与训练方法(通用)": {
+    "esco_skill_labels": ["machine learning", "reinforcement learning", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "智能制造与工业自动化": {
+    "esco_skill_labels": ["industrial robotics", "motion control", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "服务机器人": {
+    "esco_skill_labels": ["collaborative robotics", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "运动生成": {
+    "esco_skill_labels": ["motion control", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "逆动力学": {
+    "esco_skill_labels": ["motion control", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "仿真平台与工具链": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "工业机械臂": {
+    "esco_skill_labels": ["industrial robotics", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "机械臂": {
+    "esco_skill_labels": ["robotics manipulation", "industrial robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "四足机器人": {
+    "esco_skill_labels": ["robotics manipulation", "collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "双足人形机器人": {
+    "esco_skill_labels": ["robotics manipulation", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "具身感知统一表示": {
+    "esco_skill_labels": ["sensor fusion", "3d vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "动作专家与混合专家": {
+    "esco_skill_labels": ["transformer models", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "人机交互(通用)": {
+    "esco_skill_labels": ["collaborative robotics", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "域随机化": {
+    "esco_skill_labels": ["simulation modelling", "reinforcement learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "强化学习": {
+    "esco_skill_labels": ["reinforcement learning", "machine learning", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "深度强化学习": {
+    "esco_skill_labels": ["reinforcement learning", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "运动规划": {
+    "esco_skill_labels": ["path planning", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "路径规划": {
+    "esco_skill_labels": ["path planning", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "世界模型数据集": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "清洁机器人": {
+    "esco_skill_labels": ["collaborative robotics", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "数据采集设备与工具链": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "图匹配算法": {
+    "esco_skill_labels": ["knowledge graph", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "图检索增强(GraphRAG)": {
+    "esco_skill_labels": ["knowledge graph", "transformer models"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "3D视觉感知": {
+    "esco_skill_labels": ["3d vision", "computer vision", "point cloud processing"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "3D视觉": {
+    "esco_skill_labels": ["3d vision", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "世界模型评测基准": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.8
+  },
+  "大小脑分层架构": {
+    "esco_skill_labels": ["transformer models", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "移动机器人(AMR/AGV)": {
+    "esco_skill_labels": ["path planning", "industrial robotics", "slam"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "人形机器人核心零部件": {
+    "esco_skill_labels": ["servo drive", "mechanical design"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "分割与实例感知": {
+    "esco_skill_labels": ["computer vision", "3d vision", "point cloud processing"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "主动感知": {
+    "esco_skill_labels": ["sensor fusion", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "记忆机制": {
+    "esco_skill_labels": ["knowledge graph", "transformer models"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.8
+  },
+  "分层与双系统VLA架构": {
+    "esco_skill_labels": ["transformer models", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "评测基础设施": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "AI芯片": {
+    "esco_skill_labels": ["embedded systems", "fpga design"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "外骨骼机器人": {
+    "esco_skill_labels": ["robotics manipulation", "collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "扩散策略": {
+    "esco_skill_labels": ["deep learning", "transformer models"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "具身智能导航": {
+    "esco_skill_labels": ["slam", "path planning", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "大模型部署与推理优化": {
+    "esco_skill_labels": ["transformer models", "embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "家庭机器人": {
+    "esco_skill_labels": ["collaborative robotics", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "水下机器人": {
+    "esco_skill_labels": ["robotics manipulation", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "手术机器人": {
+    "esco_skill_labels": ["robotics manipulation", "force control", "3d vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "智能装备": {
+    "esco_skill_labels": ["industrial robotics", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "数据集": {
+    "esco_skill_labels": ["machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "执行器": {
+    "esco_skill_labels": ["servo drive", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "操作感知与表示": {
+    "esco_skill_labels": ["robotics manipulation", "sensor fusion", "3d vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "任务规划与分解": {
+    "esco_skill_labels": ["knowledge graph", "path planning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "模型预测控制(MPC)": {
+    "esco_skill_labels": ["control algorithms", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "具身智能体(Agent)": {
+    "esco_skill_labels": ["reinforcement learning", "knowledge graph", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "世界模型价值与策略": {
+    "esco_skill_labels": ["reinforcement learning", "simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "教育机器人": {
+    "esco_skill_labels": ["collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "智能仓储": {
+    "esco_skill_labels": ["industrial robotics", "path planning", "slam"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "检测认证": {
+    "esco_skill_labels": [],
+    "mapping_source": "human_annotated",
+    "confidence": 0.5
+  },
+  "算力基础设施": {
+    "esco_skill_labels": ["embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "关节驱动控制": {
+    "esco_skill_labels": ["servo drive", "control algorithms", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "灵巧手传动与驱动": {
+    "esco_skill_labels": ["servo drive", "mechanical design"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "人形机器人整机与商业化": {
+    "esco_skill_labels": ["robotics manipulation", "industrial robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "具身感知与交互": {
+    "esco_skill_labels": ["sensor fusion", "collaborative robotics", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "机器视觉": {
+    "esco_skill_labels": ["computer vision", "3d vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "计算机视觉": {
+    "esco_skill_labels": ["computer vision", "3d vision", "point cloud processing"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "触觉传感器": {
+    "esco_skill_labels": ["sensor fusion", "force control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "场景图建模": {
+    "esco_skill_labels": ["knowledge graph", "3d vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "SLAM": {
+    "esco_skill_labels": ["slam", "path planning", "point cloud processing"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "世界模型感知表征": {
+    "esco_skill_labels": ["simulation modelling", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.8
+  },
+  "消费级机器人(通用)": {
+    "esco_skill_labels": ["collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "矿山机器人": {
+    "esco_skill_labels": ["industrial robotics", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "康复机器人": {
+    "esco_skill_labels": ["robotics manipulation", "force control", "collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "零售与营销机器人": {
+    "esco_skill_labels": ["collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "汽车制造": {
+    "esco_skill_labels": ["industrial robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "焊接机器人": {
+    "esco_skill_labels": ["industrial robotics", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "巡检机器人(工业)": {
+    "esco_skill_labels": ["industrial robotics", "slam", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "情感交互": {
+    "esco_skill_labels": ["collaborative robotics", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "开发与部署工具链": {
+    "esco_skill_labels": ["embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "ROS": {
+    "esco_skill_labels": ["ros robot operating system", "embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "系统辨识": {
+    "esco_skill_labels": ["control algorithms", "simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "精密减速器": {
+    "esco_skill_labels": ["mechanical design"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "仿生机器人": {
+    "esco_skill_labels": ["robotics manipulation", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "特种人形机器人": {
+    "esco_skill_labels": ["robotics manipulation", "industrial robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "轮式人形机器人": {
+    "esco_skill_labels": ["robotics manipulation", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "电子皮肤与柔性触觉": {
+    "esco_skill_labels": ["sensor fusion", "force control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "六维力传感器": {
+    "esco_skill_labels": ["force control", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "语义记忆与推理": {
+    "esco_skill_labels": ["knowledge graph", "transformer models"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "视觉感知与理解": {
+    "esco_skill_labels": ["computer vision", "3d vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "多模态感知融合": {
+    "esco_skill_labels": ["sensor fusion", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "细分方法与技术(其他)": {
+    "esco_skill_labels": [],
+    "mapping_source": "human_annotated",
+    "confidence": 0.3
+  },
+  "具身操作": {
+    "esco_skill_labels": ["robotics manipulation", "grasping"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "多模态运动生成": {
+    "esco_skill_labels": ["motion control", "transformer models"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "低空经济": {
+    "esco_skill_labels": [],
+    "mapping_source": "human_annotated",
+    "confidence": 0.3
+  },
+  "无人机": {
+    "esco_skill_labels": ["slam", "path planning", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "空间智能与空间机器人": {
+    "esco_skill_labels": ["robotics manipulation", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "智能分拣": {
+    "esco_skill_labels": ["industrial robotics", "robotics manipulation", "grasping"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "标准制定": {
+    "esco_skill_labels": [],
+    "mapping_source": "human_annotated",
+    "confidence": 0.3
+  },
+  "人机共融": {
+    "esco_skill_labels": ["collaborative robotics", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "机器人操作系统": {
+    "esco_skill_labels": ["ros robot operating system", "embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "导航与定位": {
+    "esco_skill_labels": ["slam", "path planning", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "学习与训练方法": {
+    "esco_skill_labels": ["reinforcement learning", "deep learning", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "感知认知与理解": {
+    "esco_skill_labels": ["computer vision", "3d vision", "sensor fusion", "point cloud processing"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "任务规划与推理": {
+    "esco_skill_labels": ["knowledge graph", "path planning", "transformer models"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "群体智能与协同": {
+    "esco_skill_labels": ["path planning", "control algorithms"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "灵巧操作与抓取": {
+    "esco_skill_labels": ["robotics manipulation", "grasping", "force control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "视觉传感": {
+    "esco_skill_labels": ["computer vision", "3d vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "力觉与触觉传感": {
+    "esco_skill_labels": ["force control", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "听觉与语音": {
+    "esco_skill_labels": ["natural language processing"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "位置与惯性": {
+    "esco_skill_labels": ["slam", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "传感器融合与标定": {
+    "esco_skill_labels": ["sensor fusion", "3d vision", "point cloud processing"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "整机-人形机器人": {
+    "esco_skill_labels": ["robotics manipulation", "industrial robotics", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "整机-四足与仿生": {
+    "esco_skill_labels": ["robotics manipulation", "collaborative robotics", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "整机-臂与复合机器人": {
+    "esco_skill_labels": ["industrial robotics", "robotics manipulation", "collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "工业机器人": {
+    "esco_skill_labels": ["industrial robotics", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "协作机器人": {
+    "esco_skill_labels": ["collaborative robotics", "robotics manipulation", "force control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "灵巧手与末端执行器": {
+    "esco_skill_labels": ["grasping", "robotics manipulation", "mechanical design"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "关节与驱动模组": {
+    "esco_skill_labels": ["servo drive", "control algorithms", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "减速器与传动": {
+    "esco_skill_labels": ["mechanical design", "servo drive"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "结构件与材料": {
+    "esco_skill_labels": ["mechanical design"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "机械设计": {
+    "esco_skill_labels": ["mechanical design"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "芯片与算力硬件": {
+    "esco_skill_labels": ["embedded systems", "fpga design"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "嵌入式": {
+    "esco_skill_labels": ["embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "FPGA": {
+    "esco_skill_labels": ["fpga design", "embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "数据集与数据采集": {
+    "esco_skill_labels": ["machine learning", "simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "数据合成与生成": {
+    "esco_skill_labels": ["simulation modelling", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "仿真平台与环境": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "Sim-to-Real迁移": {
+    "esco_skill_labels": ["simulation modelling", "reinforcement learning", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "数据标注与治理": {
+    "esco_skill_labels": ["machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "机器人操作系统(ROS类)": {
+    "esco_skill_labels": ["ros robot operating system", "embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "中间件与通信": {
+    "esco_skill_labels": ["embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "云边端与算力基础设施": {
+    "esco_skill_labels": ["embedded systems"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "人机交互与协作": {
+    "esco_skill_labels": ["collaborative robotics", "force control", "sensor fusion"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "功能安全与可靠性": {
+    "esco_skill_labels": [],
+    "mapping_source": "human_annotated",
+    "confidence": 0.5
+  },
+  "检测认证与标准": {
+    "esco_skill_labels": [],
+    "mapping_source": "human_annotated",
+    "confidence": 0.4
+  },
+  "评测基准与竞赛": {
+    "esco_skill_labels": ["simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "工业制造场景": {
+    "esco_skill_labels": ["industrial robotics", "control algorithms", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "物流仓储场景": {
+    "esco_skill_labels": ["path planning", "slam", "industrial robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "商业服务场景": {
+    "esco_skill_labels": ["collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "医疗康复场景": {
+    "esco_skill_labels": ["robotics manipulation", "force control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.85
+  },
+  "农业与户外场景": {
+    "esco_skill_labels": ["robotics manipulation", "slam"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.78
+  },
+  "特种与应急场景": {
+    "esco_skill_labels": ["robotics manipulation", "industrial robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.8
+  },
+  "家庭与消费场景": {
+    "esco_skill_labels": ["collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "低空与移动载体": {
+    "esco_skill_labels": ["motion control", "path planning", "slam"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.82
+  },
+  "传感器": {
+    "esco_skill_labels": ["sensor fusion", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.9
+  },
+  "NLP": {
+    "esco_skill_labels": ["natural language processing", "transformer models"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "大模型": {
+    "esco_skill_labels": ["transformer models", "deep learning", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "点云": {
+    "esco_skill_labels": ["point cloud processing", "3d vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "深度学习": {
+    "esco_skill_labels": ["deep learning", "machine learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "CNN": {
+    "esco_skill_labels": ["convolutional neural networks", "deep learning", "computer vision"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "Transformer": {
+    "esco_skill_labels": ["transformer models", "deep learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.98
+  },
+  "控制算法": {
+    "esco_skill_labels": ["control algorithms", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "抓取": {
+    "esco_skill_labels": ["grasping", "robotics manipulation"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "力控": {
+    "esco_skill_labels": ["force control", "control algorithms", "motion control"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.95
+  },
+  "Autolabor": {
+    "esco_skill_labels": ["ros robot operating system", "simulation modelling"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.88
+  },
+  "VLA 端到端": {
+    "esco_skill_labels": ["transformer models", "deep learning", "reinforcement learning"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  },
+  "机器人": {
+    "esco_skill_labels": ["robotics manipulation", "industrial robotics", "collaborative robotics"],
+    "mapping_source": "human_annotated",
+    "confidence": 0.92
+  }
+}

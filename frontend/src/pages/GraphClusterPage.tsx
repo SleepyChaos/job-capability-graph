@@ -1,4 +1,4 @@
-import { ArrowRight, Building2, GitBranch, Network, Users } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Building2, GitBranch, Network, Users } from 'lucide-react'
 import type { CSSProperties } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -24,9 +24,10 @@ function positionCapabilities(items: ClusterCapability[]): PositionedCapability[
 }
 
 export function GraphClusterPage({ notify }: { notify: (message: string) => void }) {
+  const routeParams = new URLSearchParams(window.location.hash.split('?')[1] ?? '')
   const [filters, setFilters] = useState<GraphFilterState>({ domain: '全部 T 领域', level: 'L2 能力域' })
   const [clusters, setClusters] = useState<ClusterListItem[]>([])
-  const [selectedCode, setSelectedCode] = useState<string | null>(null)
+  const [selectedCode, setSelectedCode] = useState<string | null>(routeParams.get('cluster'))
   const [detail, setDetail] = useState<ClusterGraphResponse | null>(null)
   const [selectedTechnologyId, setSelectedTechnologyId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -72,15 +73,22 @@ export function GraphClusterPage({ notify }: { notify: (message: string) => void
   }, [selectedCode, visibleClusters])
   const capabilities = useMemo(() => positionCapabilities(detail?.capabilities ?? []), [detail])
   const selectedCapability = capabilities.find((item) => item.technology_node_id === selectedTechnologyId) ?? capabilities[0]
+  const selectCluster = (code: string) => {
+    setSelectedCode(code)
+    const params = new URLSearchParams(window.location.hash.split('?')[1] ?? '')
+    params.set('cluster', code)
+    window.history.replaceState(null, '', `#/graph-clusters?${params}`)
+  }
 
   return (
     <div className="page-stack graph-analysis-page">
+      <div className="graph-breadcrumb"><button onClick={() => { window.location.hash = `/graph-relations${routeParams.get('stage') ? `?stage=${routeParams.get('stage')}` : ''}` }}><ArrowLeft size={13} />产业链总览</button><span>/</span><strong>{detail?.cluster.label ?? '岗位簇技能星图'}</strong></div>
       <div className="page-intro"><div><h2>聚类岗位能力图谱</h2><p>距离编码全窗口重要性，领域色深浅编码最近 10 条相关 JD 的活跃度；两项指标独立计算。</p></div>{detail ? <StatusTag tone="success">数据版本 {detail.data_version.slice(0, 8)}</StatusTag> : null}</div>
       <GraphFilters onChange={setFilters} onApply={(summary) => notify(`聚类图谱筛选已更新：${summary}`)} />
       {error ? <div className="empty-state"><Network size={24} /><strong>聚类图谱加载失败</strong><span>{error}</span></div> : null}
       {!error && clusters.length === 0 ? <div className="empty-state"><Network size={24} /><strong>暂无聚类图谱快照</strong><span>当前数据库尚未生成成功的岗位聚类运行；完成 JD 解析和聚类后，这里会显示岗位簇与能力分布。</span></div> : null}
       {!error && clusters.length > 0 ? <div className="cluster-graph-workspace">
-        <aside className="cluster-list" aria-label="岗位聚类列表"><header><strong>岗位聚类</strong><span>{visibleClusters.length} 个可浏览聚类</span></header>{visibleClusters.map((cluster) => <button className={cluster.stable_cluster_code === selectedCode ? 'selected' : ''} key={cluster.stable_cluster_code} onClick={() => setSelectedCode(cluster.stable_cluster_code)}><span>{cluster.domain_code}</span><strong>{cluster.label}</strong><small>{cluster.member_count} 条 JD · {cluster.organization_count} 家企业</small><ArrowRight size={14} /></button>)}</aside>
+        <aside className="cluster-list" aria-label="岗位聚类列表"><header><strong>岗位聚类</strong><span>{visibleClusters.length} 个可浏览聚类</span></header>{visibleClusters.map((cluster) => <button className={cluster.stable_cluster_code === selectedCode ? 'selected' : ''} key={cluster.stable_cluster_code} onClick={() => selectCluster(cluster.stable_cluster_code)}><span>{cluster.domain_code}</span><strong>{cluster.label}</strong><small>{cluster.member_count} 条 JD · {cluster.organization_count} 家企业</small><ArrowRight size={14} /></button>)}</aside>
         <section className="cluster-map" aria-label={detail ? `${detail.cluster.label}能力重要性与近期活跃度分布` : '正在加载聚类能力'}>
           {detail ? <><div className="cluster-importance-key" aria-hidden="true"><span>重要</span><span>次要</span><span>长尾</span></div><div className="cluster-guide cluster-guide--near" /><div className="cluster-guide cluster-guide--mid" /><div className="cluster-guide cluster-guide--far" /><div className="cluster-core" style={{ '--domain-color': domainColors[detail.cluster.domain_code] } as CSSProperties}><span>{detail.cluster.domain_code}</span><strong>{detail.cluster.label}</strong><small>{detail.cluster.member_count} 条真实 JD</small></div><div className="cluster-skill-field">{capabilities.map((capability) => <button key={capability.technology_node_id} className={selectedCapability?.technology_node_id === capability.technology_node_id ? 'selected' : ''} style={{ left: `${capability.x}%`, top: `${capability.y}%`, '--domain-color': domainColors[capability.domain_code], '--recency': `${Math.max(7, capability.recent_activity)}%`, '--node-text': capability.recent_activity >= 58 ? '#fff' : '#24445f' } as CSSProperties} aria-pressed={selectedCapability?.technology_node_id === capability.technology_node_id} aria-label={`${capability.technology_name}，支持 ${capability.supporting_job_count} 条 JD，近期活跃度 ${capability.recent_activity}%`} onClick={() => setSelectedTechnologyId(capability.technology_node_id)}><small>{capability.domain_code} · {capability.level_code}</small><strong>{capability.technology_name}</strong><span>{capability.supporting_job_count} 条 JD</span><em>{capability.last_seen_at?.slice(0, 10) ?? '时间未知'}</em></button>)}</div><svg className="cluster-edge-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{capabilities.map((capability) => <line key={capability.technology_node_id} x1="50" y1="50" x2={capability.x} y2={capability.y} style={{ '--edge-color': domainColors[capability.domain_code], opacity: Math.max(.25, capability.recent_activity / 100) } as CSSProperties} />)}</svg><div className="cluster-map-legend"><DomainLegend compact /><div className="recency-key"><span>低活跃</span><i style={{ '--domain-color': domainColors[selectedCapability?.domain_code ?? 'T7'] } as CSSProperties} /><span>近期高频</span></div></div></> : <div className="empty-state"><Network size={24} /><strong>正在读取聚类能力</strong><span>仅聚合通过语境校验的技术证据。</span></div>}
         </section>

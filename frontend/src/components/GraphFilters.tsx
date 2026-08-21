@@ -36,7 +36,6 @@ export function GraphFilters({ onApply, onChange, initialValues }: GraphFiltersP
   const update = (key: keyof GraphFilterState, value: string) => {
     const next = { ...filters, [key]: value }
     setFilters(next)
-    onChange?.(next)
   }
   const reset = () => {
     setFilters(initialFilters)
@@ -48,7 +47,7 @@ export function GraphFilters({ onApply, onChange, initialValues }: GraphFiltersP
     <div className="graph-filterbar" aria-label="图谱筛选条件">
       <label><span>技术领域</span><select aria-label="技术领域" value={filters.domain} onChange={(event) => update('domain', event.target.value)}><option>全部 T 领域</option>{domains.map((domain) => <option key={domain.code}>{domain.code} {domain.name}</option>)}</select></label>
       <label><span>能力层级</span><select aria-label="能力层级" value={filters.level} onChange={(event) => update('level', event.target.value)}><option>L1 领域</option><option>L2 能力域</option><option>L3 标准技术点</option></select></label>
-      <div className="graph-filter-actions"><button className="secondary-button" onClick={reset}><RotateCcw size={14} />重置</button><button className="primary-button" onClick={() => onApply?.(`${filters.domain} · ${filters.level}`)}>应用筛选</button></div>
+      <div className="graph-filter-actions"><button className="secondary-button" onClick={reset}><RotateCcw size={14} />重置</button><button className="primary-button" onClick={() => { onChange?.(filters); onApply?.(`${filters.domain} · ${filters.level}`) }}>应用筛选</button></div>
     </div>
   )
 }
@@ -69,7 +68,6 @@ export function RelationGraphFilters({ onApply, onChange }: RelationGraphFilters
   const update = (key: keyof RelationGraphFilterState, value: string) => {
     const next = { ...filters, [key]: value }
     setFilters(next)
-    onChange?.(next)
   }
 
   const reset = () => {
@@ -94,7 +92,7 @@ export function RelationGraphFilters({ onApply, onChange }: RelationGraphFilters
         <label><span>技术领域</span><select aria-label="能力技术领域" value={filters.capabilityDomain} onChange={(event) => update('capabilityDomain', event.target.value)}>{domainOptions('全部能力领域')}</select></label>
         <label><span>能力层级</span><select aria-label="能力层级" value={filters.capabilityLevel} onChange={(event) => update('capabilityLevel', event.target.value)}><option value="L1">L1 领域</option><option value="L2">L2 能力域</option><option value="L3">L3 标准技术点</option></select></label>
       </fieldset>
-      <div className="graph-filter-actions"><button className="secondary-button" onClick={reset}><RotateCcw size={14} />重置</button><button className="primary-button" onClick={() => onApply?.(`岗位聚类：${filters.clusterDomain || '全部'} · 能力：${filters.capabilityDomain || '全部'} / ${filters.capabilityLevel}`)}>应用筛选</button></div>
+      <div className="graph-filter-actions"><button className="secondary-button" onClick={reset}><RotateCcw size={14} />重置</button><button className="primary-button" onClick={() => { onChange?.(filters); onApply?.(`岗位聚类：${filters.clusterDomain || '全部'} · 能力：${filters.capabilityDomain || '全部'} / ${filters.capabilityLevel}`) }}>应用筛选</button></div>
     </div>
   )
 }

@@ -1,0 +1,90 @@
+{
+  "raw_record_count": 25850,
+  "cluster_count": 2884,
+  "singleton_count": 1039,
+  "multi_member_cluster_count": 1845,
+  "ground_truth_conflict_count": 65,
+  "needs_review_record_count": 344,
+  "conflict_examples": {
+    "CANON-人形机器人上海": [
+      "人形机器人上海→S4-PPL-M-6169,S4-PPL-M-4382,S4-PPL-M-5461,S4-PPL-M-3611,S4-PPL-M-4976,S4-PPL-M-6287,S4-PPL-M-6822,S4-PPL-M-6121,S4-PPL-M-700,S4-PPL-M-2007,S4-PPL-M-2922,S4-PPL-M-1958,S4-PPL-M-3162,S4-PPL-M-4259,S4-PPL-M-4498,S4-PPL-M-6318,S4-PPL-M-7011,S4-PPL-M-2076,S4-PPL-M-3420,S4-PPL-M-3226,S4-PPL-M-1263,S4-PPL-M-4286,S4-PPL-M-4325,S4-PPL-M-1762,S4-PPL-M-3718,S4-PPL-M-1466,S4-PPL-M-7055,S4-PPL-M-4084,S4-PPL-M-6510,S4-PPL-M-1765,S4-PPL-M-2960,S4-PPL-M-6004,S4-PPL-M-4780,S4-PPL-M-2650,S4-PPL-M-1925,S4-PPL-M-4432,S4-PPL-M-3576,S4-PPL-M-3053,S4-PPL-M-3697,S4-PPL-M-4560,S4-PPL-M-2808,S4-PPL-M-3279,S4-PPL-M-2443,S4-PPL-M-5516,S4-PPL-M-3245,S4-PPL-M-1749,S4-PPL-M-4302,S4-PPL-M-4911,S4-PPL-M-3437,S4-PPL-M-4023,S4-PPL-M-6754,S4-PPL-M-2055,S4-PPL-M-2390,S4-PPL-M-5132,S4-PPL-M-1799,S4-PPL-M-5215,S4-PPL-M-3399,S4-PPL-M-5433,S4-PPL-M-2564,S4-PPL-M-4355,S4-PPL-M-6334,S4-PPL-M-1964,S4-PPL-M-7298",
+      "人形机器人上海...→S4-PPL-M-7523"
+    ],
+    "CANON-中国电子技术标准化研究院": [
+      "中国电子技术标准化研究院→S4-PPL-M-7471,S4-PPL-M-7599,S4-PPL-M-7546,S4-PPL-M-7579,S4-PPL-M-7611,S4-PPL-M-7556,S4-PPL-M-7607,S4-PPL-M-7424,S4-PPL-M-7412,S4-PPL-M-7363,S4-PPL-M-7568,S4-PPL-M-7563,S4-PPL-M-7612,S4-PPL-M-7619,S4-PPL-M-7500,S4-PPL-M-7575,S4-PPL-M-7593,S4-PPL-M-7541,S4-PPL-M-7583,S4-PPL-M-7597,S4-PPL-M-7596,S4-PPL-M-7610,S4-PPL-M-7482,S4-PPL-M-7574,S4-PPL-M-7606,S4-PPL-M-7458,S4-PPL-M-7361,S4-PPL-M-7615,S4-PPL-M-7473,S4-PPL-M-7609,S4-PPL-M-7608,S4-PPL-M-7601,S4-PPL-M-7616,S4-PPL-M-7572,S4-PPL-M-7591",
+      "中国电子技术标准化研究院...→S4-PPL-M-7498"
+    ],
+    "CANON-ORG-00031": [
+      "清华大学深圳国际研究生院→S4-ORG-32",
+      "ORG-00031→S5-5"
+    ],
+    "CANON-ORG-00043": [
+      "中国科学院自动化研究所→S4-ORG-44",
+      "ORG-00043→S5-9"
+    ],
+    "CANON-ORG-00132": [
+      "中国科学院沈阳自动化研究所→S4-ORG-133",
+      "ORG-00132→S5-25"
+    ],
+    "CANON-中国神华能源神东煤炭分公司": [
+      "中国神华能源神东煤炭分公司→S4-PPL-M-1059,S4-PPL-M-4597",
+      "中国神华能源股份有限公司神东煤炭分→S4-PPL-M-3210,S4-PPL-M-5778,S4-PPL-M-5579,S4-PPL-M-5431,S4-PPL-M-2579,S4-PPL-M-5677,S4-PPL-M-7137,S4-PPL-M-2426"
+    ],
+    "CANON-宁波职业技术学院": [
+      "宁波职业技术学院→S4-ORG-141",
+      "ORG-00140→S5-28"
+    ],
+    "CANON-ORG-00171": [
+      "哈尔滨工业大学深圳哈尔滨工业大学深圳科技创新研究院→S4-ORG-172",
+      "ORG-00171→S5-32"
+    ],
+    "CANON-威凯检测技术": [
+      "威凯检测技术→S4-PPL-M-7455",
+      "威凯检测技术...→S4-PPL-M-7560,S4-PPL-M-7492,S4-PPL-M-7502"
+    ],
+    "CANON-ORG-00179": [
+      "常州信息职业技术学院→S4-ORG-180",
+      "ORG-00179→S5-33"
+    ],
+    "CANON-ORG-00278": [
+      "中国科学院空天信息创新研究院→S4-ORG-279",
+      "ORG-00278→S5-46"
+    ],
+    "CANON-ORG-00308": [
+      "天津职业技术师范大学中国职业培训指导教师进修中心→S4-ORG-309",
+      "ORG-00308→S5-50"
+    ],
+    "CANON-ORG-00344": [
+      "中国科学院计算技术研究所→S4-ORG-345",
+      "ORG-00344→S5-59"
+    ],
+    "CANON-南昌工学院": [
+      "南昌工学院→S4-ORG-422",
+      "ORG-00421→S5-76"
+    ],
+    "CANON-ORG-00428": [
+      "中国科学院重庆绿色智能技术研究院→S4-ORG-429",
+      "ORG-00428→S5-79"
+    ],
+    "CANON-厦门理工学院": [
+      "厦门理工学院→S4-ORG-433",
+      "ORG-00432→S5-81"
+    ],
+    "CANON-ORG-00436": [
+      "中国科学院合肥物质科学研究院→S4-ORG-437",
+      "ORG-00436→S5-82"
+    ],
+    "CANON-ORG-00443": [
+      "西北工业大学太仓长三角研究院→S4-ORG-444",
+      "ORG-00443→S5-83"
+    ],
+    "CANON-中国船舶集团第七一三研究所": [
+      "中国船舶集团有限公司第七一三研究所→S4-PPL-M-2547,S4-PPL-M-1044,S4-PPL-M-7170,S4-PPL-M-2122",
+      "中国船舶集团第七一三研究所→S4-PPL-M-4590,S4-PPL-M-4735"
+    ],
+    "CANON-ORG-00495": [
+      "中国人民解放军国防科技大学→S4-ORG-496",
+      "ORG-00495→S5-92"
+    ]
+  }
+}

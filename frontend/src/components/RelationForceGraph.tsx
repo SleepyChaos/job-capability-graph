@@ -9,6 +9,7 @@ interface RelationForceGraphProps {
   selectedId: string | null
   onSelect: (id: string) => void
   onExpand: (id: string) => void
+  layoutMode?: 'force' | 'dagre_lr'
 }
 
 interface RelationGraphDatum extends RelationNode {
@@ -107,8 +108,8 @@ function domainAnchors(width: number, height: number): Map<string, { x: number; 
   const centerX = width / 2
   const centerY = height / 2
   const largeLayout = width > 1600 || height > 1400
-  const radiusX = largeLayout ? width * .32 : Math.max(210, Math.min(width * .55, 620))
-  const radiusY = largeLayout ? height * .31 : Math.max(190, Math.min(height * .55, 430))
+  const radiusX = largeLayout ? width * .39 : Math.max(260, Math.min(width * .42, 720))
+  const radiusY = largeLayout ? height * .38 : Math.max(220, Math.min(height * .40, 520))
   return new Map(domainOrder.map((domainCode, index) => {
     const angle = -Math.PI / 2 + (Math.PI * 2 * index) / domainOrder.length
     return [domainCode, {
@@ -129,16 +130,18 @@ function graphAnchors(
   const result = new Map<string, Pick<RelationGraphDatum, 'anchorX' | 'anchorY' | 'layoutCluster'>>()
 
   for (const node of data.role_nodes) {
-    const base = anchors.get(node.domain_code) ?? { x: width / 2, y: height / 2 }
     const localIndex = roleIndexByDomain.get(node.domain_code) ?? 0
     roleIndexByDomain.set(node.domain_code, localIndex + 1)
-    const localAngle = localIndex * 2.399963229728653
-    const localRadius = localIndex === 0
-      ? 0
-      : (width > 1600 ? 16 + Math.sqrt(localIndex) * 72 : 14 + Math.sqrt(localIndex) * 9)
+    const domainIndex = Math.max(0, domainOrder.indexOf(node.domain_code))
+    const sectorCenter = -Math.PI / 2 + (Math.PI * 2 * domainIndex) / domainOrder.length
+    const lane = Math.floor(localIndex / 9)
+    const slot = localIndex % 9
+    const localAngle = sectorCenter + (slot - 4) * .075 + lane * .025
+    const localRadiusX = (width > 1600 ? width * .39 : Math.max(260, Math.min(width * .42, 720))) + lane * 92
+    const localRadiusY = (height > 1400 ? height * .38 : Math.max(220, Math.min(height * .40, 520))) + lane * 72
     result.set(node.id, {
-      anchorX: base.x + Math.cos(localAngle) * localRadius,
-      anchorY: base.y + Math.sin(localAngle) * localRadius,
+      anchorX: width / 2 + Math.cos(localAngle) * localRadiusX,
+      anchorY: height / 2 + Math.sin(localAngle) * localRadiusY,
       layoutCluster: node.domain_code,
     })
   }
@@ -168,9 +171,11 @@ function graphAnchors(
     const layoutCluster = domainWeights
       ? [...domainWeights].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))[0]?.[0] ?? node.domain_code
       : node.domain_code
+    const weightedX = sum && sum.weight ? sum.x / sum.weight : fallback.x
+    const weightedY = sum && sum.weight ? sum.y / sum.weight : fallback.y
     result.set(node.id, {
-      anchorX: sum && sum.weight ? sum.x / sum.weight : fallback.x,
-      anchorY: sum && sum.weight ? sum.y / sum.weight : fallback.y,
+      anchorX: width / 2 + (weightedX - width / 2) * .42,
+      anchorY: height / 2 + (weightedY - height / 2) * .42,
       layoutCluster,
     })
   }
@@ -197,13 +202,14 @@ function nodeSize(node: RelationNode, compact: boolean, zoomLevel: SemanticZoomL
   )
 }
 
-function nodeStyle(node: RelationNode, compact: boolean, zoomLevel: SemanticZoomLevel) {
+function nodeStyle(node: RelationNode, compact: boolean, zoomLevel: SemanticZoomLevel, layered = false) {
   const cluster = node.type === 'job_cluster'
   const color = domainColors[node.domain_code] ?? '#64748b'
   const size = nodeSize(node, compact, zoomLevel)
   const showLabel = zoomLevel !== 'overview' || cluster
   return {
-    size,
+    size: layered ? (cluster ? [compact ? 116 : 154, 48] as [number, number] : [compact ? 92 : 126, 40] as [number, number]) : size,
+    radius: layered ? (cluster ? 10 : 20) : undefined,
     fill: cluster ? color : '#ffffff',
     stroke: color,
     lineWidth: cluster ? (zoomLevel === 'overview' ? 1 : 2) : (zoomLevel === 'overview' ? 1.5 : 3),
@@ -233,7 +239,7 @@ function edgeStyle(edge: RelationEdge, capabilityDomains: Map<string, string>, z
   }
 }
 
-function graphData(data: RelationGraphResponse, width: number, height: number, zoomLevel: SemanticZoomLevel): GraphData {
+function graphData(data: RelationGraphResponse, width: number, height: number, zoomLevel: SemanticZoomLevel, layered = false): GraphData {
   const compact = width < 480
   const capabilityDomains = new Map(data.capability_nodes.map((node) => [node.id, node.domain_code]))
   const extent = layoutExtent(data, width, height)
@@ -242,10 +248,10 @@ function graphData(data: RelationGraphResponse, width: number, height: number, z
     const anchor = anchors.get(node.id)
     return {
       id: node.id,
-      type: 'circle' as const,
+      type: layered ? 'rect' as const : 'circle' as const,
       data: { ...node, ...anchor } as RelationGraphDatum as Record<string, unknown>,
       style: {
-        ...nodeStyle(node, compact, zoomLevel),
+        ...nodeStyle(node, compact, zoomLevel, layered),
         x: anchor?.anchorX,
         y: anchor?.anchorY,
       },
@@ -261,16 +267,16 @@ function graphData(data: RelationGraphResponse, width: number, height: number, z
   return { nodes, edges }
 }
 
-function semanticUpdates(data: RelationGraphResponse, width: number, zoomLevel: SemanticZoomLevel) {
+function semanticUpdates(data: RelationGraphResponse, width: number, zoomLevel: SemanticZoomLevel, layered = false) {
   const compact = width < 480
   const capabilityDomains = new Map(data.capability_nodes.map((node) => [node.id, node.domain_code]))
   return {
-    nodes: [...data.role_nodes, ...data.capability_nodes].map((node) => ({ id: node.id, style: nodeStyle(node, compact, zoomLevel) })),
+    nodes: [...data.role_nodes, ...data.capability_nodes].map((node) => ({ id: node.id, style: nodeStyle(node, compact, zoomLevel, layered) })),
     edges: data.edges.map((edge) => ({ id: edge.id, style: edgeStyle(edge, capabilityDomains, zoomLevel) })),
   }
 }
 
-export function RelationForceGraph({ graph, selectedId, onSelect, onExpand }: RelationForceGraphProps) {
+export function RelationForceGraph({ graph, selectedId, onSelect, onExpand, layoutMode = 'force' }: RelationForceGraphProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const instanceRef = useRef<G6Graph | null>(null)
   const selectedRef = useRef(selectedId)
@@ -293,9 +299,10 @@ export function RelationForceGraph({ graph, selectedId, onSelect, onExpand }: Re
       let viewportWidth = Math.max(container.clientWidth, 320)
       let viewportHeight = Math.max(container.clientHeight, 440)
       const nodeCount = graph.role_nodes.length + graph.capability_nodes.length
-      const useWorker = nodeCount >= WORKER_LAYOUT_THRESHOLD
+      const useDagre = layoutMode === 'dagre_lr'
+      const useWorker = !useDagre && nodeCount >= WORKER_LAYOUT_THRESHOLD
       let appliedZoomLevel: SemanticZoomLevel = 'detail'
-      let preparedData = graphData(graph, viewportWidth, viewportHeight, appliedZoomLevel)
+      let preparedData = graphData(graph, viewportWidth, viewportHeight, appliedZoomLevel, useDagre)
       if (useWorker) {
         try {
           const positions = await runWorkerLayout(
@@ -318,20 +325,30 @@ export function RelationForceGraph({ graph, selectedId, onSelect, onExpand }: Re
         node: {
           state: {
             selected: { lineWidth: 4, shadowColor: '#1769e0', shadowBlur: 18 },
+            inactive: { opacity: .16 },
           },
         },
         edge: {
           state: {
             selected: { lineWidth: 3.5, strokeOpacity: 1 },
+            inactive: { strokeOpacity: .035 },
           },
         },
-        layout: useWorker ? undefined : {
+        layout: useDagre ? {
+          type: 'dagre',
+          rankdir: 'LR',
+          align: 'UL',
+          nodesep: 30,
+          ranksep: 118,
+          controlPoints: false,
+          nodeSize: [150, 48],
+        } : useWorker ? undefined : {
           type: 'd3-force',
           enableWorker: false,
           iterations: 100,
-          linkDistance: Math.max(74, Math.min(viewportWidth, viewportHeight) * (nodeCount > 400 ? .13 : .2)),
-          edgeStrength: nodeCount > 400 ? .015 : .025,
-          nodeStrength: nodeCount > 400 ? -190 : -360,
+          linkDistance: Math.max(120, Math.min(viewportWidth, viewportHeight) * (nodeCount > 400 ? .18 : .25)),
+          edgeStrength: nodeCount > 400 ? .009 : .018,
+          nodeStrength: nodeCount > 400 ? -260 : -440,
           distanceMax: Math.max(viewportWidth, viewportHeight) * .68,
           preventOverlap: true,
           nodeSize: nodeCount > 400 ? LARGE_GRAPH_NODE_DIAMETER : 72,
@@ -339,15 +356,15 @@ export function RelationForceGraph({ graph, selectedId, onSelect, onExpand }: Re
           collideIterations: nodeCount > 400 ? 1 : 2,
           clustering: true,
           clusterBy: 'node.data.layoutCluster',
-          clusterFociStrength: .82,
-          clusterNodeStrength: nodeCount > 400 ? -32 : -52,
-          clusterEdgeDistance: nodeCount > 400 ? 170 : 230,
-          clusterEdgeStrength: .025,
+          clusterFociStrength: .62,
+          clusterNodeStrength: nodeCount > 400 ? -55 : -78,
+          clusterEdgeDistance: nodeCount > 400 ? 250 : 310,
+          clusterEdgeStrength: .014,
           clusterNodeSize: nodeCount > 400 ? LARGE_GRAPH_NODE_DIAMETER : 72,
           alphaMin: .08,
           alphaDecay: .045,
-          x: { strength: .52, x: (node) => Number((node.data as RelationGraphDatum).anchorX) },
-          y: { strength: .52, y: (node) => Number((node.data as RelationGraphDatum).anchorY) },
+          x: { strength: .78, x: (node) => Number((node.data as RelationGraphDatum).anchorX) },
+          y: { strength: .78, y: (node) => Number((node.data as RelationGraphDatum).anchorY) },
         },
         behaviors: ['drag-canvas', 'zoom-canvas', 'drag-element', 'hover-activate'],
       })
@@ -357,7 +374,7 @@ export function RelationForceGraph({ graph, selectedId, onSelect, onExpand }: Re
         const nextLevel = getZoomLevel(nextGraph.getZoom())
         if (!force && nextLevel === appliedZoomLevel) return
         appliedZoomLevel = nextLevel
-        const updates = semanticUpdates(graph, viewportWidth, nextLevel)
+        const updates = semanticUpdates(graph, viewportWidth, nextLevel, useDagre)
         nextGraph.updateNodeData(updates.nodes)
         nextGraph.updateEdgeData(updates.edges)
         void nextGraph.draw()
@@ -393,14 +410,14 @@ export function RelationForceGraph({ graph, selectedId, onSelect, onExpand }: Re
           if (disposed) return
           const nextWidth = Math.max(container.clientWidth, 320)
           const nextHeight = Math.max(container.clientHeight, 440)
-          if (Math.abs(nextWidth - viewportWidth) < 3 && Math.abs(nextHeight - viewportHeight) < 3) return
+          if (disposed) return
           viewportWidth = nextWidth
           viewportHeight = nextHeight
           nextGraph.resize(viewportWidth, viewportHeight)
           void (async () => {
             const extent = layoutExtent(graph, viewportWidth, viewportHeight)
             const anchors = graphAnchors(graph, extent.width, extent.height)
-            if (useWorker) {
+            if (useDagre || useWorker) {
               await nextGraph.fitView({ when: 'always', direction: 'both' }, false)
               applySemanticZoom(true)
               return
@@ -430,7 +447,7 @@ export function RelationForceGraph({ graph, selectedId, onSelect, onExpand }: Re
       instanceRef.current = null
       graphInstance?.destroy()
     }
-  }, [graph])
+  }, [graph, layoutMode])
 
   useEffect(() => {
     const instance = instanceRef.current
@@ -450,8 +467,11 @@ export function RelationForceGraph({ graph, selectedId, onSelect, onExpand }: Re
       }
     }
     void Promise.all([
-      ...nodeIds.map((id) => instance.setElementState(id, id === selectedId ? ['selected'] : [])),
-      ...graph.edges.map((edge) => instance.setElementState(edge.id, relatedEdgeIds.has(edge.id) ? ['selected'] : [])),
+      ...nodeIds.map((id) => {
+        const connected = graph.edges.some((edge) => relatedEdgeIds.has(edge.id) && (edge.source === id || edge.target === id))
+        return instance.setElementState(id, id === selectedId ? ['selected'] : connected ? [] : ['inactive'])
+      }),
+      ...graph.edges.map((edge) => instance.setElementState(edge.id, relatedEdgeIds.has(edge.id) ? ['selected'] : ['inactive'])),
     ])
   }, [graph.capability_nodes, graph.edges, graph.role_nodes, selectedId])
 

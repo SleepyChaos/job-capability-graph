@@ -1,0 +1,13 @@
+{
+  "dataset_id": "jd_parsing_frozen_v1",
+  "status": "frozen_for_double_annotation",
+  "sample_count": 120,
+  "candidate_file": "annotation_candidates_v1.json",
+  "candidate_sha256": "52c0859895d8916e3a770cfd6fdc3f649a696cc3394855bffe4386f748ef1bbe",
+  "parse_run_code": "jdparse_8ad8184577692c219c983899",
+  "input_snapshot_hash": "6546f0e8c16713cb86cb04c4edd50cfe880593db686c8bc9b0849763dae64654",
+  "annotation_guideline": "ANNOTATION_GUIDELINE_V1.md",
+  "required_annotators": 2,
+  "requires_adjudication": true,
+  "gold_release_condition": "120 samples double-annotated, all disagreements adjudicated, hashes verified"
+}

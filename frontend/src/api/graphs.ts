@@ -47,6 +47,8 @@ export interface RelationGraphResponse extends GraphMetadata {
     cluster_limit: number
     capabilities_per_cluster: number
     node_budget: number
+    role_budget?: number
+    capability_budget?: number
     min_supporting_job_count: number
     mode: 'overview' | 'focus'
     focus_node_id: string | null
@@ -69,6 +71,26 @@ export interface RelationGraphQuery {
   minSupportingJobCount?: number
   mode?: 'overview' | 'focus'
   focusNodeId?: string | null
+  industryStage?: string | null
+}
+
+export interface IndustryChainStage {
+  code: 'upstream' | 'midstream' | 'downstream' | 'support' | 'unclassified'
+  name: string
+  color: string
+  job_count: number
+  organization_count: number
+  cluster_count: number
+  technology_count: number
+  top_organizations: { code: string; name: string; job_count: number }[]
+  top_clusters: { code: string; label: string; job_count: number }[]
+  categories: { name: string; job_count: number; organization_count: number; cluster_count: number; technology_count: number }[]
+}
+
+export interface IndustryChainSummary {
+  data_version: string
+  target_date: string
+  stages: IndustryChainStage[]
 }
 
 export interface RelationGraphExpansion extends GraphMetadata {
@@ -166,6 +188,108 @@ export interface HeatmapResponse extends GraphMetadata {
   detail_series: TechnologyHeatSeries[]
 }
 
+export interface OrgTechGraphResponse {
+  filters: {
+    capability_domain_code: string | null
+    capability_level_code: string
+    org_limit: number
+    capabilities_per_org: number
+    min_supporting_job_count: number
+  }
+  org_nodes: {
+    id: string
+    type: 'organization'
+    label: string
+    code: string
+    province?: string | null
+    city?: string | null
+    org_type: string
+    status: string
+    layer: number
+    metrics: { technology_count: number; job_count: number; domain_count: number }
+  }[]
+  domain_group_nodes: { id: string; name: string; code: string; color: string; layer: number }[]
+  capability_nodes: {
+    id: string
+    type: 'technology'
+    label: string
+    code: string
+    level_code: string
+    domain_code: string
+    layer: number
+    metrics: { supporting_org_count: number; job_count: number }
+  }[]
+  edges: {
+    id: string
+    source: string
+    target: string
+    relation_type: string
+    style?: string
+    job_count?: number
+  }[]
+  layout: { mode: string; rankdir: string }
+  layout_mode: string
+}
+
+export interface CapabilityToClusterRanking {
+  filters: Record<string, unknown>
+  total: number
+  rows: {
+    technology_node_id: number
+    technology_code: string
+    technology_name: string
+    level_code: string
+    domain_code: string
+    domain_name: string | null
+    supporting_job_count: number
+    ranked_clusters: {
+      code: string
+      label: string
+      importance: number
+      coverage_rate: number
+      supporting_job_count: number
+    }[]
+  }[]
+}
+
+export interface TripleAuditSummary {
+  audit_run_code: string
+  audit_model: string
+  sample_scope: string
+  total_triples: number
+  low_plausibility: number
+  medium_plausibility: number
+  high_plausibility: number
+  auto_suppressed: number
+  pending_review: number
+  accepted_as_true: number
+  false_positive_edge: number
+  redirected_edge: number
+}
+
+export interface TripleAuditRow {
+  triple_id: number
+  subject_kind: string
+  subject_id: string
+  subject_label: string
+  predicate: string
+  object_kind: string
+  object_id: string
+  object_label: string
+  plausibility_score: number
+  plausibility_level: string
+  review_status_code: string
+  reviewer_code: string | null
+  supporting_job_count: number
+  component_scores: Record<string, number>
+  rule_flags: Record<string, number | string | boolean>
+}
+
+export interface TripleAuditResponse {
+  summary: TripleAuditSummary
+  low_plausibility_rows: TripleAuditRow[]
+}
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api/v1'
 
 async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
@@ -210,6 +334,7 @@ export const graphApi = {
     if (filters.minSupportingJobCount) query.set('min_supporting_job_count', String(filters.minSupportingJobCount))
     if (filters.mode) query.set('mode', filters.mode)
     if (filters.focusNodeId) query.set('focus_node_id', filters.focusNodeId)
+    if (filters.industryStage) query.set('industry_stage', filters.industryStage)
     return getGraphOrEmpty<RelationGraphResponse>(`/graphs/relations?${query}`, {
       ...emptyMetadata(),
       role_nodes: [],
@@ -234,6 +359,9 @@ export const graphApi = {
         neighbor_expansion: true,
       },
     }, signal)
+  },
+  industryChain(signal?: AbortSignal) {
+    return getJson<IndustryChainSummary>('/graphs/industry-chain/summary', signal)
   },
   relationNeighbors(nodeId: string, filters: RelationGraphQuery, neighborLimit: number, signal?: AbortSignal) {
     const query = new URLSearchParams({
@@ -291,6 +419,42 @@ export const graphApi = {
       domain_series: [],
       detail_series: [],
     }, signal)
+  },
+  orgTechGraph(params: {
+    capabilityDomainCode?: string | null
+    capabilityLevelCode?: string
+    orgLimit?: number
+    capabilitiesPerOrg?: number
+    minSupportingJobCount?: number
+    industryStage?: string | null
+  }, signal?: AbortSignal) {
+    const query = new URLSearchParams({
+      capability_level_code: params.capabilityLevelCode ?? 'L2',
+      org_limit: String(params.orgLimit ?? 40),
+      capabilities_per_org: String(params.capabilitiesPerOrg ?? 20),
+      min_supporting_job_count: String(params.minSupportingJobCount ?? 1),
+    })
+    if (params.capabilityDomainCode) query.set('capability_domain_code', params.capabilityDomainCode)
+    if (params.industryStage) query.set('industry_stage', params.industryStage)
+    return getJson<OrgTechGraphResponse>(`/graphs/org-tech?${query}`, signal)
+  },
+  capabilityToClusters(params: {
+    capabilityDomainCode?: string | null
+    capabilityLevelCode?: string
+    minSupportingJobCount?: number
+    limit?: number
+  }, signal?: AbortSignal) {
+    const query = new URLSearchParams({
+      capability_level_code: params.capabilityLevelCode ?? 'L2',
+      min_supporting_job_count: String(params.minSupportingJobCount ?? 1),
+      limit: String(params.limit ?? 300),
+    })
+    if (params.capabilityDomainCode) query.set('capability_domain_code', params.capabilityDomainCode)
+    return getJson<CapabilityToClusterRanking>(`/graphs/capability-to-clusters?${query}`, signal)
+  },
+  tripleAuditLatest(auditRunCode?: string, signal?: AbortSignal) {
+    const query = auditRunCode ? `?audit_run_code=${encodeURIComponent(auditRunCode)}` : ''
+    return getJson<TripleAuditResponse>(`/graphs/triple-audit/latest${query}`, signal)
   },
 }
 

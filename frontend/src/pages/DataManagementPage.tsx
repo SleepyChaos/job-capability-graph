@@ -208,16 +208,28 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
               <span>{jobDetail.region ?? '地点未识别'}</span>
               <span>证据权重 {Number(jobDetail.evidence_weight).toFixed(2)}</span>
             </div>
-            <label>JD 正文<textarea rows={8} readOnly value={jobDetail.jd_text} /></label>
+            <div className="mini-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 20px', marginBottom: '16px' }}>
+              <div><small style={{ color: '#64748b' }}>级别</small><div style={{ fontWeight: 600 }}>{jobDetail.level_code ?? '—'}</div></div>
+              <div><small style={{ color: '#64748b' }}>时间质量</small><div style={{ fontWeight: 600 }}>{jobDetail.time_quality_code ?? '—'}</div></div>
+              <div><small style={{ color: '#64748b' }}>采集日期</small><div style={{ fontWeight: 600 }}>{jobDetail.source_collected_at_date ?? '—'}</div></div>
+              <div><small style={{ color: '#64748b' }}>发布日期</small><div style={{ fontWeight: 600 }}>{jobDetail.published_at_date ?? '—'}</div></div>
+              <div><small style={{ color: '#64748b' }}>来源岗位ID</small><div style={{ fontWeight: 600 }}>{jobDetail.source_job_id ?? '—'}</div></div>
+              <div><small style={{ color: '#64748b' }}>重复簇</small><div style={{ fontWeight: 600 }}>{jobDetail.duplicate_group_code ?? '—'}</div></div>
+              <div><small style={{ color: '#64748b' }}>解析状态</small><div style={{ fontWeight: 600 }}>{jobDetail.parse_status_code ?? '—'}</div></div>
+              <div><small style={{ color: '#64748b' }}>歧义待复核数</small><div style={{ fontWeight: 600 }}>{jobDetail.ambiguity_review_count ?? 0} {jobDetail.review_required ? <StatusTag tone="warning" style={{ marginLeft: '6px' }}>待复核</StatusTag> : null}</div></div>
+            </div>
+            <label>JD 正文<textarea rows={6} readOnly value={jobDetail.jd_text} /></label>
             <label>来源编码<input value={jobDetail.source_codes.join('、') || '—'} readOnly /></label>
             <div className="table-wrap">
               <table className="data-table">
-                <thead><tr><th>#</th><th>技术点</th><th>类型</th><th>原词</th><th>置信度</th><th>证据片段</th></tr></thead>
+                <thead><tr><th>#</th><th>技术点</th><th>类型</th><th>状态</th><th>歧义原因</th><th>原词</th><th>置信度</th><th>证据片段</th></tr></thead>
                 <tbody>{jobDetail.technologies.map((tech) => (
                   <tr key={`${jobDetail.job_code}-${tech.requirement_no}`}>
                     <td>{tech.requirement_no}</td>
                     <td><strong>{tech.technology_name}</strong><small>{tech.technology_code}</small></td>
                     <td><StatusTag tone={tech.requirement_type === 'required' ? 'warning' : 'info'}>{tech.requirement_type === 'required' ? '必需' : '加分'}</StatusTag></td>
+                    <td>{tech.assessment_status ? <StatusTag tone={tech.assessment_status === 'accepted' ? 'success' : tech.assessment_status === 'rejected' ? 'danger' : 'warning'}>{tech.assessment_status === 'accepted' ? '已采纳' : tech.assessment_status === 'rejected' ? '已驳回' : '待复核'}</StatusTag> : '—'}</td>
+                    <td>{tech.ambiguity_reason_label ?? '—'}</td>
                     <td>{tech.raw_term ?? '—'}</td>
                     <td>{Number(tech.confidence).toFixed(2)}</td>
                     <td><small>{tech.evidence[0] ?? '—'}{tech.evidence.length > 1 ? ` 等 ${tech.evidence.length} 条` : ''}</small></td>

@@ -19,6 +19,7 @@ import {
   type CandidateListItem,
   type DiscoveryRun,
 } from '../api/discovery'
+import { clusteringApi, type ClusterDetail } from '../api/clustering'
 import { Modal, Panel, StatusTag } from '../components/ui'
 
 function todayISO(): string {
@@ -37,6 +38,8 @@ export function JobsPage({ notify }: { notify: (message: string) => void }) {
   const [running, setRunning] = useState(false)
   const [acting, setActing] = useState(false)
   const [showApproval, setShowApproval] = useState(false)
+  const [clusterDetail, setClusterDetail] = useState<ClusterDetail | null>(null)
+  const [clusterLoading, setClusterLoading] = useState(false)
   const reviewerCode = window.localStorage.getItem('reviewer_code') ?? 'reviewer-demo'
 
   const reload = useCallback(async (signal?: AbortSignal) => {
@@ -69,6 +72,21 @@ export function JobsPage({ notify }: { notify: (message: string) => void }) {
       .finally(() => setDetailLoading(false))
     return () => controller.abort()
   }, [selectedCode])
+
+  useEffect(() => {
+    setClusterDetail(null)
+    if (!detail) return
+    const card = detail.candidate.mechanical_card as Record<string, unknown> | null
+    const clusterCode = (card?.stable_cluster_code ?? card?.source_cluster_code ?? null) as string | null
+    if (!clusterCode) return
+    const controller = new AbortController()
+    setClusterLoading(true)
+    clusteringApi.clusterDetail(clusterCode, controller.signal)
+      .then(setClusterDetail)
+      .catch(() => setClusterDetail(null))
+      .finally(() => setClusterLoading(false))
+    return () => controller.abort()
+  }, [detail])
 
   const latestRun = runs[0]
   const selected = useMemo(() => candidates.find((item) => item.candidate_code === selectedCode) ?? null, [candidates, selectedCode])
@@ -230,11 +248,73 @@ export function JobsPage({ notify }: { notify: (message: string) => void }) {
                   ))}</tbody>
                 </table></div>
               </div>
-              <div className="detail-section"><h3>关联技术词</h3><div className="skill-tags">{detail.candidate.technologies.map((tech) => <span key={tech.technology_code}>{tech.technology_name}（{tech.requirement_type === 'required' ? '必需' : '加分'} · 证据 {tech.evidence_count}）</span>)}</div></div>
+              <div className="detail-section">
+                <h3>能力重要度排行</h3>
+                <div className="table-wrap"><table className="data-table">
+                  <thead><tr><th>编码</th><th>名称</th><th>类型</th><th>证据数</th><th>企业覆盖数</th><th style={{ textAlign: 'right' }}>重要度权重</th><th>覆盖率</th></tr></thead>
+                  <tbody>{(clusterDetail?.capability_rankings?.length ?? 0) > 0 ? clusterDetail!.capability_rankings.map((cap) => (
+                    <tr key={cap.technology_code}>
+                      <td><small>{cap.technology_code}</small></td>
+                      <td><strong>{cap.technology_name}</strong></td>
+                      <td><StatusTag tone={cap.requirement_type === 'required' ? 'warning' : 'info'}>{cap.requirement_type === 'required' ? '必需' : '加分'}</StatusTag></td>
+                      <td>{cap.supporting_job_count}</td>
+                      <td>{cap.organization_count}</td>
+                      <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>{Number(cap.importance_weight).toFixed(2)}</td>
+                      <td>{cap.coverage_rate ? `${Math.round(Number(cap.coverage_rate) * 100)}%` : '—'}</td>
+                    </tr>
+                  )) : detail.candidate.technologies.map((tech) => (
+                    <tr key={tech.technology_code}>
+                      <td><small>{tech.technology_code}</small></td>
+                      <td><strong>{tech.technology_name}</strong></td>
+                      <td><StatusTag tone={tech.requirement_type === 'required' ? 'warning' : 'info'}>{tech.requirement_type === 'required' ? '必需' : '加分'}</StatusTag></td>
+                      <td>{tech.evidence_count}</td>
+                      <td>—</td>
+                      <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>—</td>
+                      <td>—</td>
+                    </tr>
+                  ))}</tbody>
+                </table></div>
+              </div>
               <div className="detail-actions">
                 {detail.review_task_code && detail.candidate.workflow_status_code === 'pending'
                   ? <><button className="secondary-button" onClick={generateExpression} disabled={acting}>一键生成表达</button><button className="secondary-button" onClick={rejectCandidate} disabled={acting}>驳回观察</button><button className="primary-button" disabled={acting} onClick={() => setShowApproval(true)}>专项审批</button></>
                   : <StatusTag tone={detail.candidate.workflow_status_code === 'approved' ? 'success' : 'neutral'}>{detail.candidate.workflow_status_code === 'approved' ? '已审批入库' : `当前状态：${workflowStatusLabels[detail.candidate.workflow_status_code] ?? detail.candidate.workflow_status_code}`}</StatusTag>}
+              </div>
+              <div className="detail-section">
+                <h3>成员 JD 列表（前 20 条）</h3>
+                {clusterLoading ? <div className="empty-state" style={{ minHeight: '120px' }}><RefreshCw className="spin" size={18} /><strong>正在加载成员 JD…</strong></div>
+                  : !clusterDetail || clusterDetail.members.length === 0 ? <div className="empty-state" style={{ minHeight: '120px' }}><FileText size={20} /><strong>暂无成员 JD 数据</strong><span>关联聚类数据后会自动填充成员 JD、采集日期和技术证据数。</span></div>
+                    : <div className="table-wrap"><table className="data-table">
+                      <thead><tr><th>job_code</th><th>标题</th><th>company</th><th>采集日期</th><th>技术证据数</th><th>相似度</th></tr></thead>
+                      <tbody>{clusterDetail.members.map((member) => (
+                        <tr key={member.job_code}>
+                          <td><small>{member.job_code}</small></td>
+                          <td><strong>{member.title}</strong>{member.is_representative ? <StatusTag tone="success" style={{ marginLeft: '6px', fontSize: '11px' }}>代表</StatusTag> : null}</td>
+                          <td>{member.company ?? '—'}</td>
+                          <td>{member.source_collected_at_date ?? '—'}</td>
+                          <td style={{ fontVariantNumeric: 'tabular-nums' }}>{member.technology_evidence_count}</td>
+                          <td style={{ fontVariantNumeric: 'tabular-nums' }}>{Number(member.similarity_score).toFixed(3)}</td>
+                        </tr>
+                      ))}</tbody>
+                    </table></div>}
+              </div>
+              <div className="detail-section">
+                <h3>灰区状态</h3>
+                {!clusterDetail ? <div className="empty-state" style={{ minHeight: '100px' }}><CircleDotDashed size={20} /><strong>暂无灰区信息</strong></div>
+                  : <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+                      <div style={{ minWidth: '160px' }}>
+                        <small style={{ color: '#64748b' }}>灰区成员数量</small>
+                        <div style={{ fontSize: '28px', fontWeight: 700, color: '#0f172a', marginTop: '2px' }}>{clusterDetail.grey_zone_member_count}</div>
+                      </div>
+                      <div style={{ flex: 1, minWidth: '260px' }}>
+                        <small style={{ color: '#64748b' }}>灰区代表岗位（前 3 条）</small>
+                        {clusterDetail.grey_zone_representative_titles.length > 0 ? (
+                          <ol style={{ margin: '6px 0 0 20px', padding: 0, color: '#334155', fontSize: '14px' }}>
+                            {clusterDetail.grey_zone_representative_titles.map((title, idx) => <li key={idx}>{title}</li>)}
+                          </ol>
+                        ) : <div style={{ color: '#94a3b8', marginTop: '4px' }}>无灰区代表岗位</div>}
+                      </div>
+                    </div>}
               </div>
             </>
           )}
