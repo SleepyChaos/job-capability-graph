@@ -16,12 +16,14 @@ export interface GraphMetadata {
 
 export interface RelationNode {
   id: string
-  type: 'job_cluster' | 'technology'
+  type: 'job_cluster' | 'technology_domain' | 'technology'
   label: string
   domain_code: string
   level_code?: string
   metrics: Record<string, number | null>
   evidence_count: number
+  layer?: number
+  parent_ids?: string[]
 }
 
 export interface RelationEdge {
@@ -38,6 +40,7 @@ export interface RelationEdge {
 
 export interface RelationGraphResponse extends GraphMetadata {
   role_nodes: RelationNode[]
+  domain_group_nodes: RelationNode[]
   capability_nodes: RelationNode[]
   edges: RelationEdge[]
   filters: {
@@ -338,6 +341,7 @@ export const graphApi = {
     return getGraphOrEmpty<RelationGraphResponse>(`/graphs/relations?${query}`, {
       ...emptyMetadata(),
       role_nodes: [],
+      domain_group_nodes: [],
       capability_nodes: [],
       edges: [],
       filters: {

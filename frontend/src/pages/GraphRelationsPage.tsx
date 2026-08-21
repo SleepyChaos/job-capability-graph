@@ -1,4 +1,4 @@
-import { AlertTriangle, BadgeDollarSign, Building2, ChevronDown, ChevronRight, Eye, GitBranch, Layers, Network, Table2, TreePine, Zap } from 'lucide-react'
+import { AlertTriangle, BadgeDollarSign, Building2, ChevronDown, ChevronRight, Eye, GitBranch, Layers, Network, RefreshCw, RotateCcw, Table2, TreePine, Undo2, Zap } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { graphApi, type CapabilityToClusterRanking, type IndustryChainSummary, type OrgTechGraphResponse, type RelationGraphExpansion, type RelationGraphResponse, type RelationNode, type TripleAuditResponse } from '../api/graphs'
 import { jobsApi, type JobDetail } from '../api/jobs'
@@ -18,7 +18,17 @@ const supportOptions = [1, 2, 3, 5]
 const topNOptions = [20, 50, 100, 0]
 const MAX_RENDERED_NODES = 1000
 const FULL_CLUSTER_LIMIT = 1000
+const DEFAULT_NODE_BUDGET = 240
+const DEFAULT_RELATION_FILTERS: RelationGraphFilterState = { clusterDomain: '', capabilityDomain: '', capabilityLevel: 'L2' }
 const industryStageOrder = ['upstream', 'midstream', 'downstream', 'support', 'unclassified'] as const
+
+interface GraphQuerySnapshot {
+  filters: RelationGraphFilterState
+  nodeBudget: number
+  minSupportingJobCount: number
+  focusNodeId: string | null
+  industryStage: string
+}
 
 function graphRouteParams() {
   const query = window.location.hash.split('?')[1] ?? ''
@@ -37,6 +47,7 @@ function mergeRelationExpansion(base: RelationGraphResponse, expansion: Relation
     ...base,
     generated_at: expansion.generated_at,
     role_nodes: mergeNodes(base.role_nodes, expansion.role_nodes),
+    domain_group_nodes: base.domain_group_nodes,
     capability_nodes: mergeNodes(base.capability_nodes, expansion.capability_nodes),
     edges: [...edges.values()],
   }
@@ -116,12 +127,14 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
   const [activeTab, setActiveTab] = useState<TabId>((initialRoute.get('view') as TabId) || 'global')
   const [industryStage, setIndustryStage] = useState(initialRoute.get('stage') ?? '')
   const [industrySummary, setIndustrySummary] = useState<IndustryChainSummary | null>(null)
-  const [filters, setFilters] = useState<RelationGraphFilterState>({ clusterDomain: '', capabilityDomain: '', capabilityLevel: 'L2' })
-  const [nodeBudget, setNodeBudget] = useState(720)
+  const [filters, setFilters] = useState<RelationGraphFilterState>(DEFAULT_RELATION_FILTERS)
+  const [nodeBudget, setNodeBudget] = useState(DEFAULT_NODE_BUDGET)
   const [minSupportingJobCount, setMinSupportingJobCount] = useState(1)
   const [focusNodeId, setFocusNodeId] = useState<string | null>(null)
   const [data, setData] = useState<RelationGraphResponse | null>(null)
   const [graphLoading, setGraphLoading] = useState(false)
+  const [graphReloadKey, setGraphReloadKey] = useState(0)
+  const [lastSuccessfulSnapshot, setLastSuccessfulSnapshot] = useState<GraphQuerySnapshot | null>(null)
   const graphRequestRef = useRef(0)
   const [selected, setSelected] = useState<string | null>(initialRoute.get('node'))
   const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set())
@@ -180,6 +193,7 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
   const selectNode = useCallback((id: string) => setSelected(id), [])
   const changeFilters = useCallback((next: RelationGraphFilterState) => {
     setFocusNodeId(null)
+    if (next.capabilityDomain) setLayoutMode('force')
     setFilters(next)
   }, [])
 
@@ -219,6 +233,13 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
   useEffect(() => {
     const controller = new AbortController()
     const requestId = ++graphRequestRef.current
+    const requestSnapshot: GraphQuerySnapshot = {
+      filters: { ...filters },
+      nodeBudget,
+      minSupportingJobCount,
+      focusNodeId,
+      industryStage,
+    }
     setGraphLoading(true)
     setError(null)
     graphApi.relations({
@@ -234,9 +255,12 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
     }, controller.signal)
       .then((response) => {
         setData(response)
+        if (response.edges.some((edge) => edge.relation_type === 'important_technology')) {
+          setLastSuccessfulSnapshot(requestSnapshot)
+        }
         setExpandedNodeIds(new Set())
         setSelected((current) => {
-          const ids = new Set([...response.role_nodes, ...response.capability_nodes].map((node) => node.id))
+          const ids = new Set([...response.role_nodes, ...response.domain_group_nodes, ...response.capability_nodes].map((node) => node.id))
           return current && ids.has(current) ? current : response.role_nodes[0]?.id ?? response.capability_nodes[0]?.id ?? null
         })
       })
@@ -245,10 +269,10 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
       })
       .finally(() => { if (graphRequestRef.current === requestId) setGraphLoading(false) })
     return () => controller.abort()
-  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, industryStage, minSupportingJobCount, nodeBudget])
+  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, graphReloadKey, industryStage, minSupportingJobCount, nodeBudget])
 
   const nodeMap = useMemo(
-    () => new Map<string, RelationNode>(data ? [...data.role_nodes, ...data.capability_nodes].map((node) => [node.id, node]) : []),
+    () => new Map<string, RelationNode>(data ? [...data.role_nodes, ...data.domain_group_nodes, ...data.capability_nodes].map((node) => [node.id, node]) : []),
     [data],
   )
   const selectedNode = selected ? nodeMap.get(selected) : undefined
@@ -280,7 +304,19 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
     return () => controller.abort()
   }, [evidenceJobCodes, notify, selectedJobCode])
   const hasProjection = Boolean(data && data.data_version !== 'uninitialized')
-  const totalNodeCount = data ? data.role_nodes.length + data.capability_nodes.length : 0
+  const businessEdges = useMemo(
+    () => data?.edges.filter((edge) => edge.relation_type === 'important_technology') ?? [],
+    [data],
+  )
+  const totalNodeCount = data ? data.role_nodes.length + data.domain_group_nodes.length + data.capability_nodes.length : 0
+  const displayedNodeCount = useMemo(() => {
+    if (!data) return 0
+    if (!filters.capabilityDomain) return totalNodeCount
+    const connectedRoleIds = new Set(businessEdges.map((edge) => edge.source))
+    return connectedRoleIds.size
+      + data.capability_nodes.filter((node) => node.domain_code === filters.capabilityDomain).length
+      + data.domain_group_nodes.filter((node) => node.domain_code === filters.capabilityDomain).length
+  }, [businessEdges, data, filters.capabilityDomain, totalNodeCount])
   const expandNode = useCallback((nodeId: string) => {
     if (!data || expandedNodeIds.has(nodeId) || expandingNodeId) return
     const remainingBudget = MAX_RENDERED_NODES - totalNodeCount
@@ -467,6 +503,50 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
     window.location.hash = `/graph-clusters?cluster=${encodeURIComponent(clusterCode)}&stage=${encodeURIComponent(industryStage)}`
   }
 
+  const applyGraphSnapshot = useCallback((snapshot: GraphQuerySnapshot) => {
+    setFilters({ ...snapshot.filters })
+    setNodeBudget(snapshot.nodeBudget)
+    setMinSupportingJobCount(snapshot.minSupportingJobCount)
+    setFocusNodeId(snapshot.focusNodeId)
+    setIndustryStage(snapshot.industryStage)
+    setSelected(null)
+    setError(null)
+    updateGraphRoute({ stage: snapshot.industryStage, node: null })
+  }, [updateGraphRoute])
+
+  const restoreDefaultGraph = useCallback(() => {
+    applyGraphSnapshot({
+      filters: DEFAULT_RELATION_FILTERS,
+      nodeBudget: DEFAULT_NODE_BUDGET,
+      minSupportingJobCount: 1,
+      focusNodeId: null,
+      industryStage: '',
+    })
+    setLayoutMode('force')
+    notify('已恢复默认图谱筛选。')
+  }, [applyGraphSnapshot, notify])
+
+  const hasActiveGraphFilters = Boolean(
+    filters.clusterDomain
+    || filters.capabilityDomain
+    || filters.capabilityLevel !== 'L2'
+    || industryStage
+    || focusNodeId
+    || minSupportingJobCount !== 1
+  )
+  const hasBusinessRelations = businessEdges.length > 0
+  const noFilterIntersection = Boolean(!error && data && hasProjection && !graphLoading && !hasBusinessRelations && hasActiveGraphFilters)
+  const noAcceptedEvidence = Boolean(!error && data && hasProjection && !graphLoading && !hasBusinessRelations && !hasActiveGraphFilters)
+  const canRestorePrevious = Boolean(lastSuccessfulSnapshot && (
+    lastSuccessfulSnapshot.filters.clusterDomain !== filters.clusterDomain
+    || lastSuccessfulSnapshot.filters.capabilityDomain !== filters.capabilityDomain
+    || lastSuccessfulSnapshot.filters.capabilityLevel !== filters.capabilityLevel
+    || lastSuccessfulSnapshot.nodeBudget !== nodeBudget
+    || lastSuccessfulSnapshot.minSupportingJobCount !== minSupportingJobCount
+    || lastSuccessfulSnapshot.focusNodeId !== focusNodeId
+    || lastSuccessfulSnapshot.industryStage !== industryStage
+  ))
+
   return (
     <div className="graph-page graph-subpage">
       <div className="graph-subpage-intro">
@@ -514,32 +594,35 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
 
       {activeTab === 'global' && (
         <>
-          <RelationGraphFilters onChange={changeFilters} onApply={(summary) => notify(`关联图筛选已更新：${summary}`)} />
+          <RelationGraphFilters values={filters} onChange={changeFilters} onApply={(summary) => notify(`关联图筛选已更新：${summary}`)} />
           {hasProjection ? <div className="relation-density-toolbar" aria-label="图谱展示密度">
             <label>节点预算<select value={nodeBudget} onChange={(event) => setNodeBudget(Number(event.target.value))}>{densityOptions.map((value) => <option key={value} value={value}>{value} 个节点</option>)}</select></label>
             <label>最小支持 JD<select value={minSupportingJobCount} onChange={(event) => setMinSupportingJobCount(Number(event.target.value))}>{supportOptions.map((value) => <option key={value} value={value}>{value} 条</option>)}</select></label>
             <label>布局模式
               <select value={layoutMode} onChange={(event) => setLayoutMode(event.target.value as LayoutMode)}>
-                <option value="force">岗位环绕技能（推荐）</option>
+                <option value="force">{filters.capabilityDomain ? '领域 → L2 能力 → 岗位同心环' : '岗位环绕技能（推荐）'}</option>
                 <option value="dagre_lr">岗位 → 能力分层</option>
               </select>
             </label>
-            <span>当前 {totalNodeCount} 个节点 · {data?.edges.length ?? 0} 条关系{expandedNodeIds.size ? ` · 已展开 ${expandedNodeIds.size} 处邻居` : ''}</span>
+            <span>当前展示 {displayedNodeCount} 个节点 · {businessEdges.length} 条岗位—能力关系{expandedNodeIds.size ? ` · 已展开 ${expandedNodeIds.size} 处邻居` : ''}</span>
             {focusNodeId ? <button className="secondary-button relation-focus-exit" onClick={() => setFocusNodeId(null)}>返回全局图</button> : null}
           </div> : null}
-          {error ? <div className="empty-state"><Network size={24} /><strong>图谱加载失败</strong><span>{error}</span></div> : null}
-          {!error && !data ? <div className="empty-state"><Network size={24} /><strong>正在生成关系投影</strong><span>从最新岗位聚类和有效技术证据读取数据。</span></div> : null}
-          {data && !hasProjection ? <div className="empty-state"><Network size={24} /><strong>暂无关联图快照</strong><span>当前数据库尚未生成成功的岗位聚类运行；完成 JD 解析和聚类后，这里会显示岗位与能力关系。</span></div> : null}
-          {data && hasProjection ? <div className={`graph-workspace graph-workspace--global${graphLoading ? ' is-refreshing' : ''}`}>
+          {error && data ? <div className="graph-state-banner graph-state-banner--error" role="alert"><AlertTriangle size={18} /><div><strong>筛选请求失败，已保留上一版图谱</strong><span>{error}</span></div><div><button className="secondary-button" onClick={() => setGraphReloadKey((value) => value + 1)}><RefreshCw size={14} />重试</button>{canRestorePrevious && lastSuccessfulSnapshot ? <button className="secondary-button" onClick={() => applyGraphSnapshot(lastSuccessfulSnapshot)}><Undo2 size={14} />返回上一组有效筛选</button> : null}<button className="secondary-button" onClick={restoreDefaultGraph}><RotateCcw size={14} />恢复默认</button></div></div> : null}
+          {error && !data ? <div className="empty-state graph-state-card graph-state-card--error"><AlertTriangle size={26} /><strong>图谱接口连接失败</strong><span>{error}</span><div className="graph-state-actions"><button className="primary-button" onClick={() => setGraphReloadKey((value) => value + 1)}><RefreshCw size={14} />重新连接</button><button className="secondary-button" onClick={restoreDefaultGraph}><RotateCcw size={14} />恢复默认筛选</button></div></div> : null}
+          {!error && !data ? <div className="empty-state graph-state-card"><Network className="spin" size={26} /><strong>正在加载岗位—能力关系</strong><span>正在读取最新岗位聚类和通过语境校验的 JD 证据，请稍候。</span></div> : null}
+          {data && !hasProjection ? <div className="empty-state graph-state-card"><Layers size={26} /><strong>当前还没有可用图谱数据</strong><span>数据库尚未生成成功的岗位聚类快照。请先完成 JD 导入、解析和聚类，再刷新本页。</span><div className="graph-state-actions"><button className="primary-button" onClick={() => setGraphReloadKey((value) => value + 1)}><RefreshCw size={14} />刷新数据状态</button><button className="secondary-button" onClick={restoreDefaultGraph}><RotateCcw size={14} />恢复默认筛选</button></div></div> : null}
+          {noFilterIntersection ? <div className="empty-state graph-state-card graph-state-card--intersection"><Network size={26} /><strong>当前筛选条件没有岗位—能力交集</strong><span>这不是系统故障。可返回上一组有效筛选，降低“最小支持 JD”，或恢复默认图谱。</span><div className="graph-filter-summary"><span>岗位领域：{filters.clusterDomain || '全部'}</span><span>能力领域：{filters.capabilityDomain || '全部'}</span><span>能力层级：{filters.capabilityLevel}</span><span>产业链：{industryStage || '全部'}</span><span>最小支持：{minSupportingJobCount} 条 JD</span></div><div className="graph-state-actions">{canRestorePrevious && lastSuccessfulSnapshot ? <button className="primary-button" onClick={() => applyGraphSnapshot(lastSuccessfulSnapshot)}><Undo2 size={14} />返回上一组有效筛选</button> : null}{minSupportingJobCount > 1 ? <button className="secondary-button" onClick={() => setMinSupportingJobCount(1)}>放宽为 1 条 JD</button> : null}<button className="secondary-button" onClick={restoreDefaultGraph}><RotateCcw size={14} />恢复默认图谱</button></div></div> : null}
+          {noAcceptedEvidence ? <div className="empty-state graph-state-card"><Layers size={26} /><strong>当前快照没有通过校验的岗位—能力关系</strong><span>岗位簇和技术体系已经存在，但还没有可用于连边的有效 JD 证据。</span><div className="graph-state-actions"><button className="primary-button" onClick={() => setGraphReloadKey((value) => value + 1)}><RefreshCw size={14} />重新读取</button><button className="secondary-button" onClick={restoreDefaultGraph}><RotateCcw size={14} />恢复默认图谱</button></div></div> : null}
+          {data && hasProjection && hasBusinessRelations ? <div className={`graph-workspace graph-workspace--global${graphLoading ? ' is-refreshing' : ''}`}>
             {graphLoading ? <div className="graph-refresh-indicator"><Network size={13} />正在应用筛选，保留当前图谱…</div> : null}
-            <div className="graph-legend"><strong>节点类型</strong><span><i className="legend-cluster" />岗位聚类</span><span><i className="legend-skill" />标准技术能力</span><hr /><strong>T1–T7 领域色</strong><DomainLegend compact /><hr /><p>{focusNodeId ? '当前为单岗位聚类局部图；返回全局图可继续浏览其他聚类。' : '岗位聚类按 T1–T7 技术域锚点形成七个语义簇，能力节点位于关联岗位簇的加权中心；远景保留岗位名称，中近景尽量展示全部节点名称。'}</p><button onClick={() => setTableView((value) => !value)}><Table2 size={15} />{tableView ? '图谱视图' : '表格视图'}</button></div>
-            {tableView ? <div className="relation-table-view"><table><thead><tr><th>岗位聚类</th><th>重要能力</th><th>覆盖率</th><th>支持 JD</th></tr></thead><tbody>{data.edges.map((edge) => <tr key={edge.id}><td><button onClick={() => selectNode(edge.source)}>{nodeMap.get(edge.source)?.label}</button></td><td><button onClick={() => selectNode(edge.target)}>{nodeMap.get(edge.target)?.label}</button></td><td>{Math.round(edge.coverage_rate * 100)}%</td><td>{edge.supporting_job_count}</td></tr>)}</tbody></table></div> : <RelationForceGraph graph={data} selectedId={selected} onSelect={selectNode} onExpand={expandNode} layoutMode={layoutMode} />}
+            <div className="graph-legend"><strong>节点类型</strong><span><i className="legend-cluster" />岗位聚类</span><span><i className="legend-domain" />T1 技术领域</span><span><i className="legend-skill" />标准技术能力</span><hr /><strong>T1–T7 领域色</strong><DomainLegend compact /><hr /><p>{focusNodeId ? '当前为单岗位聚类局部图；返回全局图可继续浏览其他聚类。' : filters.capabilityDomain ? `${filters.capabilityDomain} 领域位于中心，L2 能力构成内环，相关岗位簇按最强能力关系分布在外环。` : '岗位聚类按 T1–T7 技术域分散，领域节点连接本域能力，能力节点位于关联岗位簇的加权中心。'}</p><button onClick={() => setTableView((value) => !value)}><Table2 size={15} />{tableView ? '图谱视图' : '表格视图'}</button></div>
+            {tableView ? <div className="relation-table-view"><table><thead><tr><th>岗位聚类</th><th>重要能力</th><th>覆盖率</th><th>支持 JD</th></tr></thead><tbody>{businessEdges.map((edge) => <tr key={edge.id}><td><button onClick={() => selectNode(edge.source)}>{nodeMap.get(edge.source)?.label}</button></td><td><button onClick={() => selectNode(edge.target)}>{nodeMap.get(edge.target)?.label}</button></td><td>{Math.round(edge.coverage_rate * 100)}%</td><td>{edge.supporting_job_count}</td></tr>)}</tbody></table></div> : <RelationForceGraph graph={data} selectedId={selected} onSelect={selectNode} onExpand={expandNode} layoutMode={layoutMode} />}
             <aside className="evidence-inspector relation-job-inspector">{selectedNode ? <>
-              <div className="inspector-title"><div><span>{selectedNode.type === 'job_cluster' ? '岗位聚类详情' : '标准技术能力'}</span><h3>{selectedNode.label}</h3></div><StatusTag tone={selectedNode.type === 'job_cluster' ? 'info' : 'success'}>{selectedNode.domain_code}</StatusTag></div>
+              <div className="inspector-title"><div><span>{selectedNode.type === 'job_cluster' ? '岗位聚类详情' : selectedNode.type === 'technology_domain' ? '技术领域导航' : '标准技术能力'}</span><h3>{selectedNode.label}</h3></div><StatusTag tone={selectedNode.type === 'job_cluster' ? 'info' : 'success'}>{selectedNode.domain_code}</StatusTag></div>
               <div className="inspector-metric-grid"><div><span>证据 JD</span><strong>{selectedNode.evidence_count}</strong></div><div><span>关联节点</span><strong>{connectedNodes.length}</strong></div><div><span>可查看 JD</span><strong>{evidenceJobCodes.length}</strong></div></div>
-              <div className="inspector-actions">{selectedNode.type === 'job_cluster' ? <button className="secondary-button" onClick={() => openClusterStar(selectedNode.id)}>技能星图</button> : <button className="secondary-button" onClick={() => changeTab('capability_to_cluster')}>相关岗位簇</button>}{selectedNode.type === 'job_cluster' && !focusNodeId ? <button className="secondary-button" onClick={() => setFocusNodeId(selectedNode.id)}>局部聚焦</button> : <button className="secondary-button" onClick={() => expandNode(selectedNode.id)} disabled={Boolean(expandingNodeId) || expandedNodeIds.has(selectedNode.id)}>{expandingNodeId === selectedNode.id ? '展开中…' : expandedNodeIds.has(selectedNode.id) ? '已展开' : '展开邻居'}</button>}</div>
+              <div className="inspector-actions">{selectedNode.type === 'job_cluster' ? <button className="secondary-button" onClick={() => openClusterStar(selectedNode.id)}>技能星图</button> : selectedNode.type === 'technology' ? <button className="secondary-button" onClick={() => changeTab('capability_to_cluster')}>相关岗位簇</button> : <button className="secondary-button" onClick={() => changeFilters({ ...filters, capabilityDomain: selectedNode.domain_code })}>筛选本领域</button>}{selectedNode.type === 'job_cluster' && !focusNodeId ? <button className="secondary-button" onClick={() => setFocusNodeId(selectedNode.id)}>局部聚焦</button> : selectedNode.type !== 'technology_domain' ? <button className="secondary-button" onClick={() => expandNode(selectedNode.id)} disabled={Boolean(expandingNodeId) || expandedNodeIds.has(selectedNode.id)}>{expandingNodeId === selectedNode.id ? '展开中…' : expandedNodeIds.has(selectedNode.id) ? '已展开' : '展开邻居'}</button> : <button className="secondary-button" onClick={restoreDefaultGraph}>查看全部领域</button>}</div>
               {evidenceJobCodes.length ? <section className="job-evidence-section"><div className="section-heading"><h4>真实岗位与完整 JD</h4><span>{evidenceJobCodes.length} 条证据</span></div><select value={selectedJobCode ?? ''} onChange={(event) => setSelectedJobCode(event.target.value)}>{evidenceJobCodes.map((code, index) => <option key={code} value={code}>证据 {index + 1} · {code}</option>)}</select>{jobDetailLoading ? <div className="job-detail-loading">正在加载岗位详情…</div> : selectedJob ? <div className="job-detail-card"><h4>{selectedJob.title}</h4><p className="job-company">{selectedJob.company ?? '企业未标注'} · {selectedJob.region ?? selectedJob.company_region ?? '地区未标注'}</p><dl className="job-field-grid"><div><dt>岗位编号</dt><dd>{selectedJob.source_job_id ?? selectedJob.job_code}</dd></div><div><dt>薪资</dt><dd>{selectedJob.salary ?? '—'}</dd></div><div><dt>经验</dt><dd>{selectedJob.experience ?? '—'}</dd></div><div><dt>学历</dt><dd>{selectedJob.education ?? '—'}</dd></div><div><dt>能力等级</dt><dd>{selectedJob.level ?? '—'}</dd></div><div><dt>职业方向</dt><dd>{selectedJob.career_direction ?? '—'}</dd></div><div><dt>职业种类</dt><dd>{selectedJob.career_type ?? '—'}</dd></div><div><dt>产业链层级</dt><dd>{selectedJob.industry_chain_level ?? '—'}</dd></div><div><dt>公司细分领域</dt><dd>{selectedJob.company_subfield ?? '—'}</dd></div><div><dt>融资轮次</dt><dd>{selectedJob.funding_round ?? '—'}</dd></div><div><dt>公司所属地区</dt><dd>{selectedJob.company_region ?? '—'}</dd></div><div><dt>公司总部城市</dt><dd>{selectedJob.company_headquarters_city ?? '—'}</dd></div><div><dt>收录/发布时间</dt><dd>{selectedJob.published_at_date ?? selectedJob.source_collected_at_date ?? '—'}</dd></div><div><dt>来源列表</dt><dd>{selectedJob.source_codes.join('、') || '—'}</dd></div></dl>{selectedJob.source_url ? <a className="job-source-link" href={selectedJob.source_url} target="_blank" rel="noreferrer">打开原始招聘链接</a> : null}{selectedJob.source_skill_tags ? <><h5>原表技能标签</h5><div className="job-tag-list">{selectedJob.source_skill_tags.split(';').map((item) => item.trim()).filter(Boolean).map((item) => <span key={item}>{item}</span>)}</div></> : null}{selectedJob.scenarios.length ? <><h5>工作场景</h5><div className="job-tag-list">{selectedJob.scenarios.map((item) => <span key={item}>{item}</span>)}</div></> : null}<h5>清洗 JD 描述（全文）</h5><div className="job-jd-full">{selectedJob.jd_text || '暂无 JD 正文'}</div>{selectedJob.technologies.length ? <><h5>系统识别的重点能力</h5><div className="job-tag-list">{selectedJob.technologies.map((item) => <span key={`${item.requirement_no}-${item.technology_code}`}>{item.technology_name}</span>)}</div></> : null}</div> : null}</section> : null}
-              <details className="connected-node-details"><summary>{selectedNode.type === 'job_cluster' ? '重要能力' : '关联岗位聚类'}（{connectedNodes.length}）</summary><div className="connected-node-list">{connections.map((edge) => { const node = nodeMap.get(edge.source === selectedNode.id ? edge.target : edge.source); return node ? <button key={edge.id} onClick={() => selectNode(node.id)}><i style={{ background: domainColors[node.domain_code] }} /><span>{node.label}<small>{edge.supporting_job_count ? `${edge.supporting_job_count} 条 JD · 覆盖 ${Math.round(edge.coverage_rate * 100)}%` : '分类关系'}</small></span><strong>{Math.round(edge.importance)}</strong></button> : null })}</div></details>
+              <details className="connected-node-details"><summary>{selectedNode.type === 'job_cluster' ? '重要能力' : selectedNode.type === 'technology_domain' ? '领域内能力' : '关联岗位聚类'}（{connectedNodes.length}）</summary><div className="connected-node-list">{connections.map((edge) => { const node = nodeMap.get(edge.source === selectedNode.id ? edge.target : edge.source); return node ? <button key={edge.id} onClick={() => selectNode(node.id)}><i style={{ background: domainColors[node.domain_code] }} /><span>{node.label}<small>{edge.supporting_job_count ? `${edge.supporting_job_count} 条 JD · 覆盖 ${Math.round(edge.coverage_rate * 100)}%` : '分类关系'}</small></span><strong>{Math.round(edge.importance)}</strong></button> : null })}</div></details>
             </> : <div className="empty-state"><strong>当前筛选没有关系</strong><span>该岗位领域与能力领域可能没有交集；可降低“最小支持 JD”或重置筛选。</span><button className="secondary-button" onClick={() => changeFilters({ clusterDomain: '', capabilityDomain: '', capabilityLevel: 'L2' })}>恢复默认图谱</button></div>}</aside>
           </div> : null}
         </>

@@ -24,6 +24,10 @@ __pycache__/
 
 # 本地验证截图与构建输出
 output/
+/outputs/
+/tmp/
+/.codex-tmp/
+/.runtime/
 
 # 环境变量与密钥：仅 .env.example 可入库
 .env

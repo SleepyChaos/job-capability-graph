@@ -55,15 +55,20 @@ export function GraphFilters({ onApply, onChange, initialValues }: GraphFiltersP
 interface RelationGraphFiltersProps {
   onApply?: (summary: string) => void
   onChange?: (filters: RelationGraphFilterState) => void
+  values?: RelationGraphFilterState
 }
 
-export function RelationGraphFilters({ onApply, onChange }: RelationGraphFiltersProps) {
-  const [filters, setFilters] = useState<RelationGraphFilterState>(defaultRelationFilters)
+export function RelationGraphFilters({ onApply, onChange, values }: RelationGraphFiltersProps) {
+  const [filters, setFilters] = useState<RelationGraphFilterState>(values ?? defaultRelationFilters)
   const [domains, setDomains] = useState<TechnologyDomain[]>([])
 
   useEffect(() => {
     cachedDomains().then(setDomains).catch(() => undefined)
   }, [])
+
+  useEffect(() => {
+    if (values) setFilters(values)
+  }, [values])
 
   const update = (key: keyof RelationGraphFilterState, value: string) => {
     const next = { ...filters, [key]: value }

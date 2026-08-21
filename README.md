@@ -4,12 +4,29 @@
 
 ## 一键启动
 
+### Windows 本地开发（推荐用于当前工作区）
+
+仓库根目录提供统一启动入口，固定使用前端 `8080`、后端 `8000`。脚本会复用已健康的服务、拒绝占用冲突端口，并在 `.runtime` 保存进程与日志。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\start-local.ps1
+```
+
+停止由该脚本启动的服务：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\stop-local.ps1
+```
+
+开发服务器与 `vite preview` 均代理 `/api` 到后端，避免预览模式打开页面后筛选请求失效。
+
+### Docker Compose
+
 要求：Docker Desktop 或兼容的 Docker Engine，支持 `docker compose`。
 
 ```bash
 git clone https://github.com/SleepyChaos/job-capability-graph.git
 cd job-capability-graph
-git switch codex/redesign-from-scratch
 docker compose up --build -d
 ```
 

@@ -39,6 +39,16 @@ def test_graph_projections_share_governed_evidence_and_visual_ledger() -> None:
         assert relations["edges"][0]["coverage_rate"] == 1
         assert relations["rendering"]["fallback"] == "edge_table"
         assert relations["rendering"]["primary_route"] == "canvas_force"
+        rendered_node_ids = {
+            node["id"]
+            for group in ("role_nodes", "domain_group_nodes", "capability_nodes")
+            for node in relations[group]
+        }
+        assert all(
+            edge["source"] in rendered_node_ids and edge["target"] in rendered_node_ids
+            for edge in relations["edges"]
+        )
+        assert relations["domain_group_nodes"][0]["type"] == "technology_domain"
         assert relations["filters"]["node_budget"] == 240
         assert relations["filters"]["cluster_limit"] == 5
         assert clusters["items"][0]["stable_cluster_code"] == cluster_code

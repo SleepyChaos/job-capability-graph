@@ -498,12 +498,25 @@ def relation_graph(
             used_domains.add(domain_code)
     for domain_code in sorted(used_domains):
         name, color = DOMAIN_LEDGER[domain_code]
+        domain_capabilities = [
+            node for node in capability_nodes.values()
+            if node.get("domain_code") == domain_code
+        ]
         domain_group_nodes.append(
             {
                 "id": f"dg-{domain_code}",
-                "name": name,
-                "code": domain_code,
+                "type": "technology_domain",
+                "label": f"{domain_code} {name}",
+                "domain_code": domain_code,
+                "level_code": "L1",
                 "color": color,
+                "metrics": {
+                    "capability_count": len(domain_capabilities),
+                },
+                "evidence_count": sum(
+                    int(node.get("evidence_count", 0))
+                    for node in domain_capabilities
+                ),
                 "layer": 1,
                 "parent_ids": [],
             }
