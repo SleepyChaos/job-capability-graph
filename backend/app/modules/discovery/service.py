@@ -33,6 +33,14 @@ from app.modules.discovery.algorithm import (
     estimate_transmission_lag,
     score_candidate,
 )
+from app.modules.discovery.foresight import (
+    JOBIFICATION_THRESHOLD,
+    DatedEvent,
+    ForesightResult,
+    compute_foresight,
+    horizon_label,
+    rank_foresight,
+)
 from app.modules.discovery.itemsets import (
     ITEMSET_ALGORITHM_VERSION,
     assign_transactions,
@@ -69,7 +77,7 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 #       换到 v1.2 后成熟度对所有节点恒为 0，成熟度维度与 emerging 门控实际上是失效的。
 # v1_9：候选在核心组合之外补一层画像（支撑 JD 中过半出现的技术），供 JD 生成与展示；
 #       核心层仍单独保留，身份、去重键与覆盖率测量不变。同时把支撑 JD 数下沉为列。
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_10"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_11"
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
@@ -573,6 +581,7 @@ def _run_evidence_discovery(
         )
     )
     maturity = _persist_maturity(db, run, selected_ids, parameters, ancestors)
+    foresight = _l2_foresight(db, run)
     pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id, parameters)
     ranked = _rank_candidate_combinations(pair_evidence, parameters)
     candidate_count = 0
@@ -634,6 +643,7 @@ def _run_evidence_discovery(
             evidence,
             maturity,
             ancestors,
+            foresight,
             candidate_key=candidate_key,
             min_role_technology_count=min_role_technology_count,
             excluded_role_ids=excluded_role_ids,
@@ -793,6 +803,135 @@ def _ancestor_chains(db: Session, taxonomy_version_id: int) -> dict[int, tuple[i
             current = parents.get(current)
         chains[node_id] = tuple(chain)
     return chains
+
+
+def l2_dated_events(db: Session) -> dict[str, list[DatedEvent]]:
+    """按 L2 归集带真实日期的已核实里程碑，供前瞻计算使用。
+
+    与 `_milestone_signals_by_node` 的区别有两处：这里保留**绝对日期**（成熟度
+    轨迹要在任意 as-of 时点重算年龄），并且是**向上汇总**——挂在 L3 上的突破
+    同样算作其所属 L2 方向的证据，不做继承衰减。`_inherited_signals` 做的是
+    反方向的事（L3 自身没有证据时向上借），两者不冲突。
+
+    归集到 L2 而非 L3，是因为 L3 的成熟度取值重复率 84.3%：绝大多数 L3 没有
+    自己的里程碑，同一 L2 下的 L3 会拿到完全相同的成熟度，在这样的取值上排序
+    会大面积并列。
+    """
+    linked = aliased(TechnologyNode)
+    parent = aliased(TechnologyNode)
+    rows = db.execute(
+        select(
+            linked.technology_code,
+            parent.technology_code,
+            MilestoneEvent.milestone_event_id,
+            MilestoneEvent.milestone_type_code,
+            MilestoneEvent.event_date,
+            MilestoneEvent.event_year,
+            MilestoneTechnology.relevance_score,
+        )
+        .join(
+            MilestoneTechnology,
+            MilestoneTechnology.milestone_event_id == MilestoneEvent.milestone_event_id,
+        )
+        .join(linked, linked.technology_node_id == MilestoneTechnology.technology_node_id)
+        .outerjoin(parent, parent.technology_node_id == linked.parent_technology_node_id)
+        .where(MilestoneEvent.verification_status_code == "verified")
+    ).all()
+
+    grouped: dict[str, dict[int, DatedEvent]] = defaultdict(dict)
+    for code, parent_code, event_id, type_code, event_date, event_year, relevance in rows:
+        target = code if code.count(".") == 1 else parent_code
+        if target is None or target.count(".") != 1:
+            continue
+        occurred = event_date
+        if occurred is None:
+            if event_year is None:
+                continue
+            # 只知年份的按年中处理，与 import_release_milestones 的约定一致。
+            occurred = date(int(event_year), 7, 1)
+        # 同一事件可能链到多个 L3，按事件去重，一次突破不重复计数。
+        grouped[target][event_id] = DatedEvent(
+            event_id=event_id,
+            event_type_code=type_code,
+            occurred_on=occurred,
+            relevance=float(relevance) / 100,
+            source_quality=0.6,
+        )
+    return {code: list(events.values()) for code, events in grouped.items()}
+
+
+def _l2_foresight(db: Session, run: DiscoveryRun) -> dict[str, ForesightResult]:
+    """算出每个 L2 技术方向的成熟度轨迹与跨越时点，并给出全局名次。"""
+    names = {
+        code: name
+        for code, name in db.execute(
+            select(TechnologyNode.technology_code, TechnologyNode.technology_name).where(
+                TechnologyNode.taxonomy_version_id == run.taxonomy_version_id,
+                TechnologyNode.level_code == "L2",
+            )
+        )
+    }
+    results = [
+        compute_foresight(
+            technology_code=code,
+            technology_name=names.get(code, code),
+            events=events,
+            as_of=run.target_date,
+        )
+        for code, events in sorted(l2_dated_events(db).items())
+        if code in names
+    ]
+    return {item.technology_code: item for item in rank_foresight(results)}
+
+
+def _candidate_foresight(
+    technology_codes: tuple[str, ...],
+    foresight: dict[str, ForesightResult],
+    as_of: date,
+) -> dict:
+    """把候选依托的各 L2 方向的前瞻判断汇成一个块。
+
+    **主语是技术方向，不是岗位。** 候选依托多个方向，岗位真正出现还取决于
+    这些方向是否被同一批雇主组合到一个职位上，那不在本模块的推断范围内。
+    因此这里给的是「该候选依托的方向处在什么阶段」，不是「该岗位何时出现」。
+
+    **不给参考窗口。** 传导时滞无法从本项目数据标定——截尾观测下已跨过门槛的
+    12 个方向里 11 个已有岗位需求，未到达组只剩 1 个，两组无法构成夹逼
+    （见 tools/experiment_lag_calibration.py）。凭空给一个窗口会把先验伪装成结论。
+    """
+    directions = sorted({code.rsplit(".", 1)[0] for code in technology_codes if "." in code})
+    ranking = list(foresight)
+    blocks = []
+    for code in directions:
+        result = foresight.get(code)
+        if result is None:
+            continue
+        blocks.append({
+            "technology_code": code,
+            "technology_name": result.technology_name,
+            "crossed": result.crossing_date is not None,
+            "crossing_month": (
+                result.crossing_date.strftime("%Y-%m") if result.crossing_date else None
+            ),
+            "peak_maturity": round(result.peak_maturity, 3),
+            "milestone_count": result.event_count,
+            "foresight_rank": ranking.index(code) + 1,
+            "statement": horizon_label(result, as_of),
+        })
+    crossed = [item for item in blocks if item["crossed"]]
+    return {
+        "schema_version": "candidate_foresight_v1",
+        "threshold": JOBIFICATION_THRESHOLD,
+        # θ 是设定值：曾尝试从横截面标定但失败（秩相关 −0.268、84.3% 取值重复）。
+        # 排序对它稳健（θ 在 0.25–0.45 间扫动，相邻秩相关 0.857–0.958），
+        # 但单个方向的跨越时点不稳（极差最大 30 个月），故只报名次与阶段，不报日期为预测。
+        "threshold_origin": "configured_not_measured",
+        "reference_window": None,
+        "reference_window_reason": "transmission_lag_uncalibrated",
+        "directions": sorted(blocks, key=lambda item: item["foresight_rank"]),
+        "crossed_direction_count": len(crossed),
+        "best_foresight_rank": min((item["foresight_rank"] for item in blocks), default=None),
+    }
 
 
 def _milestone_signals_by_node(
@@ -1070,6 +1209,7 @@ def _persist_candidate(
     evidence: _PairEvidence,
     maturity: dict[int, float],
     ancestors: dict[int, tuple[int, ...]],
+    foresight: dict[str, ForesightResult],
     candidate_key: str,
     min_role_technology_count: int,
     excluded_role_ids: frozenset[int],
@@ -1141,6 +1281,9 @@ def _persist_candidate(
         # 先验估计，非本项目观测值：JD 侧尚无跨月真实采集，无法自行估计时滞。
         "expected_transmission_lag": estimate_transmission_lag(
             tuple(item.technology_code.split(".")[0] for item in technologies)
+        ),
+        "foresight": _candidate_foresight(
+            tuple(item.technology_code for item in technologies), foresight, run.target_date
         ),
         "evidence_ids": sorted(evidence.evidence_job_ids),
         "llm_boundary": "expression_only_no_fact_mutation",
