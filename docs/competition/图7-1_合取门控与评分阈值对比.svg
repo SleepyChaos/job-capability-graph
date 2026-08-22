@@ -11,7 +11,7 @@
     .fail{fill:#fdeeee;stroke:#c05555;stroke-width:1.2;rx:11}
   </style>
   <text x="20" y="28" class="ti">图 7-1　合取式证据门控 vs 单一评分阈值</text>
-  <text x="20" y="48" class="s">同一个候选：单一企业发布了 8 份高度相似的 JD，技术新颖度高。</text>
+  <text x="20" y="48" class="s">构造示例（说明两种机制的差别，非语料中的实例）：单一企业发布 8 份高度相似的 JD。</text>
 
   <rect x="30" y="72" width="420" height="300" class="bad"/>
   <text x="48" y="100" class="h">单一评分阈值（本系统未采用）</text>
@@ -48,5 +48,6 @@
   <text x="508" y="292" class="s">并附带风险旗标：</text>
   <text x="508" y="314" class="s">single_company_signal · single_source_signal</text>
   <text x="508" y="334" class="s">insufficient_temporal_history</text>
-  <text x="508" y="360" class="s" fill="#2c6b3f">审核者直接看到「缺什么」，而非一个分数。</text>
+  <text x="508" y="352" class="s" fill="#2c6b3f">审核者直接看到「缺什么」，而非一个分数。</text>
+  <text x="508" y="374" class="s" fill="#2c6b3f">实测：合取门控下 3 个候选进入涌现档，评分阈值下为 58 个。</text>
 </svg>
