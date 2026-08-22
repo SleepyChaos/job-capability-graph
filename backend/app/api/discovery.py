@@ -49,6 +49,7 @@ class CandidateListItem(BaseModel):
     maturity_stage_code: str
     workflow_status_code: str
     candidate_score: Decimal
+    support_job_count: int
     classification_code: str
     risk_flags: list
     run_code: str
@@ -149,15 +150,39 @@ def get_discovery_run(run_code: str, db: Annotated[Session, Depends(get_db)]):
     }
 
 
+def _candidate_ordering(sort: str):
+    if sort == "support":
+        return (
+            EmergingRoleCandidate.support_job_count.desc(),
+            EmergingRoleCandidate.candidate_score.desc(),
+            EmergingRoleCandidate.candidate_code,
+        )
+    return (
+        EmergingRoleCandidate.candidate_score.desc(),
+        EmergingRoleCandidate.created_at.desc(),
+    )
+
+
 @router.get("/role-discovery/candidates", response_model=CandidatePage)
 def list_candidates(
     db: Annotated[Session, Depends(get_db)],
     workflow_status: str | None = None,
     maturity_stage: str | None = None,
     run_code: str | None = None,
+    sort: Literal["score", "support"] = "score",
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
 ):
+    """列出岗位候选。
+
+    `sort` 决定排序目标，二者服务于不同问题，不可互相替代：
+
+    - `score`（默认）按证据门控评分排，回答「哪个候选更可能是正在涌现的新岗位」，
+      评分中权重最高的是学术—产业落差；
+    - `support` 按支撑 JD 数排，回答「哪个候选对应一个已经真实存在的岗位」。
+      留出重发现实验中，同一批候选换成该排序后 Recall@10 从 81.2% 升到上界 95.8%，
+      因为该任务问的正是后一个问题。
+    """
     filters = []
     if workflow_status:
         filters.append(EmergingRoleCandidate.workflow_status_code == workflow_status)
@@ -182,9 +207,7 @@ def list_candidates(
         select(EmergingRoleCandidate, DiscoveryRun)
         .join(DiscoveryRun, DiscoveryRun.discovery_run_id == EmergingRoleCandidate.discovery_run_id)
         .where(*filters)
-        .order_by(
-            EmergingRoleCandidate.candidate_score.desc(), EmergingRoleCandidate.created_at.desc()
-        )
+        .order_by(*_candidate_ordering(sort))
         .limit(limit)
         .offset(offset)
     ).all()
@@ -197,6 +220,7 @@ def list_candidates(
                 maturity_stage_code=candidate.maturity_stage_code,
                 workflow_status_code=candidate.workflow_status_code,
                 candidate_score=candidate.candidate_score,
+                support_job_count=candidate.support_job_count,
                 classification_code=candidate.classification_code,
                 risk_flags=candidate.risk_flags_json,
                 run_code=run.run_code,

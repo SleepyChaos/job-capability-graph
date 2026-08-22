@@ -2,7 +2,7 @@ import hashlib
 import json
 import re
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from uuid import uuid4
@@ -67,7 +67,9 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 #       且与既有岗位的重合度改按技术编码比较（节点 id 逐词表版本独立，跨版本恒为空集）。
 # v1_8：里程碑技术链接同样按技术编码重映射到本次词表版本。此前链接停留在 v1.1 节点上，
 #       换到 v1.2 后成熟度对所有节点恒为 0，成熟度维度与 emerging 门控实际上是失效的。
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_8"
+# v1_9：候选在核心组合之外补一层画像（支撑 JD 中过半出现的技术），供 JD 生成与展示；
+#       核心层仍单独保留，身份、去重键与覆盖率测量不变。同时把支撑 JD 数下沉为列。
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_10"
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
@@ -112,6 +114,9 @@ class _PairEvidence:
     observation_windows: set[str]
     responsibilities: list[JobResponsibility]
     evidence_job_ids: dict[int, int]
+    # 支撑 JD 中各技术点出现的 JD 数。核心组合只有 2–5 个技术，撑不起一份标准化 JD；
+    # 由它扩展出的「画像层」用这个计数按过半规则筛选。
+    technology_counts: Counter[int] = field(default_factory=Counter)
 
 
 def run_discovery(
@@ -723,6 +728,7 @@ def _collect_pair_evidence(
         for key in keys:
             bucket = result.setdefault(key, _PairEvidence(set(), set(), set(), set(), [], {}))
             bucket.job_ids.add(job_id)
+            bucket.technology_counts.update(technology_ids)
             if posting.organization_id:
                 bucket.organization_ids.add(posting.organization_id)
             bucket.source_ids.update(sources[job_id] or {posting.data_source_id})
@@ -1176,6 +1182,7 @@ def _persist_candidate(
         maturity_stage_code=scored.maturity_stage,
         workflow_status_code="pending",
         candidate_score=Decimal(str(scored.score)),
+        support_job_count=len(evidence.job_ids),
         nearest_job_role_id=nearest_role_id,
         overlap_score=Decimal(str(overlap)),
         classification_code=classification,
@@ -1236,6 +1243,47 @@ def _persist_candidate_children(
                 requirement_type_code="required",
                 importance_score=Decimal("1"),
                 evidence_count=per_tech_evidence,
+                membership_code="core",
+            )
+        )
+    _persist_candidate_profile(db, candidate, technology_ids, evidence)
+
+
+# 画像层要求技术在支撑 JD 中过半出现（见 _persist_candidate_profile 的阈值说明）。
+
+
+def _persist_candidate_profile(
+    db: Session,
+    candidate: EmergingRoleCandidate,
+    core_ids: tuple[int, ...],
+    evidence: _PairEvidence,
+) -> None:
+    """在核心组合之外补一层「画像」：支撑 JD 中过半出现的技术。
+
+    核心组合是挖掘出的频繁闭项集，只有 2–5 个技术——它足以定义候选的身份，
+    但不足以生成一份可用的岗位描述。画像层把这批 JD 共有的其余能力补进来。
+
+    **画像不参与候选身份、去重键与覆盖率测量**，那三者一律只看核心层，
+    这样扩展画像不会改动 classification 阈值的既有标定。
+    """
+    support = len(evidence.job_ids)
+    if not support:
+        return
+    # 取上取整而非下取整，并至少要求 2 份 JD：support=2 或 3 时 int(support*0.5) 等于 1，
+    # 「过半」会退化成「任一支撑 JD 里出现过即可」，把噪声技术全拉进画像。
+    threshold = max(2, -(-support // 2))
+    core = set(core_ids)
+    for technology_id, count in sorted(evidence.technology_counts.items()):
+        if technology_id in core or count < threshold:
+            continue
+        db.add(
+            CandidateTechnology(
+                emerging_role_candidate_id=candidate.emerging_role_candidate_id,
+                technology_node_id=technology_id,
+                requirement_type_code="bonus",
+                importance_score=Decimal(str(round(count / support, 4))),
+                evidence_count=count,
+                membership_code="profile",
             )
         )
 

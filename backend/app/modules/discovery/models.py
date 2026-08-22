@@ -198,6 +198,8 @@ class EmergingRoleCandidate(Base):
     maturity_stage_code: Mapped[str] = mapped_column(String(32))
     workflow_status_code: Mapped[str] = mapped_column(String(32), default="pending")
     candidate_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+    # 支撑该候选的 JD 数。从机械事实卡下沉为列，使「按证据量排序」可排可索引。
+    support_job_count: Mapped[int] = mapped_column(Integer, default=0)
     nearest_job_role_id: Mapped[int | None] = mapped_column(ForeignKey("biz_job_role.job_role_id"))
     overlap_score: Mapped[Decimal | None] = mapped_column(Numeric(7, 6))
     classification_code: Mapped[str] = mapped_column(String(32))
@@ -246,6 +248,9 @@ class CandidateTechnology(Base):
     technology_node_id: Mapped[int] = mapped_column(
         ForeignKey("md_technology_node.technology_node_id"), primary_key=True
     )
+    # core = 挖掘出的核心组合，决定候选身份、去重键与覆盖率测量；
+    # profile = 由支撑 JD 扩展出的画像，只供 JD 生成与展示，不参与上述判定。
+    membership_code: Mapped[str] = mapped_column(String(16), default="core")
     requirement_type_code: Mapped[str] = mapped_column(String(32))
     importance_score: Mapped[Decimal] = mapped_column(Numeric(7, 6))
     evidence_count: Mapped[int] = mapped_column(Integer, default=0)
