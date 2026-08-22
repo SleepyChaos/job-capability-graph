@@ -135,14 +135,33 @@ def analyse(pairs: list[dict], bins: int) -> dict:
             "median_jd_count": statistics.median(item["jd_count"] for item in rows),
         })
 
-    # 拐点：岗位化率相对前一箱提升最大的那个箱的下界
+    # **不能只找「单箱跃升最大处」**：那样只要有一箱偶然抬高就会报出拐点，
+    # 而下一箱可能立刻掉回去。要求跃升之后的所有箱都保持在跃升前的水平之上，
+    # 才算真正的阈值效应。
     knee = None
     best_gain = 0.0
-    for previous, current in zip(binned, binned[1:], strict=False):
-        gain = current["jobified_rate"] - previous["jobified_rate"]
-        if gain > best_gain:
+    for index in range(1, len(binned)):
+        gain = binned[index]["jobified_rate"] - binned[index - 1]["jobified_rate"]
+        if gain <= best_gain:
+            continue
+        floor = binned[index - 1]["jobified_rate"]
+        if all(row["jobified_rate"] > floor for row in binned[index:]):
             best_gain = gain
-            knee = current["low"]
+            knee = binned[index]["low"]
+
+    # 秩相关：整体上「成熟度越高、岗位化率越高」是否成立。
+    # 这比拐点稳健——阈值效应不存在时它会直接给出接近 0 的相关。
+    ranked = sorted(with_evidence, key=lambda item: item["maturity"])
+    n = len(ranked)
+    correlation = 0.0
+    if n > 2:
+        maturity_rank = {id(item): index for index, item in enumerate(ranked)}
+        by_jd = sorted(with_evidence, key=lambda item: item["jd_count"])
+        jd_rank = {id(item): index for index, item in enumerate(by_jd)}
+        diff_squared = sum(
+            (maturity_rank[id(item)] - jd_rank[id(item)]) ** 2 for item in with_evidence
+        )
+        correlation = 1 - (6 * diff_squared) / (n * (n * n - 1))
 
     return {
         "technology_point_count": len(pairs),
@@ -153,6 +172,12 @@ def analyse(pairs: list[dict], bins: int) -> dict:
         "bins": binned,
         "knee_threshold": knee,
         "knee_gain": round(best_gain, 4),
+        "maturity_jd_rank_correlation": round(correlation, 4),
+        # 同一 L2 下的 L3 靠继承拿到完全相同的成熟度，块内 JD 数却天差地别。
+        # 这个计数说明有多少技术点落在这类「成熟度相同」的块里。
+        "tied_maturity_ratio": round(
+            1 - len({item["maturity"] for item in with_evidence}) / len(with_evidence), 4
+        ) if with_evidence else 0.0,
     }
 
 
@@ -180,12 +205,15 @@ def render(result: dict, pairs: list[dict], args: argparse.Namespace) -> None:
         print(f"| {row['low']:.1f}–{row['high']:.1f}{mark} | {row['count']} "
               f"| {row['jobified_rate']:.1%} | {row['median_jd_count']} |")
 
+    print(f"\n成熟度与 JD 数的秩相关：**{result['maturity_jd_rank_correlation']:.3f}**")
+    print(f"成熟度取值重复率：{result['tied_maturity_ratio']:.1%}"
+          "（同一 L2 下的 L3 靠继承拿到相同成熟度，块内无区分度）")
     if result["knee_threshold"] is not None:
         print(f"\n**拐点位于成熟度 {result['knee_threshold']:.1f}**"
-              f"（相对前一箱岗位化率提升 {result['knee_gain']:.1%}）")
+              f"（跃升 {result['knee_gain']:.1%}，且其后各箱均维持在跃升前水平之上）")
     else:
-        print("\n**未观察到拐点**——成熟度与岗位化率之间没有明显的阈值效应，"
-              "θ 无法由本数据确定，应保留现行取值并声明其为设定值。")
+        print("\n**未观察到阈值效应**——不存在「跃升后持续维持」的拐点。"
+              "θ 无法由本数据确定，应保留现行取值并显式声明其为设定值而非实测值。")
 
     top = sorted(pairs, key=lambda item: (-item["maturity"], -item["jd_count"]))[:10]
     print("\n## 成熟度最高的 10 个技术点\n")
