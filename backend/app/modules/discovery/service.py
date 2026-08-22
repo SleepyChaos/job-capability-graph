@@ -8,7 +8,7 @@ from decimal import Decimal
 from uuid import uuid4
 
 from sqlalchemy import func, or_, select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 
 from app.modules.clustering.models import (
     JobClusteringRun,
@@ -65,7 +65,9 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 # v1_6：候选粒度由技术对改为频繁闭项集（技术组合）。
 # v1_7：候选排序改为「JD 数 × 组合大小」（纯按支持度排会让名额被最小组合占满），
 #       且与既有岗位的重合度改按技术编码比较（节点 id 逐词表版本独立，跨版本恒为空集）。
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_7"
+# v1_8：里程碑技术链接同样按技术编码重映射到本次词表版本。此前链接停留在 v1.1 节点上，
+#       换到 v1.2 后成熟度对所有节点恒为 0，成熟度维度与 emerging 门控实际上是失效的。
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_8"
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
@@ -790,10 +792,17 @@ def _ancestor_chains(db: Session, taxonomy_version_id: int) -> dict[int, tuple[i
 def _milestone_signals_by_node(
     db: Session, run: DiscoveryRun
 ) -> dict[int, list[MaturityEventSignal]]:
-    """一次取回全部已核实里程碑，按技术节点分组，避免逐节点查询。"""
+    """一次取回全部已核实里程碑，按**本次词表版本**的技术节点分组。
+
+    里程碑的技术链接建立在导入当时的词表版本上，而推演跑在当前版本上。
+    节点 id 逐版本独立，直接按 id 分组会让新版本的节点一个信号都取不到——
+    成熟度因此恒为 0，`emerging` 档的成熟度条件永远不可能满足。
+    技术编码跨版本稳定，故按编码把链接重映射到本次版本的节点上。
+    """
+    linked_node = aliased(TechnologyNode)
     rows = db.execute(
         select(
-            MilestoneTechnology.technology_node_id,
+            linked_node.technology_code,
             MilestoneEvent.milestone_event_id,
             MilestoneEvent.milestone_type_code,
             MilestoneEvent.event_date,
@@ -804,6 +813,10 @@ def _milestone_signals_by_node(
         .join(
             MilestoneTechnology,
             MilestoneTechnology.milestone_event_id == MilestoneEvent.milestone_event_id,
+        )
+        .join(
+            linked_node,
+            linked_node.technology_node_id == MilestoneTechnology.technology_node_id,
         )
         .outerjoin(
             MilestoneEvidence,
@@ -817,7 +830,7 @@ def _milestone_signals_by_node(
             _within_target_date(run.target_date),
         )
         .group_by(
-            MilestoneTechnology.technology_node_id,
+            linked_node.technology_code,
             MilestoneEvent.milestone_event_id,
             MilestoneEvent.milestone_type_code,
             MilestoneEvent.event_date,
@@ -825,8 +838,21 @@ def _milestone_signals_by_node(
             MilestoneTechnology.relevance_score,
         )
     ).all()
+    # 技术编码 → 本次词表版本的节点 id
+    node_by_code = {
+        code: node_id
+        for code, node_id in db.execute(
+            select(TechnologyNode.technology_code, TechnologyNode.technology_node_id).where(
+                TechnologyNode.taxonomy_version_id == run.taxonomy_version_id
+            )
+        )
+    }
     grouped: dict[int, list[MaturityEventSignal]] = defaultdict(list)
-    for node_id, event_id, type_code, event_date, event_year, relevance, source_quality in rows:
+    for code, event_id, type_code, event_date, event_year, relevance, source_quality in rows:
+        node_id = node_by_code.get(code)
+        if node_id is None:
+            # 该技术点在本版词表中已下线，其里程碑证据不再参与本次推演。
+            continue
         grouped[node_id].append(
             MaturityEventSignal(
                 event_id=event_id,
