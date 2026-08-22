@@ -144,15 +144,19 @@ def submit_milestone_candidate(db: Session, submission: MilestoneSubmission) -> 
     technology_codes = tuple(dict.fromkeys(code.strip() for code in submission.technology_codes))
     if not technology_codes:
         raise DataCenterError("里程碑至少关联一个标准技术词")
-    active_versions = list(
-        db.scalars(
-            select(TechnologyTaxonomyVersion).where(
-                TechnologyTaxonomyVersion.version_status_code == "active"
-            )
+    # 词表升版后多个版本会同时处于 active，历史解析运行仍需按各自版本读回原始口径。
+    # 取生效日期最新的一版，与 discovery / parsing / jobs 侧的解析口径保持一致。
+    active_version = db.scalar(
+        select(TechnologyTaxonomyVersion)
+        .where(TechnologyTaxonomyVersion.version_status_code == "active")
+        .order_by(
+            TechnologyTaxonomyVersion.effective_date.desc(),
+            TechnologyTaxonomyVersion.taxonomy_version_id.desc(),
         )
     )
-    if len(active_versions) != 1:
-        raise DataCenterError("系统必须且只能存在一个启用的技术体系版本")
+    if active_version is None:
+        raise DataCenterError("不存在已启用的技术体系版本")
+    active_versions = [active_version]
     technologies = list(
         db.scalars(
             select(TechnologyNode).where(
