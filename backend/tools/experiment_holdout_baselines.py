@@ -332,8 +332,12 @@ def filter_current_algorithm(
                 EmergingRoleCandidate.candidate_code == candidate.candidate_code
             )
         )
-        first_seen = (row.mechanical_card_json or {}).get("first_seen_run_code") if row else None
-        if versions.get(first_seen) == ALGORITHM_VERSION:
+        # **按 last_seen 而非 first_seen 判定。** 候选是一次创建、永久刷新的：
+        # 刷新路径会用当前逻辑重算评分、分档、分类与技术组合，因此被本版刷新过的
+        # 候选就是本版的产物。按 first_seen 判定会在每次升版后把整个候选池滤空——
+        # 升版后除非出现全新技术组合，否则没有任何候选是「本版首次提出」。
+        last_seen = (row.mechanical_card_json or {}).get("last_seen_run_code") if row else None
+        if versions.get(last_seen) == ALGORITHM_VERSION:
             kept.append(candidate)
     return kept
 
@@ -571,7 +575,7 @@ def render(rounds: list[dict], pooled: dict, args: argparse.Namespace) -> None:
         f"汇总 {pooled['system']['target_count']} 个目标实例"
     )
     if args.current_algorithm_only:
-        print(f"- 候选只取当前算法版本 `{ALGORITHM_VERSION}` 首次提出的"
+        print(f"- 候选只取由当前算法版本 `{ALGORITHM_VERSION}` 产出或刷新的"
               f"（过滤前 {first['candidate_pool_before_filter']} 个）")
     sizes = first["masked_profile_sizes"]
     print(f"- 被遮蔽岗位画像技术数中位：{sizes[len(sizes) // 2]}\n")
