@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from sqlalchemy import (
     JSON,
+    BigInteger,
     Boolean,
     Date,
     DateTime,
@@ -203,6 +204,13 @@ class EmergingRoleCandidate(Base):
     nearest_job_role_id: Mapped[int | None] = mapped_column(ForeignKey("biz_job_role.job_role_id"))
     overlap_score: Mapped[Decimal | None] = mapped_column(Numeric(7, 6))
     classification_code: Mapped[str] = mapped_column(String(32))
+    # 最后一次为该候选计算评分的推演运行。候选一次创建、永久保留，而每轮只重算
+    # 排名前 max_communities 的组合，名额之外的候选会带着旧版算法的评分留在库里。
+    # 提成真列后，「这个候选是不是当前算法算出来的」可直接查询与过滤。
+    last_seen_discovery_run_id: Mapped[int] = mapped_column(
+        BigInteger().with_variant(Integer, "sqlite"),
+        ForeignKey("biz_role_discovery_run.discovery_run_id"),
+    )
     mechanical_card_json: Mapped[dict] = mapped_column(JSON)
     expression_json: Mapped[dict | None] = mapped_column(JSON)
     expression_model_version: Mapped[str | None] = mapped_column(String(100))

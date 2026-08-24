@@ -77,7 +77,10 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 #       换到 v1.2 后成熟度对所有节点恒为 0，成熟度维度与 emerging 门控实际上是失效的。
 # v1_9：候选在核心组合之外补一层画像（支撑 JD 中过半出现的技术），供 JD 生成与展示；
 #       核心层仍单独保留，身份、去重键与覆盖率测量不变。同时把支撑 JD 数下沉为列。
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_11"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_12"
+# 覆盖率分档阈值。与 tools/experiment_measure_ablation.py 保持同一口径。
+EXISTING_ROLE_COVERAGE = 0.75
+ROLE_EVOLUTION_COVERAGE = 0.45
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
@@ -582,19 +585,21 @@ def _run_evidence_discovery(
     )
     maturity = _persist_maturity(db, run, selected_ids, parameters, ancestors)
     foresight = _l2_foresight(db, run)
+    technology_frequency = _technology_job_frequency(db, run, parse_run_id)
     pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id, parameters)
     ranked = _rank_candidate_combinations(pair_evidence, parameters)
     candidate_count = 0
     refreshed_count = 0
     skipped_count = 0
     task_count = 0
-    code_by_node = dict(
-        db.execute(
+    code_by_node = {
+        node_id: code
+        for node_id, code in db.execute(
             select(TechnologyNode.technology_node_id, TechnologyNode.technology_code).where(
                 TechnologyNode.taxonomy_version_id == run.taxonomy_version_id
             )
         )
-    )
+    }
     for technology_ids, evidence in ranked:
         if len(evidence.job_ids) < int(parameters["min_pair_job_count"]):
             continue
@@ -626,7 +631,16 @@ def _run_evidence_discovery(
             community_code=f"community_{_stable_digest(technology_ids)[:16]}",
             community_label=task.task_name,
             grouping_method_code="technology_cooccurrence_fallback",
-            cohesion_score=Decimal("1.000000" if len(technology_ids) == 1 else "0.750000"),
+            cohesion_score=Decimal(
+                str(
+                    round(
+                        _combination_cohesion(
+                            technology_ids, len(evidence.job_ids), technology_frequency
+                        ),
+                        6,
+                    )
+                )
+            ),
             task_count=1,
             community_snapshot_json={
                 "technology_node_ids": list(technology_ids),
@@ -653,6 +667,7 @@ def _run_evidence_discovery(
             maturity,
             ancestors,
             foresight,
+            technology_frequency,
             candidate_key=candidate_key,
             min_role_technology_count=min_role_technology_count,
             excluded_role_ids=excluded_role_ids,
@@ -663,6 +678,75 @@ def _run_evidence_discovery(
         else:
             candidate_count += 1
     return candidate_count, task_count, refreshed_count, skipped_count
+
+
+def _technology_job_frequency(
+    db: Session, run: DiscoveryRun, parse_run_id: int
+) -> dict[int, int]:
+    """每个技术点在整个语料里被多少份 JD 提及，作为内聚度的分母。"""
+    rows = db.execute(
+        select(
+            JobRequirement.technology_node_id,
+            func.count(func.distinct(JobRequirement.job_posting_id)),
+        )
+        .join(
+            TechnologyMatchAssessment,
+            TechnologyMatchAssessment.job_requirement_id == JobRequirement.job_requirement_id,
+        )
+        .where(
+            TechnologyMatchAssessment.job_parse_run_id == parse_run_id,
+            TechnologyMatchAssessment.assessment_status_code == "accepted",
+            JobRequirement.technology_node_id.is_not(None),
+        )
+        .group_by(JobRequirement.technology_node_id)
+    ).all()
+    return {node_id: int(count) for node_id, count in rows}
+
+
+def _combination_cohesion(
+    technology_ids: tuple[int, ...], support: int, frequency: dict[int, int]
+) -> float:
+    """技术组合的内聚度：组合的支撑量占其中最常见技术单独出现量的比例。
+
+    问的是「这些技术真的成套出现，还是只是搭上了一个高频技术的顺风车」。
+    强化学习出现在 400 份 JD 里、某组合出现在 30 份里，那这个组合对强化学习而言
+    是偶然的（内聚度 0.075）；若某技术只出现在 35 份 JD 里而组合占了 30 份，
+    它们基本总是同时出现（内聚度 0.857）。
+
+    **此前这一维是常量**：写死为「单技术 1.0，其余 0.75」，227 个候选里 214 个
+    取到同一个值，对排序完全不产生区分度。分母取最常见的那个技术是保守选择——
+    它给出组合内聚度的下界，不会因为组合里混进一个冷门技术而虚高。
+    """
+    if not technology_ids or support <= 0:
+        return 0.0
+    ceiling = max(frequency.get(item, 0) for item in technology_ids)
+    if ceiling <= 0:
+        return 0.0
+    return min(1.0, support / ceiling)
+
+
+def _evidence_completeness(
+    *,
+    evidence: "_PairEvidence",
+    application_count: int,
+    has_real_responsibility: bool,
+    milestone_backed: bool,
+) -> float:
+    """证据**齐备度**：五类证据里齐了几类，而不是某一类攒了多少条。
+
+    此前按 `min(1.0, 证据 JD 数 / 5)` 计算，而候选的支撑 JD 普遍在 30–60 份，
+    这一维因此恒为 1.0，227 个候选无一例外，对排序不产生任何区分度。
+    数量已经由 market_support 表达，这里改测**广度**：缺哪一类证据是可读的信息，
+    正好与合取门控的风险旗标相呼应。
+    """
+    checks = (
+        len(evidence.evidence_job_ids) >= 5,
+        len(evidence.organization_ids) >= 2,
+        len(evidence.source_ids) >= 2,
+        application_count >= 1,
+        has_real_responsibility and milestone_backed,
+    )
+    return sum(1 for item in checks if item) / len(checks)
 
 
 def _rank_candidate_combinations(
@@ -891,6 +975,38 @@ def _l2_foresight(db: Session, run: DiscoveryRun) -> dict[str, ForesightResult]:
         if code in names
     ]
     return {item.technology_code: item for item in rank_foresight(results)}
+
+
+def _classify_candidate(
+    overlap: float, foresight_block: dict, maturity_stage: str
+) -> str:
+    """把候选归入四类之一。
+
+    覆盖率高的两档不变：`existing_role`（已被既有岗位覆盖）与 `role_evolution`
+    （部分覆盖，更像既有岗位的能力扩展）。覆盖率低的那一档此前只有
+    `potential_new_role` 一个出口，实际混着性质完全不同的两种东西：
+
+    - **库缺失**：能力组合早已成熟、市场上大量在招，只是我们的岗位库里没有收录。
+      实测里评分最高的几个「潜在新岗位」是电机与驱动工程师（51 份 JD、23 家企业）、
+      嵌入式计算工程师、智能制造与工业自动化工程师——都是存在了几十年的岗位。
+      把它们叫「潜在新岗位」是错的，但**发现它们本身是有价值的**：这正说明推演在
+      历史回测意义上有效，能指出岗位库的缺口。对应的动作是**补录**。
+    - **真·潜在新岗位**：能力组合所依托的技术方向里，至少有一个还没跨过岗位化
+      门槛——组合之所以罕见，是因为它赖以成立的技术本身还没成为招聘常态。
+      对应的动作是**新增岗位定义**。
+
+    两者的判据完全复用已有口径，不新造阈值：技术方向是否跨过门槛来自前瞻模块
+    （θ = 0.35，设定值），支撑量是否成熟直接用合取门控算出的成熟档。
+    """
+    if overlap >= EXISTING_ROLE_COVERAGE:
+        return "existing_role"
+    if overlap >= ROLE_EVOLUTION_COVERAGE:
+        return "role_evolution"
+    directions = foresight_block.get("directions") or []
+    all_crossed = bool(directions) and all(item["crossed"] for item in directions)
+    if all_crossed and maturity_stage != "potential":
+        return "library_gap"
+    return "potential_new_role"
 
 
 def _candidate_foresight(
@@ -1144,7 +1260,6 @@ def _persist_task(
     evidence_strength = min(1.0, 0.35 + 0.08 * len(evidence.evidence_job_ids))
     maturity_score = sum(maturity.get(item, 0) for item in technology_ids) / len(technology_ids)
     gap = calculate_task_gap(
-        technology_relevance=1.0,
         maturity=max(0.15, maturity_score),
         existing_role_coverage=coverage,
         evidence_strength=evidence_strength,
@@ -1219,6 +1334,7 @@ def _persist_candidate(
     maturity: dict[int, float],
     ancestors: dict[int, tuple[int, ...]],
     foresight: dict[str, ForesightResult],
+    technology_frequency: dict[int, int],
     candidate_key: str,
     min_role_technology_count: int,
     excluded_role_ids: frozenset[int],
@@ -1237,13 +1353,19 @@ def _persist_candidate(
     application_count = _application_evidence_count(db, run, technology_ids, ancestors)
     raw_maturity = sum(maturity.get(item, 0) for item in technology_ids) / len(technology_ids)
     signals = CandidateSignals(
-        technology_relevance=1.0,
         publication_task_gap=float(task.task_gap_score),
-        community_cohesion=float(community.cohesion_score),
+        community_cohesion=_combination_cohesion(
+            technology_ids, len(evidence.job_ids), technology_frequency
+        ),
         market_support=float(task.market_support_score),
         technology_maturity=raw_maturity,
         temporal_growth_stability=min(1.0, len(evidence.observation_windows) / 3),
-        evidence_completeness=min(1.0, len(evidence.evidence_job_ids) / 5),
+        evidence_completeness=_evidence_completeness(
+            evidence=evidence,
+            application_count=application_count,
+            has_real_responsibility=task.evidence_status_code != "technology_fallback_text",
+            milestone_backed=raw_maturity > 0,
+        ),
         novelty=1 - float(task.existing_role_coverage_score),
         job_count=len(evidence.job_ids),
         organization_count=len(evidence.organization_ids),
@@ -1259,13 +1381,10 @@ def _persist_candidate(
         min_role_technology_count=min_role_technology_count,
         excluded_role_ids=excluded_role_ids,
     )
-    classification = (
-        "existing_role"
-        if overlap >= 0.75
-        else "role_evolution"
-        if overlap >= 0.45
-        else "potential_new_role"
+    foresight_block = _candidate_foresight(
+        tuple(item.technology_code for item in technologies), foresight, run.target_date
     )
+    classification = _classify_candidate(overlap, foresight_block, scored.maturity_stage)
     mechanical = {
         "fact_schema_version": "mechanical_role_card_v2",
         "task_text": task.normalized_task_text,
@@ -1291,9 +1410,7 @@ def _persist_candidate(
         "expected_transmission_lag": estimate_transmission_lag(
             tuple(item.technology_code.split(".")[0] for item in technologies)
         ),
-        "foresight": _candidate_foresight(
-            tuple(item.technology_code for item in technologies), foresight, run.target_date
-        ),
+        "foresight": foresight_block,
         "evidence_ids": sorted(evidence.evidence_job_ids),
         "llm_boundary": "expression_only_no_fact_mutation",
     }
@@ -1310,6 +1427,7 @@ def _persist_candidate(
         existing.overlap_score = Decimal(str(overlap))
         existing.classification_code = classification
         existing.mechanical_card_json = mechanical
+        existing.last_seen_discovery_run_id = run.discovery_run_id
         existing.risk_flags_json = list(scored.risk_flags)
         db.query(CandidateScoreComponent).filter(
             CandidateScoreComponent.emerging_role_candidate_id
@@ -1339,6 +1457,7 @@ def _persist_candidate(
         overlap_score=Decimal(str(overlap)),
         classification_code=classification,
         mechanical_card_json=mechanical,
+        last_seen_discovery_run_id=run.discovery_run_id,
         expression_json={
             "name": proposed_name,
             "one_line_definition": f"负责{task.task_name}并交付可验证工程成果的岗位。",
@@ -1490,6 +1609,7 @@ def _run_name_inference(db: Session, run: DiscoveryRun) -> tuple[int, int]:
         nearest_job_role_id=role.job_role_id if role else None,
         overlap_score=Decimal("1" if role else "0"),
         classification_code=classification,
+        last_seen_discovery_run_id=run.discovery_run_id,
         mechanical_card_json={
             "query_role_name": run.query_role_name,
             "query_description": run.query_description,

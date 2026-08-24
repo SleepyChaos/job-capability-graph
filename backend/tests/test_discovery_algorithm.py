@@ -65,7 +65,6 @@ def test_candidate_stage_is_evidence_gated_independently_of_score() -> None:
 
 def _signals(**overrides) -> CandidateSignals:
     values = {
-        "technology_relevance": 0.95,
         "publication_task_gap": 0.8,
         "community_cohesion": 0.85,
         "market_support": 0.85,

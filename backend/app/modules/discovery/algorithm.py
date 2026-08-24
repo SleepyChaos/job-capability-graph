@@ -2,15 +2,24 @@ import math
 from dataclasses import dataclass
 from decimal import ROUND_HALF_UP, Decimal
 
+# 正向维度与权重。权重和为 1，评分 = 加权和减去惩罚项后乘 100。
+#
+# **technology_relevance 已移除。** 它曾占 0.15，取值恒为 1.0——词表本身就限定在
+# 具身智能域内，候选的技术按构造必然「域内相关」，这一维在当前设计下是空转的，
+# 给每个候选加同样的常数，不产生任何区分度却占着权重表 15% 的篇幅。原权重按比例
+# 摊回其余七维（各自除以 0.85），因此维度之间的相对关系不变。
+#
+# **temporal_growth_stability 保留但当前无区分度。** 227 个候选里 226 个取到 1.0，
+# 因为观测窗 2/3 是合成日期。与上一条不同，它不是设计空转而是数据所限——JD 侧有了
+# 真实跨月采集之后它会重新变得有意义，所以留在表里而不是删掉。
 POSITIVE_WEIGHTS = {
-    "technology_relevance": 0.15,
-    "publication_task_gap": 0.22,
-    "community_cohesion": 0.12,
-    "market_support": 0.14,
-    "technology_maturity": 0.10,
-    "temporal_growth_stability": 0.10,
-    "evidence_completeness": 0.10,
-    "novelty": 0.07,
+    "publication_task_gap": 0.26,
+    "market_support": 0.16,
+    "community_cohesion": 0.14,
+    "technology_maturity": 0.12,
+    "temporal_growth_stability": 0.12,
+    "evidence_completeness": 0.12,
+    "novelty": 0.08,
 }
 
 
@@ -85,7 +94,6 @@ class MaturityResult:
 
 @dataclass(frozen=True)
 class CandidateSignals:
-    technology_relevance: float
     publication_task_gap: float
     community_cohesion: float
     market_support: float
@@ -184,17 +192,17 @@ def calculate_market_support(
 
 def calculate_task_gap(
     *,
-    technology_relevance: float,
     maturity: float,
     existing_role_coverage: float,
     evidence_strength: float,
     organization_count: int,
     market_support: float,
 ) -> float:
+    # technology_relevance 曾作为一个乘性因子出现在这里，取值恒为 1.0（域内词表，
+    # 见 POSITIVE_WEIGHTS 上方说明），是个不做事的乘 1，一并去掉。
     cross_company = saturating(organization_count, 5)
     return (
-        clamp01(technology_relevance)
-        * clamp01(maturity)
+        clamp01(maturity)
         * (1 - clamp01(existing_role_coverage))
         * clamp01(evidence_strength)
         * (0.55 + 0.45 * cross_company)
