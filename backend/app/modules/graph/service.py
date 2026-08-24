@@ -12,6 +12,12 @@ from app.modules.clustering.models import (
     JobClusterMember,
     JobClusterVersion,
 )
+from app.modules.discovery.models import (
+    CandidateTechnology,
+    DiscoveryRun,
+    EmergingRoleCandidate,
+)
+from app.modules.discovery.service import ALGORITHM_VERSION as DISCOVERY_ALGORITHM_VERSION
 from app.modules.graph.models import (
     DOMAIN_AGGREGATE_TECHNOLOGY_ID,
     TechnologyDailyTriggerMetric,
@@ -66,6 +72,137 @@ class ProjectionContext:
     data_version: str
 
 
+def _candidate_projection(
+    db: Session,
+    context: ProjectionContext,
+    *,
+    capability_level_code: str,
+    capability_domain_code: str | None,
+    capability_nodes: dict[int, dict],
+    limit: int,
+) -> tuple[list[dict], list[dict]]:
+    """把新岗位候选投影成与岗位聚类同级的 role 节点。
+
+    **候选与聚类同级。** 聚类是「从真实 JD 观测到的岗位归并」，候选是「算法提议的
+    岗位」，两者都属于 role 一侧，连的是同一批能力节点。指标也一一对应：
+    成员数 ↔ 支撑 JD 数、独立企业数 ↔ 独立企业数、簇内聚度 ↔ 候选评分。
+
+    **必须按技术编码而非节点 id 关联。** 图谱的节点空间取自解析运行的词表版本，
+    候选的技术 id 取自推演运行的词表版本，两者可能不同代。按 id 关联会得到空交集，
+    候选看上去一条边都没有。技术编码跨版本稳定，是唯一可比的口径。
+
+    候选的技术是 L3，图谱通常按 L2 呈现，因此沿父链上投到目标层级，与聚类能力
+    指标走同一个 `_project_node`。
+    """
+    fresh_run_ids = set(
+        db.scalars(
+            select(DiscoveryRun.discovery_run_id).where(
+                DiscoveryRun.algorithm_version == DISCOVERY_ALGORITHM_VERSION
+            )
+        )
+    )
+    if not fresh_run_ids:
+        return [], []
+    candidates = list(
+        db.scalars(
+            select(EmergingRoleCandidate)
+            .where(EmergingRoleCandidate.last_seen_discovery_run_id.in_(fresh_run_ids))
+            .order_by(EmergingRoleCandidate.candidate_score.desc())
+            .limit(limit)
+        )
+    )
+    if not candidates:
+        return [], []
+
+    node_by_code = {item.technology_code: item for item in context.nodes.values()}
+    codes_by_candidate: dict[int, list[str]] = defaultdict(list)
+    for candidate_id, code in db.execute(
+        select(CandidateTechnology.emerging_role_candidate_id, TechnologyNode.technology_code)
+        .join(
+            TechnologyNode,
+            TechnologyNode.technology_node_id == CandidateTechnology.technology_node_id,
+        )
+        .where(
+            CandidateTechnology.emerging_role_candidate_id.in_(
+                [item.emerging_role_candidate_id for item in candidates]
+            ),
+            CandidateTechnology.membership_code == "core",
+        )
+    ):
+        codes_by_candidate[candidate_id].append(code)
+
+    role_nodes: list[dict] = []
+    edges: list[dict] = []
+    for candidate in candidates:
+        card = candidate.mechanical_card_json or {}
+        targets: dict[int, TechnologyNode] = {}
+        for code in codes_by_candidate.get(candidate.emerging_role_candidate_id, []):
+            source = node_by_code.get(code)
+            if source is None:
+                # 该技术点在图谱所用的词表版本里已下线，跳过而不是连一条悬空边。
+                continue
+            projected = _project_node(
+                context.nodes, source.technology_node_id, capability_level_code
+            )
+            if projected is not None:
+                targets[projected.technology_node_id] = projected
+        if not targets:
+            continue
+
+        domains = [context.primary_domains.get(item, "T7") for item in targets]
+        primary_domain = Counter(domains).most_common(1)[0][0]
+        if capability_domain_code and primary_domain != capability_domain_code:
+            continue
+
+        support = int(card.get("job_count", 0) or 0)
+        role_nodes.append(
+            {
+                "id": f"candidate:{candidate.candidate_code}",
+                "type": "emerging_candidate",
+                "label": candidate.proposed_name,
+                "domain_code": primary_domain,
+                "metrics": {
+                    "support_job_count": support,
+                    "organization_count": int(card.get("organization_count", 0) or 0),
+                    "candidate_score": _float(candidate.candidate_score),
+                },
+                # 提议尚未入库，前端据此区分呈现，并决定是否允许下钻到审核动作。
+                "classification_code": candidate.classification_code,
+                "maturity_stage_code": candidate.maturity_stage_code,
+                "workflow_status_code": candidate.workflow_status_code,
+                "evidence_count": support,
+            }
+        )
+        for technology_id, technology in targets.items():
+            if technology_id not in capability_nodes:
+                # 能力节点没进本次预算，补一个零证据节点让边有落点。
+                capability_nodes[technology_id] = {
+                    "id": f"technology:{technology_id}",
+                    "type": "technology",
+                    "label": technology.technology_name,
+                    "domain_code": context.primary_domains.get(technology_id, "T7"),
+                    "level_code": technology.level_code,
+                    "metrics": {"supporting_job_count": 0, "recent_activity": 0},
+                    "evidence_count": 0,
+                }
+            edges.append(
+                {
+                    "id": f"edge:{candidate.candidate_code}:{technology_id}",
+                    "source": f"candidate:{candidate.candidate_code}",
+                    "target": f"technology:{technology_id}",
+                    # 与聚类的 important_technology 区分：这是提议而非观测到的关联，
+                    # 前端据此画虚线。
+                    "relation_type": "proposed_technology",
+                    "importance": _float(candidate.candidate_score),
+                    "recent_activity": 0.0,
+                    "supporting_job_count": support,
+                    "coverage_rate": None,
+                    "evidence_job_codes": [],
+                }
+            )
+    return role_nodes, edges
+
+
 def relation_graph(
     db: Session,
     *,
@@ -78,6 +215,10 @@ def relation_graph(
     min_supporting_job_count: int = 1,
     mode: str = "overview",
     focus_node_id: str | None = None,
+    # 新岗位候选默认不进图。它们是**未入库的提议**，与观测到的聚类混在一起会让
+    # 读者分不清哪些是既有事实；由调用方显式打开，前端以虚线边和独立图例区分。
+    include_candidates: bool = False,
+    candidate_limit: int = 80,
     # Compatibility aliases for scripts and callers written before the
     # relation graph gained independent role/capability filters.
     domain_code: str | None = None,
@@ -240,9 +381,24 @@ def relation_graph(
             "metrics": {"supporting_job_count": 0, "recent_activity": 0},
             "evidence_count": 0,
         }
+    candidate_nodes: list[dict] = []
+    if include_candidates:
+        candidate_nodes, candidate_edges = _candidate_projection(
+            db,
+            context,
+            capability_level_code=capability_level_code,
+            capability_domain_code=capability_domain_code,
+            capability_nodes=capability_nodes,
+            limit=candidate_limit,
+        )
+        role_nodes.extend(candidate_nodes)
+        edges.extend(candidate_edges)
+
     return {
         **_metadata(context),
         "filters": {
+            "include_candidates": include_candidates,
+            "candidate_node_count": len(candidate_nodes),
             "cluster_domain_code": cluster_domain_code,
             "capability_domain_code": capability_domain_code,
             "capability_level_code": capability_level_code,

@@ -34,6 +34,9 @@ def get_relation_graph(
     min_supporting_job_count: Annotated[int, Query(ge=1, le=1000)] = 1,
     mode: Literal["overview", "focus"] = "overview",
     focus_node_id: str | None = None,
+    # 新岗位候选默认不进图：它们是未入库的提议，默认展示会与观测事实混淆。
+    include_candidates: bool = False,
+    candidate_limit: Annotated[int, Query(ge=1, le=300)] = 80,
 ):
     try:
         return relation_graph(
@@ -51,6 +54,8 @@ def get_relation_graph(
             min_supporting_job_count=min_supporting_job_count,
             mode=mode,
             focus_node_id=focus_node_id,
+            include_candidates=include_candidates,
+            candidate_limit=candidate_limit,
         )
     except GraphProjectionError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
