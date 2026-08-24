@@ -1,5 +1,6 @@
 import hashlib
 import json
+import logging
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
@@ -77,6 +78,8 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 #       换到 v1.2 后成熟度对所有节点恒为 0，成熟度维度与 emerging 门控实际上是失效的。
 # v1_9：候选在核心组合之外补一层画像（支撑 JD 中过半出现的技术），供 JD 生成与展示；
 #       核心层仍单独保留，身份、去重键与覆盖率测量不变。同时把支撑 JD 数下沉为列。
+logger = logging.getLogger(__name__)
+
 ALGORITHM_VERSION = "evidence_gap_discovery_v1_12"
 # 覆盖率分档阈值。与 tools/experiment_measure_ablation.py 保持同一口径。
 EXISTING_ROLE_COVERAGE = 0.75
@@ -421,7 +424,7 @@ def apply_candidate_expression(
     return candidate
 
 
-EXPRESSION_PROMPT_VERSION = "candidate_expression_v2_reliability_annotated"
+EXPRESSION_PROMPT_VERSION = "candidate_expression_v4_domain_guarded"
 
 
 def auto_candidate_expression(db: Session, *, candidate_code: str) -> EmergingRoleCandidate:
@@ -474,6 +477,32 @@ def _card_fact_references(card: dict) -> list[str]:
     return references or ["task:unknown"]
 
 
+# 模型给岗位命名时最容易攀附的域外应用领域。这些词在本词表里没有对应技术点
+# （或只作为某个 L4 词的一部分出现），一旦进入名称就是对岗位应用域的臆断——
+# 实测 8 个候选里有 2 个被命名为「自动驾驶大模型训练优化工程师」，而其技术组合
+# 只有 VLA 端到端大模型与大模型推理服务，没有任何自动驾驶相关证据。
+OUT_OF_SCOPE_DOMAIN_TERMS = (
+    "自动驾驶", "智能驾驶", "无人驾驶", "车载", "汽车",
+    "医疗", "医学", "金融", "风控", "安防", "军工", "游戏",
+)
+
+
+def _name_asserts_unsupported_domain(name: str, allowed_terms: set[str]) -> str | None:
+    """名称是否声称了候选技术支撑不了的应用域，返回越界的词。
+
+    表达层允许改写措辞，**不允许新增事实**。岗位的应用域属于事实：说一个岗位是
+    「自动驾驶」岗，是在断言它服务于某个技术组合里并不存在的场景。这类越界不会被
+    JSON 结构校验拦住，因此单独检查。
+
+    `allowed_terms` 是候选自身技术名与其祖先名的并集——若某个域确实来自候选的技术，
+    它出现在名称里就是有据的，不算越界。
+    """
+    for term in OUT_OF_SCOPE_DOMAIN_TERMS:
+        if term in name and not any(term in allowed for allowed in allowed_terms):
+            return term
+    return None
+
+
 def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | None:
     from app.infrastructure.llm import generate, validate_schema
 
@@ -481,7 +510,10 @@ def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | N
     # 逐字段标注可靠度：机械层的任务文本取自 JD 职责抽取，存在切分错误与
     # 招聘平台样板文字的残留风险；数值类事实由确定性算法产出，可靠。
     facts = {
-        "proposed_name": candidate.proposed_name,
+        # **不叫 proposed_name。** 机械名是把技术名拼起来的占位符，不是事实；
+        # 以 proposed_name 的名义传进去，模型会依据「只能使用给定机械事实」这条
+        # 硬约束原样抄回来——实测 6 个候选无一例外，LLM 命名等于没做。
+        "placeholder_name_to_replace": candidate.proposed_name,
         "technologies": [
             {"name": item["technology_name"], "requirement_type": item["requirement_type"]}
             for item in technologies[:12]
@@ -506,13 +538,21 @@ def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | N
     }
     system_prompt = (
         "你是岗位研究助手，只做表达层改写。\n"
+        "命名任务：\n"
+        "placeholder_name_to_replace 是把技术名拼接而成的占位符，**不是岗位名，"
+        "必须替换**。请依据技术组合与代表性职责，给出一个中文招聘市场上真实会出现的"
+        "职位名称——像 JD 标题那样，通常 6–14 字，体现岗位的职责定位而非技术清单；"
+        "不要用顿号或「与」把多个技术并列起来充当名称。\n"
         "硬约束：\n"
-        "1. 只能使用给定机械事实，不得新增技术、数字或技能。\n"
-        "2. field_reliability 标为 low 的字段可能来自抽取错误："
+        "1. 只能使用给定机械事实，不得新增技术、数字或技能。"
+        "命名可以概括这些技术所属的职责方向，但不得引入事实中没有的技术。\n"
+        "2. **不得在名称里声称应用领域**（自动驾驶、车载、医疗、金融、安防等），"
+        "除非该领域确实出现在给定技术中。岗位服务于哪个场景属于事实，不是措辞。\n"
+        "3. field_reliability 标为 low 的字段可能来自抽取错误："
         "只允许忽略该字段，禁止用推测内容替换它，也不得据此编造替代事实。\n"
-        "3. representative_task_text 是原始 JD 职责摘录，可能含切分错误或残缺句；"
+        "4. representative_task_text 是原始 JD 职责摘录，可能含切分错误或残缺句；"
         "可提炼其语义，但不得把其中出现的公司名、平台名当作岗位职责。\n"
-        "4. 若可用事实不足以支撑某个字段，写明证据不足，不要编造。\n"
+        "5. 若可用事实不足以支撑某个字段，写明证据不足，不要编造。\n"
         "输出 JSON，包含键：proposed_name、one_line_definition、"
         "core_responsibilities（数组）、formation_reason、difference_explanation。"
     )
@@ -535,6 +575,18 @@ def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | N
     if not validate_schema(data, required) or not isinstance(
         data.get("core_responsibilities"), list
     ):
+        return None
+    # 名称越界视同事实被改写，整条结果作废走规则降级——保留一个措辞更差但有据的名字，
+    # 好过一个读起来专业却断言了错误应用域的名字。
+    allowed_terms = {item["technology_name"] for item in technologies}
+    allowed_terms.update(str(card.get("task_text") or ""))
+    violation = _name_asserts_unsupported_domain(str(data["proposed_name"]), allowed_terms)
+    if violation is not None:
+        logger.warning(
+            "候选 %s 的 LLM 命名声称了技术组合不支撑的应用域「%s」，降级为规则表达",
+            candidate.candidate_code,
+            violation,
+        )
         return None
     data["_model"] = result.model
     return data
@@ -747,6 +799,29 @@ def _evidence_completeness(
         has_real_responsibility and milestone_backed,
     )
     return sum(1 for item in checks if item) / len(checks)
+
+
+# 技术名里 471 个 L3 有 110 个自带「与」，用「与」拼接会让边界消失——
+# 「推理引擎与端侧部署与GPU并行计算与算子优化工程师」实际只是两个技术名拼起来的。
+# 「·」在全部 L3 技术名中零出现，是唯一安全的连接符。
+MECHANICAL_NAME_SEPARATOR = "·"
+
+
+def _mechanical_name(technology_names: list[str]) -> str:
+    """候选的机械名。
+
+    **这是占位名，不是岗位名。** 它的职责是唯一且可追溯，不是好看——真正的命名由
+    表达层的 LLM 完成（`auto_candidate_expression`），机械名只在 LLM 不可用时兜底。
+
+    此前取 `"与".join(names[:2])`，两个缺陷叠在一起：丢掉第三个及以后的技术，
+    使不同的技术组合拼出同一个名字（227 个候选只有 142 个不同名称，46 组重名）；
+    又用了技术名内部高频出现的「与」当连接符，读者无法判断边界在哪。
+    这里保留全部技术并改用零冲突的分隔符，名字会变长，但长本身就是「此候选尚未
+    命名」的信号。
+    """
+    if not technology_names:
+        return "未命名候选岗位"
+    return MECHANICAL_NAME_SEPARATOR.join(technology_names) + "工程师"
 
 
 def _rank_candidate_combinations(
@@ -1349,7 +1424,7 @@ def _persist_candidate(
         )
     )
     names = [item.technology_name for item in technologies]
-    proposed_name = "与".join(names[:2]) + "工程师"
+    proposed_name = _mechanical_name(names)
     application_count = _application_evidence_count(db, run, technology_ids, ancestors)
     raw_maturity = sum(maturity.get(item, 0) for item in technology_ids) / len(technology_ids)
     signals = CandidateSignals(
