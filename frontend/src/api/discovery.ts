@@ -185,8 +185,75 @@ export const workflowStatusLabels: Record<string, string> = {
 
 export const classificationLabels: Record<string, string> = {
   new_role_candidate: '新岗位候选',
-  existing_role: '已有岗位',
+  existing_role: '已被覆盖',
   existing_candidate: '已有候选',
+  role_evolution: '岗位演化',
+  library_gap: '岗位库缺失',
   potential_new_role: '潜在新岗位',
   insufficient_evidence: '证据不足',
+}
+
+/**
+ * 每个分类对应的处置动作。四类候选的下一步完全不同，只给一个分类名不足以让
+ * 审核者知道该做什么——尤其是「岗位库缺失」与「潜在新岗位」，前者是补录一个
+ * 市场上早已存在的岗位，后者才是定义一个新岗位。
+ */
+export const classificationGuidance: Record<string, string> = {
+  existing_role: '该能力组合已被既有岗位覆盖，无需新增定义；可用于核对既有岗位的能力画像是否完整。',
+  role_evolution: '部分覆盖，更像既有岗位的能力扩展。建议并入最邻近岗位，作为其新版本的能力变化。',
+  library_gap: '能力组合已经成熟、市场上大量在招，但岗位库里没有收录。动作是补录既有岗位，不是定义新岗位。',
+  potential_new_role: '所依托的技术方向尚未全部跨过岗位化门槛，组合罕见是因为技术本身还未成为招聘常态。动作是新增岗位定义并持续跟踪。',
+}
+
+/** 分类对应的展示色调，与 StatusTag 的 tone 取值一致。 */
+export const classificationTone: Record<string, 'info' | 'warning' | 'success' | 'neutral'> = {
+  existing_role: 'neutral',
+  role_evolution: 'info',
+  library_gap: 'warning',
+  potential_new_role: 'success',
+}
+
+/** 评分维度的中文名。原始码直接显示给审核者不可读。 */
+export const scoreComponentLabels: Record<string, string> = {
+  publication_task_gap: '学术—产业落差',
+  market_support: '市场支持度',
+  community_cohesion: '技术组合内聚度',
+  technology_maturity: '技术成熟度',
+  temporal_growth_stability: '时序增长稳定性',
+  evidence_completeness: '证据齐备度',
+  novelty: '新颖度',
+  single_company_penalty: '单一企业惩罚',
+  single_source_penalty: '单一来源惩罚',
+  marketing_penalty: '纯营销语料惩罚',
+  contradiction_penalty: '证据矛盾惩罚',
+  unverified_technology_penalty: '技术未经验证惩罚',
+}
+
+/**
+ * 候选依托的某个 L2 技术方向的前瞻判断。
+ *
+ * 主语是**技术方向**，不是岗位——候选依托多个方向，岗位能否成立还取决于这些方向
+ * 是否被同一批雇主组合进同一个职位，那不在推演的推断范围内。
+ */
+export interface ForesightDirection {
+  technology_code: string
+  technology_name: string
+  crossed: boolean
+  crossing_month: string | null
+  peak_maturity: number
+  milestone_count: number
+  foresight_rank: number
+  statement: string
+}
+
+export interface CandidateForesight {
+  schema_version: string
+  threshold: number
+  /** configured_not_measured 表示门槛是设定值而非实测值，展示时必须说明。 */
+  threshold_origin: string
+  reference_window: null
+  reference_window_reason: string
+  directions: ForesightDirection[]
+  crossed_direction_count: number
+  best_foresight_rank: number | null
 }

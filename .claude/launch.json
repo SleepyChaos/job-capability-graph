@@ -1,0 +1,16 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "job-capability-graph",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": [
+        "compose",
+        "up",
+        "backend",
+        "frontend"
+      ],
+      "port": 8080
+    }
+  ]
+}
