@@ -116,6 +116,8 @@ services:
       APP_LLM_API_KEY: ${APP_LLM_API_KEY:-${OPENAI_API_KEY:-}}
       APP_LLM_BASE_URL: ${APP_LLM_BASE_URL:-${OPENAI_BASE_URL:-https://api.deepseek.com/v1}}
       APP_LLM_MODEL: ${APP_LLM_MODEL:-${LLM_MODEL:-deepseek-chat}}
+      # 推理型模型单次生成可能超过默认 30 秒，超时值同样从未入库的 .env 注入。
+      APP_LLM_TIMEOUT_SECONDS: ${APP_LLM_TIMEOUT_SECONDS:-30}
       APP_AUTH_SECRET: ${APP_AUTH_SECRET:-change-me-in-production}
     volumes:
       # 数据导入与评测需要访问仓库数据目录
