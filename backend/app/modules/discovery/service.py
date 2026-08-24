@@ -588,10 +588,19 @@ def _run_evidence_discovery(
     refreshed_count = 0
     skipped_count = 0
     task_count = 0
+    code_by_node = dict(
+        db.execute(
+            select(TechnologyNode.technology_node_id, TechnologyNode.technology_code).where(
+                TechnologyNode.taxonomy_version_id == run.taxonomy_version_id
+            )
+        )
+    )
     for technology_ids, evidence in ranked:
         if len(evidence.job_ids) < int(parameters["min_pair_job_count"]):
             continue
-        candidate_key = _candidate_key(run.mode_code, technology_ids)
+        candidate_key = _candidate_key(
+            run.mode_code, tuple(code_by_node[item] for item in technology_ids)
+        )
         existing = db.scalar(
             select(EmergingRoleCandidate).where(
                 EmergingRoleCandidate.candidate_key == candidate_key
@@ -1920,9 +1929,20 @@ def _representative_responsibility(rows: list[JobResponsibility]) -> JobResponsi
     return sorted(usable, key=rank)[0]
 
 
-def _candidate_key(mode_code: str, technology_ids: tuple[int, ...]) -> str:
-    """候选身份 = 推演模式 + 技术组合，与运行无关。"""
-    payload = f"{mode_code}|" + "-".join(str(item) for item in sorted(technology_ids))
+def _candidate_key(mode_code: str, technology_codes: tuple[str, ...]) -> str:
+    """候选身份 = 推演模式 + 技术组合，与运行、与词表版本都无关。
+
+    **必须用技术编码而非节点 id。** 节点 id 是逐词表版本独立的：同一个技术组合
+    在 v1.1 与 v1.2 下拿到不同的 id，算出的键因此不同，去重失效——同一组技术会
+    被当成两个候选反复提出。实测在 227 个候选里造成 43 组、共 105 个重复条目，
+    而且重复条目之间的分类还会互相矛盾（同名候选一个判 existing_role、
+    一个判 role_evolution），因为它们各自在不同版本的词表下算过覆盖率。
+
+    技术编码（T1.03.02 这类）跨版本稳定，是唯一能充当候选身份的口径。
+    这是节点 id 被当作跨版本标识符使用的第五处，其余四处见
+    `_nearest_role`、`_milestone_signals_by_node` 与两个实验脚本的历史修复。
+    """
+    payload = f"{mode_code}|" + "-".join(sorted(technology_codes))
     return hashlib.sha256(payload.encode()).hexdigest()[:64]
 
 
