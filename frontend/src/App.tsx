@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { dataCenterApi } from './api/dataCenter'
 import { talentApi, type LearningPath, type MatchResult, type ProfileDetail, type ProfileSummary } from './api/talent'
 import { AppShell } from './components/AppShell'
@@ -11,6 +11,7 @@ import { GraphRelationsPage } from './pages/GraphRelationsPage'
 import { JobKeywordPage } from './pages/JobKeywordPage'
 import { JobNamePage } from './pages/JobNamePage'
 import { JobRecordsPage } from './pages/JobRecordsPage'
+import { CandidateCardPage } from './pages/CandidateCardPage'
 import { JobsPage } from './pages/JobsPage'
 import { LearningPage } from './pages/LearningPage'
 import { MatchPage } from './pages/MatchPage'
@@ -29,6 +30,7 @@ const pageTitles: Record<PageId, string> = {
   management: '数据管理中心',
   taxonomy: '技术词标准管理',
   jobs: '新岗位发现',
+  candidate: '岗位数据卡',
   'job-keyword': '技术词定向推演',
   'job-name': '岗位名称推演',
   'job-records': '推演结果记录库',
@@ -43,13 +45,27 @@ const pageTitles: Record<PageId, string> = {
   review: '数据审核中心',
 }
 
-function getInitialPage(): PageId {
-  const value = window.location.hash.replace('#/', '') as PageId
-  return value in pageTitles ? value : 'overview'
+/**
+ * 解析 hash 路由。
+ *
+ * 形如 `#/candidate/candidate_xxx` 的路由带一个参数段——岗位数据卡需要能被直接
+ * 分享，也要能从图谱的候选节点跳过来，因此候选编码必须落在 URL 上而不是组件状态里。
+ */
+function parseHash(): { page: PageId; param: string | null } {
+  const [rawPage, rawParam] = window.location.hash.replace('#/', '').split('/')
+  const page = rawPage as PageId
+  return {
+    page: page in pageTitles ? page : 'overview',
+    param: rawParam ? decodeURIComponent(rawParam) : null,
+  }
 }
 
 export default function App() {
-  const [page, setPage] = useState<PageId>(getInitialPage)
+  const [{ page, param }, setRoute] = useState(parseHash)
+  const setPage = useCallback(
+    (next: PageId, nextParam: string | null = null) => setRoute({ page: next, param: nextParam }),
+    [],
+  )
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [toast, setToast] = useState('')
@@ -61,12 +77,13 @@ export default function App() {
   const [managementQuery, setManagementQuery] = useState('')
 
   useEffect(() => {
-    window.location.hash = `/${page}`
+    const next = param ? `/${page}/${encodeURIComponent(param)}` : `/${page}`
+    if (window.location.hash !== `#${next}`) window.location.hash = next
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [page])
+  }, [page, param])
 
   useEffect(() => {
-    const handleHashChange = () => setPage(getInitialPage())
+    const handleHashChange = () => setRoute(parseHash())
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
@@ -112,7 +129,8 @@ export default function App() {
     case 'sources': content = <SourcesPage notify={notify} />; break
     case 'management': content = <DataManagementPage notify={notify} initialQuery={managementQuery} />; break
     case 'taxonomy': content = <TaxonomyPage notify={notify} />; break
-    case 'jobs': content = <JobsPage notify={notify} />; break
+    case 'jobs': content = <JobsPage notify={notify} onOpenCandidate={(code) => setPage('candidate', code)} />; break
+    case 'candidate': content = <CandidateCardPage candidateCode={param} onNavigate={setPage} notify={notify} />; break
     case 'job-keyword': content = <JobKeywordPage notify={notify} />; break
     case 'job-name': content = <JobNamePage notify={notify} />; break
     case 'job-records': content = <JobRecordsPage notify={notify} />; break

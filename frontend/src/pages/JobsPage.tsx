@@ -29,7 +29,14 @@ function todayISO(): string {
   return new Date().toISOString().slice(0, 10)
 }
 
-export function JobsPage({ notify }: { notify: (message: string) => void }) {
+export function JobsPage({
+  notify,
+  onOpenCandidate,
+}: {
+  notify: (message: string) => void
+  /** 打开该候选的岗位数据卡（独立路由，可直接分享，也是图谱候选节点的落点）。 */
+  onOpenCandidate: (candidateCode: string) => void
+}) {
   const [candidates, setCandidates] = useState<CandidateListItem[]>([])
   const [candidateTotal, setCandidateTotal] = useState(0)
   const [runs, setRuns] = useState<DiscoveryRun[]>([])
@@ -214,7 +221,12 @@ export function JobsPage({ notify }: { notify: (message: string) => void }) {
                   <h2>{detail.candidate.proposed_name}</h2>
                   <p>{String(expression?.one_line_definition ?? '尚未生成表达层：点击“一键生成表达”（LLM 可用时生成，否则规则降级）。')}</p>
                 </div>
-                <div className="candidate-score"><strong>{detail.candidate.candidate_score.toFixed(1)}</strong><span>综合证据分</span></div>
+                <div className="candidate-title-side">
+                  <button className="secondary-button" onClick={() => onOpenCandidate(detail.candidate.candidate_code)}>
+                    打开岗位数据卡
+                  </button>
+                  <div className="candidate-score"><strong>{detail.candidate.candidate_score.toFixed(1)}</strong><span>综合证据分</span></div>
+                </div>
               </div>
               <div className="detail-section">
                 <h3>分类与处置</h3>

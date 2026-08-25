@@ -5,6 +5,7 @@ export type PageId =
   | 'management'
   | 'taxonomy'
   | 'jobs'
+  | 'candidate'
   | 'job-keyword'
   | 'job-name'
   | 'job-records'

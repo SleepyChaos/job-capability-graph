@@ -566,3 +566,75 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .foresight-caveat { margin: 0 0 10px; padding: 8px 10px; color: #6b5417; background: #fdf6e3; border-left: 3px solid #d9a441; border-radius: 4px; font-size: 9px; line-height: 1.7; }
 .foresight-caveat:last-child { margin: 10px 0 0; }
 .foresight-caveat strong { font-weight: 700; }
+
+/* ── 岗位数据卡 ──────────────────────────────────────────────────────────
+   独立路由页。主体是「这是什么岗位」，算法依据折叠在末尾——两者挤在一屏是
+   先前这个模块被认为过于复杂的主要来源。 */
+.candidate-card-page { display: flex; flex-direction: column; gap: 14px; }
+
+.card-breadcrumb { display: flex; align-items: center; justify-content: space-between; }
+.ghost-button { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 10px; color: #3d5a78; background: transparent; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; }
+.ghost-button:hover { background: #f2f6fa; }
+.ghost-button.wide { width: 100%; justify-content: center; margin-top: 10px; }
+.mono-hint { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; color: var(--muted); }
+
+.card-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 22px 24px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+.card-hero-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.card-hero h1 { margin: 0 0 8px; font-size: 24px; line-height: 1.3; }
+.card-hero-definition { margin: 0 0 10px; max-width: 68ch; color: #2f4b65; font-size: 12px; line-height: 1.75; }
+.card-hero-action { margin: 0; max-width: 68ch; padding: 8px 11px; color: #4a6076; background: #f5f8fb; border-left: 3px solid var(--blue); border-radius: 4px; font-size: 10px; line-height: 1.7; }
+.card-hero-score { flex: 0 0 auto; text-align: right; }
+.card-hero-score strong { display: block; color: var(--teal); font-size: 34px; line-height: 1; }
+.card-hero-score span { display: block; margin-top: 6px; color: var(--muted); font-size: 9px; }
+
+.card-metrics { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+.card-metrics > div { display: flex; align-items: center; gap: 9px; padding: 13px 18px; border-right: 1px solid var(--soft-line); }
+.card-metrics > div:last-child { border-right: 0; }
+.card-metrics svg { color: var(--blue); flex: 0 0 auto; }
+.card-metrics span { color: var(--muted); font-size: 9px; }
+.card-metrics strong { margin-left: auto; color: var(--ink); font-size: 19px; }
+
+.card-columns { display: grid; grid-template-columns: 1.35fr 1fr; gap: 14px; align-items: start; }
+@media (max-width: 1100px) { .card-columns { grid-template-columns: 1fr; } .card-metrics { grid-template-columns: repeat(2, 1fr); } }
+.card-side { display: flex; flex-direction: column; gap: 14px; }
+
+/* JD 预览：这是「待批准的岗位定义」，不是已生效的标准 JD。 */
+.jd-preview { padding: 18px 20px; }
+.jd-preview h3 { margin: 0 0 8px; font-size: 17px; }
+.jd-preview h4 { margin: 18px 0 8px; padding-bottom: 5px; color: #3d5a78; border-bottom: 1px solid var(--soft-line); font-size: 11px; }
+.jd-definition { margin: 0; color: #2f4b65; font-size: 12px; line-height: 1.8; }
+.jd-paragraph { margin: 0; color: #4a6076; font-size: 11px; line-height: 1.85; }
+.jd-list { margin: 0; padding-left: 18px; color: #2f4b65; font-size: 11px; line-height: 1.85; }
+.jd-list li { margin-bottom: 5px; }
+.jd-empty { margin: 0; color: var(--muted); font-size: 10px; }
+.jd-skill-group { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 9px; }
+.jd-skill-label { flex: 0 0 34px; padding-top: 4px; color: var(--muted); font-size: 10px; }
+.jd-skill-group .skill-tags span em { margin-left: 5px; color: #7d93a8; font-style: normal; font-size: 8px; }
+.muted-tag { color: var(--muted); font-size: 10px; }
+.jd-disclaimer { margin: 20px 0 0; padding: 9px 11px; color: #6b5417; background: #fdf6e3; border-left: 3px solid #d9a441; border-radius: 4px; font-size: 9px; line-height: 1.7; }
+
+.foresight-list { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 0 16px 16px; list-style: none; }
+.foresight-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; background: #f6f8fb; border-radius: 6px; }
+.foresight-list strong { display: block; color: var(--ink); font-size: 11px; }
+.foresight-list span { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+
+.evidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; padding: 0 16px; }
+.evidence-grid > div { padding: 10px 11px; background: #f5f8fb; border-radius: 6px; }
+.evidence-grid dt { color: var(--muted); font-size: 9px; }
+.evidence-grid dd { margin: 5px 0 0; color: #2f4b65; font-size: 12px; font-weight: 700; }
+.risk-block { padding: 12px 16px 0; }
+.risk-block > span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 9px; }
+.risk-tag { color: #8a3b32 !important; background: #fdeeec !important; border-color: #f0cdc7 !important; }
+.evidence-ids { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px 16px 16px; max-height: 150px; overflow-y: auto; }
+.evidence-ids code { padding: 2px 5px; color: #5a7290; background: #f2f6fa; border-radius: 3px; font-size: 8px; }
+.empty-state.compact { min-height: 90px; padding: 16px; }
+
+/* 算法依据默认折叠：信息不删，但不占据主视图。 */
+.algorithm-basis { padding: 0 20px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+.algorithm-basis summary { padding: 15px 0; color: #3d5a78; font-size: 12px; font-weight: 650; cursor: pointer; }
+.algorithm-basis[open] summary { border-bottom: 1px solid var(--soft-line); }
+.algorithm-basis .table-wrap { padding: 14px 0 0; }
+.basis-note { margin: 12px 0 18px; color: var(--muted); font-size: 10px; line-height: 1.75; }
+
+.card-footer-actions { display: flex; justify-content: flex-end; gap: 10px; padding-bottom: 8px; }
+.candidate-title-side { display: flex; align-items: center; gap: 14px; }
