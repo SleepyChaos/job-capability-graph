@@ -46,9 +46,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--domains", default="", help="限定 L1 域，逗号分隔，如 T1,T2,T3,T4")
     parser.add_argument("--limit", type=int, default=0, help="最多处理多少个技术点，0 为不限")
     parser.add_argument(
-        "--include-covered",
+        "--only-uncovered",
         action="store_true",
-        help="连同已有纯英文别名的技术点一起处理（默认只补没有的）",
+        help="只处理完全没有纯英文别名的技术点。"
+        "**默认是全部处理**——「已有英文别名」不等于「已有可用的英文全称」："
+        "强化学习已有 PPO/DQN/SAC/TD3，运动规划已有 MoveIt，模仿学习已有 "
+        "Diffusion Policy，全是缩写与产品名，恰恰缺 reinforcement learning / "
+        "motion planning / imitation learning 这些正文里最常出现的全称。"
+        "首轮用「只补没有的」作默认，直接漏掉了这批最基本的词。",
     )
     parser.add_argument("--dry-run", action="store_true", help="只列出待处理的技术点，不调用 LLM")
     return parser.parse_args()
@@ -99,7 +104,7 @@ def load_targets(db: Session, args: argparse.Namespace) -> list[dict]:
             continue
         if domains and node.technology_code.split(".")[0] not in domains:
             continue
-        if not args.include_covered and node.technology_code in english_l3:
+        if args.only_uncovered and node.technology_code in english_l3:
             continue
         parent = nodes.get(node.parent_technology_node_id)
         targets.append({

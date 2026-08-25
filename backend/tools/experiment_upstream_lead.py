@@ -181,12 +181,20 @@ def main() -> None:
         hit_rate = hit / len(predicted)
 
         # 对照臂：不看共现，只按两个技术各自的上游频次挑同样多的对。
+        #
+        # **必须按频次乘积排序，不能按枚举顺序取。** 首版用 combinations 的顺序截断，
+        # 取到的其实是「最高频那几个技术之间的所有对」而非「频次最高的对」，提升度
+        # 因此在 2.46 / 0.55 / 1.41 之间乱跳——那不是基线该有的样子，而判据恰恰要
+        # 靠对照臂来定。频次乘积正是独立性假设下共现的期望强度，是这里该用的零假设。
         ranked = [code for code, _ in singles.most_common() if code in shared]
-        control_pairs: set[tuple[str, str]] = set()
-        for pair in combinations(ranked, 2):
-            control_pairs.add(tuple(sorted(pair)))
-            if len(control_pairs) >= len(predicted):
-                break
+        scored = sorted(
+            (
+                (singles[a] * singles[b], tuple(sorted((a, b))))
+                for a, b in combinations(ranked, 2)
+            ),
+            key=lambda item: -item[0],
+        )
+        control_pairs = {pair for _score, pair in scored[: len(predicted)]}
         control_hit = len(control_pairs & jd_in_scope) / len(control_pairs) if control_pairs else 0
 
         rows.append({
@@ -231,8 +239,17 @@ def main() -> None:
     if not rows:
         print("\n> 没有可评估的切点。")
         return
-    best = max(row["lift"] or 0 for row in rows)
-    control_best = max(row["control_lift"] or 0 for row in rows)
+    lifts = [row["lift"] or 0 for row in rows]
+    controls = [row["control_lift"] or 0 for row in rows]
+    best, control_best = max(lifts), max(controls)
+    # 预注册判据把「随 T 前移单调下降」与「不随 T 变化」分成两种结论，判定逻辑
+    # 必须跟着分——否则一条平坦的曲线会被当成有领先期的曲线报上去。
+    # 允许 5% 的抖动：逐点严格单调对 7 个点的样本过于苛刻。
+    declining = all(
+        lifts[i] >= lifts[i + 1] * 0.95 for i in range(len(lifts) - 1)
+    ) and lifts[0] > lifts[-1] * 1.1
+    margin = best / control_best if control_best else None
+
     print("\n## 预注册判据的判定\n")
     if best <= FALSIFY_LIFT:
         print(f"> **证伪**：最高提升度 {best} ≤ {FALSIFY_LIFT}，上游共现不预测招聘需求。")
@@ -241,12 +258,20 @@ def main() -> None:
         print(f"> **信号不成立**：本方法最高提升度 {best}，对照臂 {control_best}，"
               "不优于「按单技术频次挑对」。")
         print("> 说明可被「热门技术更容易凑到一起」解释，不构成共现的证据。")
-    elif best > SUPPORT_LIFT:
-        print(f"> **支持**：最高提升度 {best} > {SUPPORT_LIFT}，且高于对照臂 {control_best}。")
-        print("> 提升度随 T 前移的变化即领先期的形状，见上表。")
-    else:
+    elif best <= SUPPORT_LIFT:
         print(f"> **不确定**：最高提升度 {best} 落在 {FALSIFY_LIFT}–{SUPPORT_LIFT} 之间。")
         print("> 需要更大的上游语料或更细的切点才能定论，不宜据此建产品。")
+    elif declining:
+        print(f"> **支持，且呈现领先期形状**：最高提升度 {best} > {SUPPORT_LIFT}，"
+              f"高于对照臂 {control_best}（相对优势 {margin:.2f}×），"
+              "且提升度随 T 前移单调下降——下降曲线的形状即领先期。")
+    else:
+        print(f"> **部分支持，但不构成领先期证据**：最高提升度 {best} > {SUPPORT_LIFT} "
+              f"且高于对照臂 {control_best}（相对优势 {margin:.2f}×），"
+              "**但提升度不随 T 前移下降**。")
+        print("> 按预注册判据，平坦的曲线说明这更像「上游共现与招聘共现同为某种"
+              "长期结构的表现」，而不是「上游领先招聘若干年」。可以支持"
+              "「上游共现携带 JD 之外的信息」，不能支持「据此预测岗位何时出现」。")
 
 
 if __name__ == "__main__":
