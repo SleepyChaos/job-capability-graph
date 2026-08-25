@@ -711,3 +711,10 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .graph-candidate-toggle input { margin-top: 2px; flex: 0 0 auto; }
 .graph-candidate-toggle strong { display: block; margin-bottom: 3px; color: var(--ink); font-size: 11px; }
 .graph-candidate-toggle span { color: var(--muted); font-size: 9px; line-height: 1.65; }
+
+/* 定向推演的模式切换。两种模式的输入方式差别大，共用表单只会互相迁就，
+   因此只切入口、隔离状态，各自的实现保持独立。 */
+.directed-mode-bar { display: flex; gap: 6px; }
+.directed-mode-bar button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 13px; color: #60768c; background: #f4f7fa; border: 1px solid transparent; border-radius: 7px; font-size: 11px; }
+.directed-mode-bar button.active { color: var(--blue); background: #edf5ff; border-color: #9fc1ea; font-weight: 650; }
+.directed-mode-hint { margin: -4px 0 0; color: var(--muted); font-size: 10px; }

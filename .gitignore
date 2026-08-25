@@ -36,3 +36,6 @@ frontend/.env
 # 词表评估的中间产物（由 tools/refresh_annotation_extraction.py 从数据库重生成）
 /data/annotation/
 .backup/
+
+# 上游语料：批量抓取的原始文档，体积大且可重抓，不入库
+data/upstream/
