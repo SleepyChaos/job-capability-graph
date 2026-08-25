@@ -1,0 +1,1937 @@
+{
+ "base_version": "v1.3",
+ "target_version": "v1.4",
+ "effective_date": "2026-08-26",
+ "change_summary": "为 165 个 L3 技术点补充 306 条英文别名，使上游英文语料（arXiv 论文）可被抽取。补充前英文覆盖率仅 17%（242 个 L3 中 40 个有纯英文别名），识别不到的技术在共现分析中会看起来永远不共现，结论会被系统性扭曲。",
+ "provenance": {
+  "retire_terms": "本次不下线任何词",
+  "new_l3": "本次不新增 L3",
+  "new_terms": "tools/propose_english_aliases.py 生成、english_alias_proposal_v2_specificity_guarded 提示词；高歧义词与跨技术点重复词已剔除，详见 rejected_* 字段",
+  "generated_by": "tools/propose_english_aliases.py",
+  "prompt_version": "english_alias_proposal_v2_specificity_guarded",
+  "reviewed": false
+ },
+ "retire_terms": [],
+ "new_l3": [],
+ "new_terms": [
+  {
+   "term": "Action quantization",
+   "l3_code": "T1.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；动作表示与分词 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "VLA reasoning",
+   "l3_code": "T1.01.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身推理机制 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multimodal motion synthesis",
+   "l3_code": "T1.01.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多模态运动生成 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "text-guided motion generation",
+   "l3_code": "T1.01.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多模态运动生成 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "mobile manipulation",
+   "l3_code": "T1.01.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；移动操控一体化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "coordinated locomotion and manipulation",
+   "l3_code": "T1.01.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；移动操控一体化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "unified embodied perception",
+   "l3_code": "T1.01.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身感知统一表示 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "embodied multimodal representation",
+   "l3_code": "T1.01.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身感知统一表示 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "end-to-end teleoperation",
+   "l3_code": "T1.01.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；遥操作与端到端控制 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "teleoperation-based policy learning",
+   "l3_code": "T1.01.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；遥操作与端到端控制 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "vision-language-action model",
+   "l3_code": "T1.01.11",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；VLA端到端大模型 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "consistency policy",
+   "l3_code": "T1.01.12",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；细分方法与技术(其他) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "efficient world model inference",
+   "l3_code": "T1.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；世界模型推理与加速 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "embodied agent",
+   "l3_code": "T1.02.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身智能体(Agent) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic agent",
+   "l3_code": "T1.02.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身智能体(Agent) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "physical agent",
+   "l3_code": "T1.02.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身智能体(Agent) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "world model structure",
+   "l3_code": "T1.02.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；世界模型架构 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "whole-body control",
+   "l3_code": "T1.03.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；全身控制(WBC) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "whole-body controller",
+   "l3_code": "T1.03.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；全身控制(WBC) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "model predictive control",
+   "l3_code": "T1.03.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；模型预测控制(MPC) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "motion planning",
+   "l3_code": "T1.03.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；运动规划 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "gait generation",
+   "l3_code": "T1.03.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；双足行走与步态 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "inverse dynamics control",
+   "l3_code": "T1.03.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；逆动力学 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "inverse dynamics estimation",
+   "l3_code": "T1.03.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；逆动力学 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "reinforcement learning motion control",
+   "l3_code": "T1.03.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；学习驱动运动控制 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "IK",
+   "l3_code": "T1.03.14",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；运动学与动力学解算 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "collision checking",
+   "l3_code": "T1.03.15",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；碰撞检测与避障 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "simultaneous localization and mapping",
+   "l3_code": "T1.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；SLAM 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "visual SLAM",
+   "l3_code": "T1.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；SLAM 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "lidar SLAM",
+   "l3_code": "T1.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；SLAM 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multi-sensor fusion localization",
+   "l3_code": "T1.04.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多源融合定位 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multi-source fusion localization",
+   "l3_code": "T1.04.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多源融合定位 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "sensor fusion localization",
+   "l3_code": "T1.04.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多源融合定位 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "optical localization",
+   "l3_code": "T1.04.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；光学/电磁定位 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "embodied agent navigation",
+   "l3_code": "T1.04.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身智能导航 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Reinforcement Learning",
+   "l3_code": "T1.05.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；强化学习 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Imitation Learning",
+   "l3_code": "T1.05.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；模仿学习 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Learning from Demonstration",
+   "l3_code": "T1.05.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；模仿学习 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Deep Learning",
+   "l3_code": "T1.05.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；深度学习 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "self-supervised representation learning",
+   "l3_code": "T1.05.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；自监督学习 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "self-supervision",
+   "l3_code": "T1.05.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；自监督学习 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "dexterous hand semantic interface",
+   "l3_code": "T1.06.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧手语义接口 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "3D vision",
+   "l3_code": "T1.06.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；3D视觉感知 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "visual perception",
+   "l3_code": "T1.06.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；视觉感知与理解 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "visual understanding",
+   "l3_code": "T1.06.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；视觉感知与理解 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "visual scene understanding",
+   "l3_code": "T1.06.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；视觉感知与理解 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "visual perception and understanding",
+   "l3_code": "T1.06.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；视觉感知与理解 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "environmental perception",
+   "l3_code": "T1.06.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；场景理解与环境感知 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "scene perception",
+   "l3_code": "T1.06.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；场景理解与环境感知 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "spatial representation",
+   "l3_code": "T1.06.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；空间表征与动作空间 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "cognitive autonomy",
+   "l3_code": "T1.06.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；自主认知 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "perception and cognition",
+   "l3_code": "T1.06.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；感知认知(通用) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multiple object tracking",
+   "l3_code": "T1.06.11",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多目标跟踪 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multi-object tracking",
+   "l3_code": "T1.06.11",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多目标跟踪 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "embodied memory",
+   "l3_code": "T1.07.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；记忆机制 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "knowledge graph construction",
+   "l3_code": "T1.07.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；知识图谱构建与更新 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "knowledge graph update",
+   "l3_code": "T1.07.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；知识图谱构建与更新 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "KG construction",
+   "l3_code": "T1.07.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；知识图谱构建与更新 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "GraphRAG",
+   "l3_code": "T1.07.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；图检索增强(GraphRAG) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Graph Retrieval-Augmented Generation",
+   "l3_code": "T1.07.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；图检索增强(GraphRAG) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Graph RAG",
+   "l3_code": "T1.07.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；图检索增强(GraphRAG) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Graph Neural Networks",
+   "l3_code": "T1.07.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；图神经网络与嵌入 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "GNNs",
+   "l3_code": "T1.07.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；图神经网络与嵌入 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "task decomposition",
+   "l3_code": "T1.07.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；任务规划与分解 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "hierarchical task decomposition",
+   "l3_code": "T1.07.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；任务规划与分解 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "subtask decomposition",
+   "l3_code": "T1.07.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；任务规划与分解 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "graph matching algorithm",
+   "l3_code": "T1.07.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；图匹配算法 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "topological trajectory representation",
+   "l3_code": "T1.07.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；细分方法与技术(其他) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "dexterous manipulation benchmark",
+   "l3_code": "T1.09.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧度基准与评测 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "dexterous grasp planning",
+   "l3_code": "T1.09.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧抓取 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "dexterous manipulation",
+   "l3_code": "T1.09.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧操作 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "in-hand manipulation",
+   "l3_code": "T1.09.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧操作 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "dexterous manipulation perception",
+   "l3_code": "T1.09.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；操作感知与表示 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "perception for dexterous manipulation",
+   "l3_code": "T1.09.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；操作感知与表示 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "dexterous manipulation representation",
+   "l3_code": "T1.09.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；操作感知与表示 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "hand-object perception",
+   "l3_code": "T1.09.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；操作感知与表示 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "grasp data synthesis",
+   "l3_code": "T1.09.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；抓取合成与数据 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "step-scale factor",
+   "l3_code": "T1.09.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；细分方法与技术(其他) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "step-scale factor time granularity control",
+   "l3_code": "T1.09.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；细分方法与技术(其他) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Light Detection and Ranging",
+   "l3_code": "T2.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；激光雷达 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "visual sensor",
+   "l3_code": "T2.01.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；视觉传感器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "6-axis force sensor",
+   "l3_code": "T2.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；六维力传感器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "six-DOF force/torque sensor",
+   "l3_code": "T2.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；六维力传感器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "joint moment sensor",
+   "l3_code": "T2.02.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；关节力矩传感器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "electronic skin",
+   "l3_code": "T2.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；电子皮肤与柔性触觉 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "e-skin",
+   "l3_code": "T2.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；电子皮肤与柔性触觉 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "visual-tactile integration",
+   "l3_code": "T2.02.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；视触觉传感与融合 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "tactile recognition",
+   "l3_code": "T2.02.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；触觉感知算法 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "tactile data processing",
+   "l3_code": "T2.02.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；触觉感知算法 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "industrial vision",
+   "l3_code": "T2.02.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；机器视觉 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "perception-action integration",
+   "l3_code": "T2.02.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身感知与交互 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "force feedback",
+   "l3_code": "T2.02.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；力觉感知 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "force/torque sensor",
+   "l3_code": "T2.02.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；传感器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "audio sensing",
+   "l3_code": "T2.03.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；听觉传感 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "inertial measurement unit",
+   "l3_code": "T2.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；惯性测量单元(IMU) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "sensor fusion",
+   "l3_code": "T2.05.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多模态传感融合 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "extrinsic calibration",
+   "l3_code": "T2.05.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；标定与同步采集 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "intrinsic calibration",
+   "l3_code": "T2.05.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；标定与同步采集 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "hand-eye calibration",
+   "l3_code": "T2.05.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；标定与同步采集 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "time synchronization",
+   "l3_code": "T2.05.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；标定与同步采集 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "3D reconstruction",
+   "l3_code": "T2.05.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；3D重建 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "3D Gaussian Splatting",
+   "l3_code": "T2.05.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；3D重建 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "active sensing",
+   "l3_code": "T2.05.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；主动感知 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "active vision",
+   "l3_code": "T2.05.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；主动感知 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "image segmentation",
+   "l3_code": "T2.05.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；分割与实例感知 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "bipedal humanoid robot",
+   "l3_code": "T3.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；双足人形机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "biped humanoid",
+   "l3_code": "T3.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；双足人形机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "humanoid biped robot",
+   "l3_code": "T3.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；双足人形机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "wheeled mobile humanoid",
+   "l3_code": "T3.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；轮式人形机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "humanoid robot",
+   "l3_code": "T3.01.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；人形机器人(通用) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "anthropomorphic robot",
+   "l3_code": "T3.01.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；人形机器人(通用) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "exoskeleton suit",
+   "l3_code": "T3.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；外骨骼机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "wearable exoskeleton",
+   "l3_code": "T3.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；外骨骼机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "SCARA",
+   "l3_code": "T3.03.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；SCARA机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "patrol robot",
+   "l3_code": "T3.03.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；巡检与物流机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "service robotics",
+   "l3_code": "T3.03.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；服务机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "personal service robot",
+   "l3_code": "T3.03.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；服务机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "professional service robot",
+   "l3_code": "T3.03.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；服务机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "mobile robot",
+   "l3_code": "T3.03.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；移动机器人(AMR/AGV) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "industrial robot",
+   "l3_code": "T3.03.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；工业机械臂 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic arm",
+   "l3_code": "T3.03.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；工业机械臂 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robot manipulator",
+   "l3_code": "T3.03.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；工业机械臂 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "dexterous hand transmission",
+   "l3_code": "T3.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧手传动与驱动 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "tendon-driven actuation",
+   "l3_code": "T3.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧手传动与驱动 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "underactuated hand mechanism",
+   "l3_code": "T3.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧手传动与驱动 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multi-fingered robot hand",
+   "l3_code": "T3.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧手(多指) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "dexterous hand",
+   "l3_code": "T3.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧手(多指) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic hand",
+   "l3_code": "T3.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；灵巧手(多指) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "end-of-arm tooling",
+   "l3_code": "T3.04.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；末端执行器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "EOAT",
+   "l3_code": "T3.04.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；末端执行器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic gripper",
+   "l3_code": "T3.04.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；夹爪 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "two-finger gripper",
+   "l3_code": "T3.04.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；夹爪 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "adaptive gripper",
+   "l3_code": "T3.04.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；夹爪 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "joint actuator control",
+   "l3_code": "T3.05.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；关节驱动控制 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "motor drive",
+   "l3_code": "T3.05.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；电机与驱动 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "electric motor drive",
+   "l3_code": "T3.05.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；电机与驱动 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "motor and drive",
+   "l3_code": "T3.05.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；电机与驱动 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "planetary roller screw assembly",
+   "l3_code": "T3.06.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；行星滚柱丝杠 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "high-precision transmission",
+   "l3_code": "T3.06.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；精密传动 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "ultra-precision bearing",
+   "l3_code": "T3.06.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；精密轴承 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "precision structural parts",
+   "l3_code": "T3.07.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；精密结构件 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "high-precision structural components",
+   "l3_code": "T3.07.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；精密结构件 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "lightweight metal alloys",
+   "l3_code": "T3.07.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；轻量化材料 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "lightweight composite materials",
+   "l3_code": "T3.07.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；轻量化材料 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AI chip",
+   "l3_code": "T3.08.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；AI芯片 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AI accelerator",
+   "l3_code": "T3.08.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；AI芯片 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "deep learning accelerator",
+   "l3_code": "T3.08.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；AI芯片 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "embedded computing",
+   "l3_code": "T3.08.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；嵌入式计算 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "embedded processing",
+   "l3_code": "T3.08.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；嵌入式计算 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AI hardware",
+   "l3_code": "T3.08.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；算力硬件 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "embodied AI dataset",
+   "l3_code": "T4.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；数据集 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robot manipulation dataset",
+   "l3_code": "T4.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；数据集 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotics dataset",
+   "l3_code": "T4.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；数据集 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic data collection toolchain",
+   "l3_code": "T4.01.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；数据采集设备与工具链 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotics data pipeline",
+   "l3_code": "T4.01.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；数据管线 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "simulated data",
+   "l3_code": "T4.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；合成数据 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Gaussian splatting simulation",
+   "l3_code": "T4.03.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；高保真仿真(3DGS) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "simulation platform",
+   "l3_code": "T4.03.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；仿真平台与工具链 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "simulation toolchain",
+   "l3_code": "T4.03.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；仿真平台与工具链 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotics simulator",
+   "l3_code": "T4.03.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；仿真平台与工具链 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "domain adaptive",
+   "l3_code": "T4.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；域自适应 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "residual policy learning",
+   "l3_code": "T4.04.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；残差策略 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "cross-domain invariant transfer",
+   "l3_code": "T4.04.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；跨域不变迁移 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "digital cousin approach",
+   "l3_code": "T4.04.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；数字表亲 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "sim-to-real transfer",
+   "l3_code": "T4.04.12",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；Sim-to-Real虚实迁移 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "simulation-to-reality transfer",
+   "l3_code": "T4.04.12",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；Sim-to-Real虚实迁移 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "sim-to-real domain adaptation",
+   "l3_code": "T4.04.12",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；Sim-to-Real虚实迁移 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "pacing method",
+   "l3_code": "T4.04.13",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；细分方法与技术(其他) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "data quality assessment",
+   "l3_code": "T4.05.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；数据质量治理 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Data Harmonization",
+   "l3_code": "T4.05.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；数据标准化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "ROS middleware",
+   "l3_code": "T5.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；ROS 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic operating system",
+   "l3_code": "T5.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；机器人操作系统 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robot OS",
+   "l3_code": "T5.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；机器人操作系统 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "5G communication",
+   "l3_code": "T5.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；5G与通信网络 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "5G network",
+   "l3_code": "T5.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；5G与通信网络 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "5G NR",
+   "l3_code": "T5.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；5G与通信网络 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "fieldbus",
+   "l3_code": "T5.02.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；实时工业总线 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "real-time Ethernet",
+   "l3_code": "T5.02.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；实时工业总线 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "industrial Ethernet",
+   "l3_code": "T5.02.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；实时工业总线 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "communication middleware",
+   "l3_code": "T5.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；通信中间件 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "messaging middleware",
+   "l3_code": "T5.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；通信中间件 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "data-centric middleware",
+   "l3_code": "T5.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；通信中间件 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "ML development toolchain",
+   "l3_code": "T5.03.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；开发与部署工具链 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AI toolchain",
+   "l3_code": "T5.03.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；开发与部署工具链 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "deep learning framework",
+   "l3_code": "T5.03.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；深度学习训练框架 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "neural network training framework",
+   "l3_code": "T5.03.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；深度学习训练框架 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "inference engine",
+   "l3_code": "T5.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；推理引擎与端侧部署 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "on-device inference",
+   "l3_code": "T5.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；推理引擎与端侧部署 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "edge inference engine",
+   "l3_code": "T5.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；推理引擎与端侧部署 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "model compression",
+   "l3_code": "T5.03.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；模型量化与压缩 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "network quantization",
+   "l3_code": "T5.03.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；模型量化与压缩 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "model compression and quantization",
+   "l3_code": "T5.03.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；模型量化与压缩 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "GPU kernel optimization",
+   "l3_code": "T5.03.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；GPU并行计算与算子优化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "GPU parallel computing",
+   "l3_code": "T5.03.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；GPU并行计算与算子优化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "operator optimization",
+   "l3_code": "T5.03.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；GPU并行计算与算子优化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "large model inference serving",
+   "l3_code": "T5.03.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；大模型推理服务与训练加速 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "LLM inference optimization",
+   "l3_code": "T5.03.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；大模型推理服务与训练加速 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "training acceleration for large models",
+   "l3_code": "T5.03.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；大模型推理服务与训练加速 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "visual and point cloud processing libraries",
+   "l3_code": "T5.03.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；视觉与点云算法库 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "point cloud and vision libraries",
+   "l3_code": "T5.03.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；视觉与点云算法库 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "Machine Learning Operations",
+   "l3_code": "T5.03.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；MLOps与模型生命周期 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "ML lifecycle management",
+   "l3_code": "T5.03.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；MLOps与模型生命周期 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "model lifecycle management",
+   "l3_code": "T5.03.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；MLOps与模型生命周期 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AI compute infrastructure",
+   "l3_code": "T5.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；算力基础设施 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AI acceleration infrastructure",
+   "l3_code": "T5.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；算力基础设施 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "GPU computing infrastructure",
+   "l3_code": "T5.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；算力基础设施 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "cloud-edge-device collaboration",
+   "l3_code": "T5.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；云边端协同 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "device-edge-cloud collaboration",
+   "l3_code": "T5.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；云边端协同 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multimodal interaction",
+   "l3_code": "T6.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多模态交互 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multimodal human-robot interaction",
+   "l3_code": "T6.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多模态交互 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "multimodal HRI",
+   "l3_code": "T6.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；多模态交互 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "affective interaction",
+   "l3_code": "T6.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；情感交互 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "emotional human-robot interaction",
+   "l3_code": "T6.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；情感交互 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "affective HRI",
+   "l3_code": "T6.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；情感交互 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "human-robot symbiosis",
+   "l3_code": "T6.01.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；人机共融 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "human-robot integration",
+   "l3_code": "T6.01.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；人机共融 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "human intent prediction",
+   "l3_code": "T6.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；意图预测与信任校准 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "trust calibration",
+   "l3_code": "T6.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；意图预测与信任校准 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "human-robot trust calibration",
+   "l3_code": "T6.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；意图预测与信任校准 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "policy generation from language",
+   "l3_code": "T6.01.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；提示接地与策略生成 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "language-grounded policy generation",
+   "l3_code": "T6.01.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；提示接地与策略生成 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "human-robot teaming",
+   "l3_code": "T6.01.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；人机交互(通用) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "safe embodied AI",
+   "l3_code": "T6.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；具身智能安全 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "pipe inspection robot",
+   "l3_code": "T6.03.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；管网检测机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "automated optical inspection",
+   "l3_code": "T6.03.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；工业检测 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "machine vision inspection",
+   "l3_code": "T6.03.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；工业检测 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AOI",
+   "l3_code": "T6.03.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；工业检测 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "standardization",
+   "l3_code": "T6.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；标准制定 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "technical standards development",
+   "l3_code": "T6.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；标准制定 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "standards formulation",
+   "l3_code": "T6.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；标准制定 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "conformity assessment",
+   "l3_code": "T6.03.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；检测认证 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "type testing",
+   "l3_code": "T6.03.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；检测认证 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "compliance testing",
+   "l3_code": "T6.03.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；检测认证 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AI safety benchmarking",
+   "l3_code": "T6.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；AI安全评测 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "adversarial testing",
+   "l3_code": "T6.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；AI安全评测 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "evaluation platform",
+   "l3_code": "T6.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；评测基础设施 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "benchmarking framework",
+   "l3_code": "T6.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；评测基础设施 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "testing infrastructure",
+   "l3_code": "T6.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；评测基础设施 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "industrial inspection robot",
+   "l3_code": "T7.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；巡检机器人(工业) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "autonomous inspection robot",
+   "l3_code": "T7.01.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；巡检机器人(工业) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic grinding",
+   "l3_code": "T7.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；打磨抛光机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic polishing",
+   "l3_code": "T7.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；打磨抛光机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "grinding and polishing robot",
+   "l3_code": "T7.01.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；打磨抛光机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic welding system",
+   "l3_code": "T7.01.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；焊接机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "automated welding robot",
+   "l3_code": "T7.01.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；焊接机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robot welding",
+   "l3_code": "T7.01.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；焊接机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "car manufacturing",
+   "l3_code": "T7.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；汽车制造 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "automotive production",
+   "l3_code": "T7.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；汽车制造 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "vehicle assembly",
+   "l3_code": "T7.01.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；汽车制造 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "intelligent mining machinery",
+   "l3_code": "T7.01.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；矿山智能装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "autonomous mining equipment",
+   "l3_code": "T7.01.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；矿山智能装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "smart mining systems",
+   "l3_code": "T7.01.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；矿山智能装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "nuclear remote handling robots",
+   "l3_code": "T7.01.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；核工业装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "nuclear decommissioning systems",
+   "l3_code": "T7.01.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；核工业装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "nuclear facility robots",
+   "l3_code": "T7.01.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；核工业装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "military robotics",
+   "l3_code": "T7.01.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；军工装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "defense unmanned systems",
+   "l3_code": "T7.01.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；军工装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "military robots",
+   "l3_code": "T7.01.07",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；军工装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "smart factory",
+   "l3_code": "T7.01.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能制造与工业自动化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "industrial internet of things",
+   "l3_code": "T7.01.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能制造与工业自动化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "IIoT",
+   "l3_code": "T7.01.08",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能制造与工业自动化 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "intelligent manufacturing equipment",
+   "l3_code": "T7.01.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "smart manufacturing equipment",
+   "l3_code": "T7.01.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "smart equipment",
+   "l3_code": "T7.01.09",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能装备 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "wafer manufacturing",
+   "l3_code": "T7.01.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；半导体制造 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "IC manufacturing",
+   "l3_code": "T7.01.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；半导体制造 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "integrated circuit manufacturing",
+   "l3_code": "T7.01.10",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；半导体制造 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic forklift",
+   "l3_code": "T7.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；无人叉车 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AGV forklift",
+   "l3_code": "T7.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；无人叉车 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "self-driving forklift",
+   "l3_code": "T7.02.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；无人叉车 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "warehouse automation",
+   "l3_code": "T7.02.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能仓储 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "automated storage and retrieval system",
+   "l3_code": "T7.02.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能仓储 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AS/RS",
+   "l3_code": "T7.02.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能仓储 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "smart sortation",
+   "l3_code": "T7.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能分拣 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "automated sorting system",
+   "l3_code": "T7.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能分拣 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "sortation robot",
+   "l3_code": "T7.02.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智能分拣 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "courier robot",
+   "l3_code": "T7.02.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；物流配送机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "intelligent logistics system",
+   "l3_code": "T7.02.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；智慧物流 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "China-excluded supply chain",
+   "l3_code": "T7.02.06",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；非红色供应链 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "automated cleaning robot",
+   "l3_code": "T7.03.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；清洁机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "enterprise service robot",
+   "l3_code": "T7.03.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；商用服务机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robot-assisted surgery",
+   "l3_code": "T7.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；手术机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "surgery robot",
+   "l3_code": "T7.04.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；手术机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robot-assisted rehabilitation",
+   "l3_code": "T7.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；康复机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "rehab robot",
+   "l3_code": "T7.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；康复机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "rehabilitation exoskeleton",
+   "l3_code": "T7.04.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；康复机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "elderly care robot",
+   "l3_code": "T7.04.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；康养陪护机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "clinical robot",
+   "l3_code": "T7.04.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；医疗机器人(通用) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "medical robotic system",
+   "l3_code": "T7.04.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；医疗机器人(通用) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "agri-robot",
+   "l3_code": "T7.05.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；农业机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "AUV",
+   "l3_code": "T7.06.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；水下机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "ROV",
+   "l3_code": "T7.06.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；水下机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "unmanned underwater vehicle",
+   "l3_code": "T7.06.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；水下机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "industrial maintenance robot",
+   "l3_code": "T7.06.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；工业智能运维 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "space robot",
+   "l3_code": "T7.06.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；空间智能与空间机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "spatial AI",
+   "l3_code": "T7.06.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；空间智能与空间机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "domestic robot",
+   "l3_code": "T7.07.01",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；家庭机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "social companion robot",
+   "l3_code": "T7.07.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；陪伴机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robot tutor",
+   "l3_code": "T7.07.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；教育机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "robotic walker",
+   "l3_code": "T7.07.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；助行机器人 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "personal robot",
+   "l3_code": "T7.07.05",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；消费级机器人(通用) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "electric VTOL",
+   "l3_code": "T7.08.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；eVTOL飞行器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "electric vertical take-off and landing aircraft",
+   "l3_code": "T7.08.02",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；eVTOL飞行器 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "low-altitude aviation economy",
+   "l3_code": "T7.08.03",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；低空经济 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "air vehicle",
+   "l3_code": "T7.08.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；飞行器(通用) 此前无可匹配的英文表面形式"
+  },
+  {
+   "term": "flight vehicle",
+   "l3_code": "T7.08.04",
+   "type": "英文别名",
+   "reason": "英文语料抽取所需；飞行器(通用) 此前无可匹配的英文表面形式"
+  }
+ ],
+ "rejected_ambiguous": [
+  "VLA（VLA端到端大模型）：VLA also commonly refers to Very Large Array in radio astronomy.",
+  "R3D（细分方法与技术(其他)）：R3D can also refer to 3D ResNet in computer vision.",
+  "WBC（全身控制(WBC)）：WBC also stands for white blood cell count in medical contexts",
+  "MPC（模型预测控制(MPC)）：MPC can also refer to Multimedia PC or Music Production Controller in other contexts",
+  "admittance control（力控与柔顺控制）：Also used in electrical engineering for admittance (the reciprocal of impedance); in robotics, admittance control is a specific type of compliant control.",
+  "active compliance control（力控与柔顺控制）：The term 'compliance' can also refer to regulatory or legal compliance in non-robotics contexts.",
+  "motion control（运动控制(通用)）：May refer to general motion control in automation, industrial drives, or video games.",
+  "kinematics and dynamics computation（运动学与动力学解算）：Kinematics and dynamics are fundamental concepts in physics, also used in animation and biomechanics.",
+  "kinematic and dynamic modeling（运动学与动力学解算）：Kinematic and dynamic modeling is used in many engineering fields beyond robotics.",
+  "inverse kinematics（运动学与动力学解算）：Inverse kinematics is also widely used in computer animation and human motion analysis.",
+  "forward kinematics（运动学与动力学解算）：Forward kinematics is also used in computer animation and biomechanics.",
+  "SLAM（SLAM）：May also refer to poetry slam in non-technical contexts.",
+  "visual navigation（视觉导航）：May also refer to visual navigation in web design or UI contexts.",
+  "RL（强化学习）：RL can also stand for 'Radio Link' or 'Real Life' in other contexts.",
+  "LfD（模仿学习）：LfD may also stand for 'Laser Doppler Flowmetry' in medical contexts.",
+  "DL（深度学习）：DL can also stand for 'Download' or 'Data Link' in other contexts.",
+  "Meta-learning（元学习）：Meta-learning can also refer to the concept of 'learning about learning' in educational psychology.",
+  "learning to learn（元学习）：The phrase 'learning to learn' can also refer to the general concept of learning how to learn in educational contexts, not specifically meta-learning in machine learning.",
+  "Meta Learning（元学习）：Meta Learning can also refer to the concept of 'learning about learning' in educational psychology.",
+  "SSL（自监督学习）：SSL may also refer to Secure Sockets Layer",
+  "learning and training methods（学习与训练方法(通用)）：These are general terms in machine learning; may match a wide range of documents",
+  "training methodology（学习与训练方法(通用)）：General term in machine learning; may match a wide range of documents",
+  "semantic memory（语义记忆与推理）：Also a core concept in cognitive psychology and neuroscience.",
+  "semantic reasoning（语义记忆与推理）：Can refer to general AI reasoning over semantics, not necessarily memory-based.",
+  "perception system（感知认知(通用)）：Can refer to biological sensory systems or artificial perception systems.",
+  "MOT（多目标跟踪）：May also refer to other abbreviations such as Moment of Truth or Ministry of Transport.",
+  "memory mechanism（记忆机制）：May refer to memory mechanisms in cognitive science or computer hardware.",
+  "SGG（场景图建模）：SGG may also stand for other terms in different fields, but in visual reasoning it refers to Scene Graph Generation.",
+  "adaptive fusion parameters（细分方法与技术(其他)）：Adaptive fusion is a common technique in many domains, so additional context (e.g., robotics, planning) is needed to disambiguate.",
+  "TAMP（操作规划）：Can also refer to cardiac tamponade in medical contexts.",
+  "touch sensor（触觉传感器）：In consumer electronics, 'touch sensor' often refers to touchscreen or capacitive touch sensors, but in robotics it can denote tactile sensors for contact detection.",
+  "tactile perception（触觉感知算法）：Can refer to biological tactile perception in neuroscience and psychology.",
+  "tactile sensing（触觉感知算法）：May be used in biological contexts, but in engineering it denotes artificial tactile sensing.",
+  "edge sensor（边缘传感器）：May refer to edge detection sensors in image processing or edge computing devices, requiring context to distinguish.",
+  "edge tactile sensor（边缘传感器）：While more specific, 'edge' may still invoke image processing or edge computing contexts; context is needed.",
+  "segmentation（分割与实例感知）：may refer to market segmentation or biological cell segmentation",
+  "humanoid（人形机器人(通用)）：Can refer to any human-like entity (e.g., in science fiction, mythology) without specifying a robot.",
+  "quadruped robot（四足机器人）：Quadruped alone means any four-legged animal; needs context to specify a robot.",
+  "quadrupedal robot（四足机器人）：Similar to 'quadruped robot', the base term refers to four-legged animals.",
+  "NPU（AI芯片）：Can also stand for Network Processing Unit in networking contexts.",
+  "domain controller（域控制器）：In IT, 'domain controller' refers to a server that manages network access.",
+  "DCU（域控制器）：DCU can also stand for 'Data Center Unit' or 'Display Control Unit'.",
+  "embedded system（嵌入式计算）：Can refer to any computing system embedded within a device, not specifically the computational aspect.",
+  "computing hardware（算力硬件）：Refers to any hardware for computation, not specifically AI accelerators.",
+  "compute hardware（算力硬件）：General term for hardware used for computation, can include CPUs, GPUs, etc.",
+  "3D Gaussian Splatting（高保真仿真(3DGS)）：Primarily a novel view synthesis technique; in simulation context, it refers to using 3DGS for high-fidelity scene reconstruction.",
+  "3DGS（高保真仿真(3DGS)）：Abbreviation of 3D Gaussian Splatting; same ambiguity.",
+  "mask decoupling（分割掩码解耦）：mask can refer to face mask in non-technical contexts",
+  "decoupled mask transfer（分割掩码解耦）：mask can refer to face mask in non-technical contexts",
+  "Data Normalization（数据标准化）：Can also refer to feature scaling in machine learning or database normalization. Context must be data integration/standardization.",
+  "intent prediction（意图预测与信任校准）：May also refer to intent prediction in natural language processing or cybersecurity.",
+  "prompt grounding（提示接地与策略生成）：Prompt grounding may also refer to a technique in natural language processing for embedding prompts.",
+  "HRI（人机交互(通用)）：HRI can also stand for High Resolution Imaging in remote sensing.",
+  "patrol robot（巡检机器人(工业)）：can also refer to security patrol robots; in industrial contexts, it typically means inspection patrol robot",
+  "retail assistant robot（零售与营销机器人）：May also refer to software-based virtual assistants in retail.",
+  "retail marketing robot（零售与营销机器人）：Marketing robot can be misinterpreted as an automated marketing software bot, not necessarily a physical robot.",
+  "mine robot（矿山机器人）：May refer to military robots for landmine clearance.",
+  "spatial intelligence（空间智能与空间机器人）：Also refers to the capacity for spatial reasoning in cognitive science and psychology.",
+  "drone（无人机）：Drone can also refer to a male bee or a low continuous humming sound."
+ ],
+ "rejected_duplicates": [
+  "Embodied reasoning（具身推理机制）",
+  "path planning（运动规划）",
+  "trajectory planning（运动规划）",
+  "path planning（路径规划与轨迹）",
+  "trajectory planning（路径规划与轨迹）",
+  "multimodal sensor fusion（多模态感知融合）",
+  "Embodied Reasoning（具身推理与ECoT）",
+  "tactile sensor（触觉传感器）",
+  "tactile sensor（传感器）",
+  "multimodal sensor fusion（多模态传感融合）",
+  "inspection robot（巡检与物流机器人）",
+  "autonomous mobile robot（巡检与物流机器人）",
+  "autonomous mobile robot（移动机器人(AMR/AGV)）",
+  "teleoperation data collection（遥操作数据采集）",
+  "teleoperation data collection（数据采集设备与工具链）",
+  "inspection robot（巡检机器人(工业)）",
+  "companion robot（康养陪护机器人）",
+  "home robot（家庭机器人）",
+  "companion robot（陪伴机器人）",
+  "home robot（消费级机器人(通用)）"
+ ]
+}

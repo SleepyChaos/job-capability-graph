@@ -71,6 +71,11 @@ def parse_args() -> argparse.Namespace:
         default="L2",
         help="共现分析的粒度。L3 稀疏，L2 是里程碑与岗位画像共用的层级",
     )
+    parser.add_argument(
+        "--threshold-sweep",
+        default="",
+        help="逗号分隔的共现门槛，给出时改为跑剂量-反应扫描（如 2,3,5,8）",
+    )
     parser.add_argument("--format", choices=["markdown", "json"], default="markdown")
     return parser.parse_args()
 
@@ -156,6 +161,93 @@ def pairs_before(
     return {pair for pair, count in counter.items() if count >= min_count}, singles
 
 
+def evaluate(
+    upstream: dict[int, list[list[str]]],
+    jd_in_scope: set[tuple[str, str]],
+    shared: set[str],
+    base_rate: float,
+    min_count: int,
+) -> list[dict]:
+    rows = []
+    for cutoff in sorted(upstream)[1:]:
+        predicted, singles = pairs_before(upstream, cutoff, min_count)
+        predicted = {p for p in predicted if p[0] in shared and p[1] in shared}
+        if not predicted:
+            continue
+        hit = len(predicted & jd_in_scope)
+        hit_rate = hit / len(predicted)
+        ranked = [code for code, _ in singles.most_common() if code in shared]
+        scored = sorted(
+            (
+                (singles[a] * singles[b], tuple(sorted((a, b))))
+                for a, b in combinations(ranked, 2)
+            ),
+            key=lambda item: -item[0],
+        )
+        control_pairs = {pair for _score, pair in scored[: len(predicted)]}
+        control_hit = (
+            len(control_pairs & jd_in_scope) / len(control_pairs) if control_pairs else 0
+        )
+        rows.append({
+            "cutoff_year": cutoff,
+            "upstream_documents": sum(len(d) for y, d in upstream.items() if y < cutoff),
+            "predicted_pairs": len(predicted),
+            "hit": hit,
+            "hit_rate": round(hit_rate, 4),
+            "lift": round(hit_rate / base_rate, 3) if base_rate else None,
+            "control_hit_rate": round(control_hit, 4),
+            "control_lift": round(control_hit / base_rate, 3) if base_rate else None,
+        })
+    return rows
+
+
+def sweep(
+    upstream: dict[int, list[list[str]]],
+    jd_in_scope: set[tuple[str, str]],
+    shared: set[str],
+    base_rate: float,
+    thresholds: list[int],
+) -> None:
+    """共现门槛的剂量-反应扫描。
+
+    **单点比较不足以支撑结论。** 在默认门槛（≥2 次共现）下本方法相对对照臂只领先
+    1.05×，处在噪声量级，看不出信号真假。而剂量-反应能区分两者：若上游共现真的
+    携带信息，要求更强的上游证据应当让预测更准；若那点优势只是噪声，提高门槛不会
+    带来系统性的改善。对照臂在同一扫描下的走势是必要的参照——它若同步上升，说明
+    改善来自「样本变少变精」而非共现本身。
+    """
+    print("| 共现门槛 | 本方法最高提升度 | 对照臂最高 | 相对优势 | 各切点提升度 |")
+    print("| ---: | ---: | ---: | ---: | --- |")
+    trend = []
+    for threshold in thresholds:
+        rows = evaluate(upstream, jd_in_scope, shared, base_rate, threshold)
+        if not rows:
+            print(f"| ≥{threshold} | — | — | — | 无可评估切点 |")
+            continue
+        best = max(r["lift"] or 0 for r in rows)
+        control = max(r["control_lift"] or 0 for r in rows)
+        trend.append((threshold, best, control))
+        series = " ".join(f"{r['lift']}" for r in rows)
+        margin = f"{best / control:.3f}×" if control else "—"
+        print(f"| ≥{threshold} | **{best}** | {control} | {margin} | {series} |")
+
+    if len(trend) < 2:
+        return
+    rising = all(trend[i][1] <= trend[i + 1][1] for i in range(len(trend) - 1))
+    control_flat = max(t[2] for t in trend) / max(min(t[2] for t in trend), 1e-9) < 1.2
+    print("\n### 剂量-反应的判定\n")
+    if rising and control_flat:
+        print("> **本方法随门槛单调上升而对照臂持平**——上游证据越强预测越准，"
+              "而「热门技术」基线没有这个性质。剂量-反应比单点比较难以用假象解释，"
+              "支持「上游共现携带频次之外的信息」。")
+    elif rising:
+        print("> 本方法随门槛上升，**但对照臂同步上升**——改善可能来自「样本变少变精」"
+              "而非共现本身，不构成共现的独立证据。")
+    else:
+        print("> 本方法不随门槛单调上升，未见剂量-反应，"
+              "默认门槛下的微弱优势更可能是噪声。")
+
+
 def main() -> None:
     args = parse_args()
     upstream = load_upstream(args.extracted, args.level)
@@ -171,42 +263,20 @@ def main() -> None:
     jd_in_scope = {p for p in jd_pairs if p[0] in shared and p[1] in shared}
     base_rate = len(jd_in_scope) / total_possible if total_possible else 0.0
 
-    rows = []
-    for cutoff in sorted(upstream)[1:]:
-        predicted, singles = pairs_before(upstream, cutoff, args.min_cooccurrence)
-        predicted = {p for p in predicted if p[0] in shared and p[1] in shared}
-        if not predicted:
-            continue
-        hit = len(predicted & jd_in_scope)
-        hit_rate = hit / len(predicted)
-
-        # 对照臂：不看共现，只按两个技术各自的上游频次挑同样多的对。
-        #
-        # **必须按频次乘积排序，不能按枚举顺序取。** 首版用 combinations 的顺序截断，
-        # 取到的其实是「最高频那几个技术之间的所有对」而非「频次最高的对」，提升度
-        # 因此在 2.46 / 0.55 / 1.41 之间乱跳——那不是基线该有的样子，而判据恰恰要
-        # 靠对照臂来定。频次乘积正是独立性假设下共现的期望强度，是这里该用的零假设。
-        ranked = [code for code, _ in singles.most_common() if code in shared]
-        scored = sorted(
-            (
-                (singles[a] * singles[b], tuple(sorted((a, b))))
-                for a, b in combinations(ranked, 2)
-            ),
-            key=lambda item: -item[0],
+    if args.threshold_sweep:
+        print(f"# 共现门槛的剂量-反应扫描（{EXPERIMENT_VERSION}）\n")
+        print(f"- 粒度 {args.level} · 上游与 JD 共有技术 {len(shared)} 个 "
+              f"· 基准率 {base_rate:.1%}\n")
+        sweep(
+            upstream,
+            jd_in_scope,
+            shared,
+            base_rate,
+            [int(v) for v in args.threshold_sweep.split(",")],
         )
-        control_pairs = {pair for _score, pair in scored[: len(predicted)]}
-        control_hit = len(control_pairs & jd_in_scope) / len(control_pairs) if control_pairs else 0
+        return
 
-        rows.append({
-            "cutoff_year": cutoff,
-            "upstream_documents": sum(len(d) for y, d in upstream.items() if y < cutoff),
-            "predicted_pairs": len(predicted),
-            "hit": hit,
-            "hit_rate": round(hit_rate, 4),
-            "lift": round(hit_rate / base_rate, 3) if base_rate else None,
-            "control_hit_rate": round(control_hit, 4),
-            "control_lift": round(control_hit / base_rate, 3) if base_rate else None,
-        })
+    rows = evaluate(upstream, jd_in_scope, shared, base_rate, args.min_cooccurrence)
 
     result = {
         "experiment_version": EXPERIMENT_VERSION,

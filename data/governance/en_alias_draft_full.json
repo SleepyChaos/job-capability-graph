@@ -1,0 +1,7764 @@
+{
+ "prompt_version": "english_alias_proposal_v2_specificity_guarded",
+ "note": "本文件是待人工审核的草稿，不可直接导入。审核通过的条目需并入技术词变更集的 new_terms，再走 build_taxonomy_workbook → stage_workbook → import_taxonomy。needs_context_rule 为 true 的别名必须先配上下文标记词，不得裸放行。",
+ "stats": {
+  "技术点": 240,
+  "别名": 715,
+  "需配上下文规则": 59
+ },
+ "items": [
+  {
+   "technology_code": "T1.01.01",
+   "technology_name": "分层与双系统VLA架构",
+   "existing_aliases": [
+    "Dual-system VLA",
+    "Galaxea G0.5统一自回归VLA",
+    "Helix双系统VLA",
+    "Helix双系统全身VLA架构",
+    "Hierarchical VLA",
+    "Hierarchical vision-language-action model",
+    "ZR-0 ECoT双系统VLA架构",
+    "三系统分层VLA架构",
+    "分层VLA",
+    "端到端VLA-世界模型融合",
+    "端到端VLA-分层",
+    "端到端VLA-单阶段"
+   ],
+   "proposed": [
+    {
+     "text": "Hierarchical VLA",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Dual-system VLA",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Hierarchical vision-language-action model",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.02",
+   "technology_name": "动作表示与分词",
+   "existing_aliases": [
+    "55维统一动作表示方法",
+    "ACT动作分块方法",
+    "Action Chunking Transformer",
+    "Action tokenization",
+    "FAST动作分词方法",
+    "RTC实时动作分块方法",
+    "VQ-BeT",
+    "VQ-BeT分词方法",
+    "VQ-BeT动作分词",
+    "人类-机器人动作重定向方法",
+    "动作分块",
+    "动作分块Transformer架构"
+   ],
+   "proposed": [
+    {
+     "text": "Action tokenization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Action quantization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Action chunking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.03",
+   "technology_name": "动作专家与混合专家",
+   "existing_aliases": [
+    "Action expert",
+    "AtomicVLA思考-行动+SG-MoE架构",
+    "DiT动作专家组件",
+    "HoloMotion-1 MoE稀疏激活小脑架构",
+    "LingBot-VA 2.0具身原生MoE架构",
+    "Mixture of action experts",
+    "MoE辅助无损路由组件",
+    "T-Rex MoT三专家架构",
+    "T-Rex变频率Mixture-of-Transformers架构",
+    "T-Rex变频率MoT架构",
+    "动作专家",
+    "动作专家模块"
+   ],
+   "proposed": [
+    {
+     "text": "Action expert",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Mixture of action experts",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.05",
+   "technology_name": "具身推理机制",
+   "existing_aliases": [
+    "CoRE-VLA条件路由专家架构",
+    "CronusVLA多帧推理加速比",
+    "FM-VLA力记忆VLA架构",
+    "FM-VLA力记忆架构",
+    "InDex意图条件化解耦适配架构",
+    "InternVLA-A1.5潜态前瞻架构",
+    "LTC信念状态注入器组件",
+    "LTC动态信念更新方法",
+    "LaMem-VLA双记忆库原生架构",
+    "LaMem-VLA双记忆库架构",
+    "LingBot-VLA 2.0推理延迟",
+    "PIM物理直觉因果注意力模块"
+   ],
+   "proposed": [
+    {
+     "text": "Embodied reasoning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "VLA reasoning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.06",
+   "technology_name": "大模型部署与推理优化",
+   "existing_aliases": [
+    "CLAP单轮微调LIBERO成功率",
+    "DexPIE灵巧策略后训练改进方法",
+    "RehearseVLA世界模型后训练架构",
+    "VLA deployment",
+    "VLA inference optimization",
+    "VLA post-training",
+    "VLA后训练",
+    "VLA大模型/端侧部署/\"最强大脑\"攻关",
+    "分治蒸馏方法",
+    "大模型应用",
+    "大模型部署"
+   ],
+   "proposed": [
+    {
+     "text": "VLA deployment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "VLA inference optimization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "VLA post-training",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.07",
+   "technology_name": "多模态运动生成",
+   "existing_aliases": [
+    "DiT去噪主干网络",
+    "Flow matching for motion",
+    "Multimodal motion generation",
+    "OMG-DiT全模态运动生成架构",
+    "Text-to-motion generation",
+    "一致性流匹配",
+    "多模态运动生成FID",
+    "流匹配策略"
+   ],
+   "proposed": [
+    {
+     "text": "multimodal motion synthesis",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "text-guided motion generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.08",
+   "technology_name": "移动操控一体化",
+   "existing_aliases": [
+    "unified locomotion and manipulation",
+    "whole-body mobile manipulation",
+    "全身移动-操控一体化"
+   ],
+   "proposed": [
+    {
+     "text": "mobile manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "coordinated locomotion and manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.09",
+   "technology_name": "具身感知统一表示",
+   "existing_aliases": [
+    "FIFO历史特征队列",
+    "FiLM模态调制模块",
+    "SNN脉冲神经元反射控制器",
+    "SNN脉冲驱动反射方法",
+    "XR-1 UVMC统一视觉-运动编码架构",
+    "unified embodied perception representation",
+    "unified multimodal perception for embodied AI",
+    "共享主干+模态适配器解耦方法",
+    "力历史VAE编码方法",
+    "多阶段模态预对齐方法",
+    "接地传感器图像统一表示",
+    "接触感知操作范式"
+   ],
+   "proposed": [
+    {
+     "text": "unified embodied perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "embodied multimodal representation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.10",
+   "technology_name": "遥操作与端到端控制",
+   "existing_aliases": [
+    "GR00T-Mimic遥操作扩增方法",
+    "teleoperation and end-to-end control",
+    "teleoperation-based end-to-end policy learning",
+    "遥操作端到端延迟"
+   ],
+   "proposed": [
+    {
+     "text": "end-to-end teleoperation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "teleoperation-based policy learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.11",
+   "technology_name": "VLA端到端大模型",
+   "existing_aliases": [
+    "384专精策略运动先验库",
+    "3D基础策略架构",
+    "ACE-Brain-0.5统一具身基础模型架构",
+    "ACT",
+    "ACoT-VLA",
+    "ACoT-VLA动作思维链架构",
+    "AI基础研究/大模型",
+    "AI大模型",
+    "AnchorVLA决策锚定规划架构",
+    "AnchorVLA决策锚定轨迹规划架构",
+    "AtomicVLA",
+    "AtomicVLA持续学习增益"
+   ],
+   "proposed": [
+    {
+     "text": "vision-language-action model",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "VLA",
+     "needs_context_rule": true,
+     "ambiguity_note": "VLA also commonly refers to Very Large Array in radio astronomy."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.01.12",
+   "technology_name": "细分方法与技术(其他)",
+   "existing_aliases": [
+    "CraftNet VTLA三层交互架构",
+    "R3D方法",
+    "RGMP框架",
+    "一致性策略方法",
+    "分布匹配行为引导方法",
+    "自适应递归高斯网络"
+   ],
+   "proposed": [
+    {
+     "text": "consistency policy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "R3D",
+     "needs_context_rule": true,
+     "ambiguity_note": "R3D can also refer to 3D ResNet in computer vision."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.01",
+   "technology_name": "触觉世界模型",
+   "existing_aliases": [
+    "OmniVTA视触觉世界模型架构",
+    "tactile world model",
+    "visual-tactile world model",
+    "触觉世界模型子目标预测器",
+    "触觉世界模型预测方法",
+    "触觉物理世界模型、视触觉传感器、具身智能数据集"
+   ],
+   "proposed": [
+    {
+     "text": "tactile world model",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "visual-tactile world model",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.02",
+   "technology_name": "世界模型安全预演",
+   "existing_aliases": [
+    "safety rehearsal with world model",
+    "world model safety rehearsal",
+    "世界模型安全预演方法",
+    "安全预演不安全动作降低率"
+   ],
+   "proposed": [
+    {
+     "text": "safety rehearsal with world model",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model safety rehearsal",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.03",
+   "technology_name": "世界模型推理与加速",
+   "existing_aliases": [
+    "DriftWorld推理帧率",
+    "GigaWorld-Policy-0.5推理延迟",
+    "KV缓存交互历史保持器",
+    "LingBot-World 2.0 MoBA因果交互架构",
+    "MoBA",
+    "MoBA双向-自回归混合注意力方法",
+    "MoBA注意力掩码",
+    "MoBA混合注意力方法",
+    "TWIST世界模型蒸馏",
+    "dynamic mixed precision quantization",
+    "iFLYTEK-Embodied-Omni共享注意力统一架构",
+    "world model inference acceleration"
+   ],
+   "proposed": [
+    {
+     "text": "world model inference acceleration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "efficient world model inference",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model inference optimization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.04",
+   "technology_name": "想象训练与Rollout",
+   "existing_aliases": [
+    "3DPWM长期rollout步数",
+    "Cycle-World反向预测循环一致性架构",
+    "DriftWorld漂移世界模型架构",
+    "GE-Act流匹配动作解码器组件",
+    "GE-Sim动作条件神经仿真器组件",
+    "RynnWorld-4D-Policy闭环控制延迟",
+    "World Model Expert未来状态预测器",
+    "imagination training",
+    "imagination-augmented rollout",
+    "world model rollout",
+    "动作条件漂移生成方法",
+    "动作条件潜变量未来预测模块"
+   ],
+   "proposed": [
+    {
+     "text": "imagination training",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "imagination-augmented rollout",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model rollout",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.05",
+   "technology_name": "世界模型价值与策略",
+   "existing_aliases": [
+    "DriftWorld策略排序相关性",
+    "GigaWorld-1策略评估世界模型架构",
+    "PVM生产力价值模块组件",
+    "UML活动图控制策略方法",
+    "world model policy optimization",
+    "world model value function",
+    "world model-based policy",
+    "世界模型价值函数",
+    "世界模型用于灵巧操作",
+    "数据金字塔训练策略"
+   ],
+   "proposed": [
+    {
+     "text": "world model policy optimization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model value function",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model-based policy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.06",
+   "technology_name": "世界模型评测基准",
+   "existing_aliases": [
+    "FVD评估指标",
+    "LIBERO-Plus场景泛化评分",
+    "WMBench四级WMES评估方法",
+    "WMBench评估规模",
+    "WoW SOPHIA求解器-评估器架构",
+    "WorldModelBench物理建模评分",
+    "world model benchmark",
+    "world model evaluation benchmark",
+    "world model evaluation framework",
+    "世界模型评估器范式",
+    "世界模型评测基准",
+    "多任务多本体灵巧基准化"
+   ],
+   "proposed": [
+    {
+     "text": "world model benchmark",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model evaluation benchmark",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model evaluation framework",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.07",
+   "technology_name": "具身智能体(Agent)",
+   "existing_aliases": [
+    "Agentic RAG-VLM供知性检索架构",
+    "Agent驱动世界模型",
+    "Agent驱动世界模型范式",
+    "COSA 0.5三层Agent OS架构",
+    "Director Agent世界事件注入器",
+    "Pilot Agent角色行为规划器",
+    "Reasoner自回归推理塔"
+   ],
+   "proposed": [
+    {
+     "text": "embodied agent",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic agent",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "physical agent",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.08",
+   "technology_name": "世界模型数据集",
+   "existing_aliases": [
+    "Rynn4DDataset 1.0数据规模",
+    "Rynn4DDataset数据规模",
+    "dataset for world models",
+    "world model dataset",
+    "world model training data",
+    "具身智能数据平台",
+    "因果世界模型数据效率增益",
+    "多阶段数据净化方法",
+    "数据引擎",
+    "数据要素市场化范式",
+    "神经仿真数据引擎范式",
+    "自我中心数据WAM"
+   ],
+   "proposed": [
+    {
+     "text": "world model dataset",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model training data",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dataset for world models",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.09",
+   "technology_name": "世界模型感知表征",
+   "existing_aliases": [
+    "3D多维旋转位置编码方法",
+    "DINO/3D流世界表征选择方法",
+    "RynnWorld-Teleop深度感知骨骼条件架构",
+    "VQGAN视觉分词器",
+    "world model latent state representation",
+    "world model perceptual representation",
+    "world model sensory encoding",
+    "多视角3D热力图反投影融合器",
+    "深度感知骨骼表征"
+   ],
+   "proposed": [
+    {
+     "text": "world model perceptual representation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model sensory encoding",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model latent state representation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.02.10",
+   "technology_name": "世界模型架构",
+   "existing_aliases": [
+    "3DPWM 3D点云世界模型架构",
+    "3D世界-动作模型范式",
+    "3D世界动作模型少样本成功率",
+    "4D世界模型",
+    "4D世界模型范式",
+    "ABot-M0.5 RoboCasa365组合任务成功率",
+    "ABot-M0.5双层混合变换器架构",
+    "Aether因果WM四层架构",
+    "Aether因果世界模型四层架构",
+    "AlayaWorld双记忆交互世界模型架构",
+    "COOWAM双层智能体世界模型架构",
+    "CauVA因果世界建模架构"
+   ],
+   "proposed": [
+    {
+     "text": "world model architecture",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model structure",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "world model framework",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.01",
+   "technology_name": "全身控制(WBC)",
+   "existing_aliases": [
+    "Athena-WBC能力对齐专家架构",
+    "Curr-0三系统全身智能架构",
+    "Deep-Whole-body-Parkour深度全身跑酷架构",
+    "GEAR-SONIC全身控制",
+    "GEAR-SONIC全身控制架构",
+    "HWC-Loco层次化鲁棒WBC",
+    "HWC-Loco层次化鲁棒全身控制架构",
+    "MPC+WBC双层控制架构",
+    "MPC+WBC双层架构",
+    "MotionWAM世界动作模型全身协调架构",
+    "OmniXtreme统一高动态架构",
+    "OmniXtreme统一高动态运动架构"
+   ],
+   "proposed": [
+    {
+     "text": "whole-body control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "WBC",
+     "needs_context_rule": true,
+     "ambiguity_note": "WBC also stands for white blood cell count in medical contexts"
+    },
+    {
+     "text": "whole-body controller",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.02",
+   "technology_name": "模型预测控制(MPC)",
+   "existing_aliases": [
+    "CoorGrasp触觉驱动MPC架构",
+    "MPC",
+    "MPC-RL样本效率提升倍数",
+    "MPC预测时域",
+    "RAVEN层次化RL-MPC导航架构",
+    "模型预测控制",
+    "质心MPC规划器",
+    "质心动力学MPC方法",
+    "质心动力学模型"
+   ],
+   "proposed": [
+    {
+     "text": "model predictive control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "MPC",
+     "needs_context_rule": true,
+     "ambiguity_note": "MPC can also refer to Multimedia PC or Music Production Controller in other contexts"
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.03",
+   "technology_name": "力控与柔顺控制",
+   "existing_aliases": [
+    "AI柔性打磨机器人 / 力控抛光去毛刺 / 表面处理自动化",
+    "compliance control",
+    "force control",
+    "hybrid force/position control",
+    "impedance control",
+    "力位混合控制器",
+    "力控",
+    "力控人形双臂机器人/协作机器人/具身智能基础设施",
+    "力控协作",
+    "力控协作机器人",
+    "力控协作机器人 / 智能机器人软硬件全栈研发 / 医疗机器人",
+    "力控感知"
+   ],
+   "proposed": [
+    {
+     "text": "admittance control",
+     "needs_context_rule": true,
+     "ambiguity_note": "Also used in electrical engineering for admittance (the reciprocal of impedance); in robotics, admittance control is a specific type of compliant control."
+    },
+    {
+     "text": "active compliance control",
+     "needs_context_rule": true,
+     "ambiguity_note": "The term 'compliance' can also refer to regulatory or legal compliance in non-robotics contexts."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.04",
+   "technology_name": "运动规划",
+   "existing_aliases": [
+    "BeamDojo稀疏落脚点敏捷运动架构",
+    "MoveIt",
+    "RGB RL引导MPPI架构",
+    "RL自适应几何规划范式",
+    "RL采样先验MPPI方法",
+    "iLQR迭代线性二次调节器方法",
+    "任务与运动规划",
+    "反应式闭环运动规划范式",
+    "异步重规划缓冲器组件",
+    "落脚点目标采样器",
+    "运动控制/RL自适应几何规划范式",
+    "运动规划器"
+   ],
+   "proposed": [
+    {
+     "text": "motion planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "path planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "trajectory planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.05",
+   "technology_name": "双足行走与步态",
+   "existing_aliases": [
+    "Bolt最高奔跑速度",
+    "Bolt高速奔跑人形架构",
+    "CG-MuTra连续门控多地形恢复架构",
+    "GaitSpan残差适应网络",
+    "GaitSpan种子扩展架构",
+    "GaitSpan连续速度覆盖范围",
+    "PSM预测风格匹配架构",
+    "RoboCup 2026人形足球规模",
+    "SLIP接地步幅塑形方法",
+    "SLIP模型",
+    "bipedal gait",
+    "bipedal locomotion"
+   ],
+   "proposed": [
+    {
+     "text": "bipedal walking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "gait generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.06",
+   "technology_name": "逆动力学",
+   "existing_aliases": [
+    "FM-IDM流掩码逆动力学方法",
+    "LDA-1B潜态动力学动作模型",
+    "RynnWorld-4D逆动力学头",
+    "inverse dynamics",
+    "inverse dynamics learning",
+    "inverse dynamics model",
+    "分割掩码空间动力学预训练方法",
+    "动力学预测器",
+    "单刚体动力学简化方法",
+    "因果动力学建模方法",
+    "点云补全-动力学两阶段方法",
+    "粒子动力学可变形物自适应方法"
+   ],
+   "proposed": [
+    {
+     "text": "inverse dynamics control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "inverse dynamics estimation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.07",
+   "technology_name": "运动生成",
+   "existing_aliases": [
+    "MM-DiT多脑动作头",
+    "MotionWAM 9任务平均成功率",
+    "MotionWAM三阶段DiT统一动作架构",
+    "MotionWAM实时推理频率",
+    "MuGen多技能生成式运动控制",
+    "MuGen多技能生成式运动控制架构",
+    "OMG全模态运动生成",
+    "OMG全模态运动生成架构",
+    "OMG生成大脑+跟踪小脑架构",
+    "motion generation",
+    "motion synthesis",
+    "trajectory generation"
+   ],
+   "proposed": [
+    {
+     "text": "motion generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "motion synthesis",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "trajectory generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.08",
+   "technology_name": "学习驱动运动控制",
+   "existing_aliases": [
+    "CLF奖励塑造模块",
+    "CLF引导RL蒸馏方法",
+    "LMO-RL移动-操控专用策略方法",
+    "MARCH模型辅助RL感知控制架构",
+    "MARCH模型辅助感知运动架构",
+    "PhysiFlow数据效率提升",
+    "RAVEN RL几何参数适配器",
+    "RL-based control",
+    "RL可见性图几何适配方法",
+    "VAIC解耦指令教师-学生架构",
+    "learning-based motion control",
+    "learning-driven control"
+   ],
+   "proposed": [
+    {
+     "text": "learning-based motion control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "reinforcement learning motion control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.09",
+   "technology_name": "模型驱动运动控制",
+   "existing_aliases": [
+    "model-based dynamic control",
+    "model-based motion control",
+    "model-driven locomotion",
+    "模型驱动运动控制",
+    "模型驱动运动控制范式"
+   ],
+   "proposed": [
+    {
+     "text": "model-based dynamic control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "model-based motion control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "model-driven locomotion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.10",
+   "technology_name": "触觉仿真",
+   "existing_aliases": [
+    "haptic rendering",
+    "haptic simulation",
+    "tactile feedback simulation",
+    "tactile simulation",
+    "并行正运动学触觉仿真器"
+   ],
+   "proposed": [
+    {
+     "text": "haptic rendering",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "haptic simulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "tactile simulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "tactile feedback simulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.11",
+   "technology_name": "具身操作",
+   "existing_aliases": [
+    "CoorDex三阶段潜在残差架构",
+    "CoorDex连续操作成功率",
+    "embodied manipulation",
+    "embodied object manipulation",
+    "具身操作",
+    "循环物体适应方法",
+    "循环物体适应模块"
+   ],
+   "proposed": [
+    {
+     "text": "embodied manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "embodied object manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.12",
+   "technology_name": "运动控制(通用)",
+   "existing_aliases": [
+    "Being-M0.7 Vision-Motion MoT数据融合架构",
+    "Being-M0.7隐式WAM MoT架构",
+    "CoRe-MoE对比重加权MoE",
+    "CoRe-MoE对比重加权混合专家架构",
+    "FiLM模态适配器组件",
+    "GRA几何引导表示对齐架构",
+    "OpenHLM三阶段实验配方架构",
+    "OpenHLM长程任务进度",
+    "PD跟踪控制器",
+    "RGB控制频率",
+    "ReactiveBFM反应式闭环架构",
+    "ReactiveBFM扰动成功率"
+   ],
+   "proposed": [
+    {
+     "text": "motion control",
+     "needs_context_rule": true,
+     "ambiguity_note": "May refer to general motion control in automation, industrial drives, or video games."
+    },
+    {
+     "text": "robot motion control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.14",
+   "technology_name": "运动学与动力学解算",
+   "existing_aliases": [
+    "DH参数",
+    "URDF",
+    "动力学建模",
+    "正运动学",
+    "运动学建模",
+    "运动学正逆解",
+    "逆运动学",
+    "雅可比"
+   ],
+   "proposed": [
+    {
+     "text": "kinematics and dynamics computation",
+     "needs_context_rule": true,
+     "ambiguity_note": "Kinematics and dynamics are fundamental concepts in physics, also used in animation and biomechanics."
+    },
+    {
+     "text": "kinematic and dynamic modeling",
+     "needs_context_rule": true,
+     "ambiguity_note": "Kinematic and dynamic modeling is used in many engineering fields beyond robotics."
+    },
+    {
+     "text": "inverse kinematics",
+     "needs_context_rule": true,
+     "ambiguity_note": "Inverse kinematics is also widely used in computer animation and human motion analysis."
+    },
+    {
+     "text": "IK",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "forward kinematics",
+     "needs_context_rule": true,
+     "ambiguity_note": "Forward kinematics is also used in computer animation and biomechanics."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.15",
+   "technology_name": "碰撞检测与避障",
+   "existing_aliases": [
+    "collision avoidance",
+    "collision detection",
+    "obstacle avoidance",
+    "动态避障",
+    "碰撞检测",
+    "碰撞避免",
+    "避障"
+   ],
+   "proposed": [
+    {
+     "text": "collision avoidance",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "collision detection",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "obstacle avoidance",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "collision checking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.03.16",
+   "technology_name": "视觉伺服",
+   "existing_aliases": [
+    "IBVS",
+    "PBVS",
+    "visual servoing",
+    "视觉伺服"
+   ],
+   "proposed": [
+    {
+     "text": "visual servoing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "IBVS",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "PBVS",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.01",
+   "technology_name": "SLAM",
+   "existing_aliases": [
+    "Cartographer",
+    "LingBot-Map实时3D建图架构",
+    "ORB-SLAM",
+    "SLAM",
+    "SLAM导航",
+    "V-SLAM",
+    "vSLAM",
+    "回环检测",
+    "因子图全局优化后端组件",
+    "激光SLAM",
+    "视觉SLAM"
+   ],
+   "proposed": [
+    {
+     "text": "SLAM",
+     "needs_context_rule": true,
+     "ambiguity_note": "May also refer to poetry slam in non-technical contexts."
+    },
+    {
+     "text": "simultaneous localization and mapping",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "visual SLAM",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "lidar SLAM",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.02",
+   "technology_name": "视觉导航",
+   "existing_aliases": [
+    "AwareVLN自意识视觉语言导航架构",
+    "DV-VLN双验证视觉语言导航架构",
+    "vision-based navigation",
+    "visual navigation",
+    "视觉导航AMR/3D视觉传感器",
+    "语义音视觉导航"
+   ],
+   "proposed": [
+    {
+     "text": "visual navigation",
+     "needs_context_rule": true,
+     "ambiguity_note": "May also refer to visual navigation in web design or UI contexts."
+    },
+    {
+     "text": "vision-based navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.03",
+   "technology_name": "激光导航",
+   "existing_aliases": [
+    "LiDAR navigation",
+    "laser navigation",
+    "激光雷达与导航"
+   ],
+   "proposed": [
+    {
+     "text": "LiDAR navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "laser navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.04",
+   "technology_name": "多源融合定位",
+   "existing_aliases": [
+    "RTK",
+    "UWB",
+    "VIO",
+    "多模态融合定位",
+    "多源融合导航",
+    "组合导航",
+    "视觉惯性里程计"
+   ],
+   "proposed": [
+    {
+     "text": "multi-sensor fusion localization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "multi-source fusion localization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "sensor fusion localization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.05",
+   "technology_name": "光学/电磁定位",
+   "existing_aliases": [
+    "EM tracking",
+    "electromagnetic tracking",
+    "optical tracking",
+    "手术机器人核心零部件(光学/电磁定位系统)"
+   ],
+   "proposed": [
+    {
+     "text": "optical tracking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "electromagnetic tracking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "EM tracking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "optical localization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.06",
+   "technology_name": "路径规划与轨迹",
+   "existing_aliases": [
+    "path and trajectory planning",
+    "path planning",
+    "trajectory planning",
+    "路径规划",
+    "轨迹检索增强导航",
+    "轨迹检索增强导航范式"
+   ],
+   "proposed": [
+    {
+     "text": "path planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "trajectory planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "path and trajectory planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.07",
+   "technology_name": "端到端导航",
+   "existing_aliases": [
+    "E2E navigation",
+    "Image2Sim导航训练样本规模",
+    "end-to-end navigation",
+    "端到端导航"
+   ],
+   "proposed": [
+    {
+     "text": "end-to-end navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "E2E navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.08",
+   "technology_name": "具身智能导航",
+   "existing_aliases": [
+    "Embodied Navigation",
+    "Embodied Visual Navigation",
+    "人形机器人三维感知导航",
+    "具身导航",
+    "导航与制导",
+    "机器人智能导航与时空智能",
+    "社会感知导航",
+    "社会感知导航范式",
+    "自主导航",
+    "认知导航"
+   ],
+   "proposed": [
+    {
+     "text": "Embodied Navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Embodied Visual Navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "embodied agent navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.09",
+   "technology_name": "导航(通用)",
+   "existing_aliases": [
+    "Autonomous Navigation",
+    "GuideWalk导航-运动统一架构",
+    "IGL-Nav增量3D高斯定位架构",
+    "Mobile Robot Navigation",
+    "Robot Navigation",
+    "SAGE-Nav层次场景图导航架构",
+    "Vesta导航成功率"
+   ],
+   "proposed": [
+    {
+     "text": "Autonomous Navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Robot Navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Mobile Robot Navigation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.04.10",
+   "technology_name": "细分方法与技术(其他)",
+   "existing_aliases": [
+    "Memory Augmented Network",
+    "Memory-Enhanced Network",
+    "记忆增强网络"
+   ],
+   "proposed": [
+    {
+     "text": "Memory Augmented Network",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Memory-Enhanced Network",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.05.01",
+   "technology_name": "扩散策略",
+   "existing_aliases": [
+    "3D扩散策略",
+    "3D扩散策略架构",
+    "Diffusion Model Policy",
+    "Diffusion-based Policy",
+    "共享动作空间扩散策略迁移方法",
+    "单步扩散策略方法",
+    "反应式扩散策略架构",
+    "扩散策略",
+    "扩散策略策略优化方法",
+    "扩散策略范式"
+   ],
+   "proposed": [
+    {
+     "text": "Diffusion Policy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Diffusion-based Policy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Diffusion Model Policy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.05.02",
+   "technology_name": "强化学习",
+   "existing_aliases": [
+    "CBF安全过滤强化学习方法",
+    "DDPG",
+    "DQN",
+    "GRPO隐式结构优化方法",
+    "PPO",
+    "PPO专家→DAgger两阶段蒸馏方法",
+    "SAC",
+    "SYMDEX形态对称强化学习方法",
+    "TD3",
+    "四足机器人强化学习",
+    "奖励函数",
+    "强化学习"
+   ],
+   "proposed": [
+    {
+     "text": "Reinforcement Learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "RL",
+     "needs_context_rule": true,
+     "ambiguity_note": "RL can also stand for 'Radio Link' or 'Real Life' in other contexts."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.05.03",
+   "technology_name": "模仿学习",
+   "existing_aliases": [
+    "DAgger人在环灵巧修正方法",
+    "Diffusion Policy",
+    "IAIL意图对齐模仿学习架构",
+    "模仿学习",
+    "灵巧操作模仿学习范式",
+    "行为克隆"
+   ],
+   "proposed": [
+    {
+     "text": "Imitation Learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Learning from Demonstration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "LfD",
+     "needs_context_rule": true,
+     "ambiguity_note": "LfD may also stand for 'Laser Doppler Flowmetry' in medical contexts."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.05.04",
+   "technology_name": "深度学习",
+   "existing_aliases": [
+    "几何深度学习",
+    "可泛化深度学习",
+    "深度学习与机器人灵巧操作"
+   ],
+   "proposed": [
+    {
+     "text": "Deep Learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "DL",
+     "needs_context_rule": true,
+     "ambiguity_note": "DL can also stand for 'Download' or 'Data Link' in other contexts."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.05.05",
+   "technology_name": "机器人学习",
+   "existing_aliases": [
+    "Robot Learning",
+    "Robotic Learning",
+    "机器人学习"
+   ],
+   "proposed": [
+    {
+     "text": "Robot Learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Robotic Learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.05.06",
+   "technology_name": "元学习",
+   "existing_aliases": [
+    "learning to learn",
+    "meta-learning",
+    "元学习"
+   ],
+   "proposed": [
+    {
+     "text": "Meta-learning",
+     "needs_context_rule": true,
+     "ambiguity_note": "Meta-learning can also refer to the concept of 'learning about learning' in educational psychology."
+    },
+    {
+     "text": "learning to learn",
+     "needs_context_rule": true,
+     "ambiguity_note": "The phrase 'learning to learn' can also refer to the general concept of learning how to learn in educational contexts, not specifically meta-learning in machine learning."
+    },
+    {
+     "text": "Meta Learning",
+     "needs_context_rule": true,
+     "ambiguity_note": "Meta Learning can also refer to the concept of 'learning about learning' in educational psychology."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.05.07",
+   "technology_name": "自监督学习",
+   "existing_aliases": [
+    "self-supervised learning",
+    "多模态自监督学习"
+   ],
+   "proposed": [
+    {
+     "text": "self-supervised learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "self-supervised representation learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "SSL",
+     "needs_context_rule": true,
+     "ambiguity_note": "SSL may also refer to Secure Sockets Layer"
+    },
+    {
+     "text": "self-supervision",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.05.08",
+   "technology_name": "学习与训练方法(通用)",
+   "existing_aliases": [
+    "Dream-Forcing推理对齐训练方法",
+    "RECAP优势条件RL后训练方法",
+    "Real2Sim2Real触觉策略学习方法",
+    "World Gymnast VLM奖励RL训练方法",
+    "仿真-现实协同训练方法",
+    "力关注课程训练方法",
+    "对比重加权混合专家训练方法",
+    "对象中心残差训练方法",
+    "技能引导MoE持续学习方法",
+    "流匹配专家到统一预训练方法",
+    "运动-地形配对+相对帧训练方法",
+    "重力课程平衡训练方法"
+   ],
+   "proposed": [
+    {
+     "text": "learning and training methods",
+     "needs_context_rule": true,
+     "ambiguity_note": "These are general terms in machine learning; may match a wide range of documents"
+    },
+    {
+     "text": "training methodology",
+     "needs_context_rule": true,
+     "ambiguity_note": "General term in machine learning; may match a wide range of documents"
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.01",
+   "technology_name": "灵巧手语义接口",
+   "existing_aliases": [
+    "UDHM",
+    "UDHM 22-DoF语义接口跨本体映射方法",
+    "UDHM统一灵巧手语义接口",
+    "Unified Dexterous Hand Semantic Interface",
+    "Unified Dextrous Hand Semantic Interface"
+   ],
+   "proposed": [
+    {
+     "text": "Unified Dexterous Hand Semantic Interface",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "UDHM",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Unified Dextrous Hand Semantic Interface",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dexterous hand semantic interface",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.02",
+   "technology_name": "3D视觉感知",
+   "existing_aliases": [
+    "3D perception",
+    "3D vision perception",
+    "3D visual perception",
+    "3DPWM 3D点云WM架构",
+    "3D点云编码器",
+    "3D视觉",
+    "3D视觉/机器人视觉模块",
+    "3D视觉传感器",
+    "3D视觉感知",
+    "3D视觉智能",
+    "TSP3D高效3D视觉接地架构",
+    "三维语义感知"
+   ],
+   "proposed": [
+    {
+     "text": "3D perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "3D vision perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "3D visual perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "3D vision",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.03",
+   "technology_name": "多模态感知融合",
+   "existing_aliases": [
+    "multimodal fusion",
+    "multimodal perception fusion",
+    "多模态感知",
+    "多模态感知融合范式",
+    "机器人多模态感知及融合",
+    "神经符号融合规划范式",
+    "认知机器人/多模态感知"
+   ],
+   "proposed": [
+    {
+     "text": "multimodal fusion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "multimodal perception fusion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "multimodal sensor fusion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "multimodal data fusion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.04",
+   "technology_name": "视觉感知与理解",
+   "existing_aliases": [
+    "机器人视觉感知",
+    "视觉-语言语义感知范式",
+    "视觉感知",
+    "视觉理解",
+    "语义视觉-动作分词器"
+   ],
+   "proposed": [
+    {
+     "text": "visual perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "visual understanding",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "visual scene understanding",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "visual perception and understanding",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.05",
+   "technology_name": "场景理解与环境感知",
+   "existing_aliases": [
+    "scene understanding",
+    "具身感知与场景理解",
+    "具身机器人环境感知"
+   ],
+   "proposed": [
+    {
+     "text": "scene understanding",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "environmental perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "scene perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.06",
+   "technology_name": "目标检测",
+   "existing_aliases": [
+    "object detection",
+    "small object detection",
+    "小目标检测"
+   ],
+   "proposed": [
+    {
+     "text": "object detection",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "small object detection",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.07",
+   "technology_name": "语义记忆与推理",
+   "existing_aliases": [
+    "DREAM弹性时空语义记忆架构",
+    "弹性时空语义记忆",
+    "语义推理匹配",
+    "语义推理匹配范式",
+    "语义条件消息传递方法"
+   ],
+   "proposed": [
+    {
+     "text": "semantic memory",
+     "needs_context_rule": true,
+     "ambiguity_note": "Also a core concept in cognitive psychology and neuroscience."
+    },
+    {
+     "text": "semantic reasoning",
+     "needs_context_rule": true,
+     "ambiguity_note": "Can refer to general AI reasoning over semantics, not necessarily memory-based."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.08",
+   "technology_name": "空间表征与动作空间",
+   "existing_aliases": [
+    "10维任务空间接口",
+    "3D缓存空间回忆模块",
+    "DexRepNet++几何空间手物表征架构",
+    "DexRep几何空间手物表征组件",
+    "HANDOFF多教师蒸馏任务空间架构",
+    "RAM检索增强空间操作架构",
+    "UHAS球基统一手部动作空间架构",
+    "action space",
+    "simDP共享动作空间架构",
+    "三阶段空间推理harness",
+    "共享意图空间模块",
+    "关系特定自适应空间注意力"
+   ],
+   "proposed": [
+    {
+     "text": "spatial representation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "action space",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.09",
+   "technology_name": "自主认知",
+   "existing_aliases": [
+    "autonomous cognition",
+    "自主认知",
+    "认知协作机器人/人形机器人"
+   ],
+   "proposed": [
+    {
+     "text": "autonomous cognition",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "cognitive autonomy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.10",
+   "technology_name": "感知认知(通用)",
+   "existing_aliases": [
+    "位姿图感知冗余剪枝方法",
+    "感知系统"
+   ],
+   "proposed": [
+    {
+     "text": "perception and cognition",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "perception system",
+     "needs_context_rule": true,
+     "ambiguity_note": "Can refer to biological sensory systems or artificial perception systems."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.06.11",
+   "technology_name": "多目标跟踪",
+   "existing_aliases": [
+    "ByteTrack",
+    "DeepSORT",
+    "多目标跟踪",
+    "目标跟踪"
+   ],
+   "proposed": [
+    {
+     "text": "multiple object tracking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "multi-object tracking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "MOT",
+     "needs_context_rule": true,
+     "ambiguity_note": "May also refer to other abbreviations such as Moment of Truth or Ministry of Transport."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.01",
+   "technology_name": "具身推理与ECoT",
+   "existing_aliases": [
+    "ACoT动作空间推理方法",
+    "CoT降低率(滑冰人形)",
+    "ECoT",
+    "ECoT具身思维链标注方法",
+    "ECoT推理标注生成器",
+    "ECoT消融增益",
+    "Embodied Chain-of-Thought",
+    "Embodied CoT",
+    "GraphRAG多跳推理精度提升",
+    "ManualCoT操作手册推理方法",
+    "Vesta统一具身推理架构",
+    "ZR-0跨本体ECoT对齐成功率"
+   ],
+   "proposed": [
+    {
+     "text": "Embodied Reasoning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.02",
+   "technology_name": "记忆机制",
+   "existing_aliases": [
+    "4D场景图时空记忆范式",
+    "eMEM加权平均探测得分",
+    "分层整合管线记忆压缩方法",
+    "反思规则归纳过程记忆",
+    "反思规则归纳过程记忆范式",
+    "多模态KG个性化记忆",
+    "多模态知识图谱个性化记忆范式",
+    "多索引统一图模型记忆组件",
+    "混合时空记忆范式"
+   ],
+   "proposed": [
+    {
+     "text": "memory mechanism",
+     "needs_context_rule": true,
+     "ambiguity_note": "May refer to memory mechanisms in cognitive science or computer hardware."
+    },
+    {
+     "text": "embodied memory",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.03",
+   "technology_name": "知识图谱构建与更新",
+   "existing_aliases": [
+    "FlureeDB SPARQL查询几何均值",
+    "FlureeDB可验证知识图谱数据库架构",
+    "HP-KG 7B超越72B规划提升率",
+    "HP-KG三层过程知识图谱架构",
+    "IRMKG架构",
+    "KAG OneGraph CEval准确率提升",
+    "KG-M3PO",
+    "KG-M3PO架构",
+    "KG-MAS架构",
+    "KG-Trie前缀树约束解码器",
+    "KG基础模型架构",
+    "KG嵌入匹配"
+   ],
+   "proposed": [
+    {
+     "text": "knowledge graph construction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "knowledge graph update",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "KG construction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.04",
+   "technology_name": "图检索增强(GraphRAG)",
+   "existing_aliases": [
+    "EmbodiedRAG 3D场景子图检索架构",
+    "EmbodiedRAG架构",
+    "GraphRAG层级社区检索方法",
+    "Hits@K",
+    "Hits@K评估指标",
+    "图检索增强生成",
+    "子图检索召回率",
+    "子图检索器",
+    "层次化供知性RAG检索方法",
+    "平均倒数排名"
+   ],
+   "proposed": [
+    {
+     "text": "GraphRAG",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Graph Retrieval-Augmented Generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Graph RAG",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.05",
+   "technology_name": "图神经网络与嵌入",
+   "existing_aliases": [
+    "G3M架构",
+    "GNN",
+    "GNN Embedding",
+    "GNN匹配",
+    "Graph Embedding",
+    "Graph Neural Network",
+    "关系分解嵌入组件",
+    "关系感知图卷积架构",
+    "协同不变性与动态性学习方法",
+    "卷积嵌入架构",
+    "图注意力聚合层",
+    "图神经网络匹配范式"
+   ],
+   "proposed": [
+    {
+     "text": "Graph Neural Networks",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "GNNs",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.06",
+   "technology_name": "任务规划与分解",
+   "existing_aliases": [
+    "EvoPlan进化神经符号规划架构",
+    "Re2 EB-Habitat性能提升率",
+    "动态图-VLM融合规划",
+    "动态图-视觉语言融合规划范式",
+    "知识引导规划",
+    "组合子任务分解+掩码",
+    "组合子任务分解+状态掩码方法"
+   ],
+   "proposed": [
+    {
+     "text": "task decomposition",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "hierarchical task decomposition",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "subtask decomposition",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.07",
+   "technology_name": "场景图建模",
+   "existing_aliases": [
+    "3D Scene Graph",
+    "DAAAM 4D场景图实时构建架构",
+    "Scene Graph Construction",
+    "Scene Graph Generation",
+    "Scene Graph Modeling",
+    "动作条件化场景图",
+    "场景图节点准确率",
+    "层次化图建模",
+    "社交3D场景图",
+    "社交3D场景图架构"
+   ],
+   "proposed": [
+    {
+     "text": "scene graph generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "SGG",
+     "needs_context_rule": true,
+     "ambiguity_note": "SGG may also stand for other terms in different fields, but in visual reasoning it refers to Scene Graph Generation."
+    },
+    {
+     "text": "scene graph construction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "3D scene graph",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.08",
+   "technology_name": "图匹配算法",
+   "existing_aliases": [
+    "AriGraph架构",
+    "ConceptGraphs架构",
+    "Graphiti架构",
+    "LookPlanGraph架构",
+    "MRR评估指标",
+    "MomaGraph架构",
+    "graph matching",
+    "graph matching algorithms",
+    "目标感知对齐融合网络组件",
+    "置信度传播匹配",
+    "置信度传播匹配范式",
+    "跨模态对齐网络"
+   ],
+   "proposed": [
+    {
+     "text": "graph matching",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "graph matching algorithm",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.07.09",
+   "technology_name": "细分方法与技术(其他)",
+   "existing_aliases": [
+    "RoboEXP架构",
+    "拓扑极坐标轨迹表示方法",
+    "自适应融合参数"
+   ],
+   "proposed": [
+    {
+     "text": "adaptive fusion parameters",
+     "needs_context_rule": true,
+     "ambiguity_note": "Adaptive fusion is a common technique in many domains, so additional context (e.g., robotics, planning) is needed to disambiguate."
+    },
+    {
+     "text": "topological trajectory representation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.08.01",
+   "technology_name": "群体智能与协同",
+   "existing_aliases": [
+    "multi-robot coordination",
+    "swarm intelligence",
+    "swarm robotics",
+    "多机器人协作与群体智能",
+    "智能仓储机器人集群",
+    "群体具身智能",
+    "群体智能"
+   ],
+   "proposed": [
+    {
+     "text": "multi-robot coordination",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "swarm intelligence",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "swarm robotics",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.09.01",
+   "technology_name": "双臂协同操作",
+   "existing_aliases": [
+    "bimanual coordination",
+    "bimanual manipulation",
+    "dual-arm coordination",
+    "dual-arm manipulation",
+    "双臂协同操作",
+    "双臂协同操作范式",
+    "双臂平台",
+    "双臂灵巧协作"
+   ],
+   "proposed": [
+    {
+     "text": "bimanual manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dual-arm manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "bimanual coordination",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dual-arm coordination",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.09.02",
+   "technology_name": "操作规划",
+   "existing_aliases": [
+    "manipulation planning",
+    "task and motion planning",
+    "抓取与操作规划"
+   ],
+   "proposed": [
+    {
+     "text": "manipulation planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "task and motion planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "TAMP",
+     "needs_context_rule": true,
+     "ambiguity_note": "Can also refer to cardiac tamponade in medical contexts."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.09.03",
+   "technology_name": "灵巧度基准与评测",
+   "existing_aliases": [
+    "DexBench灵巧度评估框架",
+    "DexVerse基准规模",
+    "dexterity benchmark",
+    "dexterity evaluation",
+    "manipulation dexterity benchmark",
+    "多任务多本体灵巧基准化范式",
+    "灵巧度基准化范式"
+   ],
+   "proposed": [
+    {
+     "text": "dexterity benchmark",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dexterity evaluation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dexterous manipulation benchmark",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.09.04",
+   "technology_name": "灵巧抓取",
+   "existing_aliases": [
+    "CoorGrasp协调抓取成功率",
+    "DemoGrasp单演示灵巧抓取方法",
+    "HUGS人类先验引导统一合成",
+    "HUGS统一抓取合成规模",
+    "KPGrasp关键点流匹配抓取架构",
+    "T(R,O)图扩散灵巧抓取方法",
+    "dexterous grasping",
+    "dexterous grasping synthesis",
+    "人类先验引导统一抓取合成方法",
+    "供知性RAG抓取成功率",
+    "供知性检索增强范式",
+    "协调感知阶段分离抓取方法"
+   ],
+   "proposed": [
+    {
+     "text": "dexterous grasping",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dexterous grasping synthesis",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dexterous grasp planning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.09.05",
+   "technology_name": "灵巧操作",
+   "existing_aliases": [
+    "3D基础策略架构FP3",
+    "Contact-Grounded接触接地方法",
+    "CoorDex协调潜层残差策略架构",
+    "DECO真机成功率",
+    "DUET双层接触智能架构",
+    "DUET双层控制器",
+    "DexImit人类视频灵巧迁移方法",
+    "EgoSteer可操控灵巧操作成功率",
+    "PA-BiCoop主辅协作架构",
+    "VideoManip人类视频灵巧迁移方法",
+    "dexterous in-hand manipulation",
+    "可变形物体操作范式"
+   ],
+   "proposed": [
+    {
+     "text": "dexterous manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dexterous in-hand manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "in-hand manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.09.06",
+   "technology_name": "操作感知与表示",
+   "existing_aliases": [
+    "3D关键点提取与对齐模块",
+    "3D关键点统一表示跨本体迁移方法",
+    "Dexterous Point Policy 3D关键点策略架构",
+    "本体感知柔顺参考位置预测方法",
+    "本体感知柔顺参考位置预测网络",
+    "球基统一手部动作表示",
+    "角色感知残差组合方法"
+   ],
+   "proposed": [
+    {
+     "text": "dexterous manipulation perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "perception for dexterous manipulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dexterous manipulation representation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "hand-object perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.09.07",
+   "technology_name": "抓取合成与数据",
+   "existing_aliases": [
+    "TacVerse 1k数据规模",
+    "grasp synthesis",
+    "grasping data generation",
+    "grasping dataset"
+   ],
+   "proposed": [
+    {
+     "text": "grasp synthesis",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "grasping data generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "grasping dataset",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "grasp data synthesis",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T1.09.08",
+   "technology_name": "细分方法与技术(其他)",
+   "existing_aliases": [
+    "Step-scale因子时间粒度控制方法"
+   ],
+   "proposed": [
+    {
+     "text": "step-scale factor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "step-scale factor time granularity control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.01.01",
+   "technology_name": "激光雷达",
+   "existing_aliases": [
+    "LiDAR",
+    "激光雷达",
+    "激光雷达遥感"
+   ],
+   "proposed": [
+    {
+     "text": "LiDAR",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "LIDAR",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Light Detection and Ranging",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.01.02",
+   "technology_name": "深度相机",
+   "existing_aliases": [
+    "RGB-D camera",
+    "ToF camera",
+    "depth camera",
+    "depth sensor",
+    "深度相机",
+    "相机坐标系增量位姿统一方法"
+   ],
+   "proposed": [
+    {
+     "text": "RGB-D camera",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "ToF camera",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "depth camera",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "depth sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.01.03",
+   "technology_name": "视觉传感器",
+   "existing_aliases": [
+    "RGB-DF三支路扩散骨干",
+    "RGB-DF联合4D扩散生成方法",
+    "camera sensor",
+    "image sensor",
+    "vision sensor",
+    "视觉传感器",
+    "视觉模块"
+   ],
+   "proposed": [
+    {
+     "text": "camera sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "image sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "vision sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "visual sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.01",
+   "technology_name": "六维力传感器",
+   "existing_aliases": [
+    "6-axis force/torque sensor",
+    "six-axis force sensor",
+    "six-axis force/torque sensor",
+    "六维力传感器",
+    "六维力传感器/关节力矩传感器/拉压力传感器",
+    "力传感器",
+    "力觉传感器",
+    "测力平台"
+   ],
+   "proposed": [
+    {
+     "text": "6-axis force/torque sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "six-axis force/torque sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "6-axis force sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "six-DOF force/torque sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.02",
+   "technology_name": "关节力矩传感器",
+   "existing_aliases": [
+    "joint torque sensing",
+    "joint torque sensor",
+    "关节力矩传感器",
+    "扭矩传感器"
+   ],
+   "proposed": [
+    {
+     "text": "joint torque sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "joint torque sensing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "joint moment sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.03",
+   "technology_name": "电子皮肤与柔性触觉",
+   "existing_aliases": [
+    "flexible tactile sensor",
+    "soft tactile sensor",
+    "仿生皮肤",
+    "柔性传感",
+    "柔性触觉传感器（电子皮肤）",
+    "电子皮肤",
+    "电子皮肤柔性触觉"
+   ],
+   "proposed": [
+    {
+     "text": "electronic skin",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "e-skin",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "flexible tactile sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "soft tactile sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.04",
+   "technology_name": "视触觉传感与融合",
+   "existing_aliases": [
+    "IPL Token视触觉融合令牌",
+    "PixelTouch视触觉感知架构",
+    "VTLA视触觉语言动作范式",
+    "X-TouchMind V1 VTLA三层架构",
+    "XTac UMI G1穿戴式视触觉采集夹爪",
+    "tactile-vision fusion",
+    "visual-tactile fusion",
+    "visual-tactile sensing",
+    "visuo-tactile sensing",
+    "全手视触觉传感系统",
+    "视觉-触觉频率比",
+    "视觉触觉传感器"
+   ],
+   "proposed": [
+    {
+     "text": "visual-tactile fusion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "visuo-tactile sensing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "tactile-vision fusion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "visual-tactile integration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.05",
+   "technology_name": "触觉传感器",
+   "existing_aliases": [
+    "3D磁触觉传感器",
+    "3D磁触觉感知",
+    "DECO可插拔触觉适配器",
+    "tactile transducer",
+    "touch sensor",
+    "接触贴纸模块",
+    "触觉传感器",
+    "触觉适配器插件"
+   ],
+   "proposed": [
+    {
+     "text": "tactile sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "touch sensor",
+     "needs_context_rule": true,
+     "ambiguity_note": "In consumer electronics, 'touch sensor' often refers to touchscreen or capacitive touch sensors, but in robotics it can denote tactile sensors for contact detection."
+    },
+    {
+     "text": "tactile transducer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.06",
+   "technology_name": "触觉感知算法",
+   "existing_aliases": [
+    "CoP物理感知触觉表征方法",
+    "ETac触觉仿真框架",
+    "HydroShear水弹性触觉仿真器",
+    "HydroShear触觉仿真零样迁移成功率",
+    "HydroShear路径依赖力跟踪触觉仿真方法",
+    "RGB-S图像对齐触觉显著性方法",
+    "T-Rex触觉反应成功率提升",
+    "TactAlign整流流触觉对齐方法",
+    "TactAlign跨物种触觉迁移时间",
+    "TactiSkill三组件触觉奖励框架",
+    "TactileVAE时空触觉压缩器",
+    "TouchWorld三层触觉策略成功率"
+   ],
+   "proposed": [
+    {
+     "text": "tactile perception",
+     "needs_context_rule": true,
+     "ambiguity_note": "Can refer to biological tactile perception in neuroscience and psychology."
+    },
+    {
+     "text": "tactile sensing",
+     "needs_context_rule": true,
+     "ambiguity_note": "May be used in biological contexts, but in engineering it denotes artificial tactile sensing."
+    },
+    {
+     "text": "tactile recognition",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "tactile data processing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.07",
+   "technology_name": "机器视觉",
+   "existing_aliases": [
+    "machine vision",
+    "robot vision",
+    "robotic vision",
+    "光学组件",
+    "机器人视觉",
+    "机器人视觉基础模型",
+    "机器视觉",
+    "立体视觉",
+    "视觉镜头"
+   ],
+   "proposed": [
+    {
+     "text": "machine vision",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robot vision",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic vision",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "industrial vision",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.08",
+   "technology_name": "具身感知与交互",
+   "existing_aliases": [
+    "Deep-Whole-body-Parkour感知-运动融合",
+    "embodied interaction",
+    "embodied perception",
+    "interactive perception",
+    "具身交互",
+    "具身感知",
+    "几何感知一步像素流渲染方法",
+    "力觉感知方案",
+    "意图推理与预测"
+   ],
+   "proposed": [
+    {
+     "text": "embodied perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "interactive perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "embodied interaction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "perception-action integration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.09",
+   "technology_name": "力觉感知",
+   "existing_aliases": [
+    "force feedback sensing",
+    "force perception",
+    "force sensing",
+    "力觉"
+   ],
+   "proposed": [
+    {
+     "text": "force sensing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "force feedback",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "force perception",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.10",
+   "technology_name": "传感器",
+   "existing_aliases": [
+    "force sensor",
+    "haptic sensor"
+   ],
+   "proposed": [
+    {
+     "text": "force sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "haptic sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "tactile sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "force/torque sensor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.02.11",
+   "technology_name": "边缘传感器",
+   "existing_aliases": [],
+   "proposed": [
+    {
+     "text": "edge sensor",
+     "needs_context_rule": true,
+     "ambiguity_note": "May refer to edge detection sensors in image processing or edge computing devices, requiring context to distinguish."
+    },
+    {
+     "text": "edge tactile sensor",
+     "needs_context_rule": true,
+     "ambiguity_note": "While more specific, 'edge' may still invoke image processing or edge computing contexts; context is needed."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.03.01",
+   "technology_name": "语音交互",
+   "existing_aliases": [
+    "VUI",
+    "speech interaction",
+    "voice interaction",
+    "voice user interface",
+    "商用服务机器人/AI语音交互"
+   ],
+   "proposed": [
+    {
+     "text": "speech interaction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "voice interaction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "voice user interface",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "VUI",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.03.02",
+   "technology_name": "听觉传感",
+   "existing_aliases": [
+    "acoustic sensing",
+    "auditory sensing",
+    "sound sensing",
+    "摩擦电听觉跨模态重构准确率"
+   ],
+   "proposed": [
+    {
+     "text": "acoustic sensing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "auditory sensing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "sound sensing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "audio sensing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.04.01",
+   "technology_name": "惯性测量单元(IMU)",
+   "existing_aliases": [
+    "IMU",
+    "MEMS惯性姿态传感器/惯性测量单元（IMU）",
+    "加速度计",
+    "惯导",
+    "惯性测量单元",
+    "陀螺仪"
+   ],
+   "proposed": [
+    {
+     "text": "inertial measurement unit",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "IMU",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.05.01",
+   "technology_name": "多模态传感融合",
+   "existing_aliases": [
+    "AlloSpatial VSI-Bench/MindCube提升",
+    "AlloSpatial World2Mind沙盒架构",
+    "DINOv2特征提取器",
+    "DINOv2视觉编码器",
+    "FAM-1.3 MetaWorld 5演示成功率",
+    "FAM-1.3三组件3D世界-动作架构",
+    "FAM-1.3真机长序列成功率",
+    "SigLIP视觉编码器",
+    "multimodal data fusion",
+    "multisensor fusion",
+    "任务导向时空对齐方法",
+    "关系图卷积层次场景图编码器"
+   ],
+   "proposed": [
+    {
+     "text": "multimodal sensor fusion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "sensor fusion",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.05.02",
+   "technology_name": "标定与同步采集",
+   "existing_aliases": [
+    "6-DoF力深度同步采集管线",
+    "Kalibr",
+    "UMI手持采集组件",
+    "共形预测不确定性量化方法",
+    "内参标定",
+    "外参标定",
+    "手眼标定",
+    "时间同步",
+    "相机标定",
+    "联合标定"
+   ],
+   "proposed": [
+    {
+     "text": "extrinsic calibration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "intrinsic calibration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "hand-eye calibration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "time synchronization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.05.03",
+   "technology_name": "3D重建",
+   "existing_aliases": [
+    "3D几何感知范式",
+    "3D重建PSNR",
+    "3D高斯泼溅机器人操作范式",
+    "3D高斯泼溅重建方法",
+    "EmbodiedSAM在线3D实例分割架构",
+    "ManiSplat图形结构解耦3DGS架构",
+    "NeRF",
+    "POGS持久化对象高斯泼溅架构",
+    "Uni3R统一3D重建与理解架构",
+    "三维重建",
+    "几何基础模型范式",
+    "可提示Dense Prediction Transformer"
+   ],
+   "proposed": [
+    {
+     "text": "3D reconstruction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "NeRF",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "3D Gaussian Splatting",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.05.04",
+   "technology_name": "主动感知",
+   "existing_aliases": [
+    "Co-GLANCE协同主动感知架构",
+    "RGBD ToF主动红外光源",
+    "ViA主动视觉系统架构",
+    "active perception",
+    "主动安全预览范式",
+    "主动感知信息增益",
+    "主动感知范式",
+    "主动视觉云台控制器",
+    "本体感知提示条件方法",
+    "节点级束搜索主动感知方法"
+   ],
+   "proposed": [
+    {
+     "text": "active sensing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "active vision",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T2.05.05",
+   "technology_name": "分割与实例感知",
+   "existing_aliases": [
+    "DINO视觉特征追踪组件",
+    "Hiera层次化视觉Transformer",
+    "POGS对象重置连续成功次数",
+    "POGS工具位姿扰动恢复率",
+    "instance segmentation",
+    "panoptic segmentation",
+    "semantic segmentation",
+    "video segmentation",
+    "动作分块Transformer",
+    "实例标签分布平滑ILDS损失",
+    "流式记忆掩码传播方法",
+    "流式记忆注意力模块"
+   ],
+   "proposed": [
+    {
+     "text": "image segmentation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "segmentation",
+     "needs_context_rule": true,
+     "ambiguity_note": "may refer to market segmentation or biological cell segmentation"
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.01.01",
+   "technology_name": "双足人形机器人",
+   "existing_aliases": [
+    "人形机器人/双足机器人",
+    "全尺寸仿生双足人形机器人",
+    "全尺寸双足人形机器人",
+    "全尺寸双足人形机器人、轮式人形机器人、灵巧手、具身智能",
+    "全栈开源双足人形机器人",
+    "双足人形机器人",
+    "双足人形机器人、具身智能开发平台",
+    "双足大仿人机器人",
+    "双足大仿人机器人及特种机器人",
+    "双足机器人",
+    "肌腱仿生驱动双足人形机器人",
+    "高动态双足人形机器人ODM方案、关节电机模组"
+   ],
+   "proposed": [
+    {
+     "text": "bipedal humanoid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "biped humanoid",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid biped robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.01.02",
+   "technology_name": "轮式人形机器人",
+   "existing_aliases": [
+    "wheeled humanoid",
+    "wheeled humanoid platform",
+    "wheeled humanoid robot",
+    "全尺寸人形/轮臂/数据基建",
+    "协作机器人/复合机器人/轮式人形机器人/新消费机器人",
+    "协作机器人/轮式人形机器人/重载双臂机器人/工业具身智能平台",
+    "轮式人形机器人",
+    "轮式复合人形机器人"
+   ],
+   "proposed": [
+    {
+     "text": "wheeled humanoid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "wheeled humanoid",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "wheeled mobile humanoid",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.01.03",
+   "technology_name": "特种人形机器人",
+   "existing_aliases": [
+    "explosion-proof humanoid robot",
+    "special purpose humanoid robot",
+    "specialized humanoid robot",
+    "工业人形机器人/特种机器人/工业自动化/能源装备制造",
+    "特种具身智能机器人/防爆人形机器人/工业巡检机器人/智能运维",
+    "特种巡检机器人/防爆人形机器人/工业智能运维",
+    "矿山特种人形机器人",
+    "防爆人形机器人"
+   ],
+   "proposed": [
+    {
+     "text": "specialized humanoid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "special purpose humanoid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "explosion-proof humanoid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.01.04",
+   "technology_name": "人形机器人核心零部件",
+   "existing_aliases": [
+    "humanoid robot core components",
+    "humanoid robot joint actuators",
+    "humanoid robot joint modules",
+    "人形机器人一体化伺服关节",
+    "人形机器人传动结构",
+    "人形机器人关节/减速器/整机ODM",
+    "人形机器人关键零部件",
+    "人形机器人及核心零部件",
+    "全尺寸人形机器人、谐波减速机、一体化关节、协作机器人",
+    "工业机器人/人形机器人/家电机器人",
+    "机器人关节模组/人形机器人/工业机器人",
+    "迷你人形机器人及关节动力模组（教育科研市场）"
+   ],
+   "proposed": [
+    {
+     "text": "humanoid robot core components",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid robot joint actuators",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid robot joint modules",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.01.05",
+   "technology_name": "人形机器人整机与商业化",
+   "existing_aliases": [
+    "commercial humanoid robot",
+    "full-size humanoid robot",
+    "humanoid robot commercialization",
+    "人形机器人/具身智能全栈",
+    "人形机器人企业",
+    "人形机器人商业化",
+    "人形机器人商业化和量产",
+    "人形机器人整机",
+    "具身智能全产业链(四足机器人/人形机器人/关节模组)"
+   ],
+   "proposed": [
+    {
+     "text": "commercial humanoid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid robot commercialization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "full-size humanoid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.01.06",
+   "technology_name": "人形机器人智能系统",
+   "existing_aliases": [
+    "humanoid robot cognitive architecture",
+    "humanoid robot embodied intelligence",
+    "humanoid robot intelligent system",
+    "人形机器人具身智能感知",
+    "全尺寸人形机器人、具身智能系统（大小脑融合）",
+    "具身智能大脑/人形机器人",
+    "自主机器人与智能系统"
+   ],
+   "proposed": [
+    {
+     "text": "humanoid robot intelligent system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid robot cognitive architecture",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid robot embodied intelligence",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.01.07",
+   "technology_name": "人形机器人场景应用",
+   "existing_aliases": [
+    "humanoid robot application deployment",
+    "humanoid robot for automotive manufacturing",
+    "humanoid robot industrial application",
+    "人形机器人应用部署/具身智能场景落地/工业机器人系统集成",
+    "具身智能人形机器人 / 汽车制造领域机器人应用",
+    "工业复合机器人/工业人形机器人/具身智能工业应用"
+   ],
+   "proposed": [
+    {
+     "text": "humanoid robot industrial application",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid robot application deployment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid robot for automotive manufacturing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.01.08",
+   "technology_name": "人形机器人(通用)",
+   "existing_aliases": [
+    "humanoid",
+    "人形交互机器人 / 仿人机器人 / 多模态情感交互",
+    "人形机器人",
+    "人形机器人/四足机器人/消费级机器人",
+    "人形机器人、协作机器人",
+    "人形机器人峰值奔跑速度",
+    "人形机器人平台",
+    "人形机器人硬件平台",
+    "人形机器人（\"具身大脑\"）",
+    "人形机器人（全栈自研：硬件关节电机到具身智能大脑）",
+    "人形机器人（微表情仿生/服务机器人）",
+    "人形机器人（覆盖文旅、工业、教育、家庭服务四大场景）"
+   ],
+   "proposed": [
+    {
+     "text": "humanoid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "humanoid",
+     "needs_context_rule": true,
+     "ambiguity_note": "Can refer to any human-like entity (e.g., in science fiction, mythology) without specifying a robot."
+    },
+    {
+     "text": "anthropomorphic robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.02.01",
+   "technology_name": "四足机器人",
+   "existing_aliases": [
+    "four-legged robot",
+    "quadruped robot",
+    "quadrupedal robot",
+    "robot dog",
+    "人形/四足机器人",
+    "四足",
+    "四足仿生机器人",
+    "四足机器人",
+    "四足机器人（机器狗）",
+    "四足机器狗",
+    "智能仿生四足机器人",
+    "智能仿生四足机器人/通用机器人"
+   ],
+   "proposed": [
+    {
+     "text": "quadruped robot",
+     "needs_context_rule": true,
+     "ambiguity_note": "Quadruped alone means any four-legged animal; needs context to specify a robot."
+    },
+    {
+     "text": "quadrupedal robot",
+     "needs_context_rule": true,
+     "ambiguity_note": "Similar to 'quadruped robot', the base term refers to four-legged animals."
+    },
+    {
+     "text": "four-legged robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robot dog",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.02.02",
+   "technology_name": "轮足机器人",
+   "existing_aliases": [
+    "wheel-leg hybrid robot",
+    "wheel-legged robot",
+    "wheeled-legged robot",
+    "特种具身智能/轮足机器人",
+    "轮足复合机器人",
+    "轮足机器人"
+   ],
+   "proposed": [
+    {
+     "text": "wheel-legged robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "wheeled-legged robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "wheel-leg hybrid robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.02.03",
+   "technology_name": "仿生机器人",
+   "existing_aliases": [
+    "bio-inspired robot",
+    "biomimetic robot",
+    "bionic robot",
+    "仿生头部组件",
+    "仿生机器人",
+    "仿生软体机器人",
+    "协作机器人/仿生机器人/教育机器人/消费级机械臂"
+   ],
+   "proposed": [
+    {
+     "text": "bio-inspired robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "biomimetic robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "bionic robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.02.04",
+   "technology_name": "软体机器人",
+   "existing_aliases": [
+    "soft robot",
+    "soft-bodied robot",
+    "软体机器人"
+   ],
+   "proposed": [
+    {
+     "text": "soft robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "soft-bodied robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.01",
+   "technology_name": "协作机器人",
+   "existing_aliases": [
+    "cobot",
+    "collaborative robot",
+    "cooperative robot",
+    "协作机器人",
+    "协作机器人与智能服务机器人",
+    "柔性协作机器人",
+    "移动协作机器人(AGV/RGV)"
+   ],
+   "proposed": [
+    {
+     "text": "cobot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "collaborative robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "cooperative robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.02",
+   "technology_name": "复合机器人",
+   "existing_aliases": [
+    "mobile manipulation robot",
+    "mobile manipulator",
+    "复合机器人",
+    "智能复合机器人",
+    "轮臂复合机器人",
+    "通用型外骨骼机器人、人形外骨骼复合机器人"
+   ],
+   "proposed": [
+    {
+     "text": "mobile manipulator",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "mobile manipulation robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.03",
+   "technology_name": "外骨骼机器人",
+   "existing_aliases": [
+    "HumanEx穿戴外骨骼采集系统",
+    "exoskeleton robot",
+    "powered exoskeleton",
+    "外骨骼",
+    "外骨骼机器人",
+    "消费级户外动力外骨骼"
+   ],
+   "proposed": [
+    {
+     "text": "powered exoskeleton",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "exoskeleton robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "exoskeleton suit",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "wearable exoskeleton",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.04",
+   "technology_name": "并联机器人",
+   "existing_aliases": [
+    "delta robot",
+    "parallel manipulator",
+    "parallel robot",
+    "并联机器人",
+    "并联机器人/轻量级高速拾取",
+    "高速并联机器人及工业自动化"
+   ],
+   "proposed": [
+    {
+     "text": "parallel robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "parallel manipulator",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "delta robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.05",
+   "technology_name": "SCARA机器人",
+   "existing_aliases": [
+    "SCARA robot",
+    "SCARA机器人",
+    "Selective Compliance Assembly Robot Arm"
+   ],
+   "proposed": [
+    {
+     "text": "SCARA robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "SCARA",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "Selective Compliance Assembly Robot Arm",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.06",
+   "technology_name": "巡检与物流机器人",
+   "existing_aliases": [
+    "automated guided vehicle",
+    "autonomous mobile robot",
+    "logistics robot",
+    "智能巡检机器人、智能物流机器人（AGV/AMR）"
+   ],
+   "proposed": [
+    {
+     "text": "inspection robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "patrol robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "logistics robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "autonomous mobile robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.07",
+   "technology_name": "服务机器人",
+   "existing_aliases": [
+    "AI具身家庭服务机器人",
+    "service robot",
+    "人形服务机器人",
+    "健康服务机器人",
+    "商用服务机器人",
+    "商用服务机器人及工业柔性智造",
+    "商用服务机器人（迎宾/送餐/配送/清洁/巡检/零售）",
+    "商用服务机器人（配送/消杀/巡检/康养/接待）",
+    "城市服务机器人",
+    "家庭服务机器人",
+    "家用服务机器人/智能生活电器",
+    "庭院服务机器人（扫雪/割草/吹叶模块化机器人）"
+   ],
+   "proposed": [
+    {
+     "text": "service robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "service robotics",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "personal service robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "professional service robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.08",
+   "technology_name": "移动机器人(AMR/AGV)",
+   "existing_aliases": [
+    "AGV",
+    "AMR",
+    "仓储机器人/AMR/具身智能拣选/通用机器人",
+    "充电机器人",
+    "多模态移动机器人",
+    "工业移动机器人(AMR)及智能工厂全流程无人搬运",
+    "工业移动机器人(AMR)及机器视觉",
+    "移动操纵平台",
+    "移动机器人",
+    "自动充电机器人"
+   ],
+   "proposed": [
+    {
+     "text": "automated guided vehicle",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "autonomous mobile robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "mobile robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.03.09",
+   "technology_name": "工业机械臂",
+   "existing_aliases": [
+    "industrial manipulator",
+    "industrial robot arm",
+    "industrial robotic arm",
+    "全场景具身机器人、工业机器人、具身基座模型",
+    "具身智能工业机器人/智能制造",
+    "工业机器人",
+    "工业机器人/数控系统/伺服驱动",
+    "工业机器人专业教学",
+    "工业机器人智能驱控",
+    "工业机器人（全产业链）",
+    "工业机械臂",
+    "智能制造装备、工业机器人、具身智能"
+   ],
+   "proposed": [
+    {
+     "text": "industrial robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic arm",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robot manipulator",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.04.01",
+   "technology_name": "灵巧手传动与驱动",
+   "existing_aliases": [
+    "1X Neo力透明腱绳驱动灵巧手",
+    "1X Neo灵巧手力透明减速比",
+    "dexterous hand actuation",
+    "dexterous hand drive mechanism",
+    "力透明灵巧手范式",
+    "灵巧手/高扭矩密度电机",
+    "链式传动灵巧手",
+    "高自由度灵巧手/一体化关节模组/微型电缸"
+   ],
+   "proposed": [
+    {
+     "text": "dexterous hand transmission",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "tendon-driven actuation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "underactuated hand mechanism",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.04.02",
+   "technology_name": "灵巧手(多指)",
+   "existing_aliases": [
+    "Do-as-I-Do视频到灵巧手链路架构",
+    "Linker Hand O30全直驱灵巧手架构",
+    "Linker Hand O30硬件规格",
+    "Mech-Hand多指灵巧手",
+    "OmniHand 3 Ultra-M直驱全感知灵巧手架构",
+    "TARS DexHand仿生1:1灵巧手架构",
+    "TeleHand混合驱动灵巧手架构",
+    "UniDexTok统一灵巧手分词器架构",
+    "Xynova Flex 2混合驱动灵巧手架构",
+    "Xynova Flex 2硬件规格",
+    "anthropomorphic robot hand",
+    "dexterous multi-fingered hand"
+   ],
+   "proposed": [
+    {
+     "text": "multi-fingered robot hand",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "dexterous hand",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic hand",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.04.03",
+   "technology_name": "末端执行器",
+   "existing_aliases": [
+    "2D末端执行器路径点辅助头",
+    "end effector",
+    "end-effector",
+    "robot end effector",
+    "工业末端执行器",
+    "末端执行器",
+    "机器人末端执行器（电动夹爪/灵巧手/精密力控）"
+   ],
+   "proposed": [
+    {
+     "text": "end-of-arm tooling",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "EOAT",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.04.04",
+   "technology_name": "夹爪",
+   "existing_aliases": [
+    "gripper",
+    "parallel gripper",
+    "robot gripper",
+    "夹爪",
+    "电动夹爪"
+   ],
+   "proposed": [
+    {
+     "text": "robotic gripper",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "two-finger gripper",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "adaptive gripper",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.05.01",
+   "technology_name": "一体化关节模组",
+   "existing_aliases": [
+    "integrated actuator module",
+    "integrated joint actuator",
+    "integrated joint module",
+    "robot joint actuator",
+    "一体化关节",
+    "一体化关节模组",
+    "一体化关节电机",
+    "人形关节模组",
+    "关节动力模组",
+    "关节总成",
+    "关节模块",
+    "关节模组"
+   ],
+   "proposed": [
+    {
+     "text": "integrated joint actuator",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "integrated actuator module",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "integrated joint module",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.05.02",
+   "technology_name": "关节驱动控制",
+   "existing_aliases": [
+    "32维规范全局关节空间映射器",
+    "COSA S0关节角精度",
+    "joint actuation control",
+    "joint drive control",
+    "robot joint control",
+    "关节驱动",
+    "跨本体分词器关节位置误差",
+    "跨本体分词器关节角误差",
+    "遥操作关节位置误差"
+   ],
+   "proposed": [
+    {
+     "text": "joint actuation control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "joint drive control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "joint actuator control",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.05.03",
+   "technology_name": "执行器",
+   "existing_aliases": [
+    "FAAS功能-执行器对齐空间",
+    "FAAS功能-执行器对齐空间方法",
+    "Phoenix执行器",
+    "actuator module",
+    "joint actuator",
+    "执行器",
+    "执行器现实塑造控制器架构",
+    "执行器现实塑造方法",
+    "执行器现实塑造架构"
+   ],
+   "proposed": [
+    {
+     "text": "actuator module",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "joint actuator",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.05.04",
+   "technology_name": "电机与驱动",
+   "existing_aliases": [
+    "BLDC",
+    "FOC",
+    "PMSM",
+    "伺服驱动",
+    "伺服驱动系统",
+    "力矩电机",
+    "微特电机",
+    "微特电机/机器人核心零部件",
+    "无刷电机",
+    "无框力矩电机",
+    "核心电机",
+    "核心电机零部件"
+   ],
+   "proposed": [
+    {
+     "text": "motor drive",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "electric motor drive",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "motor and drive",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.06.01",
+   "technology_name": "谐波减速器",
+   "existing_aliases": [
+    "harmonic drive",
+    "harmonic reducer",
+    "strain wave gear",
+    "谐波减速器",
+    "谐波减速器/关节模组/整机ODM",
+    "谐波减速器/减速器专用轴承/执行器模组/汽车轮毂轴承",
+    "谐波减速机"
+   ],
+   "proposed": [
+    {
+     "text": "harmonic drive",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "harmonic reducer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "strain wave gear",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.06.02",
+   "technology_name": "精密减速器",
+   "existing_aliases": [
+    "precision gear reducer",
+    "precision reducer",
+    "precision speed reducer",
+    "减速器",
+    "机器人高刚性摆线减速器",
+    "精密减速器",
+    "精密减速器/电机/传动设备",
+    "连续球墨铸铁/减速器基材"
+   ],
+   "proposed": [
+    {
+     "text": "precision reducer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "precision gear reducer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "precision speed reducer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.06.03",
+   "technology_name": "行星滚柱丝杠",
+   "existing_aliases": [
+    "planetary roller screw",
+    "planetary roller screw mechanism",
+    "roller screw",
+    "丝杠与传动",
+    "行星滚柱丝杠"
+   ],
+   "proposed": [
+    {
+     "text": "planetary roller screw",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "planetary roller screw mechanism",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "roller screw",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "planetary roller screw assembly",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.06.04",
+   "technology_name": "精密传动",
+   "existing_aliases": [
+    "precision drive",
+    "precision motion transmission",
+    "precision transmission",
+    "机械传动理论与技术",
+    "精密传动",
+    "精密链传动"
+   ],
+   "proposed": [
+    {
+     "text": "precision drive",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "precision motion transmission",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "precision transmission",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "high-precision transmission",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.06.05",
+   "technology_name": "精密轴承",
+   "existing_aliases": [
+    "high-precision bearing",
+    "precision ball bearing",
+    "precision bearing",
+    "精密轴承",
+    "精密轴承/柔性轴承/薄壁精密套圈/交叉滚子轴承"
+   ],
+   "proposed": [
+    {
+     "text": "high-precision bearing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "precision ball bearing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "precision bearing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "ultra-precision bearing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.07.01",
+   "technology_name": "精密结构件",
+   "existing_aliases": [
+    "high-precision structural parts",
+    "precision structural components",
+    "万向节/机器人精密结构件",
+    "结构件与材料"
+   ],
+   "proposed": [
+    {
+     "text": "high-precision structural parts",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "precision structural components",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "precision structural parts",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "high-precision structural components",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.07.02",
+   "technology_name": "轻量化材料",
+   "existing_aliases": [
+    "PEEK架构",
+    "PEEK轻量化材料",
+    "lightweight composites",
+    "lightweight materials",
+    "lightweight structural materials",
+    "智能材料",
+    "机器人轻量化部署"
+   ],
+   "proposed": [
+    {
+     "text": "lightweight composites",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "lightweight materials",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "lightweight structural materials",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "lightweight metal alloys",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "lightweight composite materials",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.08.01",
+   "technology_name": "AI芯片",
+   "existing_aliases": [
+    "AI芯片",
+    "NPU",
+    "SoC设计",
+    "具身智能算力底座/操作系统/端侧计算芯片",
+    "具身智能芯片",
+    "具身智能芯片与计算",
+    "可重构数据流AI芯片",
+    "可重构数据流AI芯片(RPU)",
+    "芯片与算力"
+   ],
+   "proposed": [
+    {
+     "text": "NPU",
+     "needs_context_rule": true,
+     "ambiguity_note": "Can also stand for Network Processing Unit in networking contexts."
+    },
+    {
+     "text": "AI chip",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "AI accelerator",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "deep learning accelerator",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.08.02",
+   "technology_name": "域控制器",
+   "existing_aliases": [
+    "domain control unit",
+    "域控制器"
+   ],
+   "proposed": [
+    {
+     "text": "domain control unit",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "domain controller",
+     "needs_context_rule": true,
+     "ambiguity_note": "In IT, 'domain controller' refers to a server that manages network access."
+    },
+    {
+     "text": "DCU",
+     "needs_context_rule": true,
+     "ambiguity_note": "DCU can also stand for 'Data Center Unit' or 'Display Control Unit'."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.08.03",
+   "technology_name": "嵌入式计算",
+   "existing_aliases": [
+    "BSP",
+    "FreeRTOS",
+    "MCU",
+    "RTOS",
+    "STM32",
+    "交叉编译",
+    "单片机",
+    "实时操作系统",
+    "嵌入式AI",
+    "嵌入式Linux",
+    "嵌入式升级",
+    "嵌入式开发"
+   ],
+   "proposed": [
+    {
+     "text": "embedded computing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "embedded system",
+     "needs_context_rule": true,
+     "ambiguity_note": "Can refer to any computing system embedded within a device, not specifically the computational aspect."
+    },
+    {
+     "text": "embedded processing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T3.08.04",
+   "technology_name": "算力硬件",
+   "existing_aliases": [
+    "AGX Orin",
+    "FPGA",
+    "Jetson",
+    "Orin",
+    "Orin NX",
+    "端侧算力",
+    "计算平台"
+   ],
+   "proposed": [
+    {
+     "text": "computing hardware",
+     "needs_context_rule": true,
+     "ambiguity_note": "Refers to any hardware for computation, not specifically AI accelerators."
+    },
+    {
+     "text": "compute hardware",
+     "needs_context_rule": true,
+     "ambiguity_note": "General term for hardware used for computation, can include CPUs, GPUs, etc."
+    },
+    {
+     "text": "AI hardware",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.01.01",
+   "technology_name": "遥操作数据采集",
+   "existing_aliases": [
+    "CLONE闭环全身遥操作架构",
+    "OmniClone鲁棒全身遥操作架构",
+    "PICO VR全身遥操作系统",
+    "RynnWorld-Teleop数字遥操作帧率",
+    "teleoperated data acquisition",
+    "teleoperation data capture",
+    "teleoperation data collection",
+    "具身智能数据服务/通用遥操作平台/全身动作捕捉/数据管理平台",
+    "异步VR遥操作方法",
+    "机器人遥操作与数据采集",
+    "真机遥操作数据单价",
+    "遥操作"
+   ],
+   "proposed": [
+    {
+     "text": "teleoperated data acquisition",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "teleoperation data capture",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "teleoperation data collection",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.01.02",
+   "technology_name": "数字训练场",
+   "existing_aliases": [
+    "digital training ground",
+    "simulation-based training environment",
+    "virtual training environment",
+    "中原异构人形训练场",
+    "具身训练场",
+    "数字训练场",
+    "数据训练场",
+    "机器人训练场",
+    "训练场"
+   ],
+   "proposed": [
+    {
+     "text": "digital training ground",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "simulation-based training environment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "virtual training environment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.01.03",
+   "technology_name": "数据质量与增强",
+   "existing_aliases": [
+    "4D时序标注方法",
+    "EgoSmith第一人称数据精炼方法",
+    "RoboCurate动作验证数据策展架构",
+    "TREAD三阶段VLM重标注架构",
+    "UMI自动标注管线方法",
+    "data augmentation",
+    "data curation",
+    "data quality enhancement",
+    "主动学习数据选择方法",
+    "动作一致性评分",
+    "拓扑保持数据增强方法",
+    "数据增强与重标注"
+   ],
+   "proposed": [
+    {
+     "text": "data augmentation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "data curation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "data quality enhancement",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.01.04",
+   "technology_name": "数据集",
+   "existing_aliases": [
+    "LeRobot数据集格式标准",
+    "Open X-Embodiment",
+    "RLDS",
+    "具身数据服务",
+    "具身数据集与基准",
+    "具身智能数据集",
+    "数据服务",
+    "数据集",
+    "通用具身数据摄入范式"
+   ],
+   "proposed": [
+    {
+     "text": "embodied AI dataset",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robot manipulation dataset",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotics dataset",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.01.05",
+   "technology_name": "数据采集设备与工具链",
+   "existing_aliases": [
+    "AgiBot World人在环采集架构",
+    "EgoScale人类-机器人迁移架构",
+    "UMI手持数据采集组件",
+    "data acquisition system",
+    "data collection equipment",
+    "data collection platform",
+    "data collection toolchain",
+    "捷径学习诊断与混合动态数据采集方法",
+    "数据采集平台",
+    "数据采集系统",
+    "数据采集设备",
+    "混合动态数据采集方法"
+   ],
+   "proposed": [
+    {
+     "text": "data acquisition system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "data collection platform",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "teleoperation data collection",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic data collection toolchain",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.01.06",
+   "technology_name": "数据管线",
+   "existing_aliases": [
+    "Cosmos数据管线三件套",
+    "OMG-Data物理可行性验证管线",
+    "data pipeline",
+    "data processing pipeline"
+   ],
+   "proposed": [
+    {
+     "text": "data pipeline",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "data processing pipeline",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotics data pipeline",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.02.01",
+   "technology_name": "合成数据",
+   "existing_aliases": [
+    "BiDemoSyn单次演示双臂合成方法",
+    "DECO解耦多模态扩散Transformer架构",
+    "DECO解耦多模态扩散架构",
+    "DeMUSE统一扩散Transformer架构",
+    "DiSPo扩散-SSM策略架构",
+    "Generator扩散生成塔",
+    "HumanoidMimicGen全身运动数据生成方法",
+    "MolmoBot-Engine程序化数据生成架构",
+    "Qwen-RobotManip人类-机器人数据合成架构",
+    "RoboInF五模块合成管线架构",
+    "RoboTwin 2.0 MLLM自动数据生成架构",
+    "RynnWorld-4D三支路4D扩散架构"
+   ],
+   "proposed": [
+    {
+     "text": "synthetic data",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "synthetic data generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "simulated data",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.03.01",
+   "technology_name": "高保真仿真(3DGS)",
+   "existing_aliases": [
+    "3DGS",
+    "3DGS高保真仿真",
+    "高斯泼溅"
+   ],
+   "proposed": [
+    {
+     "text": "3D Gaussian Splatting",
+     "needs_context_rule": true,
+     "ambiguity_note": "Primarily a novel view synthesis technique; in simulation context, it refers to using 3DGS for high-fidelity scene reconstruction."
+    },
+    {
+     "text": "3DGS",
+     "needs_context_rule": true,
+     "ambiguity_note": "Abbreviation of 3D Gaussian Splatting; same ambiguity."
+    },
+    {
+     "text": "Gaussian splatting simulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.03.02",
+   "technology_name": "可微分物理仿真",
+   "existing_aliases": [
+    "Fysics可微物理引擎架构",
+    "Newton多求解器GPU物理引擎架构",
+    "differentiable physics engine",
+    "differentiable physics simulation",
+    "differentiable simulation",
+    "可微分物理仿真",
+    "可微物理引擎"
+   ],
+   "proposed": [
+    {
+     "text": "differentiable physics simulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "differentiable physics engine",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "differentiable simulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.03.03",
+   "technology_name": "数字孪生",
+   "existing_aliases": [
+    "AI算法/物理仿真引擎/异构计算/数字孪生",
+    "digital twin",
+    "digital twin platform",
+    "digital twin simulation",
+    "数字孪生",
+    "物理AI/数字孪生/工业仿真/具身智能",
+    "物理AI仿真系统"
+   ],
+   "proposed": [
+    {
+     "text": "digital twin",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "digital twin platform",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "digital twin simulation",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.03.04",
+   "technology_name": "仿真加速",
+   "existing_aliases": [
+    "Newton 475x仿真加速比",
+    "Newton多求解器统一API组件",
+    "accelerated simulation",
+    "simulation acceleration",
+    "simulation speedup",
+    "仿真加速比"
+   ],
+   "proposed": [
+    {
+     "text": "accelerated simulation",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "simulation acceleration",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "simulation speedup",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.03.05",
+   "technology_name": "仿真平台与工具链",
+   "existing_aliases": [
+    "CoppeliaSim",
+    "DiSPo仿真成功率提升比",
+    "Gazebo",
+    "Isaac Gym",
+    "Isaac Lab",
+    "Isaac Sim",
+    "MuJoCo",
+    "NVIDIA AGILE人形RL工作流",
+    "PyBullet",
+    "SAPIEN",
+    "Webots",
+    "人机视频-仿真-机器人架构"
+   ],
+   "proposed": [
+    {
+     "text": "simulation platform",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "simulation toolchain",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "robotics simulator",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.03.06",
+   "technology_name": "细分方法与技术(其他)",
+   "existing_aliases": [
+    "human-robot data bridging",
+    "human-to-robot data transfer",
+    "人机数据桥接范式"
+   ],
+   "proposed": [
+    {
+     "text": "human-robot data bridging",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "human-to-robot data transfer",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.01",
+   "technology_name": "域随机化",
+   "existing_aliases": [
+    "3DGS域随机化",
+    "MolmoBot全面环境随机化生成组件",
+    "domain randomisation",
+    "domain randomization",
+    "五轴域随机化渲染组件",
+    "域随机化",
+    "域随机化参数调度器",
+    "域随机化范围",
+    "域随机化范围覆盖率",
+    "物理一致性形态随机化方法",
+    "自动域随机化",
+    "课程式域随机化"
+   ],
+   "proposed": [
+    {
+     "text": "domain randomization",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "domain randomisation",
+     "needs_context_rule": false,
+     "ambiguity_note": "British spelling variant; no ambiguity."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.02",
+   "technology_name": "域自适应",
+   "existing_aliases": [
+    "GAN域自适应",
+    "domain adaptation",
+    "域自适应",
+    "域自适应范式",
+    "特征级域自适应"
+   ],
+   "proposed": [
+    {
+     "text": "domain adaptation",
+     "needs_context_rule": false,
+     "ambiguity_note": "No common ambiguity."
+    },
+    {
+     "text": "domain adaptive",
+     "needs_context_rule": false,
+     "ambiguity_note": "Adjective form commonly used in technical phrases."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.03",
+   "technology_name": "策略蒸馏",
+   "existing_aliases": [
+    "policy distillation",
+    "teacher-student policy distillation",
+    "教师-学生策略蒸馏",
+    "教师-学生蒸馏",
+    "教师-学生蒸馏范式"
+   ],
+   "proposed": [
+    {
+     "text": "policy distillation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "teacher-student policy distillation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.04",
+   "technology_name": "系统辨识",
+   "existing_aliases": [
+    "SPI-Active主动系统辨识",
+    "SPiDR架构",
+    "SysID",
+    "system identification",
+    "物理参数校准模块",
+    "系统辨识",
+    "系统辨识范式"
+   ],
+   "proposed": [
+    {
+     "text": "system identification",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "SysID",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.05",
+   "technology_name": "场景重建与解析",
+   "existing_aliases": [
+    "3D scene reconstruction and parsing",
+    "3DGS场景重建器",
+    "VLM+SAM3场景解析管线",
+    "WorldSample成功率提升与训练步数减少率",
+    "WorldSample真实-合成闭环RL架构",
+    "scene reconstruction and parsing",
+    "scene reconstruction and semantic parsing"
+   ],
+   "proposed": [
+    {
+     "text": "scene reconstruction and parsing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "3D scene reconstruction and parsing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "scene reconstruction and semantic parsing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.06",
+   "technology_name": "残差策略",
+   "existing_aliases": [
+    "Object-Centric Residual RL架构",
+    "object-centric residual RL",
+    "residual policy",
+    "residual reinforcement learning",
+    "对象中心残差RL零样成功率",
+    "对象中心残差迁移范式",
+    "残差策略头"
+   ],
+   "proposed": [
+    {
+     "text": "residual policy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "residual reinforcement learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "residual policy learning",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.07",
+   "technology_name": "对抗对齐迁移",
+   "existing_aliases": [
+    "adversarial alignment",
+    "adversarial domain alignment",
+    "gradient reversal layer",
+    "对抗对齐迁移",
+    "对抗对齐迁移范式",
+    "梯度反转层"
+   ],
+   "proposed": [
+    {
+     "text": "adversarial alignment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "adversarial domain alignment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "gradient reversal layer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.08",
+   "technology_name": "真实-合成闭环",
+   "existing_aliases": [
+    "Real-to-Sim-to-Real闭环范式",
+    "closed-loop sim-to-real",
+    "real-sim-real loop",
+    "真实-合成闭环学习",
+    "真实-合成闭环学习范式"
+   ],
+   "proposed": [
+    {
+     "text": "real-to-sim-to-real",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "real-sim-real loop",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "closed-loop sim-to-real",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.09",
+   "technology_name": "跨域不变迁移",
+   "existing_aliases": [
+    "bisimulation-invariant transfer",
+    "domain-invariant transfer",
+    "跨域双模拟不变迁移",
+    "跨域双模拟不变迁移范式"
+   ],
+   "proposed": [
+    {
+     "text": "domain-invariant transfer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "cross-domain invariant transfer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "bisimulation-invariant transfer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.10",
+   "technology_name": "数字表亲",
+   "existing_aliases": [
+    "digital cousin",
+    "digital cousin augmentation",
+    "数字表亲三维度成功率提升",
+    "数字表亲变体增强方法"
+   ],
+   "proposed": [
+    {
+     "text": "digital cousin",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "digital cousin augmentation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "digital cousin approach",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.11",
+   "technology_name": "分割掩码解耦",
+   "existing_aliases": [
+    "decoupled mask transfer",
+    "mask decoupling",
+    "segmentation mask decoupling",
+    "分割掩码解耦迁移",
+    "分割掩码解耦迁移范式"
+   ],
+   "proposed": [
+    {
+     "text": "segmentation mask decoupling",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "mask decoupling",
+     "needs_context_rule": true,
+     "ambiguity_note": "mask can refer to face mask in non-technical contexts"
+    },
+    {
+     "text": "decoupled mask transfer",
+     "needs_context_rule": true,
+     "ambiguity_note": "mask can refer to face mask in non-technical contexts"
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.12",
+   "technology_name": "Sim-to-Real虚实迁移",
+   "existing_aliases": [
+    "BestMan Real-to-Sim-to-Real平台",
+    "Booster Gym零样本运动迁移",
+    "COMPASS架构",
+    "ControlNet掩码条件渲染组件",
+    "DROPO架构",
+    "Fysiverse显式物理+生成式渲染双驱动组件",
+    "GRU双自回归核心",
+    "HyperSim π₀ 95% sim-to-real成功率",
+    "Mask2Real-WM ID/OOD可控度指标",
+    "MolmoBot 79.2%大规模纯仿真零样本成功率",
+    "RAPID三阶段变形物体适应架构",
+    "RAPID变形物体零样成功率"
+   ],
+   "proposed": [
+    {
+     "text": "sim-to-real transfer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "sim-to-real",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "simulation-to-reality transfer",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "sim-to-real domain adaptation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.04.13",
+   "technology_name": "细分方法与技术(其他)",
+   "existing_aliases": [
+    "Pacing Strategy",
+    "Policy Pacing",
+    "策略步调学习方法"
+   ],
+   "proposed": [
+    {
+     "text": "pacing strategy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "policy pacing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "pacing method",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.05.01",
+   "technology_name": "数据质量治理",
+   "existing_aliases": [
+    "Data Quality Discriminator",
+    "Data Quality Governance",
+    "数据质量判别器",
+    "数据质量治理",
+    "数据质量治理范式"
+   ],
+   "proposed": [
+    {
+     "text": "data quality governance",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "data quality discriminator",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "data quality assessment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T4.05.02",
+   "technology_name": "数据标准化",
+   "existing_aliases": [
+    "Data Interoperability",
+    "Data Standardization",
+    "数据标准化与互操作",
+    "数据标准化与互操作范式"
+   ],
+   "proposed": [
+    {
+     "text": "Data Harmonization",
+     "needs_context_rule": false,
+     "ambiguity_note": "Primarily refers to data standardization and integration; rarely used in other senses."
+    },
+    {
+     "text": "Data Normalization",
+     "needs_context_rule": true,
+     "ambiguity_note": "Can also refer to feature scaling in machine learning or database normalization. Context must be data integration/standardization."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.01.01",
+   "technology_name": "ROS",
+   "existing_aliases": [
+    "Kairos 3.0-4B端侧加速比",
+    "Kairos原生统一WM架构",
+    "Kairos参数效率比",
+    "ROS",
+    "ROS 2",
+    "ROS 2 MCap",
+    "ROS2",
+    "nav2",
+    "rclcpp",
+    "rclpy",
+    "ros1",
+    "rosbag"
+   ],
+   "proposed": [
+    {
+     "text": "Robot Operating System",
+     "needs_context_rule": false,
+     "ambiguity_note": "Full name of ROS, specifically the robotics middleware framework."
+    },
+    {
+     "text": "ROS middleware",
+     "needs_context_rule": false,
+     "ambiguity_note": "Specifically refers to the communication middleware aspect of ROS."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.01.02",
+   "technology_name": "机器人操作系统",
+   "existing_aliases": [
+    "Robot Operating System",
+    "具身智能操作系统",
+    "智慧零售操作系统",
+    "机器人操作系统",
+    "类脑操作系统"
+   ],
+   "proposed": [
+    {
+     "text": "robotic operating system",
+     "needs_context_rule": false,
+     "ambiguity_note": "General term for operating systems designed for robots; may sometimes be used interchangeably with ROS but represents the broader concept."
+    },
+    {
+     "text": "robot OS",
+     "needs_context_rule": false,
+     "ambiguity_note": "Abbreviated general term for robot operating systems; could be confused with ROS but is a wider category."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.02.01",
+   "technology_name": "5G与通信网络",
+   "existing_aliases": [
+    "5G-A",
+    "通信与软件系统架构",
+    "通信网络"
+   ],
+   "proposed": [
+    {
+     "text": "5G communication",
+     "needs_context_rule": false,
+     "ambiguity_note": "Specifically refers to fifth-generation mobile communication technology."
+    },
+    {
+     "text": "5G network",
+     "needs_context_rule": false,
+     "ambiguity_note": "Denotes the network infrastructure based on 5G standards."
+    },
+    {
+     "text": "5G NR",
+     "needs_context_rule": false,
+     "ambiguity_note": "5G New Radio; the air interface standard for 5G, unambiguous in telecom context."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.02.02",
+   "technology_name": "实时工业总线",
+   "existing_aliases": [
+    "CAN bus",
+    "CANopen",
+    "CAN总线",
+    "CAN通信",
+    "EtherCAT",
+    "Modbus",
+    "PROFINET",
+    "实时以太网",
+    "工业总线",
+    "现场总线"
+   ],
+   "proposed": [
+    {
+     "text": "fieldbus",
+     "needs_context_rule": false,
+     "ambiguity_note": "Standard industrial network term for real-time distributed control, no common alternative meaning."
+    },
+    {
+     "text": "real-time Ethernet",
+     "needs_context_rule": false,
+     "ambiguity_note": "Refers to industrial Ethernet protocols with real-time capabilities (e.g., EtherCAT, PROFINET IRT)."
+    },
+    {
+     "text": "industrial Ethernet",
+     "needs_context_rule": false,
+     "ambiguity_note": "General term for Ethernet-based industrial communication; may include non-real-time variants but strongly associated with real-time industrial buses."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.02.03",
+   "technology_name": "通信中间件",
+   "existing_aliases": [
+    "CycloneDDS",
+    "DDS",
+    "FastDDS",
+    "MQTT",
+    "Protobuf",
+    "ZeroMQ",
+    "gRPC",
+    "通信中间件"
+   ],
+   "proposed": [
+    {
+     "text": "communication middleware",
+     "needs_context_rule": false,
+     "ambiguity_note": "Broad term for middleware that facilitates communication; in robotics it typically refers to DDS, MQTT, etc."
+    },
+    {
+     "text": "messaging middleware",
+     "needs_context_rule": false,
+     "ambiguity_note": "Middleware focused on message passing, often used interchangeably with communication middleware."
+    },
+    {
+     "text": "data-centric middleware",
+     "needs_context_rule": false,
+     "ambiguity_note": "Emphasizes data distribution, typified by DDS; specific to data-centric communication paradigms."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.03.01",
+   "technology_name": "开发与部署工具链",
+   "existing_aliases": [
+    "AI Development Platform",
+    "AI开发平台",
+    "Development and Deployment Toolchain",
+    "Guided Action Flow冻结策略Critic引导方法",
+    "Guided Action Flow增益",
+    "开发平台"
+   ],
+   "proposed": [
+    {
+     "text": "ML development toolchain",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "AI toolchain",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.03.02",
+   "technology_name": "深度学习训练框架",
+   "existing_aliases": [
+    "Hugging Face",
+    "HuggingFace",
+    "LibTorch",
+    "MindSpore",
+    "PaddlePaddle",
+    "PyTorch",
+    "TensorFlow",
+    "深度学习框架"
+   ],
+   "proposed": [
+    {
+     "text": "deep learning framework",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "neural network training framework",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.03.03",
+   "technology_name": "推理引擎与端侧部署",
+   "existing_aliases": [
+    "ONNX",
+    "ONNX Runtime",
+    "OpenVINO",
+    "RKNN",
+    "TFLite",
+    "TVM",
+    "TensorRT",
+    "ncnn",
+    "推理优化",
+    "推理加速",
+    "推理引擎",
+    "模型部署"
+   ],
+   "proposed": [
+    {
+     "text": "inference engine",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "on-device inference",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "edge inference engine",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.03.04",
+   "technology_name": "模型量化与压缩",
+   "existing_aliases": [
+    "FP16",
+    "FP8",
+    "INT8",
+    "PTQ",
+    "QAT",
+    "模型剪枝",
+    "模型压缩",
+    "模型量化",
+    "知识蒸馏",
+    "训练后量化",
+    "量化感知训练"
+   ],
+   "proposed": [
+    {
+     "text": "model compression",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "network quantization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "model compression and quantization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.03.05",
+   "technology_name": "GPU并行计算与算子优化",
+   "existing_aliases": [
+    "CUDA",
+    "CUTLASS",
+    "GPU加速",
+    "NCCL",
+    "cuDNN",
+    "算子优化",
+    "算子开发"
+   ],
+   "proposed": [
+    {
+     "text": "GPU kernel optimization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "GPU parallel computing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "operator optimization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.03.06",
+   "technology_name": "大模型推理服务与训练加速",
+   "existing_aliases": [
+    "DeepSpeed",
+    "KV Cache",
+    "LMDeploy",
+    "Megatron",
+    "SGLang",
+    "TensorRT-LLM",
+    "vLLM",
+    "分布式训练"
+   ],
+   "proposed": [
+    {
+     "text": "large model inference serving",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "LLM inference optimization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "training acceleration for large models",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.03.07",
+   "technology_name": "视觉与点云算法库",
+   "existing_aliases": [
+    "Ceres",
+    "Eigen",
+    "GTSAM",
+    "Open3D",
+    "OpenCV",
+    "PCL",
+    "g2o"
+   ],
+   "proposed": [
+    {
+     "text": "visual and point cloud processing libraries",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "point cloud and vision libraries",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.03.08",
+   "technology_name": "MLOps与模型生命周期",
+   "existing_aliases": [
+    "DVC",
+    "MLOps",
+    "MLflow",
+    "wandb",
+    "数据版本管理",
+    "模型版本管理"
+   ],
+   "proposed": [
+    {
+     "text": "Machine Learning Operations",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "ML lifecycle management",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "model lifecycle management",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.04.01",
+   "technology_name": "算力基础设施",
+   "existing_aliases": [
+    "AI Computing Infrastructure",
+    "Computing Infrastructure",
+    "云计算/AI算力",
+    "国产GPU代理/AI服务器/智算EPC/算力运营",
+    "算力基础设施",
+    "算力基础设施/AIDC",
+    "算力平台",
+    "通信设备/算力网络"
+   ],
+   "proposed": [
+    {
+     "text": "AI compute infrastructure",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "AI acceleration infrastructure",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "GPU computing infrastructure",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T5.04.02",
+   "technology_name": "云边端协同",
+   "existing_aliases": [
+    "cloud-device-edge collaboration",
+    "cloud-edge collaboration",
+    "cloud-edge-end collaboration",
+    "云边端协同",
+    "云边端虚实融合",
+    "边缘计算"
+   ],
+   "proposed": [
+    {
+     "text": "cloud-edge-device collaboration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "cloud-edge-end collaboration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "device-edge-cloud collaboration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.01.01",
+   "technology_name": "多模态交互",
+   "existing_aliases": [
+    "多模态交互",
+    "多模态情感交互",
+    "多模态情感交互机器人"
+   ],
+   "proposed": [
+    {
+     "text": "multimodal interaction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "multimodal human-robot interaction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "multimodal HRI",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.01.02",
+   "technology_name": "情感交互",
+   "existing_aliases": [
+    "三维感知与情感交互",
+    "仿生情感交互机器人",
+    "情感交互机器人",
+    "自适应性人机情感控制方法",
+    "超高仿生情感交互机器人"
+   ],
+   "proposed": [
+    {
+     "text": "affective interaction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "emotional human-robot interaction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "affective HRI",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.01.03",
+   "technology_name": "人机共融",
+   "existing_aliases": [
+    "人形协作减力比",
+    "人机共融",
+    "人机共融控制",
+    "共融机器人"
+   ],
+   "proposed": [
+    {
+     "text": "human-robot symbiosis",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "human-robot integration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.01.04",
+   "technology_name": "意图预测与信任校准",
+   "existing_aliases": [
+    "CoBel协同信念推理架构",
+    "SayCan语言接地机器人规划架构",
+    "TOCC模糊指令消歧方法",
+    "不确定性感知意图预测方法",
+    "信任校准与透明交互范式",
+    "信任校准偏差",
+    "信念规则构建模块",
+    "双重接地语言指令验证方法",
+    "意图推理与预测范式",
+    "意图监测器模块",
+    "意图预测F1分数",
+    "指令执行成功率"
+   ],
+   "proposed": [
+    {
+     "text": "intent prediction",
+     "needs_context_rule": true,
+     "ambiguity_note": "May also refer to intent prediction in natural language processing or cybersecurity."
+    },
+    {
+     "text": "human intent prediction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "trust calibration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "human-robot trust calibration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.01.05",
+   "technology_name": "提示接地与策略生成",
+   "existing_aliases": [
+    "SOP接地提示模板",
+    "TeNet文本-网络策略架构",
+    "超网络策略生成器"
+   ],
+   "proposed": [
+    {
+     "text": "prompt grounding",
+     "needs_context_rule": true,
+     "ambiguity_note": "Prompt grounding may also refer to a technique in natural language processing for embedding prompts."
+    },
+    {
+     "text": "policy generation from language",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "language-grounded policy generation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.01.06",
+   "technology_name": "人机交互(通用)",
+   "existing_aliases": [
+    "AURA主动机器人辅助架构",
+    "GLOBE不确定性引导主动辅助方法",
+    "HRI",
+    "human-robot collaboration",
+    "human-robot interaction",
+    "人体3D姿态提升模块",
+    "人机交互",
+    "可穿戴人机交互",
+    "物理人机交互",
+    "物理人机交互范式",
+    "社交感知代价图方法",
+    "社交距离违规率"
+   ],
+   "proposed": [
+    {
+     "text": "human-robot interaction",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "human-robot collaboration",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "human-robot teaming",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "HRI",
+     "needs_context_rule": true,
+     "ambiguity_note": "HRI can also stand for High Resolution Imaging in remote sensing."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.02.01",
+   "technology_name": "具身智能安全",
+   "existing_aliases": [
+    "embodied AI safety",
+    "embodied intelligence safety",
+    "safety of embodied agents",
+    "具身智能安全",
+    "具身智能安全质检"
+   ],
+   "proposed": [
+    {
+     "text": "embodied AI safety",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "embodied intelligence safety",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "safety of embodied agents",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "safe embodied AI",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.03.01",
+   "technology_name": "管网检测机器人",
+   "existing_aliases": [
+    "in-pipe inspection robot",
+    "pipeline inspection robot",
+    "sewer inspection robot",
+    "特种机器人（城市地下管网检测/清疏/修复）"
+   ],
+   "proposed": [
+    {
+     "text": "in-pipe inspection robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "pipeline inspection robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "sewer inspection robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "pipe inspection robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.03.02",
+   "technology_name": "工业检测",
+   "existing_aliases": [
+    "industrial inspection",
+    "industrial visual inspection",
+    "工业视觉检测",
+    "智能检测与控制",
+    "航空发动机叶片检测"
+   ],
+   "proposed": [
+    {
+     "text": "automated optical inspection",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "machine vision inspection",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "AOI",
+     "needs_context_rule": false,
+     "ambiguity_note": "widely recognized abbreviation for Automated Optical Inspection in industrial settings"
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.03.03",
+   "technology_name": "标准制定",
+   "existing_aliases": [
+    "2026国标运动性能基准",
+    "standard setting",
+    "standards development",
+    "具身智能标准",
+    "机器人技术研发/检测/标准",
+    "标准制定/政策研究"
+   ],
+   "proposed": [
+    {
+     "text": "standardization",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "technical standards development",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "standards formulation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.03.04",
+   "technology_name": "检测认证",
+   "existing_aliases": [
+    "certification testing",
+    "inspection and certification",
+    "testing and certification",
+    "交互启动检测方法",
+    "具身智能技术认证",
+    "型式试验",
+    "机器人检测认证/CR认证",
+    "检测",
+    "检测标准",
+    "检测认证",
+    "第三方检测",
+    "认证测试"
+   ],
+   "proposed": [
+    {
+     "text": "conformity assessment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "type testing",
+     "needs_context_rule": false,
+     "ambiguity_note": "commonly used for regulatory or certification type approval, e.g., type testing of products"
+    },
+    {
+     "text": "compliance testing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.04.01",
+   "technology_name": "AI安全评测",
+   "existing_aliases": [
+    "AI safety assessment",
+    "AI safety evaluation",
+    "AI safety testing",
+    "AI安全评测"
+   ],
+   "proposed": [
+    {
+     "text": "AI safety benchmarking",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "adversarial testing",
+     "needs_context_rule": false,
+     "ambiguity_note": "refers to robustness evaluation against adversarial inputs, a core part of AI safety assessment"
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T6.04.02",
+   "technology_name": "评测基础设施",
+   "existing_aliases": [
+    "ManipArena真机评测基准",
+    "Physical IQ物智统一评测基准",
+    "RobOmni全模态评测平台",
+    "benchmarking infrastructure",
+    "evaluation infrastructure",
+    "evaluation testbed",
+    "全模态评测消融方法",
+    "具身智能基准测试",
+    "基准测试框架",
+    "物理AI数据与评测基础设施",
+    "评测平台"
+   ],
+   "proposed": [
+    {
+     "text": "evaluation platform",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "benchmarking framework",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "testing infrastructure",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.01",
+   "technology_name": "巡检机器人(工业)",
+   "existing_aliases": [
+    "军工巡检机器人",
+    "巡检机器人",
+    "特种巡检",
+    "电力巡检机器人",
+    "轨道交通巡检机器人"
+   ],
+   "proposed": [
+    {
+     "text": "inspection robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "industrial inspection robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "autonomous inspection robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "patrol robot",
+     "needs_context_rule": true,
+     "ambiguity_note": "can also refer to security patrol robots; in industrial contexts, it typically means inspection patrol robot"
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.02",
+   "technology_name": "打磨抛光机器人",
+   "existing_aliases": [
+    "grinding robot",
+    "polishing robot",
+    "robotic grinding and polishing",
+    "人形打磨机器人",
+    "打磨机器人"
+   ],
+   "proposed": [
+    {
+     "text": "robotic grinding",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic polishing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "grinding and polishing robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.03",
+   "technology_name": "焊接机器人",
+   "existing_aliases": [
+    "robotic welding",
+    "welding automation",
+    "welding robot",
+    "智能焊接解决方案",
+    "激光焊接系统",
+    "焊接机器人",
+    "焊接机器人系统集成",
+    "焊接设备"
+   ],
+   "proposed": [
+    {
+     "text": "robotic welding system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "automated welding robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robot welding",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.04",
+   "technology_name": "汽车制造",
+   "existing_aliases": [
+    "automobile manufacturing",
+    "automotive manufacturing",
+    "vehicle manufacturing",
+    "整车制造",
+    "汽车",
+    "汽车产线",
+    "汽车制造",
+    "汽车智能制造",
+    "汽车热管理",
+    "汽车电子",
+    "汽车零部件/车规级质量体系",
+    "汽车零部件精密制造"
+   ],
+   "proposed": [
+    {
+     "text": "car manufacturing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "automotive production",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "vehicle assembly",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.05",
+   "technology_name": "矿山智能装备",
+   "existing_aliases": [
+    "autonomous mining systems",
+    "intelligent mining equipment",
+    "smart mining machinery",
+    "矿山智能装备"
+   ],
+   "proposed": [
+    {
+     "text": "intelligent mining machinery",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "autonomous mining equipment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "smart mining systems",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.06",
+   "technology_name": "核工业装备",
+   "existing_aliases": [
+    "nuclear decommissioning robots",
+    "nuclear remote handling systems",
+    "nuclear robotics",
+    "核工业特种机器人及智能装备"
+   ],
+   "proposed": [
+    {
+     "text": "nuclear remote handling robots",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "nuclear decommissioning systems",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "nuclear facility robots",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.07",
+   "technology_name": "军工装备",
+   "existing_aliases": [
+    "defense robotics",
+    "military unmanned systems",
+    "unmanned military vehicles",
+    "军工无人系统"
+   ],
+   "proposed": [
+    {
+     "text": "military robotics",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "defense unmanned systems",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "military robots",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.08",
+   "technology_name": "智能制造与工业自动化",
+   "existing_aliases": [
+    "Industry 4.0",
+    "industrial automation",
+    "intelligent manufacturing",
+    "smart manufacturing",
+    "人工智能工厂",
+    "工业互联网/智能制造",
+    "工业互联网平台",
+    "工业自动化",
+    "工业自动化巨头",
+    "工业解决方案",
+    "整机制造/产线",
+    "智能制造"
+   ],
+   "proposed": [
+    {
+     "text": "smart factory",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "industrial internet of things",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "IIoT",
+     "needs_context_rule": false,
+     "ambiguity_note": "Abbreviation for Industrial Internet of Things, unambiguous in industrial context."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.09",
+   "technology_name": "智能装备",
+   "existing_aliases": [
+    "intelligent equipment",
+    "intelligent machines",
+    "smart machinery",
+    "仿生智能装备",
+    "具身智能装备控制",
+    "智能装备",
+    "智能装备/机器人",
+    "智能装备产品",
+    "智能装备制造",
+    "智能装备设计与应用"
+   ],
+   "proposed": [
+    {
+     "text": "intelligent manufacturing equipment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "smart manufacturing equipment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "smart equipment",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.01.10",
+   "technology_name": "半导体制造",
+   "existing_aliases": [
+    "chip manufacturing",
+    "semiconductor fabrication",
+    "semiconductor manufacturing",
+    "半导体显示/面板制造"
+   ],
+   "proposed": [
+    {
+     "text": "wafer manufacturing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "IC manufacturing",
+     "needs_context_rule": false,
+     "ambiguity_note": "IC stands for integrated circuit, unambiguous in semiconductor context."
+    },
+    {
+     "text": "integrated circuit manufacturing",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.02.01",
+   "technology_name": "无人叉车",
+   "existing_aliases": [
+    "automated forklift",
+    "autonomous forklift",
+    "driverless forklift",
+    "冷链物流无人叉车/智能仓储"
+   ],
+   "proposed": [
+    {
+     "text": "robotic forklift",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "AGV forklift",
+     "needs_context_rule": false,
+     "ambiguity_note": "AGV stands for Automated Guided Vehicle, unambiguous in logistics context."
+    },
+    {
+     "text": "self-driving forklift",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.02.02",
+   "technology_name": "智能仓储",
+   "existing_aliases": [
+    "automated warehouse",
+    "intelligent warehouse",
+    "smart warehouse",
+    "仓储机器人",
+    "仓储物流",
+    "仓储物流拣选具身智能机器人(轮式双臂)",
+    "仓储自动化",
+    "智能仓储",
+    "智能仓储物流机器人（APR托盘机器人）",
+    "物流仓储方案",
+    "箱式仓储机器人(ACR)及智慧仓储系统"
+   ],
+   "proposed": [
+    {
+     "text": "warehouse automation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "automated storage and retrieval system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "AS/RS",
+     "needs_context_rule": false,
+     "ambiguity_note": "Abbreviation for Automated Storage and Retrieval System, standard in warehousing."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.02.03",
+   "technology_name": "智能分拣",
+   "existing_aliases": [
+    "automated sortation",
+    "intelligent sortation",
+    "分拣机器人",
+    "工业物流/智能分拣",
+    "智能分拣",
+    "物流分拣机器人"
+   ],
+   "proposed": [
+    {
+     "text": "smart sortation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "automated sorting system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "sortation robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.02.04",
+   "technology_name": "物流配送机器人",
+   "existing_aliases": [
+    "autonomous delivery robot",
+    "delivery robot",
+    "last-mile delivery robot",
+    "配送机器人"
+   ],
+   "proposed": [
+    {
+     "text": "autonomous delivery robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "delivery robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "last-mile delivery robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "courier robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.02.05",
+   "technology_name": "智慧物流",
+   "existing_aliases": [
+    "COLA人-人形协同搬运架构",
+    "Logistics 4.0",
+    "intelligent logistics",
+    "smart logistics",
+    "智慧物流",
+    "智能物流装备"
+   ],
+   "proposed": [
+    {
+     "text": "Logistics 4.0",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "intelligent logistics",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "smart logistics",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "intelligent logistics system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.02.06",
+   "technology_name": "非红色供应链",
+   "existing_aliases": [
+    "China-free supply chain",
+    "non-China supply chain",
+    "non-red supply chain"
+   ],
+   "proposed": [
+    {
+     "text": "China-free supply chain",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "non-China supply chain",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "non-red supply chain",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "China-excluded supply chain",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.03.01",
+   "technology_name": "清洁机器人",
+   "existing_aliases": [
+    "autonomous cleaning robot",
+    "cleaning robot",
+    "robotic cleaner",
+    "商用清洁机器人（全球领先）",
+    "室外智能清洁机器人（泳池清洁/割草/扫雪）",
+    "智能泳池清洁机器人",
+    "智能清洁机器人/具身智能",
+    "智能清洁机器人（扫地机/洗地机/吸尘器/吹风机）",
+    "智能清洁机器人（高空幕墙/光伏面板/家用擦窗）",
+    "水下清洁机器人 / 泳池清洁机器人 / 消费级水中智能产品",
+    "泳池清洁机器人及全水域智能设备",
+    "清洁机器人"
+   ],
+   "proposed": [
+    {
+     "text": "autonomous cleaning robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "cleaning robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic cleaner",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "automated cleaning robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.03.02",
+   "technology_name": "零售与营销机器人",
+   "existing_aliases": [
+    "retail robot",
+    "retail service robot",
+    "robotic retail assistant",
+    "人格化营销机器人",
+    "具身智能机器人(商服/零售/教育)",
+    "具身零售",
+    "具身零售解决方案",
+    "零售物理OS"
+   ],
+   "proposed": [
+    {
+     "text": "retail robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "retail service robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic retail assistant",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "retail assistant robot",
+     "needs_context_rule": true,
+     "ambiguity_note": "May also refer to software-based virtual assistants in retail."
+    },
+    {
+     "text": "retail marketing robot",
+     "needs_context_rule": true,
+     "ambiguity_note": "Marketing robot can be misinterpreted as an automated marketing software bot, not necessarily a physical robot."
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.03.03",
+   "technology_name": "商用服务机器人",
+   "existing_aliases": [
+    "autonomous service robot",
+    "business service robot",
+    "commercial service robot",
+    "商业服务",
+    "服务智能体/酒店机器人/HDOS平台"
+   ],
+   "proposed": [
+    {
+     "text": "autonomous service robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "business service robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "commercial service robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "enterprise service robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.04.01",
+   "technology_name": "手术机器人",
+   "existing_aliases": [
+    "robotic surgical system",
+    "surgical robot",
+    "surgical robotic system",
+    "具身智能手术机器人",
+    "单孔腔镜手术机器人",
+    "手术机器人",
+    "手术机器人 / 腔镜手术机器人",
+    "智能医疗手术机器人",
+    "腹腔镜手术机器人/微创手术机器人/医疗机器人",
+    "骨科手术机器人/医疗机器人"
+   ],
+   "proposed": [
+    {
+     "text": "surgical robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic surgical system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robot-assisted surgery",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "surgery robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.04.02",
+   "technology_name": "康复机器人",
+   "existing_aliases": [
+    "assistive rehabilitation robot",
+    "rehabilitation robot",
+    "robotic rehabilitation system",
+    "医疗康复机器人",
+    "康养机器人/康复机器人/养老照护机器人",
+    "康复具身机器人",
+    "康复机器人",
+    "脑机接口/智能假肢/康复机器人"
+   ],
+   "proposed": [
+    {
+     "text": "rehabilitation robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robot-assisted rehabilitation",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "rehab robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "rehabilitation exoskeleton",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.04.03",
+   "technology_name": "康养陪护机器人",
+   "existing_aliases": [
+    "care robot",
+    "socially assistive robot",
+    "具身智能机器人(康护/陪护/理疗/医疗)",
+    "金融科技/具身智能养老机器人"
+   ],
+   "proposed": [
+    {
+     "text": "care robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "socially assistive robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "companion robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "elderly care robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.04.04",
+   "technology_name": "医疗机器人(通用)",
+   "existing_aliases": [
+    "healthcare robot",
+    "medical robot",
+    "medical robotics",
+    "具身智能机器人（人形/轮式复合人形/教育/医疗机器人）",
+    "医疗具身智能",
+    "医疗机器人"
+   ],
+   "proposed": [
+    {
+     "text": "medical robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "healthcare robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "clinical robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "medical robotic system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.05.01",
+   "technology_name": "农业机器人",
+   "existing_aliases": [
+    "agricultural robot",
+    "agrobot",
+    "farming robot",
+    "农业智能装备/特种机器人",
+    "农业机器人"
+   ],
+   "proposed": [
+    {
+     "text": "agricultural robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "agrobot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "farming robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "agri-robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.06.01",
+   "technology_name": "水下机器人",
+   "existing_aliases": [
+    "autonomous underwater vehicle",
+    "remotely operated vehicle",
+    "underwater robot",
+    "水下具身智能",
+    "水下机器人",
+    "水下机器人（仿生/观测/作业/特种/教育/消费级全谱系）",
+    "水下特种机器人/船舶清洗机器人"
+   ],
+   "proposed": [
+    {
+     "text": "AUV",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "ROV",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "underwater robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "unmanned underwater vehicle",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.06.02",
+   "technology_name": "矿山机器人",
+   "existing_aliases": [
+    "mine robot",
+    "mining robot",
+    "robotic mining",
+    "新能源宽体自卸车/零碳矿山",
+    "矿山工程建设/露天采剥/无人驾驶矿卡运营",
+    "矿山智能化",
+    "矿山机器人",
+    "矿山特种机器人"
+   ],
+   "proposed": [
+    {
+     "text": "mine robot",
+     "needs_context_rule": true,
+     "ambiguity_note": "May refer to military robots for landmine clearance."
+    },
+    {
+     "text": "mining robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic mining",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.06.03",
+   "technology_name": "防爆机器人",
+   "existing_aliases": [
+    "explosion-proof robot",
+    "explosion-protected robot",
+    "防爆机器人"
+   ],
+   "proposed": [
+    {
+     "text": "explosion-proof robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "explosion-protected robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.06.04",
+   "technology_name": "工业智能运维",
+   "existing_aliases": [
+    "maintenance robot",
+    "robotic maintenance system",
+    "工业智能运维机器人(电力/油气/冶金/矿山)"
+   ],
+   "proposed": [
+    {
+     "text": "maintenance robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic maintenance system",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "industrial maintenance robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.06.05",
+   "technology_name": "空间智能与空间机器人",
+   "existing_aliases": [
+    "space robotics",
+    "spatial intelligence",
+    "城市空间智能与具身智能",
+    "空间智能",
+    "空间智能感知范式",
+    "空间机器人"
+   ],
+   "proposed": [
+    {
+     "text": "space robotics",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "spatial intelligence",
+     "needs_context_rule": true,
+     "ambiguity_note": "Also refers to the capacity for spatial reasoning in cognitive science and psychology."
+    },
+    {
+     "text": "space robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "spatial AI",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.06.06",
+   "technology_name": "特种机器人(通用)",
+   "existing_aliases": [
+    "special-purpose robot",
+    "specialized robot",
+    "特种机器人",
+    "特种机器人及核心部件"
+   ],
+   "proposed": [
+    {
+     "text": "special-purpose robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "specialized robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.07.01",
+   "technology_name": "家庭机器人",
+   "existing_aliases": [
+    "home robot",
+    "household robot",
+    "具身智能家庭机器人",
+    "家庭机器人",
+    "家庭陪伴具身智能机器人",
+    "家用陪伴机器人",
+    "智慧厨房/家庭服务",
+    "智慧厨房/家庭机器人",
+    "消费级家庭具身"
+   ],
+   "proposed": [
+    {
+     "text": "home robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "household robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "domestic robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.07.02",
+   "technology_name": "陪伴机器人",
+   "existing_aliases": [
+    "具身角色智能/情感陪伴机器人",
+    "陪伴机器人"
+   ],
+   "proposed": [
+    {
+     "text": "companion robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "social companion robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.07.03",
+   "technology_name": "教育机器人",
+   "existing_aliases": [
+    "AI教育",
+    "education robot",
+    "educational robot",
+    "教育机器人",
+    "消费级变形机器人、AI潮玩机器人、编程教育机器人",
+    "职业教育",
+    "青少年AI教育机器人"
+   ],
+   "proposed": [
+    {
+     "text": "educational robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "education robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robot tutor",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.07.04",
+   "technology_name": "助行机器人",
+   "existing_aliases": [
+    "assistive walking robot",
+    "walking assistive robot",
+    "消费助行"
+   ],
+   "proposed": [
+    {
+     "text": "walking assistive robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "assistive walking robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "robotic walker",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.07.05",
+   "technology_name": "消费级机器人(通用)",
+   "existing_aliases": [
+    "consumer robot",
+    "consumer robotics",
+    "consumer-grade robot",
+    "消费级具身智能",
+    "消费级可变形个人机器人",
+    "消费级机器人",
+    "消费级机器人/摄影跟拍机器人/消费级具身智能",
+    "消费级桌面五轴CNC数控机床"
+   ],
+   "proposed": [
+    {
+     "text": "consumer robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "home robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "personal robot",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.08.01",
+   "technology_name": "无人机",
+   "existing_aliases": [
+    "UAV",
+    "quadcopter",
+    "unmanned aerial vehicle",
+    "工业无人机/低空经济",
+    "无人机",
+    "无人机VLN",
+    "无人机自主控制"
+   ],
+   "proposed": [
+    {
+     "text": "drone",
+     "needs_context_rule": true,
+     "ambiguity_note": "Drone can also refer to a male bee or a low continuous humming sound."
+    },
+    {
+     "text": "UAV",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "quadcopter",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "unmanned aerial vehicle",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.08.02",
+   "technology_name": "eVTOL飞行器",
+   "existing_aliases": [
+    "eVTOL",
+    "eVTOL飞行器"
+   ],
+   "proposed": [
+    {
+     "text": "eVTOL",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "electric VTOL",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "electric vertical take-off and landing aircraft",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.08.03",
+   "technology_name": "低空经济",
+   "existing_aliases": [
+    "low altitude economy",
+    "low-altitude economy",
+    "低空",
+    "低空具身",
+    "低空无人系统",
+    "低空经济"
+   ],
+   "proposed": [
+    {
+     "text": "low-altitude aviation economy",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  },
+  {
+   "technology_code": "T7.08.04",
+   "technology_name": "飞行器(通用)",
+   "existing_aliases": [
+    "aerial vehicle",
+    "aircraft",
+    "flying vehicle",
+    "飞行器"
+   ],
+   "proposed": [
+    {
+     "text": "air vehicle",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    },
+    {
+     "text": "flight vehicle",
+     "needs_context_rule": false,
+     "ambiguity_note": null
+    }
+   ],
+   "review_status": "pending",
+   "review_notes": null
+  }
+ ]
+}
