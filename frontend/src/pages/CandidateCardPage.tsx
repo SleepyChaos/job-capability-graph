@@ -19,6 +19,7 @@ import {
   workflowStatusLabels,
   type CandidateDetail,
   type CandidateForesight,
+  type NearestRoleCard,
 } from '../api/discovery'
 import { Panel, StatusTag } from '../components/ui'
 import type { PageId } from '../types'
@@ -115,6 +116,7 @@ export function CandidateCardPage({
   const required = candidate.technologies.filter((item) => item.requirement_type === 'required')
   const bonus = candidate.technologies.filter((item) => item.requirement_type !== 'required')
   const isLlmNamed = expression.generation_method === 'llm_expression'
+  const nearest = (card?.nearest_role ?? null) as NearestRoleCard | null
 
   return (
     <div className="page candidate-card-page">
@@ -314,8 +316,24 @@ export function CandidateCardPage({
           <Panel title="证据来源" subtitle={`${Number(card?.job_count ?? 0)} 份真实 JD 支撑`}>
             <dl className="evidence-grid">
               <div>
-                <dt>最邻近岗位覆盖率</dt>
-                <dd>{Number(card?.nearest_role_overlap ?? 0).toFixed(2)}</dd>
+                <dt>最邻近既有岗位</dt>
+                <dd className="nearest-role-name">{nearest?.role_name ?? '无可比岗位'}</dd>
+              </div>
+              <div>
+                {/*
+                  两个数字缺一不可：覆盖率说候选有没有既有岗位覆盖不了的能力，
+                  Jaccard 说候选是整个岗位还是它的一块。只看覆盖率会随岗位库
+                  增长饱和到 1.0——实测画像从 448 涨到 676 时正是如此。
+                */}
+                <dt>覆盖率 / 范围重合</dt>
+                <dd>
+                  {(nearest?.coverage ?? 0).toFixed(2)} / {(nearest?.jaccard ?? 0).toFixed(2)}
+                  {nearest ? (
+                    <span className="nearest-role-shape">
+                      共有 {nearest.shared_technology_count} 项，对方共 {nearest.role_technology_count} 项
+                    </span>
+                  ) : null}
+                </dd>
               </div>
               <div>
                 <dt>学术—产业落差</dt>

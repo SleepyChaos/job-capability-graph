@@ -653,3 +653,5 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .foresight-foundation p { color: #40607f; }
 .foresight-window p { color: #6b5417; }
 .foresight-window p strong { display: inline; font-size: inherit; color: #6b5417; }
+.nearest-role-name { font-size: 11px !important; line-height: 1.5; }
+.nearest-role-shape { display: block; margin-top: 4px; color: var(--muted); font-size: 8.5px; font-weight: 400; }

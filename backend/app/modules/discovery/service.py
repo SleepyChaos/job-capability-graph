@@ -81,10 +81,13 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 #       核心层仍单独保留，身份、去重键与覆盖率测量不变。同时把支撑 JD 数下沉为列。
 logger = logging.getLogger(__name__)
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_13"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_14"
 # 覆盖率分档阈值。与 tools/experiment_measure_ablation.py 保持同一口径。
 EXISTING_ROLE_COVERAGE = 0.75
 ROLE_EVOLUTION_COVERAGE = 0.45
+# 候选至少要占到最近岗位能力集的这个比例，才算「就是那个岗位」而不是它的一个片段。
+# 候选被完全包含时 Jaccard 恰等于 |候选| / |岗位|，所以这个阈值可直接读作规模占比。
+ROLE_SCOPE_JACCARD = 0.5
 
 # 已成为正式岗位、已并入既有岗位或已被驳回的候选不再重复提出。
 TERMINAL_CANDIDATE_STATUSES = frozenset({"approved", "merged", "rejected"})
@@ -425,7 +428,7 @@ def apply_candidate_expression(
     return candidate
 
 
-EXPRESSION_PROMPT_VERSION = "candidate_expression_v4_domain_guarded"
+EXPRESSION_PROMPT_VERSION = "candidate_expression_v5_fields_are_about_the_role"
 
 
 def auto_candidate_expression(db: Session, *, candidate_code: str) -> EmergingRoleCandidate:
@@ -529,6 +532,9 @@ def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | N
             "nearest_role_overlap": card.get("nearest_role_overlap"),
         },
         "representative_task_text": card.get("task_text"),
+        # 最邻近的既有岗位。没有它，「与既有岗位的差异」这一字段无从写起——
+        # 此前只给了一个覆盖率数字，模型没有可比的对象，只能去谈命名本身。
+        "nearest_existing_role": card.get("nearest_role"),
         "field_reliability": {
             "technologies": "high",
             "evidence": "high",
@@ -554,8 +560,17 @@ def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | N
         "4. representative_task_text 是原始 JD 职责摘录，可能含切分错误或残缺句；"
         "可提炼其语义，但不得把其中出现的公司名、平台名当作岗位职责。\n"
         "5. 若可用事实不足以支撑某个字段，写明证据不足，不要编造。\n"
-        "输出 JSON，包含键：proposed_name、one_line_definition、"
-        "core_responsibilities（数组）、formation_reason、difference_explanation。"
+        "输出 JSON，五个键的含义如下，**都在写这个岗位本身，不要写你的命名过程**：\n"
+        "- proposed_name：岗位名称，见上文命名任务。\n"
+        "- one_line_definition：一句话说明这个岗位做什么。\n"
+        "- core_responsibilities：核心职责数组，从代表性职责与技术组合提炼。\n"
+        "- formation_reason：**这个岗位为什么会在市场上形成**。依据证据事实作答——"
+        "多少家企业在招、多少份 JD 支撑、这组技术为什么会被同一个职位同时要求。"
+        "不要解释名称是怎么取的。\n"
+        "- difference_explanation：**与 nearest_existing_role 给出的那个既有岗位"
+        "相比，这个岗位差在哪**。围绕职责范围与能力构成作答，可引用其名称与共有/"
+        "独有的能力数量。若 nearest_existing_role 为空，写明没有可比的既有岗位。"
+        "不要比较名称的写法。"
     )
     result = generate(
         system_prompt=system_prompt,
@@ -1085,35 +1100,56 @@ def _l2_job_demand(db: Session, parse_run_id: int) -> dict[str, int]:
 
 
 def _classify_candidate(
-    overlap: float, foresight_block: dict, maturity_stage: str
+    nearest: "_NearestRole", foresight_block: dict, maturity_stage: str
 ) -> str:
-    """把候选归入四类之一。
+    """把候选归入四类之一，用**覆盖率与 Jaccard 两个轴**。
 
-    覆盖率高的两档不变：`existing_role`（已被既有岗位覆盖）与 `role_evolution`
-    （部分覆盖，更像既有岗位的能力扩展）。覆盖率低的那一档此前只有
-    `potential_new_role` 一个出口，实际混着性质完全不同的两种东西：
+    单用非对称覆盖率不成立：它在所有岗位画像上取最大值，加画像只会让它升不会降。
+    实测岗位画像从 448 涨到 676 之后，100 个候选的覆盖率全部到 1.0，四个分类塌成
+    一个。候选只有 2–3 个技术、岗位画像有 4–8 个，库一密集就必然饱和。
 
-    - **库缺失**：能力组合早已成熟、市场上大量在招，只是我们的岗位库里没有收录。
-      实测里评分最高的几个「潜在新岗位」是电机与驱动工程师（51 份 JD、23 家企业）、
-      嵌入式计算工程师、智能制造与工业自动化工程师——都是存在了几十年的岗位。
-      把它们叫「潜在新岗位」是错的，但**发现它们本身是有价值的**：这正说明推演在
-      历史回测意义上有效，能指出岗位库的缺口。对应的动作是**补录**。
-    - **真·潜在新岗位**：能力组合所依托的技术方向里，至少有一个还没跨过岗位化
-      门槛——组合之所以罕见，是因为它赖以成立的技术本身还没成为招聘常态。
-      对应的动作是**新增岗位定义**。
+    第二个轴解决的正是这件事。候选被完全包含时 Jaccard = |候选| / |岗位|，
+    也就是候选占了这个岗位能力集的多大比例。于是两个轴各管一件事：
 
-    两者的判据完全复用已有口径，不新造阈值：技术方向是否跨过门槛来自前瞻模块
-    （θ = 0.35，设定值），支撑量是否成熟直接用合取门控算出的成熟档。
+    - **覆盖率**：候选有没有既有岗位覆盖不了的能力。低 → 有新东西。
+    - **Jaccard**：候选是不是这个岗位的**全部**，还是只占其中一小块。
+
+    ROLE_SCOPE_JACCARD = 0.5 的含义是「候选至少要占到最近岗位能力集的一半」，
+    这不是拟合出来的阈值而是一个可解释的口径：占不到一半说明候选只是那个岗位的
+    一个片段，把它判成「就是那个岗位」是错的，它属于岗位能力的局部演化。
     """
-    if overlap >= EXISTING_ROLE_COVERAGE:
-        return "existing_role"
-    if overlap >= ROLE_EVOLUTION_COVERAGE:
+    if nearest.coverage >= EXISTING_ROLE_COVERAGE:
+        # 能力全被吸收，再看范围：占了大半才算同一岗位，否则只是它的一个片段。
+        return "existing_role" if nearest.jaccard >= ROLE_SCOPE_JACCARD else "role_evolution"
+    if nearest.coverage >= ROLE_EVOLUTION_COVERAGE:
         return "role_evolution"
     directions = foresight_block.get("directions") or []
     all_crossed = bool(directions) and all(item["crossed"] for item in directions)
     if all_crossed and maturity_stage != "potential":
         return "library_gap"
     return "potential_new_role"
+
+
+def _nearest_role_card(db: Session, nearest: "_NearestRole") -> dict | None:
+    """最邻近岗位的可读信息。
+
+    此前机械卡里只有一个 `nearest_role_overlap` 数字，既没有岗位名也没有它的能力
+    清单——前端无从展示「跟谁比」，LLM 写「与既有岗位的差异」时也没有可比的对象，
+    结果只能去谈命名本身。
+    """
+    if nearest.role_id is None:
+        return None
+    role = db.get(JobRole, nearest.role_id)
+    if role is None:
+        return None
+    return {
+        "role_code": role.role_code,
+        "role_name": role.canonical_name,
+        "coverage": round(nearest.coverage, 3),
+        "jaccard": round(nearest.jaccard, 3),
+        "role_technology_count": nearest.role_technology_count,
+        "shared_technology_count": nearest.shared_technology_count,
+    }
 
 
 def _candidate_foresight(
@@ -1530,20 +1566,22 @@ def _persist_candidate(
         application_evidence_count=application_count,
     )
     scored = score_candidate(signals)
-    nearest_role_id, overlap = _nearest_role(
+    nearest = _nearest_role(
         db,
         technology_ids,
         run.target_date,
         min_role_technology_count=min_role_technology_count,
         excluded_role_ids=excluded_role_ids,
     )
+    nearest_role_id, overlap = nearest.role_id, nearest.coverage
+    nearest_role_card = _nearest_role_card(db, nearest)
     foresight_block = _candidate_foresight(
         tuple(item.technology_code for item in technologies),
         foresight,
         job_demand,
         run.target_date,
     )
-    classification = _classify_candidate(overlap, foresight_block, scored.maturity_stage)
+    classification = _classify_candidate(nearest, foresight_block, scored.maturity_stage)
     mechanical = {
         "fact_schema_version": "mechanical_role_card_v2",
         "task_text": task.normalized_task_text,
@@ -1565,6 +1603,7 @@ def _persist_candidate(
         "maturity_raw": raw_maturity,
         "task_gap": float(task.task_gap_score),
         "nearest_role_overlap": overlap,
+        "nearest_role": nearest_role_card,
         # 先验估计，非本项目观测值：JD 侧尚无跨月真实采集，无法自行估计时滞。
         "expected_transmission_lag": estimate_transmission_lag(
             tuple(item.technology_code.split(".")[0] for item in technologies)
@@ -2105,6 +2144,19 @@ def _role_capability_profiles(
     return profiles
 
 
+@dataclass(frozen=True)
+class _NearestRole:
+    """候选与最邻近既有岗位的比对结果。"""
+
+    role_id: int | None
+    coverage: float
+    """非对称覆盖率 |候选∩岗位| / |候选|：候选的能力有多少已被该岗位吸收。"""
+    jaccard: float
+    """对称 Jaccard |候选∩岗位| / |候选∪岗位|：两者的范围有多接近。"""
+    role_technology_count: int
+    shared_technology_count: int
+
+
 def _nearest_role(
     db: Session,
     technology_ids: tuple[int, ...],
@@ -2112,13 +2164,21 @@ def _nearest_role(
     *,
     min_role_technology_count: int = 2,
     excluded_role_ids: frozenset[int] = frozenset(),
-) -> tuple[int | None, float]:
-    """候选技术组合被既有岗位覆盖的程度。
+) -> _NearestRole:
+    """找出与候选最接近的既有岗位，并同时给出两种度量。
 
-    使用非对称覆盖率 |候选∩岗位| / |候选| 而非 Jaccard。所问的问题是"候选的能力
-    有多少已被既有岗位吸收"，与岗位自身还要求多少额外能力无关；Jaccard 会因岗位
-    技术词更多而错误地压低覆盖率——候选 {A,B} 面对要求 {A,B,C,D} 的岗位实际已被
-    完全覆盖，Jaccard 却只有 0.5。
+    **为什么两个都要。** 非对称覆盖率回答「候选的能力有没有新东西」，Jaccard 回答
+    「两者是不是同一个范围的岗位」，缺一不可：
+
+    - 覆盖率单独用会随岗位库增长而饱和。它在所有画像上取最大值，加画像只会让它升、
+      不会降——这是单调的。实测岗位画像从 448 涨到 676 之后，100 个候选里 100 个
+      覆盖率都到了 1.0，分类彻底失去区分度。
+    - 候选被完全包含时，Jaccard 恰好等于 |候选| / |岗位|，也就是**候选占了这个
+      岗位能力集的多大比例**。两个技术的候选落在七个技术的岗位里，覆盖率满分，
+      但 Jaccard 只有 0.29——它是那个岗位的一个片段，不是那个岗位。
+
+    分档因此改为二维（见 `_classify_candidate`）：覆盖率决定「有没有新能力」，
+    Jaccard 决定「是整个岗位还是岗位的一部分」。
     """
     target = set(
         db.scalars(
@@ -2128,20 +2188,23 @@ def _nearest_role(
         )
     )
     if not target:
-        return None, 0.0
-    best_role_id = None
-    best_overlap = 0.0
+        return _NearestRole(None, 0.0, 0.0, 0, 0)
+    best = _NearestRole(None, 0.0, 0.0, 0, 0)
     for role_id, role_tech in _role_capability_profiles(
         db,
         target_date,
         min_technology_count=min_role_technology_count,
         excluded_role_ids=excluded_role_ids,
     ):
-        overlap = len(target & role_tech) / len(target)
-        if overlap > best_overlap:
-            best_role_id = role_id
-            best_overlap = overlap
-    return best_role_id, best_overlap
+        shared = len(target & role_tech)
+        coverage = shared / len(target)
+        union = len(target | role_tech)
+        jaccard = shared / union if union else 0.0
+        # 先比覆盖率，覆盖率相同时取范围更贴近的那个岗位——否则同为「完全包含」的
+        # 候选会随机匹配到一个巨大的岗位上，差异说明也就无从谈起。
+        if (coverage, jaccard) > (best.coverage, best.jaccard):
+            best = _NearestRole(role_id, coverage, jaccard, len(role_tech), shared)
+    return best
 
 
 def _existing_role_coverage(
@@ -2158,7 +2221,7 @@ def _existing_role_coverage(
         target_date,
         min_role_technology_count=min_role_technology_count,
         excluded_role_ids=excluded_role_ids,
-    )[1]
+    ).coverage
 
 
 # 招聘平台注入到 JD 正文里的导航与自荐语，不是岗位职责。

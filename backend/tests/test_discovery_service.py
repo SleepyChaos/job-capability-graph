@@ -262,28 +262,29 @@ def test_existing_role_coverage_is_asymmetric_and_ignores_thin_roles() -> None:
 
         # 候选 {1,2} 完全落在宽岗位的 {1,2,3,4} 内 -> 已被完全覆盖。
         # Jaccard 会给 2/4=0.5，非对称覆盖率给 1.0。
-        role_id, overlap = _nearest_role(session, (1, 2), date(2026, 8, 10))
+        nearest = _nearest_role(session, (1, 2), date(2026, 8, 10))
+        role_id, overlap = nearest.role_id, nearest.coverage
         assert overlap == 1.0
         assert role_id == role_ids["宽岗位"]
 
         # 只有单技术词岗位可比时，该岗位应被排除，覆盖率归零。
-        _, thin_only = _nearest_role(
+        thin_only = _nearest_role(
             session,
             (1, 9),
             date(2026, 8, 10),
             excluded_role_ids=frozenset({role_ids["宽岗位"]}),
         )
-        assert thin_only == 0.0
+        assert thin_only.coverage == 0.0
 
         # 放宽门槛到 1 后单技术词岗位重新参与，虚高的 0.5 就回来了。
-        _, with_thin = _nearest_role(
+        with_thin = _nearest_role(
             session,
             (1, 9),
             date(2026, 8, 10),
             min_role_technology_count=1,
             excluded_role_ids=frozenset({role_ids["宽岗位"]}),
         )
-        assert with_thin == 0.5
+        assert with_thin.coverage == 0.5
 
 
 def test_discovery_is_replayable_and_publishes_separate_standard_jd() -> None:

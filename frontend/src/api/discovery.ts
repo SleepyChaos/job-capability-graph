@@ -264,6 +264,16 @@ export interface ForesightReferenceWindow {
   anchor_month: string
 }
 
+/** 最邻近的既有岗位。覆盖率说「有没有新能力」，Jaccard 说「是整个岗位还是它的一块」。 */
+export interface NearestRoleCard {
+  role_code: string
+  role_name: string
+  coverage: number
+  jaccard: number
+  role_technology_count: number
+  shared_technology_count: number
+}
+
 export interface CandidateForesight {
   schema_version: string
   threshold: number
