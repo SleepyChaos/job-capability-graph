@@ -12,6 +12,7 @@ import { JobKeywordPage } from './pages/JobKeywordPage'
 import { JobNamePage } from './pages/JobNamePage'
 import { JobRecordsPage } from './pages/JobRecordsPage'
 import { CandidateCardPage } from './pages/CandidateCardPage'
+import { CandidateReviewPage } from './pages/CandidateReviewPage'
 import { JobsPage } from './pages/JobsPage'
 import { LearningPage } from './pages/LearningPage'
 import { MatchPage } from './pages/MatchPage'
@@ -31,6 +32,7 @@ const pageTitles: Record<PageId, string> = {
   taxonomy: '技术词标准管理',
   jobs: '新岗位发现',
   candidate: '岗位数据卡',
+  'candidate-review': '新岗位审核台',
   'job-keyword': '技术词定向推演',
   'job-name': '岗位名称推演',
   'job-records': '推演结果记录库',
@@ -131,6 +133,7 @@ export default function App() {
     case 'taxonomy': content = <TaxonomyPage notify={notify} />; break
     case 'jobs': content = <JobsPage notify={notify} onOpenCandidate={(code) => setPage('candidate', code)} />; break
     case 'candidate': content = <CandidateCardPage candidateCode={param} onNavigate={setPage} notify={notify} />; break
+    case 'candidate-review': content = <CandidateReviewPage onNavigate={setPage} notify={notify} />; break
     case 'job-keyword': content = <JobKeywordPage notify={notify} />; break
     case 'job-name': content = <JobNamePage notify={notify} />; break
     case 'job-records': content = <JobRecordsPage notify={notify} />; break

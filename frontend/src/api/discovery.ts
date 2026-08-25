@@ -52,6 +52,8 @@ export interface CandidateListItem {
   maturity_stage_code: string
   workflow_status_code: string
   candidate_score: string
+  /** 支撑该候选的 JD 数。列表接口已下发，此前类型里漏了。 */
+  support_job_count: number
   classification_code: string
   risk_flags: string[]
   run_code: string

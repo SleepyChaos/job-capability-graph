@@ -16,23 +16,30 @@ export interface GraphMetadata {
 
 export interface RelationNode {
   id: string
-  type: 'job_cluster' | 'technology'
+  /** emerging_candidate 是未入库的提议，与 job_cluster（观测到的岗位归并）同级但性质不同。 */
+  type: 'job_cluster' | 'technology' | 'emerging_candidate'
   label: string
   domain_code: string
   level_code?: string
   metrics: Record<string, number | null>
   evidence_count: number
+  /** 仅候选节点携带，供前端着色与决定能否下钻到数据卡。 */
+  classification_code?: string
+  maturity_stage_code?: string
+  workflow_status_code?: string
 }
 
 export interface RelationEdge {
   id: string
   source: string
   target: string
+  /** important_technology = 聚类的实测关联；proposed_technology = 候选的提议关联。 */
   relation_type: string
   importance: number
   recent_activity: number
   supporting_job_count: number
-  coverage_rate: number
+  /** 提议边（proposed_technology）没有覆盖率，后端下发 null。 */
+  coverage_rate: number | null
   evidence_job_codes: string[]
 }
 
@@ -50,6 +57,8 @@ export interface RelationGraphResponse extends GraphMetadata {
     min_supporting_job_count: number
     mode: 'overview' | 'focus'
     focus_node_id: string | null
+    include_candidates?: boolean
+    candidate_node_count?: number
   }
   rendering: {
     primary_route?: string
@@ -69,6 +78,15 @@ export interface RelationGraphQuery {
   minSupportingJobCount?: number
   mode?: 'overview' | 'focus'
   focusNodeId?: string | null
+  /**
+   * 是否把新岗位候选画进图。
+   *
+   * 默认关闭：候选是**未入库的提议**，与观测到的岗位聚类混在一起会让读者分不清
+   * 哪些是既有事实。打开后候选以 `emerging_candidate` 类型出现在 role_nodes 里，
+   * 边的 relation_type 是 `proposed_technology`（区别于聚类的 important_technology），
+   * 供前端画成虚线。
+   */
+  includeCandidates?: boolean
 }
 
 export interface RelationGraphExpansion extends GraphMetadata {
@@ -210,6 +228,7 @@ export const graphApi = {
     if (filters.minSupportingJobCount) query.set('min_supporting_job_count', String(filters.minSupportingJobCount))
     if (filters.mode) query.set('mode', filters.mode)
     if (filters.focusNodeId) query.set('focus_node_id', filters.focusNodeId)
+    if (filters.includeCandidates) query.set('include_candidates', 'true')
     return getGraphOrEmpty<RelationGraphResponse>(`/graphs/relations?${query}`, {
       ...emptyMetadata(),
       role_nodes: [],

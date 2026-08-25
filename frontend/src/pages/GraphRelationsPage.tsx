@@ -34,6 +34,9 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
   const [nodeBudget, setNodeBudget] = useState(720)
   const [minSupportingJobCount, setMinSupportingJobCount] = useState(1)
   const [focusNodeId, setFocusNodeId] = useState<string | null>(null)
+  // 候选默认不进图：它们是未入库的提议，与观测到的聚类混排会让读者分不清
+  // 哪些是既有事实。由用户显式打开。
+  const [includeCandidates, setIncludeCandidates] = useState(false)
   const [data, setData] = useState<RelationGraphResponse | null>(null)
   const [selected, setSelected] = useState<string | null>(null)
   const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set())
@@ -58,6 +61,7 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
       minSupportingJobCount,
       mode: focusNodeId ? 'focus' : 'overview',
       focusNodeId,
+      includeCandidates,
     }, controller.signal)
       .then((response) => {
         setData(response)
@@ -71,7 +75,7 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
         if (reason.name !== 'AbortError') setError(reason.message)
       })
     return () => controller.abort()
-  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, minSupportingJobCount, nodeBudget])
+  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, includeCandidates, minSupportingJobCount, nodeBudget])
 
   const nodeMap = useMemo(
     () => new Map<string, RelationNode>(data ? [...data.role_nodes, ...data.capability_nodes].map((node) => [node.id, node]) : []),
@@ -120,6 +124,26 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
     <div className="graph-page graph-subpage">
       <div className="graph-subpage-intro"><div><h2>岗位—能力关联图</h2><p>展示当前岗位聚类及其高频标准技术能力；仅使用通过语境校验的真实 JD 证据。</p></div><StatusTag tone={hasProjection ? 'success' : 'info'}>{data ? (hasProjection ? `数据版本 ${data.data_version.slice(0, 8)}` : '暂无图谱快照') : '加载中'}</StatusTag></div>
       <RelationGraphFilters onChange={changeFilters} onApply={(summary) => notify(`关联图筛选已更新：${summary}`)} />
+
+      {/*
+        候选与岗位聚类同级——都属于 role 一侧、连的是同一批能力节点，指标也一一对应
+        （成员数↔支撑 JD 数、独立企业数↔独立企业数、簇内聚度↔候选评分）。但候选是
+        **未入库的提议**，默认不进图，打开后以虚线边区分。
+      */}
+      <label className="graph-candidate-toggle">
+        <input
+          type="checkbox"
+          checked={includeCandidates}
+          onChange={(event) => setIncludeCandidates(event.target.checked)}
+        />
+        <span>
+          <strong>叠加新岗位候选</strong>
+          候选与岗位聚类同级，但属于未入库的提议，以虚线连接其能力节点
+          {data?.filters?.candidate_node_count
+            ? `（当前 ${data.filters.candidate_node_count} 个）`
+            : ''}
+        </span>
+      </label>
       {hasProjection ? <div className="relation-density-toolbar" aria-label="图谱展示密度">
         <label>节点预算<select value={nodeBudget} onChange={(event) => setNodeBudget(Number(event.target.value))}>{densityOptions.map((value) => <option key={value} value={value}>{value} 个节点</option>)}</select></label>
         <label>最小支持 JD<select value={minSupportingJobCount} onChange={(event) => setMinSupportingJobCount(Number(event.target.value))}>{supportOptions.map((value) => <option key={value} value={value}>{value} 条</option>)}</select></label>
@@ -131,7 +155,7 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
       {data && !hasProjection ? <div className="empty-state"><Network size={24} /><strong>暂无关联图快照</strong><span>当前数据库尚未生成成功的岗位聚类运行；完成 JD 解析和聚类后，这里会显示岗位与能力关系。</span></div> : null}
       {data && hasProjection ? <div className="graph-workspace graph-workspace--global">
         <div className="graph-legend"><strong>节点类型</strong><span><i className="legend-cluster" />岗位聚类</span><span><i className="legend-skill" />标准技术能力</span><hr /><strong>T1–T7 领域色</strong><DomainLegend compact /><hr /><p>{focusNodeId ? '当前为单岗位聚类局部图；返回全局图可继续浏览其他聚类。' : '岗位聚类按 T1–T7 技术域锚点形成七个语义簇，能力节点位于关联岗位簇的加权中心；远景保留岗位名称，中近景尽量展示全部节点名称。'}</p><button onClick={() => setTableView((value) => !value)}><Table2 size={15} />{tableView ? '图谱视图' : '表格视图'}</button></div>
-        {tableView ? <div className="relation-table-view"><table><thead><tr><th>岗位聚类</th><th>重要能力</th><th>覆盖率</th><th>支持 JD</th></tr></thead><tbody>{data.edges.map((edge) => <tr key={edge.id}><td><button onClick={() => selectNode(edge.source)}>{nodeMap.get(edge.source)?.label}</button></td><td><button onClick={() => selectNode(edge.target)}>{nodeMap.get(edge.target)?.label}</button></td><td>{Math.round(edge.coverage_rate * 100)}%</td><td>{edge.supporting_job_count}</td></tr>)}</tbody></table></div> : <RelationForceGraph graph={data} selectedId={selected} onSelect={selectNode} onExpand={expandNode} />}
+        {tableView ? <div className="relation-table-view"><table><thead><tr><th>岗位聚类</th><th>重要能力</th><th>覆盖率</th><th>支持 JD</th></tr></thead><tbody>{data.edges.map((edge) => <tr key={edge.id}><td><button onClick={() => selectNode(edge.source)}>{nodeMap.get(edge.source)?.label}</button></td><td><button onClick={() => selectNode(edge.target)}>{nodeMap.get(edge.target)?.label}</button></td><td>{edge.coverage_rate === null ? '—' : `${Math.round(edge.coverage_rate * 100)}%`}</td><td>{edge.supporting_job_count}</td></tr>)}</tbody></table></div> : <RelationForceGraph graph={data} selectedId={selected} onSelect={selectNode} onExpand={expandNode} />}
         <aside className="evidence-inspector">{selectedNode ? <><div className="inspector-title"><div><span>{selectedNode.type === 'job_cluster' ? '岗位聚类详情' : '标准技术能力'}</span><h3>{selectedNode.label}</h3></div></div><StatusTag tone={selectedNode.type === 'job_cluster' ? 'info' : 'success'}>{selectedNode.domain_code}</StatusTag><div className="evidence-count-stat"><span>证据数量</span><strong>{selectedNode.evidence_count}</strong><small>条</small></div><dl className="inspector-facts"><div><dt>关联节点</dt><dd>{connectedNodes.length} 个</dd></div><div><dt>目标日期</dt><dd>{data.target_date}</dd></div><div><dt>证据规则</dt><dd>已通过语境校验</dd></div><div><dt>图谱层级</dt><dd>{selectedNode.type === 'technology' ? filters.capabilityLevel : '岗位聚类'}</dd></div></dl>{selectedNode.type === 'job_cluster' && !focusNodeId ? <button className="secondary-button relation-focus-button" onClick={() => setFocusNodeId(selectedNode.id)}>聚焦此岗位聚类</button> : null}<button className="secondary-button relation-expand-button" onClick={() => expandNode(selectedNode.id)} disabled={Boolean(expandingNodeId) || expandedNodeIds.has(selectedNode.id)}>{expandingNodeId === selectedNode.id ? '正在展开邻居…' : expandedNodeIds.has(selectedNode.id) ? '邻居已展开' : '展开关联邻居'}</button><h4>{selectedNode.type === 'job_cluster' ? '重要能力' : '关联岗位聚类'}</h4><div className="connected-node-list">{connectedNodes.map((node) => <button key={node.id} onClick={() => selectNode(node.id)}><i style={{ background: domainColors[node.domain_code] }} /><span>{node.label}</span><strong>{node.evidence_count}</strong></button>)}</div></> : <div className="empty-state"><strong>当前筛选没有关系</strong><span>可分别调整岗位聚类和能力筛选。</span></div>}</aside>
       </div> : null}
     </div>

@@ -184,7 +184,9 @@ function getZoomLevel(zoom: number): SemanticZoomLevel {
 }
 
 function nodeSize(node: RelationNode, compact: boolean, zoomLevel: SemanticZoomLevel): number {
-  const cluster = node.type === 'job_cluster'
+  // 候选与聚类同属 role 一侧，尺寸口径相同——它们是同级的，只是一个是观测、
+  // 一个是提议，区别体现在描边与虚线上，不体现在大小上。
+  const cluster = node.type === 'job_cluster' || node.type === 'emerging_candidate'
   if (zoomLevel === 'overview') return cluster ? (compact ? 68 : 84) : (compact ? 40 : 52)
   if (zoomLevel === 'context') return cluster ? (compact ? 76 : 96) : (compact ? 46 : 58)
   if (cluster) return Math.min(
@@ -198,18 +200,21 @@ function nodeSize(node: RelationNode, compact: boolean, zoomLevel: SemanticZoomL
 }
 
 function nodeStyle(node: RelationNode, compact: boolean, zoomLevel: SemanticZoomLevel) {
-  const cluster = node.type === 'job_cluster'
+  const proposal = node.type === 'emerging_candidate'
+  const cluster = node.type === 'job_cluster' || proposal
   const color = domainColors[node.domain_code] ?? '#64748b'
   const size = nodeSize(node, compact, zoomLevel)
   const showLabel = zoomLevel !== 'overview' || cluster
   return {
     size,
-    fill: cluster ? color : '#ffffff',
+    // 提议节点用空心 + 虚线描边：与观测到的聚类同级同尺寸，但一眼能看出它还没入库。
+    fill: proposal ? '#ffffff' : cluster ? color : '#ffffff',
     stroke: color,
+    lineDash: proposal ? [5, 4] : undefined,
     lineWidth: cluster ? (zoomLevel === 'overview' ? 1 : 2) : (zoomLevel === 'overview' ? 1.5 : 3),
     labelText: showLabel ? node.label : '',
     labelPlacement: 'center' as const,
-    labelFill: cluster ? '#ffffff' : '#193a55',
+    labelFill: proposal ? color : cluster ? '#ffffff' : '#193a55',
     labelFontSize: cluster ? (compact ? 8 : 10) : (compact ? 7 : zoomLevel === 'context' ? 8 : 9),
     labelFontWeight: cluster ? 600 : 500,
     labelMaxWidth: Math.floor(size * .76),
@@ -223,13 +228,19 @@ function nodeStyle(node: RelationNode, compact: boolean, zoomLevel: SemanticZoom
 
 function edgeStyle(edge: RelationEdge, capabilityDomains: Map<string, string>, zoomLevel: SemanticZoomLevel) {
   const baseWidth = Math.min(4, Math.max(1, .7 + edge.importance / 34))
+  // 候选的边是**提议**而非观测到的关联，没有覆盖率——用固定的疏虚线和较低不透明度
+  // 与聚类的实测边区分开，避免读者把提议当成既有事实。
+  const proposal = edge.relation_type === 'proposed_technology'
+  const coverage = edge.coverage_rate ?? 0
   return {
     stroke: domainColors[capabilityDomains.get(edge.target) ?? 'T7'] ?? '#94a3b8',
     lineWidth: zoomLevel === 'overview' ? Math.min(1, baseWidth) : baseWidth,
-    strokeOpacity: zoomLevel === 'overview'
-      ? Math.min(.22, Math.max(.08, edge.coverage_rate * .3))
-      : Math.min(.78, Math.max(.18, edge.coverage_rate)),
-    lineDash: edge.importance >= 60 ? undefined : [4, 3] as number[],
+    strokeOpacity: proposal
+      ? (zoomLevel === 'overview' ? .16 : .42)
+      : zoomLevel === 'overview'
+        ? Math.min(.22, Math.max(.08, coverage * .3))
+        : Math.min(.78, Math.max(.18, coverage)),
+    lineDash: proposal ? [7, 5] as number[] : edge.importance >= 60 ? undefined : [4, 3] as number[],
   }
 }
 

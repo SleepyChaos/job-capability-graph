@@ -656,3 +656,58 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .nearest-role-name { font-size: 11px !important; line-height: 1.5; }
 .nearest-role-shape { display: block; margin-top: 4px; color: var(--muted); font-size: 8.5px; font-weight: 400; }
 .card-hero-baseline { margin: 6px 0 0; max-width: 68ch; color: var(--muted); font-size: 9px; line-height: 1.7; }
+
+/* ── 发现总览：按分类分组的候选卡片墙 ────────────────────────────────
+   总览只回答「这一轮发现了什么」。资料在数据卡、处置在审核台，因此这里
+   不再有详情面板与审批弹窗——也就没有了误触终态操作的入口。 */
+.discovery-groups { display: flex; flex-direction: column; gap: 20px; padding: 4px 16px 16px; }
+.discovery-group > header { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1px solid var(--soft-line); }
+.discovery-group > header > span { color: var(--muted); font-size: 10px; }
+.discovery-group > header > p { flex: 1 1 100%; margin: 4px 0 0; color: var(--muted); font-size: 9px; line-height: 1.7; }
+.candidate-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 9px; }
+.candidate-wall button { position: relative; display: block; padding: 13px 14px; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+.candidate-wall button:hover { border-color: #9fc1ea; background: #f7fbff; }
+.candidate-wall b { position: absolute; top: 11px; right: 13px; color: var(--teal); font-size: 15px; }
+.candidate-wall strong { display: block; padding-right: 44px; color: var(--ink); font-size: 12px; line-height: 1.45; }
+.candidate-wall span { display: block; margin-top: 6px; color: var(--muted); font-size: 9px; }
+.candidate-wall em { display: inline-block; margin-top: 7px; padding: 2px 6px; color: #8a3b32; background: #fdeeec; border-radius: 4px; font-size: 8px; font-style: normal; }
+.discovery-baseline { margin: 0; padding: 0 16px 16px; color: var(--muted); font-size: 9px; line-height: 1.7; }
+
+/* ── 审核台：一次处置一个，动作按分类给 ──────────────────────────── */
+.review-desk { display: flex; flex-direction: column; gap: 14px; }
+.review-queue-bar { display: flex; flex-wrap: wrap; gap: 6px; }
+.review-queue-bar button { min-height: 30px; padding: 0 11px; color: #60768c; background: #f4f7fa; border: 1px solid transparent; border-radius: 6px; font-size: 10px; }
+.review-queue-bar button.active { color: var(--blue); background: #edf5ff; border-color: #9fc1ea; }
+.review-layout { display: grid; grid-template-columns: minmax(280px, 0.85fr) 1.15fr; gap: 14px; align-items: start; }
+@media (max-width: 1000px) { .review-layout { grid-template-columns: 1fr; } }
+.review-queue { display: flex; flex-direction: column; gap: 7px; max-height: 620px; overflow-y: auto; padding: 4px 16px 16px; }
+.review-queue button { display: block; padding: 11px 12px; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 7px; }
+.review-queue button:hover { border-color: #9fc1ea; }
+.review-queue button.selected { border-color: var(--blue); background: #f2f8ff; }
+.review-queue strong { display: block; margin-top: 6px; color: var(--ink); font-size: 11.5px; line-height: 1.45; }
+.review-queue > button > span { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; }
+.review-body { padding: 18px 20px; }
+.review-head h2 { margin: 10px 0 7px; font-size: 19px; line-height: 1.35; }
+.review-head p { margin: 0; max-width: 66ch; color: #2f4b65; font-size: 11px; line-height: 1.75; }
+.review-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+.review-facts > div { display: flex; align-items: center; gap: 8px; padding: 11px 12px; background: #f5f8fb; border-radius: 6px; }
+.review-facts svg { color: var(--blue); flex: 0 0 auto; }
+.review-facts span { color: var(--muted); font-size: 9px; }
+.review-facts strong { margin-left: auto; color: var(--ink); font-size: 16px; }
+.review-nearest { padding: 11px 13px; margin-bottom: 12px; background: #f0f6fd; border-left: 3px solid var(--blue); border-radius: 5px; }
+.review-nearest > span { display: block; color: var(--muted); font-size: 8.5px; }
+.review-nearest strong { display: block; margin: 4px 0; color: #1c4d86; font-size: 12px; }
+.review-nearest em { color: #40607f; font-size: 9px; font-style: normal; }
+.review-risks { margin-bottom: 12px; }
+.review-risks > span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 9px; }
+.review-actions { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--soft-line); }
+.review-action-hint { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; margin-bottom: 12px; color: #25537e; background: #edf5ff; border-radius: 6px; }
+.review-action-hint svg { flex: 0 0 auto; }
+.review-action-hint span { font-size: 10px; line-height: 1.7; }
+.review-action-buttons { display: flex; justify-content: flex-end; gap: 10px; }
+.review-terminal-warning { margin: 12px 0 0; padding: 9px 11px; color: #6b5417; background: #fdf6e3; border-left: 3px solid #d9a441; border-radius: 4px; font-size: 9px; line-height: 1.7; }
+.review-baseline { margin: 8px 0 0; color: var(--muted); font-size: 8.5px; line-height: 1.7; }
+.graph-candidate-toggle { display: flex; align-items: flex-start; gap: 9px; padding: 11px 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; }
+.graph-candidate-toggle input { margin-top: 2px; flex: 0 0 auto; }
+.graph-candidate-toggle strong { display: block; margin-bottom: 3px; color: var(--ink); font-size: 11px; }
+.graph-candidate-toggle span { color: var(--muted); font-size: 9px; line-height: 1.65; }

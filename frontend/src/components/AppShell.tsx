@@ -1,5 +1,6 @@
 import type { ComponentType, ReactNode } from 'react'
 import {
+  ClipboardCheck,
   Activity,
   Bell,
   BookOpenCheck,
@@ -51,8 +52,18 @@ const talentChildren: NavItem[] = [
   { id: 'learning', label: '发展路径', icon: BookOpenCheck },
 ]
 
-const jobPages: PageId[] = ['jobs', 'job-keyword', 'job-name', 'job-records']
+const jobPages: PageId[] = [
+  'jobs',
+  'candidate-review',
+  'candidate',
+  'job-keyword',
+  'job-name',
+  'job-records',
+]
 const jobChildren: NavItem[] = [
+  // 审核台紧跟发现页：发现 → 看数据卡 → 处置，是审核者的主路径。
+  // 数据卡不进导航——它按候选编码路由，只能从列表或图谱点进去。
+  { id: 'candidate-review', label: '新岗位审核台', icon: ClipboardCheck },
   { id: 'job-keyword', label: '技术词定向推演', icon: Tags },
   { id: 'job-name', label: '岗位名称推演', icon: FileSearch },
   { id: 'job-records', label: '推演结果记录库', icon: FileClock },
