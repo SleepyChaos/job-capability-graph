@@ -13,6 +13,7 @@ import {
   classificationGuidance,
   classificationLabels,
   classificationTone,
+  CLASSIFICATION_BASELINE_NOTE,
   discoveryApi,
   maturityStageLabels,
   scoreComponentLabels,
@@ -145,6 +146,11 @@ export function CandidateCardPage({
             {String(expression.one_line_definition ?? '尚未生成岗位定义。')}
           </p>
           <p className="card-hero-action">{classificationGuidance[classification] ?? ''}</p>
+          {/*
+            分母必须和分类同屏。不写清楚参照系是自产的岗位库，读者会把「潜在新岗位」
+            读成「市场上还没有的岗位」——那是当前实现给不出的结论。
+          */}
+          <p className="card-hero-baseline">{CLASSIFICATION_BASELINE_NOTE}</p>
         </div>
         <div className="card-hero-score">
           <strong>{candidate.candidate_score.toFixed(1)}</strong>

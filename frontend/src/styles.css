@@ -655,3 +655,4 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .foresight-window p strong { display: inline; font-size: inherit; color: #6b5417; }
 .nearest-role-name { font-size: 11px !important; line-height: 1.5; }
 .nearest-role-shape { display: block; margin-top: 4px; color: var(--muted); font-size: 8.5px; font-weight: 400; }
+.card-hero-baseline { margin: 6px 0 0; max-width: 68ch; color: var(--muted); font-size: 9px; line-height: 1.7; }
