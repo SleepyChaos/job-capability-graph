@@ -17,9 +17,9 @@ L2 口径只产出 9 个技术对，而 JD 侧有 438 个——差两个数量�
 补完别名后重跑抽取即可，不必重抓。抓取与抽取分离，抓一次可以反复抽。
 
 用法（backend 目录 / 容器内）：
-    python -m tools.fetch_arxiv_corpus --categories cs.RO --from 2020-01 --max 200 --dry-run
-    python -m tools.fetch_arxiv_corpus --categories cs.RO,cs.AI --from 2019-01 --max 6000 \\
-        --out /srv/data/upstream/arxiv
+    python -m tools.fetch_arxiv_corpus --categories cs.RO --from-year 2024 --per-year 20 --dry-run
+    python -m tools.fetch_arxiv_corpus --categories cs.RO,cs.AI,cs.LG,cs.CV \\
+        --from-year 2019 --per-year 400 --out /srv/data/upstream/arxiv
 """
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ import re
 import time
 import urllib.parse
 import urllib.request
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
 from xml.etree import ElementTree
 
@@ -48,16 +48,17 @@ def parse_args() -> argparse.Namespace:
         default="cs.RO",
         help="arXiv 分类，逗号分隔。具身智能相关：cs.RO 机器人 / cs.AI / cs.LG / cs.CV",
     )
-    parser.add_argument("--from", dest="date_from", default="2019-01", help="起始年月 YYYY-MM")
-    parser.add_argument("--max", type=int, default=1000, help="每个分类最多抓多少篇")
+    parser.add_argument("--from-year", type=int, default=2019, help="起始年份")
+    parser.add_argument("--to-year", type=int, default=date.today().year, help="结束年份")
+    parser.add_argument(
+        "--per-year",
+        type=int,
+        default=400,
+        help="每个分类每年抓多少篇。**必须按年分层抽样**，见 fetch_year 的说明",
+    )
     parser.add_argument("--out", type=Path, help="输出目录；省略则只统计不落盘")
     parser.add_argument("--dry-run", action="store_true", help="只抓第一页看看结构")
     return parser.parse_args()
-
-
-def month_start(value: str) -> date:
-    year, month = value.split("-")
-    return date(int(year), int(month), 1)
 
 
 def normalise(text: str | None) -> str:
@@ -65,12 +66,19 @@ def normalise(text: str | None) -> str:
     return re.sub(r"\s+", " ", (text or "")).strip()
 
 
-def fetch_page(category: str, start: int, page_size: int) -> list[dict]:
+def fetch_page(category: str, year: int, start: int, page_size: int) -> list[dict]:
+    """取某分类某一年的一页结果。
+
+    **必须带年份区间。** 首版实现按提交时间倒序整体抓、每类封顶 N 篇，结果 8,452 篇
+    论文**全部落在同一年**——arXiv 每个分类几个月就发这么多，倒序抓只能回溯几个月。
+    而领先性回测的整个设计是按 T = 2020…2025 切上游语料，没有跨年覆盖就无从做起。
+    因此改为逐年用 submittedDate 区间查询，每年抽固定篇数，得到时间上均衡的样本。
+    """
+    window = f"[{year}01010000 TO {year}12312359]"
     query = urllib.parse.urlencode({
-        "search_query": f"cat:{category}",
+        "search_query": f"cat:{category} AND submittedDate:{window}",
         "start": start,
         "max_results": page_size,
-        # 按提交时间倒序：先拿到最近的，中断也能得到一段完整的近期语料。
         "sortBy": "submittedDate",
         "sortOrder": "descending",
     })
@@ -95,34 +103,27 @@ def fetch_page(category: str, start: int, page_size: int) -> list[dict]:
             "title": normalise(entry.findtext(f"{ATOM}title")),
             "abstract": normalise(entry.findtext(f"{ATOM}summary")),
             "categories": [
-                node.get("term")
-                for node in entry.findall("{http://arxiv.org/schemas/atom}primary_category")
-            ] + [node.get("term") for node in entry.findall(f"{ATOM}category")],
+                node.get("term") for node in entry.findall(f"{ATOM}category")
+            ],
             "primary_category": category,
         })
     return papers
 
 
-def fetch_category(category: str, cutoff: date, limit: int, dry_run: bool) -> list[dict]:
+def fetch_year(category: str, year: int, limit: int, dry_run: bool) -> list[dict]:
     collected: list[dict] = []
     seen: set[str] = set()
     start = 0
     while len(collected) < limit:
-        page = fetch_page(category, start, min(PAGE_SIZE, limit - len(collected)))
+        page = fetch_page(category, year, start, min(PAGE_SIZE, limit - len(collected)))
         if not page:
             break
-        stop = False
         for paper in page:
             if paper["arxiv_id"] in seen:
                 continue
-            if datetime.strptime(paper["published"], "%Y-%m-%d").date() < cutoff:
-                # 结果按提交时间倒序，一旦越过起始月就不必再往下翻。
-                stop = True
-                break
             seen.add(paper["arxiv_id"])
             collected.append(paper)
-        print(f"  {category}: 已收集 {len(collected)} 篇")
-        if stop or dry_run or len(page) < PAGE_SIZE:
+        if dry_run or len(page) < PAGE_SIZE:
             break
         start += PAGE_SIZE
         time.sleep(REQUEST_INTERVAL_SECONDS)
@@ -131,16 +132,20 @@ def fetch_category(category: str, cutoff: date, limit: int, dry_run: bool) -> li
 
 def main() -> None:
     args = parse_args()
-    cutoff = month_start(args.date_from)
     categories = [item.strip() for item in args.categories.split(",") if item.strip()]
 
     everything: dict[str, dict] = {}
-    for index, category in enumerate(categories):
-        if index:
-            time.sleep(REQUEST_INTERVAL_SECONDS)
-        for paper in fetch_category(category, cutoff, args.max, args.dry_run):
-            # 一篇论文可能同时属于多个分类，按 arXiv id 去重。
-            everything.setdefault(paper["arxiv_id"], paper)
+    first = True
+    for category in categories:
+        for year in range(args.from_year, args.to_year + 1):
+            if not first:
+                time.sleep(REQUEST_INTERVAL_SECONDS)
+            first = False
+            rows = fetch_year(category, year, args.per_year, args.dry_run)
+            print(f"  {category} {year}: {len(rows)} 篇")
+            for paper in rows:
+                # 一篇论文可能同时属于多个分类，按 arXiv id 去重。
+                everything.setdefault(paper["arxiv_id"], paper)
 
     papers = sorted(everything.values(), key=lambda item: item["published"], reverse=True)
     years: dict[str, int] = {}
@@ -175,7 +180,9 @@ def main() -> None:
         json.dumps(
             {
                 "categories": categories,
-                "date_from": args.date_from,
+                "from_year": args.from_year,
+                "to_year": args.to_year,
+                "per_year": args.per_year,
                 "fetched_at": date.today().isoformat(),
                 "paper_count": len(papers),
                 "by_year": years,
