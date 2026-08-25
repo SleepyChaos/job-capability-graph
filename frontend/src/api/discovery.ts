@@ -243,7 +243,25 @@ export interface ForesightDirection {
   peak_maturity: number
   milestone_count: number
   foresight_rank: number
+  /** 该方向当前被多少份 JD 提及，以及在全部方向中的名次——描述现状，不是预测。 */
+  jd_demand: number
+  demand_rank: number | null
+  demand_total_directions: number
   statement: string
+}
+
+/**
+ * 由外部先验推出的参考窗口。
+ *
+ * **不是本系统的测量结果。** 时滞标定在自有数据上失败（截尾夹逼退化、
+ * 秩相关 0.510 于 n=12 不显著、里程碑为回溯整理），窗口 = 最后一个方向成熟的
+ * 时点 + 先验时滞。渲染时必须与真实计算出的跨越时点分开，并标明来源。
+ */
+export interface ForesightReferenceWindow {
+  from: string
+  to: string
+  prior_months: [number, number]
+  anchor_month: string
 }
 
 export interface CandidateForesight {
@@ -251,7 +269,14 @@ export interface CandidateForesight {
   threshold: number
   /** configured_not_measured 表示门槛是设定值而非实测值，展示时必须说明。 */
   threshold_origin: string
-  reference_window: null
+  /** ① 技术地基成型区间：由真实跨越时点算出，零假设。 */
+  foundation_from: string | null
+  foundation_to: string | null
+  foundation_complete: boolean
+  foundation_ready_months: number | null
+  /** ③ 参考窗口：外部先验，非测量结果。 */
+  reference_window: ForesightReferenceWindow | null
+  reference_window_origin: string
   reference_window_reason: string
   directions: ForesightDirection[]
   crossed_direction_count: number

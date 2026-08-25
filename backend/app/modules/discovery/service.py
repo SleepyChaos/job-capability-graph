@@ -36,6 +36,7 @@ from app.modules.discovery.algorithm import (
 )
 from app.modules.discovery.foresight import (
     JOBIFICATION_THRESHOLD,
+    TRANSMISSION_LAG_PRIOR_MONTHS,
     DatedEvent,
     ForesightResult,
     compute_foresight,
@@ -80,7 +81,7 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 #       核心层仍单独保留，身份、去重键与覆盖率测量不变。同时把支撑 JD 数下沉为列。
 logger = logging.getLogger(__name__)
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_12"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_13"
 # 覆盖率分档阈值。与 tools/experiment_measure_ablation.py 保持同一口径。
 EXISTING_ROLE_COVERAGE = 0.75
 ROLE_EVOLUTION_COVERAGE = 0.45
@@ -638,6 +639,7 @@ def _run_evidence_discovery(
     maturity = _persist_maturity(db, run, selected_ids, parameters, ancestors)
     foresight = _l2_foresight(db, run)
     technology_frequency = _technology_job_frequency(db, run, parse_run_id)
+    job_demand = _l2_job_demand(db, parse_run_id)
     pair_evidence = _collect_pair_evidence(db, run, selected_ids, parse_run_id, parameters)
     ranked = _rank_candidate_combinations(pair_evidence, parameters)
     candidate_count = 0
@@ -720,6 +722,7 @@ def _run_evidence_discovery(
             ancestors,
             foresight,
             technology_frequency,
+            job_demand,
             candidate_key=candidate_key,
             min_role_technology_count=min_role_technology_count,
             excluded_role_ids=excluded_role_ids,
@@ -1052,6 +1055,35 @@ def _l2_foresight(db: Session, run: DiscoveryRun) -> dict[str, ForesightResult]:
     return {item.technology_code: item for item in rank_foresight(results)}
 
 
+def _l2_job_demand(db: Session, parse_run_id: int) -> dict[str, int]:
+    """每个 L2 技术方向当前被多少份 JD 提及。
+
+    与前瞻的「何时成熟」互补：这一项回答的是**市场现在有多热**，而不是何时会热。
+    在时滞无法标定的情况下，现状比预测可靠得多。
+    """
+    node = aliased(TechnologyNode)
+    parent = aliased(TechnologyNode)
+    rows = db.execute(
+        select(parent.technology_code, JobRequirement.job_posting_id)
+        .join(node, node.technology_node_id == JobRequirement.technology_node_id)
+        .join(parent, parent.technology_node_id == node.parent_technology_node_id)
+        .join(
+            TechnologyMatchAssessment,
+            TechnologyMatchAssessment.job_requirement_id == JobRequirement.job_requirement_id,
+        )
+        .where(
+            TechnologyMatchAssessment.job_parse_run_id == parse_run_id,
+            TechnologyMatchAssessment.assessment_status_code == "accepted",
+        )
+        .distinct()
+    ).all()
+    counts: dict[str, set[int]] = defaultdict(set)
+    for code, job_id in rows:
+        if code and code.count(".") == 1:
+            counts[code].add(job_id)
+    return {code: len(jobs) for code, jobs in counts.items()}
+
+
 def _classify_candidate(
     overlap: float, foresight_block: dict, maturity_stage: str
 ) -> str:
@@ -1087,20 +1119,28 @@ def _classify_candidate(
 def _candidate_foresight(
     technology_codes: tuple[str, ...],
     foresight: dict[str, ForesightResult],
+    demand: dict[str, int],
     as_of: date,
 ) -> dict:
     """把候选依托的各 L2 方向的前瞻判断汇成一个块。
 
-    **主语是技术方向，不是岗位。** 候选依托多个方向，岗位真正出现还取决于
-    这些方向是否被同一批雇主组合到一个职位上，那不在本模块的推断范围内。
-    因此这里给的是「该候选依托的方向处在什么阶段」，不是「该岗位何时出现」。
+    **主语是技术方向，不是岗位。** 候选依托多个方向，岗位真正出现还取决于这些方向
+    是否被同一批雇主组合进同一个职位，那不在本模块的推断范围内。
 
-    **不给参考窗口。** 传导时滞无法从本项目数据标定——截尾观测下已跨过门槛的
-    12 个方向里 11 个已有岗位需求，未到达组只剩 1 个，两组无法构成夹逼
-    （见 tools/experiment_lag_calibration.py）。凭空给一个窗口会把先验伪装成结论。
+    块里有三类时间信息，**可信度依次递减，前端必须分开呈现**：
+
+    1. `foundation_from` / `foundation_to` / `foundation_ready_months`——技术地基
+       成型区间。由真实里程碑日期算出的跨越时点取最早与最晚，零假设。
+    2. `directions[].jd_demand` / `demand_rank`——各方向当前的招聘需求与名次。
+       是对现状的观测，同样零假设。
+    3. `reference_window`——**由外部先验推出的参考窗口，不是本系统的测量结果。**
+       见 `TRANSMISSION_LAG_PRIOR_MONTHS` 的说明：时滞标定在自有数据上失败了，
+       这个区间纯粹是「最后一个方向成熟的时点 + 先验时滞」，带
+       `external_prior_not_measured` 标记下发，前端必须显著标注来源。
     """
     directions = sorted({code.rsplit(".", 1)[0] for code in technology_codes if "." in code})
     ranking = list(foresight)
+    demand_order = sorted(demand, key=lambda code: -demand.get(code, 0))
     blocks = []
     for code in directions:
         result = foresight.get(code)
@@ -1116,22 +1156,62 @@ def _candidate_foresight(
             "peak_maturity": round(result.peak_maturity, 3),
             "milestone_count": result.event_count,
             "foresight_rank": ranking.index(code) + 1,
+            "jd_demand": demand.get(code, 0),
+            "demand_rank": demand_order.index(code) + 1 if code in demand else None,
+            "demand_total_directions": len(demand_order),
             "statement": horizon_label(result, as_of),
         })
+
     crossed = [item for item in blocks if item["crossed"]]
+    all_crossed = bool(blocks) and len(crossed) == len(blocks)
+    months = sorted(item["crossing_month"] for item in crossed)
+    latest_date = max(
+        (foresight[item["technology_code"]].crossing_date for item in crossed),
+        default=None,
+    )
+    ready_months = (
+        round((as_of - latest_date).days / 30.44, 1) if all_crossed and latest_date else None
+    )
+
+    window = None
+    if all_crossed and latest_date is not None:
+        low, high = TRANSMISSION_LAG_PRIOR_MONTHS
+        window = {
+            "from": _shift_month(latest_date, low).strftime("%Y-%m"),
+            "to": _shift_month(latest_date, high).strftime("%Y-%m"),
+            "prior_months": [low, high],
+            "anchor_month": latest_date.strftime("%Y-%m"),
+        }
+
     return {
-        "schema_version": "candidate_foresight_v1",
+        "schema_version": "candidate_foresight_v2",
         "threshold": JOBIFICATION_THRESHOLD,
         # θ 是设定值：曾尝试从横截面标定但失败（秩相关 −0.268、84.3% 取值重复）。
         # 排序对它稳健（θ 在 0.25–0.45 间扫动，相邻秩相关 0.857–0.958），
-        # 但单个方向的跨越时点不稳（极差最大 30 个月），故只报名次与阶段，不报日期为预测。
+        # 但单个方向的跨越时点不稳（极差最大 30 个月），故只报名次与阶段。
         "threshold_origin": "configured_not_measured",
-        "reference_window": None,
-        "reference_window_reason": "transmission_lag_uncalibrated",
+        # ① 技术地基成型区间：零假设，由真实跨越时点算出。
+        "foundation_from": months[0] if months else None,
+        "foundation_to": months[-1] if months else None,
+        "foundation_complete": all_crossed,
+        "foundation_ready_months": ready_months,
+        # ③ 参考窗口：**外部先验**，不是测量结果。见 TRANSMISSION_LAG_PRIOR_MONTHS。
+        "reference_window": window,
+        "reference_window_origin": "external_prior_not_measured",
+        "reference_window_reason": (
+            "传导时滞在本项目数据上标定失败（截尾夹逼退化、秩相关 0.510 不显著、"
+            "里程碑为回溯整理），窗口由外部先验推出，非本系统测量"
+        ),
         "directions": sorted(blocks, key=lambda item: item["foresight_rank"]),
         "crossed_direction_count": len(crossed),
         "best_foresight_rank": min((item["foresight_rank"] for item in blocks), default=None),
     }
+
+
+def _shift_month(anchor: date, months: int) -> date:
+    """按月推移，统一落在月中——只做月级推演，不伪造具体某一天。"""
+    total = anchor.month - 1 + months
+    return date(anchor.year + total // 12, total % 12 + 1, 15)
 
 
 def _milestone_signals_by_node(
@@ -1410,6 +1490,7 @@ def _persist_candidate(
     ancestors: dict[int, tuple[int, ...]],
     foresight: dict[str, ForesightResult],
     technology_frequency: dict[int, int],
+    job_demand: dict[str, int],
     candidate_key: str,
     min_role_technology_count: int,
     excluded_role_ids: frozenset[int],
@@ -1457,7 +1538,10 @@ def _persist_candidate(
         excluded_role_ids=excluded_role_ids,
     )
     foresight_block = _candidate_foresight(
-        tuple(item.technology_code for item in technologies), foresight, run.target_date
+        tuple(item.technology_code for item in technologies),
+        foresight,
+        job_demand,
+        run.target_date,
     )
     classification = _classify_candidate(overlap, foresight_block, scored.maturity_stage)
     mechanical = {

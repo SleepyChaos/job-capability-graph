@@ -233,22 +233,66 @@ export function CandidateCardPage({
           <Panel title="技术方向前瞻" subtitle="判断对象是技术方向，不是岗位出现时间">
             {foresight && foresight.directions.length > 0 ? (
               <>
+                {/*
+                  三类时间信息按可信度从高到低排列，并在视觉上分开：
+                  地基区间与需求现状是真实计算/观测，参考窗口是外部先验。
+                  混排会让读者把先验当成测量结果。
+                */}
+                {foresight.foundation_from ? (
+                  <div className="foresight-foundation">
+                    <span className="foresight-kicker">技术地基成型区间 · 实测</span>
+                    <strong>
+                      {foresight.foundation_from}
+                      {foresight.foundation_to !== foresight.foundation_from
+                        ? ` — ${foresight.foundation_to}`
+                        : ''}
+                    </strong>
+                    <p>
+                      {foresight.foundation_complete
+                        ? `所依托的技术方向已全部成熟，最后一个就位至今 ${foresight.foundation_ready_months} 个月。`
+                        : '仍有技术方向尚未成熟，地基未完全就位。'}
+                    </p>
+                  </div>
+                ) : null}
+
+                {foresight.reference_window ? (
+                  <div className="foresight-window">
+                    <span className="foresight-kicker warn">预计出现参考窗口 · 外部先验</span>
+                    <strong>
+                      {foresight.reference_window.from} — {foresight.reference_window.to}
+                    </strong>
+                    <p>
+                      以最后一个方向成熟的 {foresight.reference_window.anchor_month} 为锚点，
+                      叠加 {foresight.reference_window.prior_months[0]}–
+                      {foresight.reference_window.prior_months[1]} 个月的传导时滞先验推出。
+                      <strong>该先验不是本系统的测量结果</strong>——时滞在自有数据上标定失败
+                      （已成熟时长与当前需求的秩相关 0.510，n=12 不显著；且里程碑为回溯整理），
+                      因此这个区间只能当作粗略参考，不能作为结论引用。
+                    </p>
+                  </div>
+                ) : null}
+
                 <p className="foresight-caveat">
-                  岗位化门槛 θ = {foresight.threshold}
-                  {foresight.threshold_origin === 'configured_not_measured' ? ' 为设定值而非实测值' : ''}；
-                  传导时滞未能标定，因此<strong>不给出出现时间窗口</strong>。
-                  下表陈述的是各方向<strong>已经发生</strong>的跨越事实。
+                  下表为各方向<strong>已经发生</strong>的成熟事实与当前需求。岗位化门槛
+                  θ = {foresight.threshold}
+                  {foresight.threshold_origin === 'configured_not_measured' ? ' 为设定值而非实测值' : ''}。
                 </p>
                 <ul className="foresight-list">
                   {foresight.directions.map((item) => (
                     <li key={item.technology_code}>
                       <div>
                         <strong>{item.technology_name}</strong>
-                        <span>全局第 {item.foresight_rank} 位 · 里程碑 {item.milestone_count} 条</span>
+                        <span>
+                          当前需求 {item.jd_demand} 份 JD
+                          {item.demand_rank
+                            ? `（${item.demand_total_directions} 个方向中第 ${item.demand_rank}）`
+                            : ''}
+                          {' · '}里程碑 {item.milestone_count} 条
+                        </span>
                       </div>
                       {item.crossed ? (
                         <StatusTag tone="success">
-                          <CalendarClock size={12} /> {item.crossing_month} 跨过门槛
+                          <CalendarClock size={12} /> {item.crossing_month} 起技术已成熟
                         </StatusTag>
                       ) : (
                         <StatusTag tone="neutral">

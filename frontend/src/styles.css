@@ -638,3 +638,18 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 
 .card-footer-actions { display: flex; justify-content: flex-end; gap: 10px; padding-bottom: 8px; }
 .candidate-title-side { display: flex; align-items: center; gap: 14px; }
+
+/* 前瞻区块的三类时间信息按可信度分层呈现。地基区间与需求是实测，参考窗口是外部
+   先验——两者必须在视觉上分开，混排会让读者把先验当成测量结果。 */
+.foresight-kicker { display: block; margin-bottom: 5px; color: var(--muted); font-size: 8.5px; letter-spacing: .06em; }
+.foresight-kicker.warn { color: #9a7420; }
+.foresight-foundation, .foresight-window { margin: 0 16px 10px; padding: 11px 13px; border-radius: 6px; }
+.foresight-foundation { background: #f0f6fd; border-left: 3px solid var(--blue); }
+.foresight-window { background: #fdf6e3; border-left: 3px solid #d9a441; }
+.foresight-foundation strong, .foresight-window strong { display: block; font-size: 15px; font-variant-numeric: tabular-nums; }
+.foresight-foundation strong { color: #1c4d86; }
+.foresight-window strong { color: #8a6516; }
+.foresight-foundation p, .foresight-window p { margin: 6px 0 0; font-size: 9px; line-height: 1.75; }
+.foresight-foundation p { color: #40607f; }
+.foresight-window p { color: #6b5417; }
+.foresight-window p strong { display: inline; font-size: inherit; color: #6b5417; }
