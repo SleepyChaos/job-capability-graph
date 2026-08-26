@@ -352,20 +352,47 @@ export const classificationColor: Record<string, { fg: string; bg: string; dot: 
 }
 
 /**
- * 缺口分级色。A 最醒目——它的判据是「两侧技术在 JD 中均常见、独立性下本应共现
- * 却从未共现」，是本方法置信度最高的一档，最该被先看到。
+ * 证据强度色标——每张候选卡的**第一个**色标。
  *
- * 候选池里只会出现 A 与 B：C 级至少一侧技术在 JD 中从未出现，
- * 系统无法区分「市场未覆盖」与「语料域偏离」，因此不生成候选，
- * 而是进审核台的「C 级待核查技术」清单交人判断。
+ * 两处改动的理由：
+ *
+ * **一、不用 A/B 字母。** 字母等级本身不表意，读者得先去查表才知道 A 比 B 强在
+ * 哪里，而它们的差别恰恰是可以一句话说清的：A 是「这个组合从没被合招过，
+ * 且不可能是巧合」，B 是「从没被合招过，但样本量不足以排除巧合」。
+ * 直接把这句话写进标签。
+ *
+ * **二、库内四类也要有第一色标。** 此前它们这一格是空的，看起来像「漏了个标签」
+ * 而不是「另一种东西」。实际差别是**参照系**：带缺口标的参照招聘市场
+ * （市场上从没有岗位同时要求这些技术），不带的参照自产岗位库
+ * （库里有没有对应岗位）。给它一个正面的标签「库内比对」，
+ * 这个区别才在卡面上立得住。
  */
-export const gapGradeStyle: Record<string, { label: string; fg: string; bg: string }> = {
-  A: { label: 'A 级缺口', fg: '#a33a12', bg: '#fdeee5' },
-  B: { label: 'B 级缺口', fg: '#8a6a15', bg: '#fbf3df' },
+export const evidenceBadges: Record<
+  string,
+  { label: string; hint: string; fg: string; bg: string }
+> = {
+  A: {
+    label: '缺口显著',
+    hint: '两侧技术在招聘市场上都常见，却从未出现在同一个岗位里——可排除偶然',
+    fg: '#a33a12',
+    bg: '#fdeee5',
+  },
+  B: {
+    label: '缺口存疑',
+    hint: '两侧技术在招聘市场上都出现过，但样本量不足以排除「碰巧没撞上」',
+    fg: '#8a6a15',
+    bg: '#fbf3df',
+  },
+  library: {
+    label: '库内比对',
+    hint: '参照系是本系统自产的岗位库，回答「库里有没有对应岗位」，不涉及市场缺口',
+    fg: '#5a6b7e',
+    bg: '#eff2f6',
+  },
 }
 
-/** 库内四类没有缺口分级。留空而不是显示「—」，避免读成「分级为空值」。 */
-export const NO_GAP_GRADE_NOTE = '库内分类无缺口分级（参照系是岗位库，不是招聘市场）'
+/** 库内四类没有缺口分级，走 `library` 这一档。 */
+export const LIBRARY_EVIDENCE_KEY = 'library'
 
 export const classificationTone: Record<string, 'info' | 'warning' | 'success' | 'neutral'> = {
   existing_role: 'neutral',

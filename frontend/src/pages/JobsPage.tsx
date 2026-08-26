@@ -11,9 +11,9 @@ import {
   classificationColor,
   classificationLabels,
   discoveryApi,
-  gapGradeStyle,
+  evidenceBadges,
+  LIBRARY_EVIDENCE_KEY,
   maturityStageLabels,
-  NO_GAP_GRADE_NOTE,
   EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   type CandidateListItem,
   type DiscoveryRun,
@@ -175,28 +175,39 @@ export function JobsPage({
               不说明的话读者只会以为是同一维度的深浅。
             */}
             <div className="candidate-legend">
-              <div>
-                <span className="legend-kicker">缺口分级</span>
-                {Object.entries(gapGradeStyle).map(([grade, style]) => (
-                  <em key={grade} style={{ color: style.fg, background: style.bg }}>
-                    {style.label}
-                  </em>
-                ))}
-                <i>{NO_GAP_GRADE_NOTE}</i>
+              <div className="legend-block">
+                <span className="legend-kicker">证据强度 · 每张卡的第一个标签</span>
+                {/*
+                  含义必须与标签同屏。这一列的三档不是「强中弱」，前两档参照
+                  招聘市场、第三档参照自产岗位库——是两种不同的问题，
+                  只给三个色块读者无从知道这件事。
+                */}
+                <dl>
+                  {Object.values(evidenceBadges).map((badge) => (
+                    <div key={badge.label}>
+                      <dt style={{ color: badge.fg, background: badge.bg }}>
+                        {badge.label}
+                      </dt>
+                      <dd>{badge.hint}</dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
-              <div>
-                <span className="legend-kicker">分类</span>
-                {CLASSIFICATION_ORDER.filter((code) => grouped[code]?.length).map((code) => (
-                  <em
-                    key={code}
-                    style={{
-                      color: classificationColor[code]?.fg,
-                      background: classificationColor[code]?.bg,
-                    }}
-                  >
-                    {classificationLabels[code] ?? code}
-                  </em>
-                ))}
+              <div className="legend-block">
+                <span className="legend-kicker">分类 · 每张卡的第二个标签</span>
+                <div className="legend-chips">
+                  {CLASSIFICATION_ORDER.filter((code) => grouped[code]?.length).map((code) => (
+                    <em
+                      key={code}
+                      style={{
+                        color: classificationColor[code]?.fg,
+                        background: classificationColor[code]?.bg,
+                      }}
+                    >
+                      {classificationLabels[code] ?? code}
+                    </em>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -223,20 +234,23 @@ export function JobsPage({
                     </header>
                     <div className="discovery-column-body">
                       {grouped[code].map((item) => {
-                        const grade = item.gap_grade
-                          ? gapGradeStyle[item.gap_grade]
-                          : null
+                        // 库内四类走 `library` 档而不是留空——空着看起来像漏了
+                        // 标签，而它们与带缺口标的卡差的是参照系，不是有无标签。
+                        const badge =
+                          evidenceBadges[item.gap_grade ?? LIBRARY_EVIDENCE_KEY] ??
+                          evidenceBadges[LIBRARY_EVIDENCE_KEY]
                         return (
                           <button
                             key={item.candidate_code}
                             onClick={() => onOpenCandidate(item.candidate_code)}
                           >
                             <div className="candidate-chips">
-                              {grade ? (
-                                <em style={{ color: grade.fg, background: grade.bg }}>
-                                  {grade.label}
-                                </em>
-                              ) : null}
+                              <em
+                                style={{ color: badge.fg, background: badge.bg }}
+                                title={badge.hint}
+                              >
+                                {badge.label}
+                              </em>
                               <em
                                 style={{
                                   color: color?.fg,
