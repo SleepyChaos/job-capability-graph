@@ -53,6 +53,10 @@ class CandidateListItem(BaseModel):
     classification_code: str
     risk_flags: list
     run_code: str
+    # 缺口分级只有外部证据类（研究侧/里程碑）才有——它衡量的是「这个组合在招聘
+    # 市场上从未共现」这件事有多可信。库内四类的参照系是自产岗位库，没有这个量，
+    # 因此为 None，而不是补一个看起来同类、实则不同义的值。
+    gap_grade: str | None = None
 
 
 class CandidatePage(BaseModel):
@@ -222,6 +226,7 @@ def list_candidates(
                 candidate_score=candidate.candidate_score,
                 support_job_count=candidate.support_job_count,
                 classification_code=candidate.classification_code,
+                gap_grade=(candidate.mechanical_card_json or {}).get("gap_grade"),
                 risk_flags=candidate.risk_flags_json,
                 run_code=run.run_code,
             )

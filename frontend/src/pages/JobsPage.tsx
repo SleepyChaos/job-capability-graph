@@ -1,9 +1,5 @@
 import {
-  ArrowRight,
-  Building2,
   CircleDotDashed,
-  Database,
-  FileText,
   RefreshCw,
   ShieldAlert,
   ShieldCheck,
@@ -12,16 +8,17 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   CLASSIFICATION_BASELINE_NOTE,
-  classificationGuidance,
+  classificationColor,
   classificationLabels,
-  classificationTone,
   discoveryApi,
+  gapGradeStyle,
   maturityStageLabels,
+  NO_GAP_GRADE_NOTE,
   EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   type CandidateListItem,
   type DiscoveryRun,
 } from '../api/discovery'
-import { Panel, StatusTag } from '../components/ui'
+import { Panel } from '../components/ui'
 
 // 分类的展示顺序：从「需要动作」到「无需动作」，让审核者先看到该处理的。
 // 两类外部证据信号排在最前：它们的参照系是招聘市场而非本系统岗位库，
@@ -55,6 +52,9 @@ export function JobsPage({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [running, setRunning] = useState(false)
+  // 点统计栏的某一类 = 只看这一列。再点一次取消。分类多达六个，
+  // 全部并排时单列很窄，需要一个「专注看一类」的出口。
+  const [focus, setFocus] = useState<string | null>(null)
 
   const reload = useCallback(async (signal?: AbortSignal) => {
     // 候选按技术组合去重，同一组合始终只有一行，因此不按运行过滤：
@@ -110,12 +110,36 @@ export function JobsPage({
         <button className="secondary-button" disabled={running} onClick={runAutomatic}>{running ? <RefreshCw className="spin" size={16} /> : <Sparkles size={16} />}运行自动预测</button>
       </div>
 
-      <section className="discovery-boundary">
-        <div><Database size={20} /><span><strong>可信事实数据库</strong>JD 岗位簇 · T/L 技术词 · 技术里程碑</span></div>
-        <ArrowRight size={18} />
-        <div><CircleDotDashed size={20} /><span><strong>综合自动预测模型</strong>覆盖缺口、技术推进、真实需求与组合创新</span></div>
-        <ArrowRight size={18} />
-        <div><ShieldCheck size={20} /><span><strong>专项审批入库</strong>审批新岗位定义，不审核前置抽取事实</span></div>
+      {/*
+        原本这里是一条「数据库 → 模型 → 入库」的流程示意图。它每次渲染都一样，
+        不携带本轮任何信息；换成按分类的发现数，同一块版面就能回答
+        「这一轮发现了什么、各类各多少」。
+      */}
+      <section className="discovery-stats">
+        <div className="discovery-stats-total">
+          <strong>{candidateTotal}</strong>
+          <span>本轮候选合计</span>
+        </div>
+        <div className="discovery-stats-grid">
+          {CLASSIFICATION_ORDER.map((code) => {
+            const count = grouped[code]?.length ?? 0
+            const color = classificationColor[code]
+            return (
+              <button
+                key={code}
+                className={`discovery-stat${count === 0 ? ' is-empty' : ''}`}
+                style={{ borderTopColor: color?.dot }}
+                onClick={() => {
+                  if (count > 0) setFocus((current) => (current === code ? null : code))
+                }}
+                data-active={focus === code}
+              >
+                <b style={{ color: count > 0 ? color?.fg : undefined }}>{count}</b>
+                <span>{classificationLabels[code] ?? code}</span>
+              </button>
+            )
+          })}
+        </div>
       </section>
 
       <Panel title="自动预测任务" subtitle="每次运行冻结数据快照与 target_date，相同快照幂等复用">
@@ -145,49 +169,112 @@ export function JobsPage({
         ) : candidates.length === 0 ? (
           <div className="empty-state"><CircleDotDashed size={24} /><strong>暂无候选</strong><span>运行自动预测后在此展示。</span></div>
         ) : (
-          <div className="discovery-groups">
-            {CLASSIFICATION_ORDER.filter((code) => grouped[code]?.length).map((code) => (
-              <section key={code} className="discovery-group">
-                <header>
-                  <StatusTag tone={classificationTone[code] ?? 'info'}>
+          <>
+            {/*
+              两个色标各说一件事，因此必须给图例——同一张卡上并排两个色块，
+              不说明的话读者只会以为是同一维度的深浅。
+            */}
+            <div className="candidate-legend">
+              <div>
+                <span className="legend-kicker">缺口分级</span>
+                {Object.entries(gapGradeStyle).map(([grade, style]) => (
+                  <em key={grade} style={{ color: style.fg, background: style.bg }}>
+                    {style.label}
+                  </em>
+                ))}
+                <i>{NO_GAP_GRADE_NOTE}</i>
+              </div>
+              <div>
+                <span className="legend-kicker">分类</span>
+                {CLASSIFICATION_ORDER.filter((code) => grouped[code]?.length).map((code) => (
+                  <em
+                    key={code}
+                    style={{
+                      color: classificationColor[code]?.fg,
+                      background: classificationColor[code]?.bg,
+                    }}
+                  >
                     {classificationLabels[code] ?? code}
-                  </StatusTag>
-                  <span>{grouped[code].length} 个</span>
-                  <p>{classificationGuidance[code] ?? ''}</p>
-                  <span className="group-baseline">
-                    参照系：
-                    {code === 'milestone_signal'
-                      ? '具身智能产业里程碑事件——招聘市场上从未出现该组合'
-                      : code === 'upstream_signal'
-                        ? '论文与专利语料——招聘市场上从未出现该组合'
-                        : '本系统由同一批 JD 聚类得到的岗位库'}
-                  </span>
-                </header>
-                <div className="candidate-wall">
-                  {grouped[code].map((item) => (
-                    <button key={item.candidate_code} onClick={() => onOpenCandidate(item.candidate_code)}>
-                      <b>{Number(item.candidate_score).toFixed(1)}</b>
-                      <strong>{item.proposed_name}</strong>
-                      <span>
-                        {maturityStageLabels[item.maturity_stage_code] ?? item.maturity_stage_code}
-                        {/*
-                          外部证据类的 JD 支撑恒为 0——那是它们的定义。写「支撑 0 份 JD」
-                          读起来像抽取失败，换成这一类真正的立论：JD 侧无支撑。
-                        */}
-                        {' · '}
-                        {EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(item.classification_code)
-                          ? 'JD 侧无支撑'
-                          : `支撑 ${item.support_job_count} 份 JD`}
-                      </span>
-                      {item.risk_flags.length > 0 ? (
-                        <em>{item.risk_flags.length} 项风险标签</em>
-                      ) : null}
-                    </button>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
+                  </em>
+                ))}
+              </div>
+            </div>
+
+            <div className={`discovery-columns${focus ? ' is-focused' : ''}`}>
+              {CLASSIFICATION_ORDER.filter(
+                (code) => grouped[code]?.length && (!focus || focus === code),
+              ).map((code) => {
+                const color = classificationColor[code]
+                return (
+                  <section key={code} className="discovery-column">
+                    <header style={{ borderTopColor: color?.dot }}>
+                      <strong style={{ color: color?.fg }}>
+                        {classificationLabels[code] ?? code}
+                      </strong>
+                      <b>{grouped[code].length}</b>
+                      <p>
+                        参照系：
+                        {code === 'milestone_signal'
+                          ? '具身智能产业里程碑事件'
+                          : code === 'upstream_signal'
+                            ? '论文与专利语料'
+                            : '本系统由同一批 JD 聚类得到的岗位库'}
+                      </p>
+                    </header>
+                    <div className="discovery-column-body">
+                      {grouped[code].map((item) => {
+                        const grade = item.gap_grade
+                          ? gapGradeStyle[item.gap_grade]
+                          : null
+                        return (
+                          <button
+                            key={item.candidate_code}
+                            onClick={() => onOpenCandidate(item.candidate_code)}
+                          >
+                            <div className="candidate-chips">
+                              {grade ? (
+                                <em style={{ color: grade.fg, background: grade.bg }}>
+                                  {grade.label}
+                                </em>
+                              ) : null}
+                              <em
+                                style={{
+                                  color: color?.fg,
+                                  background: color?.bg,
+                                }}
+                              >
+                                {classificationLabels[code] ?? code}
+                              </em>
+                              <b>{Number(item.candidate_score).toFixed(1)}</b>
+                            </div>
+                            <strong>{item.proposed_name}</strong>
+                            <span>
+                              {maturityStageLabels[item.maturity_stage_code] ??
+                                item.maturity_stage_code}
+                              {/*
+                                外部证据类的 JD 支撑恒为 0——那是它们的定义。
+                                写「支撑 0 份 JD」读起来像抽取失败，
+                                换成这一类真正的立论：JD 侧无支撑。
+                              */}
+                              {' · '}
+                              {EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(
+                                item.classification_code,
+                              )
+                                ? 'JD 侧无支撑'
+                                : `支撑 ${item.support_job_count} 份 JD`}
+                            </span>
+                            {item.risk_flags.length > 0 ? (
+                              <i>{item.risk_flags.length} 项风险标签</i>
+                            ) : null}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </section>
+                )
+              })}
+            </div>
+          </>
         )}
         <p className="discovery-baseline">{CLASSIFICATION_BASELINE_NOTE}</p>
       </Panel>

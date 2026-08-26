@@ -70,6 +70,12 @@ export interface CandidateListItem {
   classification_code: string
   risk_flags: string[]
   run_code: string
+  /**
+   * 缺口分级。**只有外部证据类（研究侧/里程碑）才有**——它衡量的是
+   * 「这个技术组合在招聘市场上从未共现」这件事有多可信。库内四类的参照系是
+   * 自产岗位库，没有这个量，因此为 null，而不是补一个看起来同类、实则不同义的值。
+   */
+  gap_grade: string | null
 }
 
 export interface CandidatePage {
@@ -328,6 +334,39 @@ export const CLASSIFICATION_BASELINE_NOTE =
   '不代表该岗位在劳动力市场上不存在。'
 
 /** 分类对应的展示色调，与 StatusTag 的 tone 取值一致。 */
+/**
+ * 分类色。**与缺口分级色是两套独立的语义**，不能共用色阶：
+ * 分类回答「这是什么」，分级回答「证据有多硬」。同一张卡上两个色标各说一件事，
+ * 用同一组颜色会让读者以为它们在说同一件事。
+ *
+ * 家族 B（里程碑/研究侧）给暖色与青色——参照系是招聘市场，是真正的「发现」；
+ * 家族 A 给蓝灰系——参照系是自产岗位库，越靠后越不需要动作。
+ */
+export const classificationColor: Record<string, { fg: string; bg: string; dot: string }> = {
+  milestone_signal: { fg: '#1f6b3f', bg: '#eaf6ee', dot: '#2f9457' },
+  upstream_signal: { fg: '#0a6f68', bg: '#e6f5f3', dot: '#0b9c93' },
+  potential_new_role: { fg: '#6b3fa0', bg: '#f2ecfa', dot: '#8455c4' },
+  library_gap: { fg: '#8a5a11', bg: '#fdf3e3', dot: '#d9962a' },
+  role_evolution: { fg: '#1c4d86', bg: '#eaf2fd', dot: '#3b7dd8' },
+  existing_role: { fg: '#5a6b7e', bg: '#eff2f6', dot: '#8fa0b3' },
+}
+
+/**
+ * 缺口分级色。A 最醒目——它的判据是「两侧技术在 JD 中均常见、独立性下本应共现
+ * 却从未共现」，是本方法置信度最高的一档，最该被先看到。
+ *
+ * 候选池里只会出现 A 与 B：C 级至少一侧技术在 JD 中从未出现，
+ * 系统无法区分「市场未覆盖」与「语料域偏离」，因此不生成候选，
+ * 而是进审核台的「C 级待核查技术」清单交人判断。
+ */
+export const gapGradeStyle: Record<string, { label: string; fg: string; bg: string }> = {
+  A: { label: 'A 级缺口', fg: '#a33a12', bg: '#fdeee5' },
+  B: { label: 'B 级缺口', fg: '#8a6a15', bg: '#fbf3df' },
+}
+
+/** 库内四类没有缺口分级。留空而不是显示「—」，避免读成「分级为空值」。 */
+export const NO_GAP_GRADE_NOTE = '库内分类无缺口分级（参照系是岗位库，不是招聘市场）'
+
 export const classificationTone: Record<string, 'info' | 'warning' | 'success' | 'neutral'> = {
   existing_role: 'neutral',
   role_evolution: 'info',
