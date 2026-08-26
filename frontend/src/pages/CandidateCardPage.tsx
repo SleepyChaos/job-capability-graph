@@ -23,6 +23,13 @@ import {
   type NearestRoleCard,
 } from '../api/discovery'
 import { Panel, StatusTag } from '../components/ui'
+
+/** 技术类型 → 中文名。三类的传导时滞节奏本就不同，展示时要让读者看到用的是哪一档。 */
+const TECHNOLOGY_CLASS_LABELS: Record<string, string> = {
+  algorithm: '算法类',
+  hardware: '硬件类',
+  system_integration: '系统集成类',
+}
 import type { PageId } from '../types'
 
 /**
@@ -265,17 +272,28 @@ export function CandidateCardPage({
 
                 {foresight.reference_window ? (
                   <div className="foresight-window">
-                    <span className="foresight-kicker warn">预计出现参考窗口 · 外部先验</span>
+                    <span className="foresight-kicker warn">
+                      预计出现参考窗口 · 外部先验
+                      {foresight.reference_window.technology_classes.length > 0
+                        ? ` · ${foresight.reference_window.technology_classes
+                            .map((code) => TECHNOLOGY_CLASS_LABELS[code] ?? code)
+                            .join('、')}`
+                        : ''}
+                    </span>
                     <strong>
                       {foresight.reference_window.from} — {foresight.reference_window.to}
                     </strong>
                     <p>
-                      以最后一个方向成熟的 {foresight.reference_window.anchor_month} 为锚点，
+                      以技术地基就位的 {foresight.reference_window.anchor_month} 为锚点，
                       叠加 {foresight.reference_window.prior_months[0]}–
-                      {foresight.reference_window.prior_months[1]} 个月的传导时滞先验推出。
-                      <strong>该先验不是本系统的测量结果</strong>——时滞在自有数据上标定失败
-                      （已成熟时长与当前需求的秩相关 0.510，n=12 不显著；且里程碑为回溯整理），
-                      因此这个区间只能当作粗略参考，不能作为结论引用。
+                      {foresight.reference_window.prior_months[1]} 个月的传导时滞推出
+                      {foresight.reference_window.coefficient
+                        ? `（类型修正系数 ${foresight.reference_window.coefficient}）`
+                        : ''}。
+                      时滞按技术类型取值：算法类 10–15 月、系统集成类 12–18 月、硬件类 15–24 月。
+                      <strong>这组参数来自外部参考研究，不是本系统的测量结果</strong>——
+                      本项目 JD 侧的时间跨度仅约 10 周且为采集时间而非发布时间，
+                      测不出 10–24 个月量级的时滞，因此该区间可用但<strong>无法在本系统内验证</strong>。
                     </p>
                   </div>
                 ) : null}

@@ -277,6 +277,9 @@ export interface ForesightReferenceWindow {
   to: string
   prior_months: [number, number]
   anchor_month: string
+  /** 该候选技术组合归属的类型（算法/硬件/系统集成），决定用哪一档时滞先验。 */
+  technology_classes: string[]
+  coefficient: number | null
 }
 
 /** 最邻近的既有岗位。覆盖率说「有没有新能力」，Jaccard 说「是整个岗位还是它的一块」。 */

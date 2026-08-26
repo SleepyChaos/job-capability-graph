@@ -81,7 +81,7 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 #       核心层仍单独保留，身份、去重键与覆盖率测量不变。同时把支撑 JD 数下沉为列。
 logger = logging.getLogger(__name__)
 
-ALGORITHM_VERSION = "evidence_gap_discovery_v1_14"
+ALGORITHM_VERSION = "evidence_gap_discovery_v1_15"
 # 覆盖率分档阈值。与 tools/experiment_measure_ablation.py 保持同一口径。
 EXISTING_ROLE_COVERAGE = 0.75
 ROLE_EVOLUTION_COVERAGE = 0.45
@@ -661,12 +661,15 @@ def _run_evidence_discovery(
     refreshed_count = 0
     skipped_count = 0
     task_count = 0
+    # **不按词表版本过滤。** 技术 id 来自解析运行所用的版本，而推演运行取的是当前
+    # 最新的活跃版本——词表一升级两者就会错开，按版本过滤会直接 KeyError。
+    # 节点 id 全局唯一，全量映射既正确又不受版本错配影响。
+    # （这是节点 id 被当作跨版本标识符使用的第七处，前六处见 _nearest_role、
+    # _candidate_key、_milestone_signals_by_node、_candidate_projection 与两个实验脚本。）
     code_by_node = {
         node_id: code
         for node_id, code in db.execute(
-            select(TechnologyNode.technology_node_id, TechnologyNode.technology_code).where(
-                TechnologyNode.taxonomy_version_id == run.taxonomy_version_id
-            )
+            select(TechnologyNode.technology_node_id, TechnologyNode.technology_code)
         )
     }
     for technology_ids, evidence in ranked:
@@ -1157,6 +1160,7 @@ def _candidate_foresight(
     foresight: dict[str, ForesightResult],
     demand: dict[str, int],
     as_of: date,
+    lag_prior: dict | None = None,
 ) -> dict:
     """把候选依托的各 L2 方向的前瞻判断汇成一个块。
 
@@ -1209,14 +1213,23 @@ def _candidate_foresight(
         round((as_of - latest_date).days / 30.44, 1) if all_crossed and latest_date else None
     )
 
+    # 时滞先验按技术类型取，而不是一个拉平的区间。算法类的工程化节奏本就快于
+    # 硬件类，用同一个区间套所有候选，等于把最快和最慢的技术当成一回事。
+    # 分类型的区间由 estimate_transmission_lag 给出，候选卡里本来就在算，
+    # 此前没被窗口用上——窗口用的是一个拍出来的 12–36 月。
     window = None
+    typed = lag_prior if lag_prior and lag_prior.get("status") == "reference_prior" else None
+    low, high = (
+        (typed["low_months"], typed["high_months"]) if typed else TRANSMISSION_LAG_PRIOR_MONTHS
+    )
     if all_crossed and latest_date is not None:
-        low, high = TRANSMISSION_LAG_PRIOR_MONTHS
         window = {
-            "from": _shift_month(latest_date, low).strftime("%Y-%m"),
-            "to": _shift_month(latest_date, high).strftime("%Y-%m"),
+            "from": _shift_month(latest_date, round(low)).strftime("%Y-%m"),
+            "to": _shift_month(latest_date, round(high)).strftime("%Y-%m"),
             "prior_months": [low, high],
             "anchor_month": latest_date.strftime("%Y-%m"),
+            "technology_classes": typed["technology_classes"] if typed else [],
+            "coefficient": typed["coefficient"] if typed else None,
         }
 
     return {
@@ -1233,10 +1246,15 @@ def _candidate_foresight(
         "foundation_ready_months": ready_months,
         # ③ 参考窗口：**外部先验**，不是测量结果。见 TRANSMISSION_LAG_PRIOR_MONTHS。
         "reference_window": window,
-        "reference_window_origin": "external_prior_not_measured",
+        "reference_window_origin": (
+            "typed_external_prior_not_measured" if typed else "external_prior_not_measured"
+        ),
         "reference_window_reason": (
-            "传导时滞在本项目数据上标定失败（截尾夹逼退化、秩相关 0.510 不显著、"
-            "里程碑为回溯整理），窗口由外部先验推出，非本系统测量"
+            "区间 = 技术地基就位时点 + 该技术类型的传导时滞先验。"
+            "**先验来自外部参考研究的分类型实测区间（算法类 10–15 月、系统集成类 "
+            "12–18 月、硬件类 15–24 月，另乘类型修正系数），不是本系统的测量结果。**"
+            "本项目 JD 侧的时间跨度仅约 10 周且为采集时间而非发布时间，"
+            "无法测出 10–24 个月量级的时滞，因此该区间可用但无法在本系统内验证。"
         ),
         "directions": sorted(blocks, key=lambda item: item["foresight_rank"]),
         "crossed_direction_count": len(crossed),
@@ -1575,11 +1593,15 @@ def _persist_candidate(
     )
     nearest_role_id, overlap = nearest.role_id, nearest.coverage
     nearest_role_card = _nearest_role_card(db, nearest)
+    lag_prior = estimate_transmission_lag(
+        tuple(item.technology_code.split(".")[0] for item in technologies)
+    )
     foresight_block = _candidate_foresight(
         tuple(item.technology_code for item in technologies),
         foresight,
         job_demand,
         run.target_date,
+        lag_prior,
     )
     classification = _classify_candidate(nearest, foresight_block, scored.maturity_stage)
     mechanical = {
@@ -1605,9 +1627,7 @@ def _persist_candidate(
         "nearest_role_overlap": overlap,
         "nearest_role": nearest_role_card,
         # 先验估计，非本项目观测值：JD 侧尚无跨月真实采集，无法自行估计时滞。
-        "expected_transmission_lag": estimate_transmission_lag(
-            tuple(item.technology_code.split(".")[0] for item in technologies)
-        ),
+        "expected_transmission_lag": lag_prior,
         "foresight": foresight_block,
         "evidence_ids": sorted(evidence.evidence_job_ids),
         "llm_boundary": "expression_only_no_fact_mutation",
