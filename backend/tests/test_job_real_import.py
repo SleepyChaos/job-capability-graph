@@ -139,7 +139,11 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert parsing_first.feature_count == 3718
         # 特征快照带两道判别：职能门（销售/产品职能/制造工艺/IT运维）与语种门
         # （中文占比过低，特征管线无法表示）。3,534 → 2,646。
-        assert parsing_first.eligible_feature_count == 2646
+        # 2646 → 2292：职能门补齐了非技术职能词（总监/客服/品牌/仓储/审计/工艺
+        # 工程师等），这批 JD 不再进入聚类。抽取结果与证据仍完整保留，只是不计入
+        # 可聚类特征——语料实为「具身智能企业发布的全部岗位」，把 HR、仓管、
+        # 工艺工程师算进技术岗会让分母虚高，缺口分析的统计判据随之失灵。
+        assert parsing_first.eligible_feature_count == 2292
         assert not parsing_first.already_completed
         assert parsing_second.already_completed
 
@@ -189,12 +193,13 @@ def test_real_job_import_idempotency_and_api() -> None:
         assert parsing_summary.status_code == 200
         assert parsing_summary.json()["run"]["parsed_job_count"] == 3718
         assert parsing_summary.json()["ambiguity_review_count"] == 126
-        assert parsing_summary.json()["eligible_feature_count"] == 2646
+        assert parsing_summary.json()["eligible_feature_count"] == 2292
         assert parsing_reviews.status_code == 200
         assert parsing_reviews.json()["total"] == 325
         assert parsing_excluded.status_code == 200
         # 184 条原有排除 + 802 条职能判别 + 86 条语种判别。
-        assert parsing_excluded.json()["total"] == 1072
+        # 与 eligible_feature_count 互补：2292 + 1426 = 3718，职能门扩充后被排除的多了 354 份。
+        assert parsing_excluded.json()["total"] == 1426
         assert parsing_detail.status_code == 200
         assert parsing_detail.json()["cluster_feature"]["version"] == "cluster_features_v3"
         assert ambiguity_rules.status_code == 200
