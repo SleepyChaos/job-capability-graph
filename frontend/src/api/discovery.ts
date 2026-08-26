@@ -124,6 +124,27 @@ export interface RunCreatePayload {
   query_description?: string
 }
 
+/** 里程碑候选的证据条目：一个有日期、有主体的具体产业事件。 */
+export type MilestoneEvidence = {
+  milestone_code: string
+  milestone_name: string | null
+  milestone_type_code: string | null
+  event_date: string
+}
+
+/** 里程碑事件类型的中文名。原始码直接显示给审阅者不可读。 */
+export const milestoneTypeLabels: Record<string, string> = {
+  paper: '论文',
+  product_release: '产品发布',
+  breakthrough: '技术突破',
+  open_source: '开源',
+  platform_release: '平台发布',
+  standard_policy: '标准/政策',
+  technology_demo: '技术演示',
+  enterprise_application: '企业应用',
+  other: '其它',
+}
+
 /**
  * C 级待核查技术点。
  *
@@ -221,6 +242,7 @@ export const classificationLabels: Record<string, string> = {
   library_gap: '岗位库缺失',
   potential_new_role: '潜在新岗位',
   upstream_signal: '研究侧领先信号',
+  milestone_signal: '产业里程碑信号',
   insufficient_evidence: '证据不足',
 }
 
@@ -231,8 +253,21 @@ export const classificationLabels: Record<string, string> = {
  * 对应」；`upstream_signal` 来自论文与专利语料中已成形、而 JD 中从未出现的技术组合，
  * 回答「研究侧已经在一起做的事，招聘侧还没有」。混在一个列表里，读者无从判断
  * 某一条的「新」是相对岗位库而言还是相对招聘市场而言。
+ *
+ * `milestone_signal` 与 `upstream_signal` 问的是同一个问题，**但证据能指到的东西
+ * 不同**：前者指向具体的、有日期有主体的产业事件（某公司某天发布了什么），
+ * 后者只能给出「两个技术在 N 篇文献里一起出现过」。前者不受语料域偏离影响
+ * （里程碑是人工筛过的具身智能事件），后者会——上游路径的「强化学习 + 无人机」
+ * 多半就是 arXiv 的无人机研究占比过高造成的假象。两者互补，因此并列而不合并。
  */
 export const UPSTREAM_SIGNAL_CLASSIFICATION = 'upstream_signal'
+export const MILESTONE_SIGNAL_CLASSIFICATION = 'milestone_signal'
+
+/** 证据来自招聘语料之外的候选。它们的 JD 支撑恒为 0，事实位与处置动作都要另给。 */
+export const EXTERNAL_EVIDENCE_CLASSIFICATIONS = new Set([
+  UPSTREAM_SIGNAL_CLASSIFICATION,
+  MILESTONE_SIGNAL_CLASSIFICATION,
+])
 
 /**
  * 每个分类对应的处置动作。四类候选的下一步完全不同，只给一个分类名不足以让
@@ -245,6 +280,7 @@ export const classificationGuidance: Record<string, string> = {
   library_gap: '能力组合已经成熟、市场上大量在招，但岗位库里没有收录。动作是补录既有岗位，不是定义新岗位。',
   upstream_signal: '该技术组合在论文与专利中已反复出现，但招聘市场上从未有岗位同时要求它们。这是待核查的信号，不是已存在的岗位——需要人工判断该组合是否确实会形成岗位。',
   potential_new_role: '所依托的技术方向尚未全部跨过岗位化门槛。动作是新增岗位定义并持续跟踪。',
+  milestone_signal: '该技术组合已经出现在具体的产业里程碑事件中（产品发布、技术突破、开源等），但招聘市场上从未有岗位同时要求它们。里程碑证明该组合在产业侧已经存在，不证明有人在为它招聘——需要人工判断。',
 }
 
 /**
@@ -267,6 +303,7 @@ export const classificationTone: Record<string, 'info' | 'warning' | 'success' |
   library_gap: 'warning',
   potential_new_role: 'success',
   upstream_signal: 'success',
+  milestone_signal: 'success',
 }
 
 /** 评分维度的中文名。原始码直接显示给审核者不可读。 */

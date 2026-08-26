@@ -23,9 +23,12 @@ import {
 import { Panel, StatusTag } from '../components/ui'
 
 // 分类的展示顺序：从「需要动作」到「无需动作」，让审核者先看到该处理的。
-// 研究侧领先信号排在最前：它是唯一参照系为「招聘市场」而非「本系统岗位库」的一类，
-// 也是本模块唯一能称为「发现」的产出。其余四类的分母都是自产的岗位库。
+// 两类外部证据信号排在最前：它们的参照系是招聘市场而非本系统岗位库，
+// 是本模块唯一能称为「发现」的产出。其余四类的分母都是自产的岗位库。
+// 里程碑信号又排在研究侧之前——它的证据能指到具体的、有日期的产业事件，
+// 而研究侧只能给出共现次数，且会受语料域偏离影响。
 const CLASSIFICATION_ORDER = [
+  'milestone_signal',
   'upstream_signal',
   'potential_new_role',
   'library_gap',
@@ -152,9 +155,11 @@ export function JobsPage({
                   <p>{classificationGuidance[code] ?? ''}</p>
                   <span className="group-baseline">
                     参照系：
-                    {code === 'upstream_signal'
-                      ? '论文与专利语料——招聘市场上从未出现该组合'
-                      : '本系统由同一批 JD 聚类得到的岗位库'}
+                    {code === 'milestone_signal'
+                      ? '具身智能产业里程碑事件——招聘市场上从未出现该组合'
+                      : code === 'upstream_signal'
+                        ? '论文与专利语料——招聘市场上从未出现该组合'
+                        : '本系统由同一批 JD 聚类得到的岗位库'}
                   </span>
                 </header>
                 <div className="candidate-wall">

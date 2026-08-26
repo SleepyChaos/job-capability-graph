@@ -17,8 +17,11 @@ import {
   classificationTone,
   discoveryApi,
   maturityStageLabels,
+  milestoneTypeLabels,
+  EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   type CandidateDetail,
   type CandidateListItem,
+  type MilestoneEvidence,
   type NearestRoleCard,
   type UnverifiedTechnologyPage,
 } from '../api/discovery'
@@ -73,6 +76,14 @@ const ACTION_BY_CLASSIFICATION: Record<
     primaryHint:
       '零 JD 支撑。批准意味着仅凭上游语料证据先行建库，请先在数据卡核对共现次数与技术点。',
     secondary: '判为语料域偏离',
+  },
+  // 里程碑信号的驳回理由与上游不同：它不会有语料域偏离（事件是人工筛过的），
+  // 真正要判的是「这个事件是否意味着一类工作」——很多发布只是产品动态。
+  milestone_signal: {
+    primary: '认定成立，先行建库',
+    primaryHint:
+      '零 JD 支撑。依据是下方列出的具体事件——请先判断这些事件是否真的意味着一类岗位，而不只是产品动态。',
+    secondary: '判为不构成岗位',
   },
 }
 
@@ -179,7 +190,10 @@ export function CandidateReviewPage({
   const card = (candidate?.mechanical_card ?? {}) as Record<string, unknown>
   const nearest = (card?.nearest_role ?? null) as NearestRoleCard | null
   const expression = (candidate?.expression ?? {}) as Record<string, unknown>
-  const isUpstream = classification === 'upstream_signal'
+  // 两类外部证据候选的 JD 支撑恒为 0，事实位与基准说明都要另给。
+  const isExternal = EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(classification)
+  const isMilestone = classification === 'milestone_signal'
+  const milestones = (card?.milestones ?? []) as MilestoneEvidence[]
   const lag = (card?.expected_transmission_lag ?? null) as {
     low_months?: number
     high_months?: number
@@ -274,15 +288,20 @@ export function CandidateReviewPage({
                 审阅者以为抽取出错，所以这一类换成它真正有的证据：缺口等级、上游共现
                 次数、锚点月份。
               */}
-              {isUpstream ? (
+              {isExternal ? (
                 <div className="review-facts">
                   <div>
                     <ShieldAlert size={16} /><span>缺口等级</span>
                     <strong>{String(card?.gap_grade ?? '—')} 级</strong>
                   </div>
                   <div>
-                    <FlaskConical size={16} /><span>上游最低共现</span>
-                    <strong>{Number(card?.min_upstream_cooccurrence ?? 0)}</strong>
+                    <FlaskConical size={16} />
+                    <span>{isMilestone ? '依据事件' : '上游最低共现'}</span>
+                    <strong>
+                      {isMilestone
+                        ? Number(card?.milestone_count ?? 0)
+                        : Number(card?.min_upstream_cooccurrence ?? 0)}
+                    </strong>
                   </div>
                   <div>
                     <Layers size={16} /><span>能力项</span>
@@ -297,7 +316,7 @@ export function CandidateReviewPage({
                 </div>
               )}
 
-              {isUpstream ? (
+              {isExternal ? (
                 <div className="review-nearest upstream">
                   <span>招聘侧证据</span>
                   <strong>无——全部 JD 中该组合共现 0 次</strong>
@@ -318,6 +337,31 @@ export function CandidateReviewPage({
                     覆盖率 {nearest.coverage.toFixed(2)} · 范围重合 {nearest.jaccard.toFixed(2)}
                     （共有 {nearest.shared_technology_count} 项，对方共 {nearest.role_technology_count} 项）
                   </em>
+                </div>
+              ) : null}
+
+              {/*
+                里程碑候选的全部价值在这里：它能把候选指回一组具体的、有日期有主体的
+                事件。上游共现路径给不出这个——「两个技术在 5 篇论文里一起出现过」
+                无从判断。审阅者要做的判断就是看着这些事件回答一句话：
+                它们是否意味着一类工作，还是只是产品动态。
+              */}
+              {isMilestone && milestones.length > 0 ? (
+                <div className="milestone-evidence">
+                  <span>依据的产业事件（{milestones.length} 条）</span>
+                  <ol>
+                    {milestones.map((item) => (
+                      <li key={item.milestone_code}>
+                        <time>{item.event_date}</time>
+                        <StatusTag tone="info">
+                          {milestoneTypeLabels[item.milestone_type_code ?? ''] ??
+                            item.milestone_type_code ??
+                            '—'}
+                        </StatusTag>
+                        <strong>{item.milestone_name ?? item.milestone_code}</strong>
+                      </li>
+                    ))}
+                  </ol>
                 </div>
               ) : null}
 
@@ -376,7 +420,7 @@ export function CandidateReviewPage({
                   会把结论的来源说错，因此换成该候选自己的口径说明。
                 */}
                 <p className="review-baseline">
-                  {isUpstream
+                  {isExternal
                     ? String(card?.caveat ?? '')
                     : CLASSIFICATION_BASELINE_NOTE}
                 </p>
