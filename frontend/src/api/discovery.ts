@@ -76,6 +76,11 @@ export interface CandidateListItem {
    * 自产岗位库，没有这个量，因此为 null，而不是补一个看起来同类、实则不同义的值。
    */
   gap_grade: string | null
+  /** 已入库候选对应的正式岗位。未入库时为 null。 */
+  approved_role_code: string | null
+  approved_role_name: string | null
+  /** 入库时间。候选表没有独立的审批时间字段，取的是最后一次更新时间。 */
+  approved_at: string | null
 }
 
 export interface CandidatePage {

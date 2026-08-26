@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.api.data_center import get_reviewer
 from app.db.session import get_db
+from app.modules.clustering.models import JobRole
 from app.modules.data_center.models import AppUser, ReviewTask
 from app.modules.discovery.models import DiscoveryRun, EmergingRoleCandidate, StandardJobDescription
 from app.modules.discovery.service import (
@@ -57,6 +58,11 @@ class CandidateListItem(BaseModel):
     # 市场上从未共现」这件事有多可信。库内四类的参照系是自产岗位库，没有这个量，
     # 因此为 None，而不是补一个看起来同类、实则不同义的值。
     gap_grade: str | None = None
+    # 已入库候选对应的正式岗位。发现库要回答「这条已经变成哪个岗位了」，
+    # 只给候选编码不够——审阅者需要能对上岗位库里的那一条。
+    approved_role_code: str | None = None
+    approved_role_name: str | None = None
+    approved_at: str | None = None
 
 
 class CandidatePage(BaseModel):
@@ -215,6 +221,18 @@ def list_candidates(
         .limit(limit)
         .offset(offset)
     ).all()
+    # 已入库候选对应的岗位一次取齐，避免逐条查库。
+    role_ids = {
+        candidate.approved_job_role_id
+        for candidate, _ in rows
+        if candidate.approved_job_role_id
+    }
+    roles: dict[int, tuple[str, str]] = {}
+    if role_ids:
+        roles = {
+            role.job_role_id: (role.role_code, role.canonical_name)
+            for role in db.scalars(select(JobRole).where(JobRole.job_role_id.in_(role_ids)))
+        }
     return CandidatePage(
         total=total,
         items=[
@@ -227,6 +245,13 @@ def list_candidates(
                 support_job_count=candidate.support_job_count,
                 classification_code=candidate.classification_code,
                 gap_grade=(candidate.mechanical_card_json or {}).get("gap_grade"),
+                approved_role_code=roles.get(candidate.approved_job_role_id, (None, None))[0],
+                approved_role_name=roles.get(candidate.approved_job_role_id, (None, None))[1],
+                # 候选表没有独立的审批时间字段，入库是 updated_at 的最后一次写入。
+                # 命名上说清它是「最后更新时间」而非严格的审批时刻。
+                approved_at=(
+                    candidate.updated_at.isoformat() if candidate.approved_job_role_id else None
+                ),
                 risk_flags=candidate.risk_flags_json,
                 run_code=run.run_code,
             )

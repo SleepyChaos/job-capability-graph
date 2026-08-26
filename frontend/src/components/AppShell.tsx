@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from 'react'
 import {
   ClipboardCheck,
+  Library,
   Activity,
   Bell,
   BookOpenCheck,
@@ -54,6 +55,7 @@ const talentChildren: NavItem[] = [
 const jobPages: PageId[] = [
   'jobs',
   'candidate-review',
+  'discovery-library',
   'candidate',
   'job-directed',
   'job-records',
@@ -61,7 +63,11 @@ const jobPages: PageId[] = [
 const jobChildren: NavItem[] = [
   // 审核台紧跟发现页：发现 → 看数据卡 → 处置，是审核者的主路径。
   // 数据卡不进导航——它按候选编码路由，只能从列表或图谱点进去。
+  // 三页对应候选的三个阶段：发现（这一轮推演出了什么）→ 审核（能不能入库）
+  // → 发现库（判定成立的）。混在一页会让「提议」与「已成立的岗位」看起来
+  // 是一回事，而这两者差着一次人工判断。
   { id: 'candidate-review', label: '新岗位审核台', icon: ClipboardCheck },
+  { id: 'discovery-library', label: '新岗位发现库', icon: Library },
   // 技术词定向与岗位名称核验合成「定向推演」一页：两者都是按用户给定入口做定向
   // 查询，与自动发现的批量推演不是一类；各占一个导航项会把主流程挤到一边。
   { id: 'job-directed', label: '定向推演', icon: Tags },

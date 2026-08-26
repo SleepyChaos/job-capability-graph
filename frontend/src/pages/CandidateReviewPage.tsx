@@ -88,9 +88,12 @@ const ACTION_BY_CLASSIFICATION: Record<
 }
 
 export function CandidateReviewPage({
+  initialCandidateCode,
   onNavigate,
   notify,
 }: {
+  /** 从岗位数据卡跳进来时带的候选编码，直接定位到该条，免去在队列里重找。 */
+  initialCandidateCode?: string | null
   onNavigate: (page: PageId, param?: string | null) => void
   notify: (message: string) => void
 }) {
@@ -113,17 +116,18 @@ export function CandidateReviewPage({
       // 只取待审的：审核台的职责是清队列，已处置的属于记录库。
       const page = await discoveryApi.candidates({ workflowStatus: 'pending', limit: 200 })
       setItems(page.items)
-      setSelectedCode((current) =>
-        current && page.items.some((item) => item.candidate_code === current)
-          ? current
-          : page.items[0]?.candidate_code ?? '',
-      )
+      const has = (code: string) => page.items.some((item) => item.candidate_code === code)
+      setSelectedCode((current) => {
+        if (current && has(current)) return current
+        if (initialCandidateCode && has(initialCandidateCode)) return initialCandidateCode
+        return page.items[0]?.candidate_code ?? ''
+      })
     } catch (reason) {
       setError((reason as Error).message)
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [initialCandidateCode])
 
   useEffect(() => {
     void load()
@@ -260,7 +264,13 @@ export function CandidateReviewPage({
                     {classificationLabels[item.classification_code] ?? item.classification_code}
                   </StatusTag>
                   <strong>{item.proposed_name}</strong>
-                  <span>{Number(item.candidate_score).toFixed(1)} 分 · 支撑 {item.support_job_count} 份 JD</span>
+                  {/* 外部证据类的 JD 支撑恒为 0，与候选墙用同一套措辞。 */}
+                  <span>
+                    {Number(item.candidate_score).toFixed(1)} 分 ·{' '}
+                    {EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(item.classification_code)
+                      ? 'JD 侧无支撑'
+                      : `支撑 ${item.support_job_count} 份 JD`}
+                  </span>
                 </button>
               ))}
             </div>

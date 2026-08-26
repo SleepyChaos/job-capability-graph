@@ -611,8 +611,11 @@ export function CandidateCardPage({
           <button
             className="primary-button"
             onClick={() => {
-              notify('处置动作已迁移到审核台，避免在资料页误触终态操作')
-              onNavigate('review')
+              notify('处置动作在审核台完成，避免在资料页误触终态操作')
+              // 此前跳的是 'review'——那是数据审核中心（审 JD 抽取事实），
+              // 与候选处置是两件事。带上候选编码，审核台直接定位到这一条，
+              // 否则审核者到了那边还要在 164 条队列里再找一遍。
+              onNavigate('candidate-review', candidate.candidate_code)
             }}
           >
             前往审核台处置
