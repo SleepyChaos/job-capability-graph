@@ -5,24 +5,33 @@
 「上游领先招聘若干年」这个命题（提升度不随时点前移下降），任何形如「该岗位将于 X
 出现」的说法都没有依据。
 
-## 三道噪声过滤，判据都是统计量而非拍出来的阈值
+**接受不确定性，但不冒充确定性。** 按《17》的验收口径，不要求每条都准，
+要求每条都标明置信等级与依据——C 级条目可以出，但不能被描述成「发现的新岗位」。
 
-朴素地取「上游共现、JD 未共现」会捞进大量噪声。实测 88 对里约一半属于以下三类，
-每类对应一道过滤：
+## 分级而非过滤
 
-**一、JD 侧漏检伪装成缺口。** 强化学习 + 目标检测在 JD 里几乎必然同时出现，
-它之所以「未共现」，更可能是抽取漏了一侧（JD 抽取的受限口径 F1 只有 0.505）。
-判据用**独立性下的期望共现数**：若两个技术各自在 JD 中常见，独立假设预测它们
-本应共现若干次而实测为 0，这个「0」才是有信息的；若期望本就不足 1 次，
-没共现说明不了任何事。这与领先性回测里对照臂用的是同一个零假设。
+**此前的做法是错的。** 早先版本用三道过滤只留「确定的」，结果 88 对被砍到 2 对，
+而被砍掉的里面混着两种性质完全不同的东西：
 
-**二、同族近义对。** 无人机 + 飞行器(通用) 属于同一个 L2，是同一件事的两种说法，
-不构成「跨领域的能力组合」。判据：两个技术必须分属不同 L2。
+- 语料域偏离（arXiv 的无人机研究与具身智能招聘市场无关）——确实是噪声
+- **该技术在招聘市场上还没出现**——而那恰恰是新岗位信号本身
 
-**三、语料域偏离。** arXiv 的 cs.RO 含大量无人机与低空研究，而本项目的 JD 语料是
-具身智能岗位。判据：两个技术都必须在 JD 语料中**单独出现过足够多次**——市场上
-根本不招的方向，其研究侧共现与本项目无关。这一条已被第一道的期望共现数蕴含，
-但单独设一个下限更直观，也让被滤掉的原因可读。
+两者被混为一谈，且工具替审阅者做了删除决定。现改为**全部输出并分级**，
+把判断权交回去：
+
+- **A**：两侧技术在 JD 中均常见，独立性下期望共现 ≥ 阈值而实测为 0。
+  缺口最可信——市场在招这两个方向，却从不合招。
+- **B**：两侧技术在 JD 中均出现过，但期望共现不足阈值。
+  缺口存在，样本量不足以排除偶然。
+- **C**：至少一侧技术在 JD 中从未出现。
+  可能是最新的信号，也可能是语料域偏离——本系统无法区分，交审阅者判断。
+
+**只有一类仍然直接剔除**：同一 L2 下的同族近义对（无人机 + 飞行器(通用)）。
+它们是词表结构造成的假象，不是能力组合，放进来只会稀释真实信号。
+
+A 级的期望共现判据用的是**独立性下的期望值**：若两个技术各自在 JD 中常见，
+独立假设预测它们本应共现若干次而实测为 0，这个「0」才有信息量；若期望本就不足
+1 次，没共现说明不了任何事。这与领先性回测里对照臂用的是同一个零假设。
 
 ## 参考区间
 
@@ -68,16 +77,15 @@ def parse_args() -> argparse.Namespace:
         "--min-cooccurrence", type=int, default=5, help="上游共现多少次才纳入"
     )
     parser.add_argument(
-        "--min-expected-jd",
+        "--expected-jd-threshold",
         type=float,
         default=2.0,
-        help="独立性下 JD 期望共现数的下限。低于它时「未共现」不具信息量",
+        help="A 级要求的独立性期望共现数下限。低于它降为 B 级，不再直接剔除",
     )
     parser.add_argument(
-        "--min-jd-mentions",
-        type=int,
-        default=3,
-        help="两个技术各自在 JD 中至少被提及多少份，才认为市场确实在招这个方向",
+        "--grades",
+        default="A,B,C",
+        help="输出哪些等级，逗号分隔。默认全出",
     )
     parser.add_argument("--format", choices=["markdown", "json"], default="markdown")
     return parser.parse_args()
@@ -161,6 +169,7 @@ def main() -> None:
         }
 
     rejected: Counter[str] = Counter()
+    grades = {g.strip().upper() for g in args.grades.split(",") if g.strip()}
     results = []
     for pair, days in up_dates.items():
         count = len(days)
@@ -170,18 +179,25 @@ def main() -> None:
         if pair in jd_pairs:
             continue
 
-        # 三、语料域偏离：市场上根本不招的方向，其研究侧共现与本项目无关。
-        if mentions[left] < args.min_jd_mentions or mentions[right] < args.min_jd_mentions:
-            rejected["JD 中提及过少（语料域偏离）"] += 1
-            continue
-        # 二、同族近义对：同一 L2 内的两个技术是同一件事的两种说法。
+        # 唯一仍然直接剔除的一类：同一 L2 下的同族近义对，是词表结构造成的假象。
         if left.rsplit(".", 1)[0] == right.rsplit(".", 1)[0]:
             rejected["同一 L2（同族近义对）"] += 1
             continue
-        # 一、JD 侧漏检：独立性下期望共现不足时，「未共现」不具信息量。
+
         expected = mentions[left] * mentions[right] / total_jobs if total_jobs else 0
-        if expected < args.min_expected_jd:
-            rejected["独立性下期望共现过低（缺口无信息量）"] += 1
+        if mentions[left] == 0 or mentions[right] == 0:
+            grade = "C"
+            grade_reason = (
+                "至少一侧技术在 JD 中从未出现——可能是最新信号，也可能是语料域偏离"
+            )
+        elif expected >= args.expected_jd_threshold:
+            grade = "A"
+            grade_reason = "两侧技术在 JD 中均常见，独立性下本应共现却从未共现"
+        else:
+            grade = "B"
+            grade_reason = "两侧技术在 JD 中均出现过，但样本量不足以排除偶然"
+        if grade not in grades:
+            rejected[f"等级 {grade} 未被请求输出"] += 1
             continue
 
         # 锚点 = 共现累积到门槛的那一次，即组合在研究侧站住脚的时间。
@@ -197,6 +213,8 @@ def main() -> None:
             }
         overdue = window is not None and window["to"] < as_of_month
         results.append({
+            "grade": grade,
+            "grade_reason": grade_reason,
             "overdue": overdue,
             "pair": [left, right],
             "names": [names.get(left, left), names.get(right, right)],
@@ -207,15 +225,18 @@ def main() -> None:
             "expected_jd_cooccurrence": round(expected, 2),
             "reference_window": window,
         })
-    results.sort(key=lambda item: (-item["upstream_cooccurrence"], item["first_upstream_month"]))
+    results.sort(
+        key=lambda item: (item["grade"], -item["upstream_cooccurrence"], item["established_month"])
+    )
 
     payload = {
         "tool_version": TOOL_VERSION,
         "filters": {
             "min_cooccurrence": args.min_cooccurrence,
-            "min_expected_jd": args.min_expected_jd,
-            "min_jd_mentions": args.min_jd_mentions,
+            "expected_jd_threshold": args.expected_jd_threshold,
+            "grades": sorted(grades),
         },
+        "by_grade": dict(Counter(item["grade"] for item in results)),
         "rejected": dict(rejected),
         "kept": len(results),
         "items": results,
@@ -225,42 +246,64 @@ def main() -> None:
         return
 
     print(f"# 研究侧已成形、招聘侧未出现的技术组合（{TOOL_VERSION}）\n")
-    print(f"- 上游共现门槛 ≥{args.min_cooccurrence} 次 · JD 期望共现下限 "
-          f"{args.min_expected_jd} · 单技术 JD 提及下限 {args.min_jd_mentions}\n")
-    print("## 噪声过滤\n")
-    print("| 剔除原因 | 对数 |")
-    print("| --- | ---: |")
-    for reason, n in rejected.most_common():
-        print(f"| {reason} | {n} |")
-    print(f"\n**保留 {len(results)} 对。**\n")
+    print(f"- 上游共现门槛 ≥{args.min_cooccurrence} 次 · A 级期望共现阈值 "
+          f"{args.expected_jd_threshold}\n")
+    by_grade = Counter(item["grade"] for item in results)
+    print("## 分级结果\n")
+    print("| 等级 | 对数 | 含义 |")
+    print("| :---: | ---: | --- |")
+    labels = {
+        "A": "两侧技术 JD 中均常见，独立性下本应共现却从未共现——缺口最可信",
+        "B": "两侧技术 JD 中均出现过，但样本量不足以排除偶然",
+        "C": "至少一侧技术 JD 中从未出现——可能是最新信号，也可能是语料域偏离",
+    }
+    for grade in ("A", "B", "C"):
+        if grade in by_grade:
+            print(f"| **{grade}** | {by_grade[grade]} | {labels[grade]} |")
+    if rejected:
+        print("\n剔除：" + " · ".join(f"{k} {v}" for k, v in rejected.most_common()))
     if not results:
+        print("\n> 当前语料条件下无产出。空结果本身是结论，不隐藏该功能。")
         return
-    print("## 保留的组合\n")
-    print("| 技术组合 | 上游共现 | 站住脚于 | JD 各自提及 | 期望共现 | 参考区间 |")
-    print("| --- | ---: | :---: | ---: | ---: | :---: |")
-    for item in results:
-        w = item["reference_window"]
-        window = f"{w['from']} 至 {w['to']}" if w else "—"
-        if item["overdue"]:
-            window += " ⚠已过期"
-        print(
-            f"| {item['names'][0]} + {item['names'][1]} | {item['upstream_cooccurrence']} "
-            f"| {item['established_month']} | {item['jd_mentions'][0]}/{item['jd_mentions'][1]} "
-            f"| {item['expected_jd_cooccurrence']} | {window} |"
-        )
+
+    for grade in ("A", "B", "C"):
+        rows = [item for item in results if item["grade"] == grade]
+        if not rows:
+            continue
+        print(f"\n## {grade} 级（{len(rows)} 对）\n")
+        print("| 技术组合 | 上游共现 | 站住脚于 | JD 各自提及 | 期望共现 | 参考区间 |")
+        print("| --- | ---: | :---: | ---: | ---: | :---: |")
+        for item in rows[:40]:
+            w = item["reference_window"]
+            window = f"{w['from']} 至 {w['to']}" if w else "—"
+            if item["overdue"]:
+                window += " ⚠已过期"
+            print(
+                f"| {item['names'][0]} + {item['names'][1]} "
+                f"| {item['upstream_cooccurrence']} | {item['established_month']} "
+                f"| {item['jd_mentions'][0]}/{item['jd_mentions'][1]} "
+                f"| {item['expected_jd_cooccurrence']} | {window} |"
+            )
+        if len(rows) > 40:
+            print(f"\n> 另有 {len(rows) - 40} 对未列出，完整清单见 --format json。")
+
     overdue = sum(1 for item in results if item["overdue"])
+    print("\n## 必须随结果一并声明\n")
     if overdue:
         print(
-            f"\n> **{overdue} 对的参考区间已过期**——先验预测它们此时应已进入招聘，"
-            "而实际没有。这是该组合**对先验的反证**，不是预测：要么这批技术组合"
-            "并不形成岗位，要么本项目的 JD 语料覆盖不到它们，要么分类型时滞先验"
-            "在这些组合上不适用。三种解释本系统都无法区分。"
+            f"- **{overdue} 对的参考区间已过期**——先验预测它们此时应已进入招聘而实际没有。"
+            "这是对先验的反证，不是预测：要么该组合不形成岗位，要么本项目 JD 语料"
+            "覆盖不到，要么分类型时滞先验在这些组合上不适用，本系统无法区分三者。"
         )
     print(
-        "\n> **参考区间不是预测。** 锚点是两个技术首次在上游共现的真实日期；区间由"
-        "外部文献的分类型传导时滞先验推出，非本系统测量。本项目 JD 侧时间跨度仅约"
-        "10 周且为采集时间，无法验证该区间；U-3 回测进一步表明本项目数据**不支持**"
-        "「上游领先招聘」这一前提，因此上表不构成任何岗位将于某时出现的断言。"
+        "- **参考区间不是测量。** 锚点是两个技术在上游累积到共现门槛的真实日期；"
+        "区间由外部文献的分类型传导时滞先验推出。本项目 JD 侧时间跨度仅约 10 周"
+        "且为采集时间，无法验证；U-3 回测进一步表明本项目数据不支持「上游领先招聘」"
+        "这一前提本身。"
+    )
+    print(
+        "- **C 级不是「发现的新岗位」**，是待核查的信号。它与「语料域偏离」在本系统内"
+        "无法区分，需要人工判断该技术方向是否确实属于具身智能招聘市场。"
     )
 
 
