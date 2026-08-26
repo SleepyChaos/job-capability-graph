@@ -192,8 +192,19 @@ export const classificationLabels: Record<string, string> = {
   role_evolution: '岗位演化',
   library_gap: '岗位库缺失',
   potential_new_role: '潜在新岗位',
+  upstream_signal: '研究侧领先信号',
   insufficient_evidence: '证据不足',
 }
+
+/**
+ * 本类候选与其余几类的**证据来源根本不同**，因此在界面上必须分区陈列。
+ *
+ * 其余分类的分母是本系统由 JD 聚类得到的岗位库，回答「这个能力组合在岗位库里有没有
+ * 对应」；`upstream_signal` 来自论文与专利语料中已成形、而 JD 中从未出现的技术组合，
+ * 回答「研究侧已经在一起做的事，招聘侧还没有」。混在一个列表里，读者无从判断
+ * 某一条的「新」是相对岗位库而言还是相对招聘市场而言。
+ */
+export const UPSTREAM_SIGNAL_CLASSIFICATION = 'upstream_signal'
 
 /**
  * 每个分类对应的处置动作。四类候选的下一步完全不同，只给一个分类名不足以让
@@ -204,6 +215,7 @@ export const classificationGuidance: Record<string, string> = {
   existing_role: '该能力组合已被既有岗位覆盖，且占到对方能力集的大半，视作同一岗位。无需新增定义；可用于核对既有岗位的能力画像是否完整。',
   role_evolution: '候选只是最邻近岗位的一个片段，或仅被部分覆盖。建议并入该岗位，作为其新版本的能力变化。',
   library_gap: '能力组合已经成熟、市场上大量在招，但岗位库里没有收录。动作是补录既有岗位，不是定义新岗位。',
+  upstream_signal: '该技术组合在论文与专利中已反复出现，但招聘市场上从未有岗位同时要求它们。这是待核查的信号，不是已存在的岗位——需要人工判断该组合是否确实会形成岗位。',
   potential_new_role: '所依托的技术方向尚未全部跨过岗位化门槛。动作是新增岗位定义并持续跟踪。',
 }
 
@@ -226,6 +238,7 @@ export const classificationTone: Record<string, 'info' | 'warning' | 'success' |
   role_evolution: 'info',
   library_gap: 'warning',
   potential_new_role: 'success',
+  upstream_signal: 'success',
 }
 
 /** 评分维度的中文名。原始码直接显示给审核者不可读。 */

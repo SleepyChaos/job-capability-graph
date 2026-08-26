@@ -23,7 +23,15 @@ import {
 import { Panel, StatusTag } from '../components/ui'
 
 // 分类的展示顺序：从「需要动作」到「无需动作」，让审核者先看到该处理的。
-const CLASSIFICATION_ORDER = ['potential_new_role', 'library_gap', 'role_evolution', 'existing_role']
+// 研究侧领先信号排在最前：它是唯一参照系为「招聘市场」而非「本系统岗位库」的一类，
+// 也是本模块唯一能称为「发现」的产出。其余四类的分母都是自产的岗位库。
+const CLASSIFICATION_ORDER = [
+  'upstream_signal',
+  'potential_new_role',
+  'library_gap',
+  'role_evolution',
+  'existing_role',
+]
 
 function todayISO(): string {
   return new Date().toISOString().slice(0, 10)
@@ -142,6 +150,12 @@ export function JobsPage({
                   </StatusTag>
                   <span>{grouped[code].length} 个</span>
                   <p>{classificationGuidance[code] ?? ''}</p>
+                  <span className="group-baseline">
+                    参照系：
+                    {code === 'upstream_signal'
+                      ? '论文与专利语料——招聘市场上从未出现该组合'
+                      : '本系统由同一批 JD 聚类得到的岗位库'}
+                  </span>
                 </header>
                 <div className="candidate-wall">
                   {grouped[code].map((item) => (

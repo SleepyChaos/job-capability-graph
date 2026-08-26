@@ -718,3 +718,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .directed-mode-bar button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 13px; color: #60768c; background: #f4f7fa; border: 1px solid transparent; border-radius: 7px; font-size: 11px; }
 .directed-mode-bar button.active { color: var(--blue); background: #edf5ff; border-color: #9fc1ea; font-weight: 650; }
 .directed-mode-hint { margin: -4px 0 0; color: var(--muted); font-size: 10px; }
+/* 分组的参照系说明。两类候选的分母不同——一类是自产岗位库，一类是招聘市场——
+   不写清楚，读者无从判断某一条的「新」是相对哪一方而言。 */
+.group-baseline { display: block; margin-top: 5px; color: var(--muted); font-size: 8.5px; }
+.discovery-group:first-child { border-left: 3px solid var(--teal); padding-left: 12px; }
