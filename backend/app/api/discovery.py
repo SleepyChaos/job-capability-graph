@@ -278,6 +278,36 @@ def get_candidate(candidate_code: str, db: Annotated[Session, Depends(get_db)]):
     )
 
 
+@router.get("/role-discovery/unverified-technologies", response_model=dict)
+def get_unverified_technologies(db: Annotated[Session, Depends(get_db)]):
+    """C 级待核查技术清单：上游语料中活跃、而全部 JD 中一次都没出现的技术点。
+
+    每条要回答的是同一个问题——该技术是市场尚未覆盖的新技术，还是根本不属于具身
+    智能招聘范围？本系统区分不了，需要人工判断。按技术点聚合而非按技术对：
+    96 对背后只有 23 个技术，判断一次即可复用到该技术涉及的所有对上。
+
+    清单由 `build_upstream_candidates` 写进推演运行的结果摘要，这里直接读库——
+    API 进程不去读语料文件。
+    """
+    run = db.scalar(
+        select(DiscoveryRun)
+        .where(
+            DiscoveryRun.mode_code == "upstream_gap",
+            DiscoveryRun.run_status_code == "success",
+        )
+        .order_by(DiscoveryRun.discovery_run_id.desc())
+    )
+    if run is None or not run.result_summary_json:
+        return {"run_code": None, "items": [], "note": "尚未运行上游缺口推演"}
+    summary = run.result_summary_json
+    return {
+        "run_code": run.run_code,
+        "generated_at": run.completed_at.isoformat() if run.completed_at else None,
+        "note": summary.get("unverified_note", ""),
+        "items": summary.get("unverified_technologies", []),
+    }
+
+
 @router.post("/role-discovery/reviews/{task_code}/actions", response_model=dict)
 def act_on_candidate_review(
     task_code: str,

@@ -3,6 +3,7 @@ import {
   CheckCircle2,
   ExternalLink,
   FileText,
+  FlaskConical,
   Layers,
   RefreshCw,
   ShieldAlert,
@@ -19,6 +20,7 @@ import {
   type CandidateDetail,
   type CandidateListItem,
   type NearestRoleCard,
+  type UnverifiedTechnologyPage,
 } from '../api/discovery'
 import { Panel, StatusTag } from '../components/ui'
 import type { PageId } from '../types'
@@ -32,6 +34,11 @@ import type { PageId } from '../types'
  * 这里把处置面与资料面彻底分开，并按分类给出该做什么，而不是给两个通用按钮。
  *
  * 资料在岗位数据卡（独立路由），本页只负责决定。
+ *
+ * 第二个页签是 **C 级待核查技术清单**。它不是候选，处置对象是技术点而非岗位，
+ * 但同属「系统判不了、需要人来判」这一类工作，因此并入审核台而不是另开一页。
+ * 该清单当前只读——判定结果的落库口径尚未定义，先如实呈现待判事实，
+ * 不做一个点了没有后续的假按钮。
  */
 
 /** 每个分类对应的推荐动作。四类候选的下一步完全不同，不能共用一组按钮。 */
@@ -59,6 +66,14 @@ const ACTION_BY_CLASSIFICATION: Record<
     primaryHint: '所依托技术方向尚未全部成熟，建库后需持续跟踪。',
     secondary: '继续观察',
   },
+  // 上游信号没有任何招聘证据支撑，主按钮的措辞必须说明这一点：
+  // 批准等于**在没有市场证据的情况下先建库**，与其它三类不是同一个决定。
+  upstream_signal: {
+    primary: '认定成立，先行建库',
+    primaryHint:
+      '零 JD 支撑。批准意味着仅凭上游语料证据先行建库，请先在数据卡核对共现次数与技术点。',
+    secondary: '判为语料域偏离',
+  },
 }
 
 export function CandidateReviewPage({
@@ -75,6 +90,9 @@ export function CandidateReviewPage({
   const [loading, setLoading] = useState(true)
   const [acting, setActing] = useState(false)
   const [error, setError] = useState('')
+  const [tab, setTab] = useState<'candidates' | 'technologies'>('candidates')
+  const [unverified, setUnverified] = useState<UnverifiedTechnologyPage | null>(null)
+  const [unverifiedError, setUnverifiedError] = useState('')
   const reviewerCode = 'admin-demo'
 
   const load = useCallback(async () => {
@@ -99,6 +117,17 @@ export function CandidateReviewPage({
   useEffect(() => {
     void load()
   }, [load])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    discoveryApi
+      .unverifiedTechnologies(controller.signal)
+      .then(setUnverified)
+      .catch((reason: Error) => {
+        if (reason.name !== 'AbortError') setUnverifiedError(reason.message)
+      })
+    return () => controller.abort()
+  }, [])
 
   useEffect(() => {
     if (!selectedCode) {
@@ -150,9 +179,33 @@ export function CandidateReviewPage({
   const card = (candidate?.mechanical_card ?? {}) as Record<string, unknown>
   const nearest = (card?.nearest_role ?? null) as NearestRoleCard | null
   const expression = (candidate?.expression ?? {}) as Record<string, unknown>
+  const isUpstream = classification === 'upstream_signal'
+  const lag = (card?.expected_transmission_lag ?? null) as {
+    low_months?: number
+    high_months?: number
+  } | null
 
   return (
     <div className="page review-desk">
+      <div className="review-tab-bar">
+        <button
+          className={tab === 'candidates' ? 'active' : ''}
+          onClick={() => setTab('candidates')}
+        >
+          <ShieldCheck size={15} /> 候选处置 {items.length}
+        </button>
+        <button
+          className={tab === 'technologies' ? 'active' : ''}
+          onClick={() => setTab('technologies')}
+        >
+          <FlaskConical size={15} /> C 级待核查技术 {unverified?.items.length ?? 0}
+        </button>
+      </div>
+
+      {tab === 'technologies' ? (
+        <UnverifiedPanel data={unverified} error={unverifiedError} />
+      ) : (
+      <>
       <div className="review-queue-bar">
         <button
           className={filter === 'all' ? 'active' : ''}
@@ -216,11 +269,46 @@ export function CandidateReviewPage({
                 <p>{String(expression.one_line_definition ?? '尚未生成岗位定义。')}</p>
               </div>
 
-              <div className="review-facts">
-                <div><FileText size={16} /><span>支撑 JD</span><strong>{Number(card?.job_count ?? 0)}</strong></div>
-                <div><Building2 size={16} /><span>独立企业</span><strong>{Number(card?.organization_count ?? 0)}</strong></div>
-                <div><Layers size={16} /><span>能力项</span><strong>{candidate.technologies.length}</strong></div>
-              </div>
+              {/*
+                上游信号的 JD 支撑恒为 0——这是它的定义，不是数据缺失。摆一排 0 会让
+                审阅者以为抽取出错，所以这一类换成它真正有的证据：缺口等级、上游共现
+                次数、锚点月份。
+              */}
+              {isUpstream ? (
+                <div className="review-facts">
+                  <div>
+                    <ShieldAlert size={16} /><span>缺口等级</span>
+                    <strong>{String(card?.gap_grade ?? '—')} 级</strong>
+                  </div>
+                  <div>
+                    <FlaskConical size={16} /><span>上游最低共现</span>
+                    <strong>{Number(card?.min_upstream_cooccurrence ?? 0)}</strong>
+                  </div>
+                  <div>
+                    <Layers size={16} /><span>能力项</span>
+                    <strong>{candidate.technologies.length}</strong>
+                  </div>
+                </div>
+              ) : (
+                <div className="review-facts">
+                  <div><FileText size={16} /><span>支撑 JD</span><strong>{Number(card?.job_count ?? 0)}</strong></div>
+                  <div><Building2 size={16} /><span>独立企业</span><strong>{Number(card?.organization_count ?? 0)}</strong></div>
+                  <div><Layers size={16} /><span>能力项</span><strong>{candidate.technologies.length}</strong></div>
+                </div>
+              )}
+
+              {isUpstream ? (
+                <div className="review-nearest upstream">
+                  <span>招聘侧证据</span>
+                  <strong>无——全部 JD 中该组合共现 0 次</strong>
+                  <em>
+                    技术已成熟锚点 {String(card?.established_month ?? '—')}
+                    {lag?.low_months != null && lag?.high_months != null
+                      ? ` · 参考区间 ${lag.low_months}–${lag.high_months} 个月（外部文献先验，本系统无法验证）`
+                      : ''}
+                  </em>
+                </div>
+              ) : null}
 
               {nearest ? (
                 <div className="review-nearest">
@@ -282,12 +370,95 @@ export function CandidateReviewPage({
                   两个动作都是<strong>终态</strong>：处置后该技术组合不会再被重复提出，
                   即使算法版本更新。拿不准就先看数据卡。
                 </p>
-                <p className="review-baseline">{CLASSIFICATION_BASELINE_NOTE}</p>
+                {/*
+                  分类基准说明只对前三类成立——它们的分类来自与 JD 聚类岗位库的比对。
+                  上游信号根本没走这条路（它的定义就是 JD 里查无此组合），套用这段话
+                  会把结论的来源说错，因此换成该候选自己的口径说明。
+                */}
+                <p className="review-baseline">
+                  {isUpstream
+                    ? String(card?.caveat ?? '')
+                    : CLASSIFICATION_BASELINE_NOTE}
+                </p>
               </div>
             </div>
           )}
         </Panel>
       </div>
+      </>
+      )}
     </div>
+  )
+}
+
+/**
+ * C 级待核查技术清单。
+ *
+ * 每行是一个技术点，不是一个岗位候选。呈现三件事实：上游语料里它与别的技术最多
+ * 共现过多少次、涉及多少对缺口、最早的锚点月份。审阅者要判的是它究竟属于
+ * 「招聘市场还没出现的新技术」还是「上游语料谈的不是这个市场的事」。
+ */
+function UnverifiedPanel({
+  data,
+  error,
+}: {
+  data: UnverifiedTechnologyPage | null
+  error: string
+}) {
+  if (error) {
+    return (
+      <div className="empty-state">
+        <ShieldAlert size={25} />
+        <strong>加载失败</strong>
+        <span>{error}</span>
+      </div>
+    )
+  }
+  if (!data) {
+    return (
+      <div className="empty-state">
+        <RefreshCw className="spin" size={22} />
+        <strong>加载中…</strong>
+      </div>
+    )
+  }
+  // 空状态照常显示，不隐藏该分区——「当前语料条件下无待核查项」本身是结论。
+  if (data.items.length === 0) {
+    return (
+      <div className="empty-state">
+        <CheckCircle2 size={24} />
+        <strong>无待核查技术点</strong>
+        <span>最近一次上游缺口分析没有产出 C 级条目，或该分析尚未运行。</span>
+      </div>
+    )
+  }
+  return (
+    <Panel
+      title="C 级待核查技术清单"
+      subtitle={`${data.items.length} 个技术点 · 来自运行 ${data.run_code ?? '—'}`}
+    >
+      <p className="review-baseline">{data.note}</p>
+      <div className="unverified-list">
+        {data.items.map((item) => (
+          <div key={item.technology_code} className="unverified-row">
+            <div className="unverified-head">
+              <strong>{item.technology_name}</strong>
+              <code>{item.technology_code}</code>
+              <StatusTag tone="warning">JD 零命中</StatusTag>
+            </div>
+            <div className="unverified-facts">
+              <span>上游最高共现 <strong>{item.max_upstream_cooccurrence}</strong> 次</span>
+              <span>涉及 <strong>{item.pair_count}</strong> 对缺口</span>
+              <span>最早锚点 <strong>{item.earliest_established ?? '—'}</strong></span>
+            </div>
+            <div className="skill-tags">
+              {item.partner_names.map((name) => (
+                <span key={name} className="skill-tag">{name}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Panel>
   )
 }

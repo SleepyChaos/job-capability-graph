@@ -124,6 +124,31 @@ export interface RunCreatePayload {
   query_description?: string
 }
 
+/**
+ * C 级待核查技术点。
+ *
+ * 缺口分析把技术对分成 A/B/C 三级，C 级的判据是「至少一侧技术在全部 JD 中一次都没
+ * 出现过」。这有两种互斥解释——该技术在招聘市场上尚未出现（正是新岗位信号），
+ * 或语料域偏离（上游谈的东西与本市场无关）。**本系统区分不了这两者**，所以不做
+ * 自动裁决，交人工判断一次即可：96 对 C 级背后只有 23 个技术点。
+ */
+export type UnverifiedTechnology = {
+  technology_code: string
+  technology_name: string
+  max_upstream_cooccurrence: number
+  pair_count: number
+  earliest_established: string | null
+  partner_codes: string[]
+  partner_names: string[]
+}
+
+export type UnverifiedTechnologyPage = {
+  run_code: string | null
+  generated_at: string | null
+  note: string
+  items: UnverifiedTechnology[]
+}
+
 export const discoveryApi = {
   runs(modeCode: DiscoveryMode | null, signal?: AbortSignal) {
     const query = new URLSearchParams({ limit: '50' })
@@ -158,6 +183,9 @@ export const discoveryApi = {
       { action_code: action, comment_text: comment ?? null },
       { 'X-Reviewer-Code': reviewerCode },
     )
+  },
+  unverifiedTechnologies(signal?: AbortSignal) {
+    return getJson<UnverifiedTechnologyPage>('/role-discovery/unverified-technologies', signal)
   },
   autoExpression(candidateCode: string, reviewerCode: string) {
     return sendJson<CandidateSnapshot>(

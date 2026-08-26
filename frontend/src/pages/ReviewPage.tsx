@@ -103,7 +103,7 @@ export function ReviewPage({ notify }: { notify: (message: string) => void }) {
                   <td>{task.assigned_user_code ?? '—'}</td>
                   <td><StatusTag tone={task.task_status_code === 'queued' ? 'warning' : task.task_status_code === 'approved' ? 'success' : task.task_status_code === 'rejected' ? 'danger' : 'info'}>{statusTabs.find((tab) => tab.code === task.task_status_code)?.label ?? task.task_status_code}</StatusTag></td>
                   <td>
-                    <div className="review-actions">
+                    <div className="review-row-actions">
                       <button title="查看快照" onClick={() => setDetail(task)}><Eye size={15} /></button>
                       <button title="领取" disabled={actingCode !== '' || task.task_status_code !== 'queued'} onClick={() => act(task, 'claim')}>领取</button>
                       <button title="通过" disabled={actingCode !== '' || task.task_status_code === 'approved'} onClick={() => act(task, 'approve')}><Check size={15} /></button>

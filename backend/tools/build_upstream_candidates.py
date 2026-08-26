@@ -7,7 +7,13 @@
 用独立的推演模式 `upstream_gap` 与独立的分类 `upstream_signal` 落库。
 
 **只收 A/B 级。** C 级（至少一侧技术在 JD 中从未出现）与「语料域偏离」在本系统内
-无法区分，单独作为待核查清单输出，不进候选池——详见《17》S3 小节。
+无法区分，不进候选池——详见《17》S3 小节。
+
+**C 级另按技术点聚合成待核查清单，写入推演运行的结果摘要。** 判断单位取技术点而非
+技术对：96 对背后只有几十个技术，而每一对要问的其实是同一个问题——「这个技术属不属于
+具身智能招聘范围」。按技术点聚合后，审阅者做几十次判断而不是上百次，且每次判断可以
+复用到该技术涉及的所有对上。清单写进 `result_summary_json` 而不是另建表，
+这样审核台从数据库读即可，API 不必去读语料文件。
 
 **技术对如何扩成组合。** 把 A/B 级的缺口对看成一张图，找其中的**团**（clique）：
 团内任意两个技术之间都是缺口对，因此整个组合在 JD 中必然从未同时出现。这比
@@ -48,12 +54,14 @@ from sqlalchemy import select
 from app.db.session import SessionLocal
 from app.infrastructure.llm import generate, llm_available
 from app.modules.clustering.models import JobClusteringRun
+from app.modules.data_center.models import ReviewTask
 from app.modules.discovery.algorithm import estimate_transmission_lag
 from app.modules.discovery.models import (
     CandidateTechnology,
     DiscoveryRun,
     EmergingRoleCandidate,
 )
+from app.modules.discovery.service import candidate_snapshot
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
 MODE_CODE = "upstream_gap"
@@ -72,7 +80,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--extracted", type=Path, required=True)
     parser.add_argument("--min-cooccurrence", type=int, default=3)
     parser.add_argument("--grades", default="A,B", help="纳入候选池的等级")
-    parser.add_argument("--limit", type=int, default=40, help="最多生成多少个候选")
+    parser.add_argument(
+        "--limit", type=int, default=40, help="B 级候选的名额上限；A 级不受限，全部保留"
+    )
     parser.add_argument("--execute", action="store_true", help="真正落库（默认只预览）")
     return parser.parse_args()
 
@@ -189,6 +199,29 @@ def find_cliques(pairs: list[dict]) -> list[dict]:
     return results
 
 
+def apply_limit(cliques: list[dict], limit: int) -> list[dict]:
+    """**A 级无条件保留，名额只约束 B 级。**
+
+    此前是 `find_cliques(pairs)[:limit]`，按分数一刀切。分数 =
+    `log1p(最弱共现) × 衰减^年龄 × 等级权重`，其中时间衰减是逐年指数的，
+    等级权重只有 1.0 与 0.7 之差——一个 2021 年站住脚的 A 级组合会被衰减压到
+    0.054，而 2026 年站住脚的 B 级组合保持原值，A 级因此整体沉到 98 个团里的
+    第 61/75/83 名，被 limit=40 全数截掉，落库的 25 条**没有一条是 A 级**。
+
+    这与分级输出的设计意图正相反：A 级的判据是「两侧技术在 JD 中均常见、
+    独立性下本应共现却从未共现」，是本方法置信度最高的一档。名额是防止
+    B 级刷屏用的，不该反过来把最可信的那几条挤掉。
+
+    A 级本就稀少（当前 3 个），全留不会淹没结果。**排序仍按分数**——
+    衰减对「这条线索还新不新」的刻画是对的，只是不该有生杀权。
+    """
+    high = [item for item in cliques if item["grade"] == "A"]
+    rest = [item for item in cliques if item["grade"] != "A"]
+    kept = high + rest[: max(0, limit - len(high))]
+    kept.sort(key=lambda item: -item["score"])
+    return kept
+
+
 def _month_start(month: str) -> date:
     return date(int(month[:4]), int(month[5:7]), 1)
 
@@ -226,12 +259,54 @@ def name_combination(names: list[str], evidence: dict) -> dict | None:
     return result.parsed_json if result and result.parsed_json else None
 
 
+def collect_unverified(args: argparse.Namespace) -> list[dict]:
+    """C 级技术点的待核查清单，按技术聚合。
+
+    每条回答同一个问题：这个技术在上游语料里活跃，却在全部 JD 中一次都没出现——
+    它是市场尚未覆盖的新技术，还是根本不属于具身智能招聘范围？本系统区分不了，
+    需要人工判断，而判断一次即可复用到该技术涉及的所有缺口对上。
+    """
+    scoped = argparse.Namespace(**vars(args))
+    scoped.grades = "C"
+    aggregated: dict[str, dict] = {}
+    for item in load_pairs(scoped):
+        for side in (0, 1):
+            code = item["pair"][side]
+            if item["jd_mentions"][side] > 0:
+                continue  # 只收 JD 中零出现的那一侧
+            entry = aggregated.setdefault(
+                code,
+                {
+                    "technology_code": code,
+                    "pair_count": 0,
+                    "max_upstream_cooccurrence": 0,
+                    "earliest_established": item["established_month"],
+                    "partners": [],
+                },
+            )
+            entry["pair_count"] += 1
+            entry["max_upstream_cooccurrence"] = max(
+                entry["max_upstream_cooccurrence"], item["upstream_cooccurrence"]
+            )
+            entry["earliest_established"] = min(
+                entry["earliest_established"], item["established_month"]
+            )
+            partner = item["pair"][1 - side]
+            if partner not in entry["partners"]:
+                entry["partners"].append(partner)
+    rows = sorted(
+        aggregated.values(),
+        key=lambda item: (-item["max_upstream_cooccurrence"], item["technology_code"]),
+    )
+    return rows
+
+
 def main() -> None:
     args = parse_args()
     pairs = load_pairs(args)
     if not pairs:
         raise SystemExit("没有 A/B 级缺口对，先跑 find_upstream_only_pairs 确认")
-    cliques = find_cliques(pairs)[: args.limit]
+    cliques = apply_limit(find_cliques(pairs), args.limit)
 
     with SessionLocal() as session:
         version_id = session.scalar(
@@ -295,8 +370,20 @@ def main() -> None:
         session.add(run)
         session.flush()
 
+        existing_keys = set(
+            session.scalars(
+                select(EmergingRoleCandidate.candidate_key).where(
+                    EmergingRoleCandidate.classification_code == CLASSIFICATION
+                )
+            )
+        )
         for clique in cliques:
             codes = clique["technology_codes"]
+            # 候选身份 = 模式 + 技术组合，与运行无关；重跑时已存在的直接跳过，
+            # 避免撞唯一键，也避免为同一组合反复调用 LLM 命名。
+            if f"{MODE_CODE}|" + "-".join(codes) in existing_keys:
+                stats["已存在，跳过"] += 1
+                continue
             technologies = [nodes[c] for c in codes if c in nodes]
             if len(technologies) < 2:
                 stats["技术点不在当前词表，跳过"] += 1
@@ -379,14 +466,52 @@ def main() -> None:
                         membership_code="core",
                     )
                 )
+            # **必须建审核任务。** 审核台的处置动作走
+            # `POST /role-discovery/reviews/{task_code}/actions`，没有任务的候选在台上
+            # 只能看不能处置。主流程（service.py）建候选时同步建任务，这里沿用同一形态，
+            # 否则上游候选会成为审核台里一批点不动的条目。
+            session.add(
+                ReviewTask(
+                    task_code=f"review_discovery_{candidate.candidate_code}",
+                    queue_code="job_discovery",
+                    target_type_code="emerging_role",
+                    target_id=candidate.emerging_role_candidate_id,
+                    priority_score=candidate.candidate_score,
+                    task_status_code="queued",
+                    target_snapshot_json=candidate_snapshot(session, candidate),
+                    reason_json={
+                        "risk_flags": candidate.risk_flags_json,
+                        "grade": clique["grade"],
+                        "source": "upstream_gap",
+                    },
+                )
+            )
             stats["生成"] += 1
             print(f"  [{clique['grade']}] {' + '.join(labels)}\n      → {candidate.proposed_name}")
 
+        unverified = collect_unverified(args)
+        for row in unverified:
+            node = nodes.get(row["technology_code"])
+            row["technology_name"] = node.technology_name if node else row["technology_code"]
+            row["partner_names"] = [
+                nodes[c].technology_name if c in nodes else c for c in row["partners"]
+            ][:8]
+
         run.run_status_code = "success"
-        run.finished_at = datetime.now(UTC).replace(tzinfo=None)
-        run.result_summary_json = dict(stats)
+        run.completed_at = datetime.now(UTC).replace(tzinfo=None)
+        run.result_summary_json = {
+            **dict(stats),
+            # C 级待核查清单：审核台从这里读，API 不必去读语料文件。
+            "unverified_technologies": unverified,
+            "unverified_note": (
+                "这些技术在上游语料中活跃，却在全部 JD 中一次都没出现。"
+                "可能是市场尚未覆盖的新技术，也可能根本不属于具身智能招聘范围——"
+                "本系统无法区分，需要人工判断。"
+            ),
+        }
         session.commit()
         print(f"\n{json.dumps(dict(stats), ensure_ascii=False)}")
+        print(f"C 级待核查技术点：{len(unverified)} 个")
         print(f"推演运行：{run.run_code}")
 
 
