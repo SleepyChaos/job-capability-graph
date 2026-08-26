@@ -17,7 +17,14 @@ from app.modules.discovery.models import (
     DiscoveryRun,
     EmergingRoleCandidate,
 )
-from app.modules.discovery.service import ALGORITHM_VERSION as DISCOVERY_ALGORITHM_VERSION
+from app.modules.discovery.service import (
+    ALGORITHM_VERSION as DISCOVERY_ALGORITHM_VERSION,
+)
+from app.modules.discovery.service import (
+    EXTERNAL_EVIDENCE_CLASSIFICATIONS,
+    MILESTONE_GAP_ALGORITHM_VERSION,
+    UPSTREAM_GAP_ALGORITHM_VERSION,
+)
 from app.modules.graph.models import (
     DOMAIN_AGGREGATE_TECHNOLOGY_ID,
     TechnologyDailyTriggerMetric,
@@ -32,6 +39,18 @@ from app.modules.taxonomy.models import (
     TechnologyDomain,
     TechnologyNode,
     TechnologyNodeDomain,
+)
+
+# **三条发现路径各有自己的版本号，图谱要认全。**
+# 主路径（JD 聚类）的版本随 discovery.service 走；缺口分析路径读 JD 之外的语料，
+# 由离线工具产出，版本独立演进。只认主路径的版本会把 upstream_gap 与
+# milestone_gap 的候选整批挡在图谱外——而它们恰恰是唯一参照系为招聘市场的两类。
+CURRENT_ALGORITHM_VERSIONS = frozenset(
+    {
+        DISCOVERY_ALGORITHM_VERSION,
+        UPSTREAM_GAP_ALGORITHM_VERSION,
+        MILESTONE_GAP_ALGORITHM_VERSION,
+    }
 )
 
 PROJECTION_VERSION = "graph_projection_p2_v1"
@@ -97,20 +116,50 @@ def _candidate_projection(
     fresh_run_ids = set(
         db.scalars(
             select(DiscoveryRun.discovery_run_id).where(
-                DiscoveryRun.algorithm_version == DISCOVERY_ALGORITHM_VERSION
+                DiscoveryRun.algorithm_version.in_(CURRENT_ALGORITHM_VERSIONS)
             )
         )
     )
     if not fresh_run_ids:
         return [], []
-    candidates = list(
-        db.scalars(
-            select(EmergingRoleCandidate)
-            .where(EmergingRoleCandidate.last_seen_discovery_run_id.in_(fresh_run_ids))
-            .order_by(EmergingRoleCandidate.candidate_score.desc())
-            .limit(limit)
+    # **名额两侧各留一半，不把三条路径的分数放在一起排。**
+    #
+    # 三条路径的评分量纲根本不同：主路径是 0–122 的加权综合分，缺口分析是
+    # `log1p(共现) × 时间衰减`，上限约 1.2。混在一个 ORDER BY 里排名额，
+    # 缺口分析的候选**整批排在最后**，limit 一截就一条不剩——实测 80 个候选节点
+    # 里 upstream/milestone 为 0。反过来把外部证据类全部优先取，主路径又只剩 16 个。
+    # 两种都是「某一类静默消失」，只是消失的那类不同。
+    #
+    # 因此各给一半保底，谁不够就把余额让给另一边。这样两类都不会整批消失，
+    # 而 `limit` 仍然守住渲染预算。
+    def _fetch(external: bool, cap: int) -> list[EmergingRoleCandidate]:
+        if cap <= 0:
+            return []
+        column = EmergingRoleCandidate.classification_code
+        condition = (
+            column.in_(EXTERNAL_EVIDENCE_CLASSIFICATIONS)
+            if external
+            else column.notin_(EXTERNAL_EVIDENCE_CLASSIFICATIONS)
         )
-    )
+        return list(
+            db.scalars(
+                select(EmergingRoleCandidate)
+                .where(
+                    EmergingRoleCandidate.last_seen_discovery_run_id.in_(fresh_run_ids),
+                    condition,
+                )
+                .order_by(EmergingRoleCandidate.candidate_score.desc())
+                .limit(cap)
+            )
+        )
+
+    half = limit // 2
+    external = _fetch(True, half)
+    internal = _fetch(False, limit - len(external))
+    if len(external) + len(internal) < limit:
+        # 一侧没取满，余额让给另一侧，避免白白空着名额。
+        external = _fetch(True, limit - len(internal))
+    candidates = external + internal
     if not candidates:
         return [], []
 

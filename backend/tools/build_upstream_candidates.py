@@ -61,12 +61,14 @@ from app.modules.discovery.models import (
     DiscoveryRun,
     EmergingRoleCandidate,
 )
+from app.modules.discovery.service import (
+    UPSTREAM_GAP_ALGORITHM_VERSION as ALGORITHM_VERSION,
+)
 from app.modules.discovery.service import candidate_snapshot
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 
 MODE_CODE = "upstream_gap"
 CLASSIFICATION = "upstream_signal"
-ALGORITHM_VERSION = "upstream_gap_candidate_v1"
 PROMPT_VERSION = "upstream_gap_naming_v1"
 MAX_COMBINATION_SIZE = 4
 # 等级系数：A 级的缺口在统计上更可信，同等上游证据下给更高的分。

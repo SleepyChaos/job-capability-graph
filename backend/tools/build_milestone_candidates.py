@@ -51,13 +51,15 @@ from app.modules.discovery.models import (
     DiscoveryRun,
     EmergingRoleCandidate,
 )
+from app.modules.discovery.service import (
+    MILESTONE_GAP_ALGORITHM_VERSION as ALGORITHM_VERSION,
+)
 from app.modules.discovery.service import candidate_snapshot
 from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersion
 from tools import build_upstream_candidates as upstream
 
 MODE_CODE = "milestone_gap"
 CLASSIFICATION = "milestone_signal"
-ALGORITHM_VERSION = "milestone_gap_v1"
 PROMPT_VERSION = "milestone_combination_naming_v1"
 
 

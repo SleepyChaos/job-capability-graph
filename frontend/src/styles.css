@@ -680,6 +680,17 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .review-tab-bar button.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
 .review-nearest.upstream { background: #fdf4ec; border-left-color: #d98026; }
 .review-nearest.upstream strong { color: #8a4c11; }
+.external-anchor { display: flex; flex-direction: column; gap: 12px; padding: 4px 16px 16px; }
+.external-anchor > div { padding: 11px 13px; background: #f5f8fb; border-radius: 6px; }
+.external-anchor strong { display: block; margin-top: 4px; color: var(--ink); font-size: 14px; }
+.external-anchor em { display: block; margin-top: 5px; color: var(--muted); font-size: 8.5px; font-style: normal; line-height: 1.7; }
+.card-milestone-list { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 4px 16px 14px; list-style: none; }
+.card-milestone-list li { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.card-milestone-list time { color: #40607f; font-size: 9px; font-variant-numeric: tabular-nums; }
+.card-milestone-list strong { color: var(--ink); font-size: 10.5px; font-weight: 500; line-height: 1.6; }
+.card-pair-list { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 4px 16px 14px; list-style: none; }
+.card-pair-list strong { display: block; color: var(--ink); font-size: 11px; }
+.card-pair-list span { color: var(--muted); font-size: 9px; }
 .milestone-evidence { padding: 12px 14px; margin-bottom: 12px; background: #f6f9f6; border-left: 3px solid #4f8a56; border-radius: 5px; }
 .milestone-evidence > span { display: block; margin-bottom: 8px; color: var(--muted); font-size: 8.5px; }
 .milestone-evidence ol { display: flex; flex-direction: column; gap: 7px; margin: 0; padding: 0; list-style: none; }

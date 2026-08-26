@@ -8,11 +8,18 @@ import {
 } from '../api/discovery'
 import { Modal, Panel, StatusTag } from '../components/ui'
 
+// 前三种由界面触发，后两种目前只能由离线工具跑（它们要读 JD 之外的语料）。
+// 记录库仍要认得它们的 mode_code——否则这两类运行会以原始码示人，
+// 而它们恰恰是唯一参照系为招聘市场的两类产出。
 const modeLabels: Record<string, string> = {
   automatic: '综合自动预测',
   technology_directed: '技术词定向推演',
   name_inference: '岗位名称推演',
+  upstream_gap: '研究侧缺口分析',
+  milestone_gap: '产业里程碑缺口分析',
 }
+
+const MODE_FILTERS = ['全部', ...Object.values(modeLabels)]
 
 export function JobRecordsPage({ notify }: { notify: (message: string) => void }) {
   const [filter, setFilter] = useState('全部')
@@ -72,7 +79,7 @@ export function JobRecordsPage({ notify }: { notify: (message: string) => void }
 
       {error ? <div className="empty-state"><ShieldAlert size={24} /><strong>加载失败</strong><span>{error}</span></div> : null}
 
-      <Panel title="推演记录" subtitle={`当前显示 ${filteredRuns.length} 条，来自 /role-discovery/runs`} action={<div className="record-filter" aria-label="记录类型筛选">{['全部', '综合自动预测', '技术词定向推演', '岗位名称推演'].map((item) => <button className={filter === item ? 'active' : ''} key={item} onClick={() => setFilter(item)}>{item}</button>)}</div>}>
+      <Panel title="推演记录" subtitle={`当前显示 ${filteredRuns.length} 条，来自 /role-discovery/runs`} action={<div className="record-filter" aria-label="记录类型筛选">{MODE_FILTERS.map((item) => <button className={filter === item ? 'active' : ''} key={item} onClick={() => setFilter(item)}>{item}</button>)}</div>}>
         {loading ? <div className="empty-state"><RefreshCw className="spin" size={22} /><strong>正在加载记录…</strong></div> : (
           <div className="records-table-wrap">
             <table className="records-table">

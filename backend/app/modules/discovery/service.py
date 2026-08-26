@@ -82,6 +82,16 @@ from app.modules.taxonomy.models import TechnologyNode, TechnologyTaxonomyVersio
 logger = logging.getLogger(__name__)
 
 ALGORITHM_VERSION = "evidence_gap_discovery_v1_15"
+
+# **缺口分析两条路径的版本号也放在这里。** 它们由 `tools/build_*_candidates.py`
+# 写入运行记录，而图谱要靠版本号判断候选是否为当前版本产物。此前版本号散在工具
+# 里、图谱侧另抄一份字符串，抄错一个字（`upstream_gap_v1` 之于
+# `upstream_gap_candidate_v1`）就会让那一整类候选静默地从图谱上消失，且不报错。
+UPSTREAM_GAP_ALGORITHM_VERSION = "upstream_gap_candidate_v1"
+MILESTONE_GAP_ALGORITHM_VERSION = "milestone_gap_v1"
+
+#: 证据来自招聘语料之外的候选分类。它们的评分量纲与主路径不可比。
+EXTERNAL_EVIDENCE_CLASSIFICATIONS = frozenset({"upstream_signal", "milestone_signal"})
 # 覆盖率分档阈值。与 tools/experiment_measure_ablation.py 保持同一口径。
 EXISTING_ROLE_COVERAGE = 0.75
 ROLE_EVOLUTION_COVERAGE = 0.45

@@ -17,6 +17,7 @@ import {
   classificationTone,
   discoveryApi,
   maturityStageLabels,
+  EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   type CandidateListItem,
   type DiscoveryRun,
 } from '../api/discovery'
@@ -169,7 +170,14 @@ export function JobsPage({
                       <strong>{item.proposed_name}</strong>
                       <span>
                         {maturityStageLabels[item.maturity_stage_code] ?? item.maturity_stage_code}
-                        {' · '}支撑 {item.support_job_count} 份 JD
+                        {/*
+                          外部证据类的 JD 支撑恒为 0——那是它们的定义。写「支撑 0 份 JD」
+                          读起来像抽取失败，换成这一类真正的立论：JD 侧无支撑。
+                        */}
+                        {' · '}
+                        {EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(item.classification_code)
+                          ? 'JD 侧无支撑'
+                          : `支撑 ${item.support_job_count} 份 JD`}
                       </span>
                       {item.risk_flags.length > 0 ? (
                         <em>{item.risk_flags.length} 项风险标签</em>

@@ -22,7 +22,20 @@ async function sendJson<T>(method: 'POST' | 'PUT', path: string, body: unknown, 
   return response.json() as Promise<T>
 }
 
-export type DiscoveryMode = 'automatic' | 'technology_directed' | 'name_inference'
+/**
+ * 前三种由界面触发；后两种读 JD 之外的语料（论文/专利、产业里程碑），
+ * 目前只能由离线工具跑，但运行记录会回到同一张表，因此类型必须包含它们
+ * ——否则记录库拿到这两类运行时会在类型上说不通。
+ */
+export type DiscoveryMode =
+  | 'automatic'
+  | 'technology_directed'
+  | 'name_inference'
+  | 'upstream_gap'
+  | 'milestone_gap'
+
+/** 可由界面发起的模式。`createRun` 只接受这三种。 */
+export type RunnableDiscoveryMode = 'automatic' | 'technology_directed' | 'name_inference'
 
 export interface DiscoveryRun {
   run_code: string
@@ -117,11 +130,29 @@ export interface CandidateDetail {
 }
 
 export interface RunCreatePayload {
-  mode_code: DiscoveryMode
+  // 只能是可由界面发起的三种。缺口分析读 JD 之外的语料，走离线工具。
+  mode_code: RunnableDiscoveryMode
   target_date: string
   selected_technology_ids?: number[]
   query_role_name?: string
   query_description?: string
+}
+
+/** 上游候选的证据条目：一组技术对在论文与专利语料中的共现情况。 */
+export type UpstreamEvidencePair = {
+  pair: string[]
+  upstream_cooccurrence: number
+  established_month: string
+  grade: string
+}
+
+/** 传导时滞先验。外部文献推出，本系统的 U-3 回测不支持其前提，展示时必须标注。 */
+export type TransmissionLagPrior = {
+  status: string
+  low_months: number
+  high_months: number
+  coefficient: number
+  technology_classes: string[]
 }
 
 /** 里程碑候选的证据条目：一个有日期、有主体的具体产业事件。 */

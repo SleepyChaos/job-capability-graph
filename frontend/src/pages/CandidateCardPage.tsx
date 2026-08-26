@@ -15,12 +15,17 @@ import {
   classificationTone,
   CLASSIFICATION_BASELINE_NOTE,
   discoveryApi,
+  EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   maturityStageLabels,
+  milestoneTypeLabels,
   scoreComponentLabels,
   workflowStatusLabels,
   type CandidateDetail,
   type CandidateForesight,
+  type MilestoneEvidence,
   type NearestRoleCard,
+  type TransmissionLagPrior,
+  type UpstreamEvidencePair,
 } from '../api/discovery'
 import { Panel, StatusTag } from '../components/ui'
 
@@ -125,6 +130,31 @@ export function CandidateCardPage({
   const bonus = candidate.technologies.filter((item) => item.requirement_type !== 'required')
   const isLlmNamed = expression.generation_method === 'llm_expression'
   const nearest = (card?.nearest_role ?? null) as NearestRoleCard | null
+  /*
+    外部证据类候选（研究侧领先信号、产业里程碑信号）的证据完全不在 JD 里。
+    整张卡原本是围绕 JD 派生字段搭的——支撑 JD、独立企业、独立来源、证据 JD 编号、
+    学术—产业落差、观测窗——对这两类**恒为 0**。摆一屏 0 不只是没信息，
+    它会让读者以为抽取失败；而真正的证据（共现次数、里程碑事件）一个字都不显示。
+    因此这两类走另一套事实位与证据区。
+  */
+  const isExternal = EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(classification)
+  const isMilestone = classification === 'milestone_signal'
+  const milestones = (card?.milestones ?? []) as MilestoneEvidence[]
+  const evidencePairs = (card?.evidence_pairs ?? []) as UpstreamEvidencePair[]
+  const jdMentions = (card?.jd_mentions ?? {}) as Record<string, number>
+  /*
+    卡片里的 `jd_mentions` 以**技术编码**为键——上游工具建卡时取的是
+    `item["names"]`，而那个字段装的其实是编码。直接渲染会得到「T1.02.10 44 份」。
+    卡片自带同序的 codes 与 names 两个数组，按位置对上即可，
+    不必为历史数据改库。
+  */
+  const nameByCode = Object.fromEntries(
+    ((card?.technology_codes ?? []) as string[]).map((code, index) => [
+      code,
+      ((card?.technology_names ?? []) as string[])[index] ?? code,
+    ]),
+  )
+  const lag = (card?.expected_transmission_lag ?? null) as TransmissionLagPrior | null
 
   return (
     <div className="page candidate-card-page">
@@ -157,7 +187,9 @@ export function CandidateCardPage({
             分母必须和分类同屏。不写清楚参照系是自产的岗位库，读者会把「潜在新岗位」
             读成「市场上还没有的岗位」——那是当前实现给不出的结论。
           */}
-          <p className="card-hero-baseline">{CLASSIFICATION_BASELINE_NOTE}</p>
+          <p className="card-hero-baseline">
+            {isExternal ? String(card?.caveat ?? '') : CLASSIFICATION_BASELINE_NOTE}
+          </p>
         </div>
         <div className="card-hero-score">
           <strong>{candidate.candidate_score.toFixed(1)}</strong>
@@ -165,12 +197,35 @@ export function CandidateCardPage({
         </div>
       </header>
 
-      <div className="card-metrics">
-        <div><FileText size={17} /><span>支撑 JD</span><strong>{Number(card?.job_count ?? 0)}</strong></div>
-        <div><Building2 size={17} /><span>独立企业</span><strong>{Number(card?.organization_count ?? 0)}</strong></div>
-        <div><Database size={17} /><span>独立来源</span><strong>{Number(card?.source_count ?? 0)}</strong></div>
-        <div><Layers size={17} /><span>能力项</span><strong>{candidate.technologies.length}</strong></div>
-      </div>
+      {isExternal ? (
+        <div className="card-metrics">
+          <div>
+            <ShieldAlert size={17} /><span>缺口等级</span>
+            <strong>{String(card?.gap_grade ?? '—')} 级</strong>
+          </div>
+          <div>
+            <Database size={17} />
+            <span>{isMilestone ? '依据事件' : '上游最低共现'}</span>
+            <strong>
+              {isMilestone
+                ? Number(card?.milestone_count ?? 0)
+                : Number(card?.min_upstream_cooccurrence ?? 0)}
+            </strong>
+          </div>
+          <div>
+            <FileText size={17} /><span>JD 共现</span>
+            <strong>{Number(card?.jd_cooccurrence ?? 0)}</strong>
+          </div>
+          <div><Layers size={17} /><span>能力项</span><strong>{candidate.technologies.length}</strong></div>
+        </div>
+      ) : (
+        <div className="card-metrics">
+          <div><FileText size={17} /><span>支撑 JD</span><strong>{Number(card?.job_count ?? 0)}</strong></div>
+          <div><Building2 size={17} /><span>独立企业</span><strong>{Number(card?.organization_count ?? 0)}</strong></div>
+          <div><Database size={17} /><span>独立来源</span><strong>{Number(card?.source_count ?? 0)}</strong></div>
+          <div><Layers size={17} /><span>能力项</span><strong>{candidate.technologies.length}</strong></div>
+        </div>
+      )}
 
       <div className="card-columns">
         <Panel
@@ -204,7 +259,11 @@ export function CandidateCardPage({
                   ? required.map((tech) => (
                       <span key={tech.technology_code}>
                         {tech.technology_name}
-                        <em>证据 {tech.evidence_count}</em>
+                        {/*
+                          「证据 N」数的是支撑该能力项的 JD 条数。外部证据类的证据
+                          根本不在 JD 里，这里恒为 0——显示出来会被读成抽取失败。
+                        */}
+                        {isExternal ? null : <em>证据 {tech.evidence_count}</em>}
                       </span>
                     ))
                   : <span className="muted-tag">无</span>}
@@ -245,8 +304,42 @@ export function CandidateCardPage({
         </Panel>
 
         <div className="card-side">
-          <Panel title="技术方向前瞻" subtitle="判断对象是技术方向，不是岗位出现时间">
-            {foresight && foresight.directions.length > 0 ? (
+          <Panel
+            title={isExternal ? '锚点与参考区间' : '技术方向前瞻'}
+            subtitle={
+              isExternal
+                ? '锚点是缺口成立的时点；参考区间为外部先验，本系统无法验证'
+                : '判断对象是技术方向，不是岗位出现时间'
+            }
+          >
+            {/*
+              前瞻面板读的是 rel_milestone_technology 的里程碑关联，那张表只覆盖
+              31 个技术节点。对里程碑候选它会输出「没有里程碑证据，不作前瞻判断」
+              ——而这条候选的全部依据恰恰就是一条里程碑事件，自相矛盾。
+              外部证据类改用候选自己卡片里的锚点。
+            */}
+            {isExternal ? (
+              <div className="external-anchor">
+                <div>
+                  <span className="foresight-kicker">
+                    {isMilestone ? '最早依据事件' : '组合在上游站住脚于'}
+                  </span>
+                  <strong>{String(card?.established_month ?? '—')}</strong>
+                </div>
+                {lag ? (
+                  <div>
+                    <span className="foresight-kicker">参考区间 · 外部先验</span>
+                    <strong>
+                      {lag.low_months}–{lag.high_months} 个月
+                    </strong>
+                    <em>
+                      按技术类型的传导时滞先验推出。U-3 回测不支持「上游领先招聘」
+                      这一前提，本区间不构成本系统的预测。
+                    </em>
+                  </div>
+                ) : null}
+              </div>
+            ) : foresight && foresight.directions.length > 0 ? (
               <>
                 {/*
                   三类时间信息按可信度从高到低排列，并在视觉上分开：
@@ -337,6 +430,85 @@ export function CandidateCardPage({
             )}
           </Panel>
 
+          {isExternal ? (
+            <Panel
+              title="证据来源"
+              subtitle={
+                isMilestone
+                  ? `${milestones.length} 条产业里程碑事件 · JD 侧无支撑`
+                  : `${evidencePairs.length} 组上游共现 · JD 侧无支撑`
+              }
+            >
+              {isMilestone ? (
+                <ol className="card-milestone-list">
+                  {milestones.map((item) => (
+                    <li key={item.milestone_code}>
+                      <time>{item.event_date}</time>
+                      <StatusTag tone="info">
+                        {milestoneTypeLabels[item.milestone_type_code ?? ''] ??
+                          item.milestone_type_code ??
+                          '—'}
+                      </StatusTag>
+                      <strong>{item.milestone_name ?? item.milestone_code}</strong>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <ul className="card-pair-list">
+                  {evidencePairs.map((item) => (
+                    <li key={item.pair.join('|')}>
+                      {/* `evidence_pairs.pair` 同样装的是编码，不是名称。 */}
+                      <strong>
+                        {item.pair.map((code) => nameByCode[code] ?? code).join(' + ')}
+                      </strong>
+                      <span>
+                        上游共现 {item.upstream_cooccurrence} 次 · 站住脚于{' '}
+                        {item.established_month} · {item.grade} 级
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {/*
+                招聘侧的两个数字必须同屏：各自提及说明这些技术在市场上不是没人要，
+                共现 0 才是缺口本身。少了前者，读者无法区分「新组合」与「冷门技术」。
+              */}
+              <dl className="evidence-grid">
+                <div>
+                  <dt>JD 中各自提及</dt>
+                  <dd>
+                    {Object.entries(jdMentions).length > 0
+                      ? Object.entries(jdMentions)
+                          .map(([code, count]) => `${nameByCode[code] ?? code} ${count} 份`)
+                          .join(' · ')
+                      : '—'}
+                  </dd>
+                </div>
+                <div>
+                  <dt>JD 中同时要求</dt>
+                  <dd>{Number(card?.jd_cooccurrence ?? 0)} 份 —— 这正是缺口本身</dd>
+                </div>
+                {isMilestone ? (
+                  <div>
+                    <dt>其中已人工验证的事件</dt>
+                    <dd>
+                      {Number(card?.verified_milestone_count ?? 0)} / {milestones.length}
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+              {candidate.risk_flags.length > 0 ? (
+                <div className="risk-block">
+                  <span>风险标签</span>
+                  <div className="skill-tags">
+                    {candidate.risk_flags.map((flag) => (
+                      <span key={flag} className="risk-tag">{flag}</span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </Panel>
+          ) : (
           <Panel title="证据来源" subtitle={`${Number(card?.job_count ?? 0)} 份真实 JD 支撑`}>
             <dl className="evidence-grid">
               <div>
@@ -393,6 +565,7 @@ export function CandidateCardPage({
               </div>
             ) : null}
           </Panel>
+          )}
         </div>
       </div>
 
