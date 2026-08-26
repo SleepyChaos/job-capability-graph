@@ -15,6 +15,7 @@ import {
   classificationTone,
   CLASSIFICATION_BASELINE_NOTE,
   discoveryApi,
+  emergenceWindow,
   EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   maturityStageLabels,
   milestoneTypeLabels,
@@ -155,6 +156,7 @@ export function CandidateCardPage({
     ]),
   )
   const lag = (card?.expected_transmission_lag ?? null) as TransmissionLagPrior | null
+  const window = emergenceWindow(card?.established_month as string | undefined, lag)
 
   return (
     <div className="page candidate-card-page">
@@ -305,10 +307,10 @@ export function CandidateCardPage({
 
         <div className="card-side">
           <Panel
-            title={isExternal ? '锚点与参考区间' : '技术方向前瞻'}
+            title={isExternal ? '锚点与岗位涌现区间' : '技术方向前瞻'}
             subtitle={
               isExternal
-                ? '锚点是缺口成立的时点；参考区间为外部先验，本系统无法验证'
+                ? '锚点是缺口成立的时点；涌现区间为外部先验，本系统无法验证'
                 : '判断对象是技术方向，不是岗位出现时间'
             }
           >
@@ -326,15 +328,28 @@ export function CandidateCardPage({
                   </span>
                   <strong>{String(card?.established_month ?? '—')}</strong>
                 </div>
-                {lag ? (
-                  <div>
-                    <span className="foresight-kicker">参考区间 · 外部先验</span>
+                {window ? (
+                  <div className={window.expired ? 'is-expired' : undefined}>
+                    <span className="foresight-kicker">
+                      参考岗位涌现区间 · 外部先验
+                      {window.expired ? ' · 已过期' : ''}
+                    </span>
                     <strong>
-                      {lag.low_months}–{lag.high_months} 个月
+                      {window.from} 至 {window.to}
                     </strong>
+                    <span className="anchor-derivation">
+                      {`由锚点 ${String(card?.established_month ?? '—')} 加 ` +
+                        `${lag?.low_months}–${lag?.high_months} 个月的传导时滞先验推出`}
+                    </span>
+                    {/*
+                      区间落在过去时必须说破。候选里有锚点在 2019–2021 的
+                      （缺口开了多年仍未闭合），照直显示会变成「预计 2020 年涌现」，
+                      在 2026 年的界面上自相矛盾。
+                    */}
                     <em>
-                      按技术类型的传导时滞先验推出。U-3 回测不支持「上游领先招聘」
-                      这一前提，本区间不构成本系统的预测。
+                      {window.expired
+                        ? '该区间已经过去，按先验这个岗位早该出现却仍未出现——更可能说明这两个技术在招聘上本就不该同现。'
+                        : '按技术类型的传导时滞先验推出。U-3 回测不支持「上游领先招聘」这一前提，本区间是外部文献的参考值，不构成本系统的预测。'}
                     </em>
                   </div>
                 ) : null}

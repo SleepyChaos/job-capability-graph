@@ -16,12 +16,14 @@ import {
   classificationLabels,
   classificationTone,
   discoveryApi,
+  emergenceWindow,
   maturityStageLabels,
   milestoneTypeLabels,
   EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   type CandidateDetail,
   type CandidateListItem,
   type MilestoneEvidence,
+  type TransmissionLagPrior,
   type NearestRoleCard,
   type UnverifiedTechnologyPage,
 } from '../api/discovery'
@@ -198,10 +200,8 @@ export function CandidateReviewPage({
   const isExternal = EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(classification)
   const isMilestone = classification === 'milestone_signal'
   const milestones = (card?.milestones ?? []) as MilestoneEvidence[]
-  const lag = (card?.expected_transmission_lag ?? null) as {
-    low_months?: number
-    high_months?: number
-  } | null
+  const lag = (card?.expected_transmission_lag ?? null) as TransmissionLagPrior | null
+  const window = emergenceWindow(card?.established_month as string | undefined, lag)
 
   return (
     <div className="page review-desk">
@@ -332,8 +332,10 @@ export function CandidateReviewPage({
                   <strong>无——全部 JD 中该组合共现 0 次</strong>
                   <em>
                     技术已成熟锚点 {String(card?.established_month ?? '—')}
-                    {lag?.low_months != null && lag?.high_months != null
-                      ? ` · 参考区间 ${lag.low_months}–${lag.high_months} 个月（外部文献先验，本系统无法验证）`
+                    {window
+                      ? ` · 参考岗位涌现区间 ${window.from} 至 ${window.to}${
+                          window.expired ? '（已过期）' : ''
+                        }，外部先验，本系统无法验证`
                       : ''}
                   </em>
                 </div>

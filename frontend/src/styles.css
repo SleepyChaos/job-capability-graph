@@ -684,6 +684,9 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .external-anchor > div { padding: 11px 13px; background: #f5f8fb; border-radius: 6px; }
 .external-anchor strong { display: block; margin-top: 4px; color: var(--ink); font-size: 14px; }
 .external-anchor em { display: block; margin-top: 5px; color: var(--muted); font-size: 8.5px; font-style: normal; line-height: 1.7; }
+.external-anchor .anchor-derivation { display: block; margin-top: 4px; color: #4a6076; font-size: 9px; }
+.external-anchor > div.is-expired { background: #fdf4ec; border-left: 3px solid #d98026; }
+.external-anchor > div.is-expired strong { color: #8a4c11; }
 .card-milestone-list { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 4px 16px 14px; list-style: none; }
 .card-milestone-list li { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
 .card-milestone-list time { color: #40607f; font-size: 9px; font-variant-numeric: tabular-nums; }
@@ -743,6 +746,11 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .discovery-column-body strong { display: block; color: var(--ink); font-size: 11.5px; line-height: 1.45; }
 .discovery-column-body span { display: block; margin-top: 5px; color: var(--muted); font-size: 9px; }
 .discovery-column-body i { display: inline-block; margin-top: 6px; padding: 2px 6px; color: #8a3b32; background: #fdeeec; border-radius: 4px; font-size: 8px; font-style: normal; }
+
+.graph-candidate-legend { display: flex; flex-direction: column; gap: 4px; }
+.graph-candidate-legend span { display: flex; align-items: center; gap: 6px; font-size: 8.5px; }
+.graph-candidate-legend i { width: 9px; height: 9px; border: 1.5px dashed currentColor; border-radius: 50%; background: #fff; flex: 0 0 auto; }
+.graph-legend-note { margin: 6px 0 0; color: var(--muted); font-size: 8px; line-height: 1.6; }
 
 .library-summary { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 16px 12px; }
 .library-summary span { padding: 3px 9px; border-radius: 5px; font-size: 9px; }

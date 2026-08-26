@@ -157,6 +157,40 @@ export type UpstreamEvidencePair = {
   grade: string
 }
 
+/**
+ * 把锚点月份平移若干个月。`2026-08` + 8 → `2027-04`。
+ *
+ * 参考区间此前显示成「8–12 个月」，读者得拿锚点自己心算。信息量相同，
+ * 但要多做一步换算，且换算结果才是他真正想看的东西。
+ */
+export function shiftMonth(anchor: string, months: number): string {
+  const year = Number(anchor.slice(0, 4))
+  const month = Number(anchor.slice(5, 7))
+  if (!year || !month) return anchor
+  const total = month - 1 + Math.round(months)
+  return `${year + Math.floor(total / 12)}-${String((total % 12) + 1).padStart(2, '0')}`
+}
+
+/**
+ * 由锚点与时滞先验推出的岗位涌现参考区间。
+ *
+ * `expired` 是必须一起返回的：候选里有锚点落在 2019–2021 的（缺口开了多年仍未
+ * 闭合），平移后区间整个落在过去。把一段已经过去的时间当作「预计涌现区间」
+ * 展示是自相矛盾的，界面必须标出来，让审阅者知道该读成
+ * 「按先验早该出现却没出现」而不是「即将出现」。
+ */
+export function emergenceWindow(
+  anchor: string | null | undefined,
+  lag: TransmissionLagPrior | null,
+): { from: string; to: string; expired: boolean } | null {
+  if (!anchor || !lag || lag.low_months == null || lag.high_months == null) return null
+  const from = shiftMonth(anchor, lag.low_months)
+  const to = shiftMonth(anchor, lag.high_months)
+  const now = new Date()
+  const current = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  return { from, to, expired: to < current }
+}
+
 /** 传导时滞先验。外部文献推出，本系统的 U-3 回测不支持其前提，展示时必须标注。 */
 export type TransmissionLagPrior = {
   status: string

@@ -1881,12 +1881,26 @@ def _publish_candidate(db: Session, candidate: EmergingRoleCandidate, actor_user
             CandidateTechnology.emerging_role_candidate_id == candidate.emerging_role_candidate_id
         )
     )
-    if (
-        not candidate.task_community_id
-        or not technology_count
-        or not candidate.mechanical_card_json.get("evidence_ids")
-    ):
-        raise DiscoveryError("候选缺少可追溯任务、技术词或证据片段，不能发布正式岗位")
+    # **门禁按证据来源分支。**
+    #
+    # 这道门要挡的是「基础无法追溯的岗位被发布成正式定义」。原实现把「可追溯」
+    # 写死成了 JD 派生的三件东西：任务社区、技术词、证据 JD 编号。前者与后者
+    # 外部证据类**按定义就没有**——它们的立论恰恰是「JD 里从来没有过这个组合」，
+    # 于是这两类候选在这道门下永远发布不了，报错还提示「缺少证据片段」，
+    # 读起来像是数据没填好，实际是门禁问的问题不适用。
+    #
+    # 技术词是三类共同的硬要求，保留；可追溯性改为按来源各查各的证据。
+    card = candidate.mechanical_card_json or {}
+    if not technology_count:
+        raise DiscoveryError("候选没有关联技术词，不能发布正式岗位")
+    if candidate.classification_code in EXTERNAL_EVIDENCE_CLASSIFICATIONS:
+        # 上游路径追溯到共现技术对，里程碑路径追溯到具体事件。
+        if not (card.get("evidence_pairs") or card.get("milestones")):
+            raise DiscoveryError(
+                "外部证据类候选缺少上游共现对或里程碑事件，无法追溯来源，不能发布正式岗位"
+            )
+    elif not candidate.task_community_id or not card.get("evidence_ids"):
+        raise DiscoveryError("候选缺少可追溯任务或证据 JD 片段，不能发布正式岗位")
     expression = candidate.expression_json or {}
     normalized = _normalize_name(candidate.proposed_name)
     if db.scalar(select(JobRole).where(JobRole.normalized_name == normalized)):
@@ -1938,11 +1952,9 @@ def _publish_candidate(db: Session, candidate: EmergingRoleCandidate, actor_user
                 required_ratio=None,
                 trend_score=None,
                 trend_status_code="initial_definition",
-                supporting_job_count=int(candidate.mechanical_card_json.get("job_count", 0)),
-                independent_organization_count=int(
-                    candidate.mechanical_card_json.get("organization_count", 0)
-                ),
-                independent_source_count=int(candidate.mechanical_card_json.get("source_count", 0)),
+                supporting_job_count=int(card.get("job_count", 0)),
+                independent_organization_count=int(card.get("organization_count", 0)),
+                independent_source_count=int(card.get("source_count", 0)),
                 last_seen_at=None,
                 confidence_score=candidate.candidate_score,
                 is_human_edited=False,
@@ -1952,7 +1964,18 @@ def _publish_candidate(db: Session, candidate: EmergingRoleCandidate, actor_user
         "title": candidate.proposed_name,
         "definition": version.one_line_definition,
         "responsibilities": expression.get("core_responsibilities") or [],
-        "technology_node_ids": candidate.mechanical_card_json.get("technology_node_ids", []),
+        # 外部证据类的卡里没有 technology_node_ids（它们的卡记的是技术编码），
+        # 回落到候选—技术关联表，这对三条路径都成立且更准。
+        "technology_node_ids": card.get("technology_node_ids")
+        or [
+            rel.technology_node_id
+            for rel in db.scalars(
+                select(CandidateTechnology).where(
+                    CandidateTechnology.emerging_role_candidate_id
+                    == candidate.emerging_role_candidate_id
+                )
+            )
+        ],
         "disclaimer": "参考模板，不代表真实招聘，不计入市场热度与岗位证据。",
     }
     db.add(

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { Graph as G6Graph, GraphData } from '@antv/g6'
+import { classificationColor } from '../api/discovery'
 import type { RelationEdge, RelationGraphResponse, RelationNode } from '../api/graphs'
 import { domainColors } from '../data/graphData'
 import type { RelationLayoutRequest, RelationLayoutResult } from './relationLayout.worker'
@@ -202,7 +203,20 @@ function nodeSize(node: RelationNode, compact: boolean, zoomLevel: SemanticZoomL
 function nodeStyle(node: RelationNode, compact: boolean, zoomLevel: SemanticZoomLevel) {
   const proposal = node.type === 'emerging_candidate'
   const cluster = node.type === 'job_cluster' || proposal
-  const color = domainColors[node.domain_code] ?? '#64748b'
+  /*
+    提议节点按**分类**着色，而不是按技术域。
+
+    观测到的聚类用技术域色回答「这个岗位属于哪个技术方向」；提议节点在图上要
+    回答的是另一个问题——「这条提议是哪来的、可信到什么程度」。同用技术域色，
+    一个里程碑信号和一个已被覆盖的候选会长成同一个颜色，而这两者的性质差着
+    一次参照系的切换。色值与候选墙的分类色同源，跨页一致。
+
+    色相与技术域色刻意错开（分类色偏中低饱和），加上空心 + 虚线描边，
+    提议在图上不会被误读成一个已入库的岗位。
+  */
+  const color = proposal
+    ? classificationColor[node.classification_code ?? '']?.dot ?? '#8fa0b3'
+    : domainColors[node.domain_code] ?? '#64748b'
   const size = nodeSize(node, compact, zoomLevel)
   const showLabel = zoomLevel !== 'overview' || cluster
   return {
