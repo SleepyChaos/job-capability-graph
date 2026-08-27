@@ -1,0 +1,30 @@
+{
+ "node_count": {
+  "technology": 279,
+  "capability_family": 12,
+  "capability": 78,
+  "job": 3718,
+  "organization": 632
+ },
+ "node_total": 4719,
+ "edge_count": {
+  "belongs_to": 272,
+  "supports_domain": 12,
+  "belongs_to_family": 78,
+  "requires_capability": 6660,
+  "posts_job": 2540
+ },
+ "edge_total": 9562,
+ "job_total": 3718,
+ "job_with_skill_tag": 1772,
+ "job_skill_tag_rate": 0.4766,
+ "capability_count": 12,
+ "capability_item_count": 78,
+ "skill_family_count": 12,
+ "tech_l1": 7,
+ "tech_l2": 43,
+ "tech_l3": 229,
+ "tech_l4_not_in_graph": 1872,
+ "org_total": 633,
+ "org_matched_job": 53
+}

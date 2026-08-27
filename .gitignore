@@ -29,6 +29,9 @@ output/
 /.codex-tmp/
 /.runtime/
 
+# IDE 工作目录
+.workbuddy/
+
 # 环境变量与密钥：仅 .env.example 可入库
 .env
 .env.local
