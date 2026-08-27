@@ -4,14 +4,19 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
-from sqlalchemy import func, select
+from sqlalchemy import distinct, func, select
 from sqlalchemy.orm import Session
 
 from app.api.data_center import get_reviewer
 from app.db.session import get_db
 from app.modules.clustering.models import JobRole
 from app.modules.data_center.models import AppUser, ReviewTask
-from app.modules.discovery.models import DiscoveryRun, EmergingRoleCandidate, StandardJobDescription
+from app.modules.discovery.models import (
+    DiscoveryRun,
+    EmergingRoleCandidate,
+    IndustryTaskEvidence,
+    StandardJobDescription,
+)
 from app.modules.discovery.service import (
     DiscoveryError,
     apply_candidate_expression,
@@ -20,6 +25,7 @@ from app.modules.discovery.service import (
     review_candidate,
     run_discovery,
 )
+from app.modules.job.models import JobPosting, Organization
 
 router = APIRouter(tags=["new-role-discovery"])
 
@@ -306,6 +312,88 @@ def get_candidate(candidate_code: str, db: Annotated[Session, Depends(get_db)]):
             for item in standard_jds
         ],
     )
+
+
+@router.get("/role-discovery/candidates/{candidate_code}/evidence", response_model=dict)
+def get_candidate_evidence(
+    candidate_code: str,
+    db: Annotated[Session, Depends(get_db)],
+    limit: Annotated[int, Query(ge=1, le=200)] = 20,
+) -> dict:
+    """候选的支撑 JD 明细。
+
+    事实卡里的 `evidence_ids` 只是一串数字编号，界面上展开后读者仍然不知道这些是什么
+    岗位、来自哪家企业、什么时候采的。这里把编号解析成可读的行，让「凭什么提出这条
+    候选」一路可查到具体招聘文本。
+
+    外部证据类候选（研究侧、里程碑）本就没有招聘侧支撑，`evidence_ids` 为空，
+    返回空列表而非报错——那是它们的定义，不是数据缺失。
+    """
+    candidate = db.scalar(
+        select(EmergingRoleCandidate).where(
+            EmergingRoleCandidate.candidate_code == candidate_code
+        )
+    )
+    if candidate is None:
+        raise HTTPException(status_code=404, detail="候选不存在")
+
+    card = candidate.mechanical_card_json or {}
+    # `evidence_ids` 存的是**证据片段**编号，不是岗位编号。片段与岗位的对应关系由
+    # 发现流程写在 rel_industry_task_evidence 上（rel_job_fact_evidence 是解析阶段
+    # 的另一套片段，编号空间不同，对不上）。多个片段可能出自同一份招聘文本，
+    # 因此先去重再取岗位，否则同一岗位会重复列出。
+    span_ids = [int(item) for item in (card.get("evidence_ids") or [])]
+    if not span_ids:
+        return {"total": 0, "items": []}
+
+    # 该表的主键是（任务, 片段），同一个片段会挂在很多任务下——只按片段过滤会展开成
+    # 几十万行（3,500,000 行 / 17,751 个片段，平均每片段约 200 行），实测要二十多秒。
+    # 候选自带 task_ids，用它走主键前缀把范围先收窄，再在库内去重。
+    task_ids = [int(item) for item in (card.get("task_ids") or [])]
+    conditions = [IndustryTaskEvidence.evidence_span_id.in_(span_ids)]
+    if task_ids:
+        conditions.append(IndustryTaskEvidence.industry_task_id.in_(task_ids))
+    total = (
+        db.scalar(
+            select(func.count(distinct(IndustryTaskEvidence.job_posting_id))).where(*conditions)
+        )
+        or 0
+    )
+    posting_ids = list(
+        db.scalars(
+            select(IndustryTaskEvidence.job_posting_id)
+            .where(*conditions)
+            .distinct()
+            .limit(limit)
+        )
+    )
+    if not posting_ids:
+        return {"total": 0, "items": []}
+
+    rows = db.execute(
+        select(JobPosting, Organization.canonical_name)
+        .outerjoin(Organization, Organization.organization_id == JobPosting.organization_id)
+        .where(JobPosting.job_posting_id.in_(posting_ids))
+        .order_by(JobPosting.published_at.is_(None), JobPosting.published_at.desc())
+    ).all()
+    return {
+        "total": total,
+        "items": [
+            {
+                "job_code": posting.job_code,
+                "title": posting.job_title_raw,
+                "company": company or posting.company_name_raw,
+                "region": posting.region_text,
+                "published_at": posting.published_at.date().isoformat()
+                if posting.published_at
+                else None,
+                "collected_at": posting.collected_at.date().isoformat()
+                if posting.collected_at
+                else None,
+            }
+            for posting, company in rows
+        ],
+    }
 
 
 @router.get("/role-discovery/unverified-technologies", response_model=dict)

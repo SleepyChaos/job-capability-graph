@@ -1,10 +1,9 @@
 from decimal import Decimal
 from typing import Annotated, Literal
-from collections import defaultdict
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
-from sqlalchemy import and_, desc, func, select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.api.data_center import get_reviewer
@@ -323,7 +322,8 @@ def cluster_detail(
             )
             .outerjoin(
                 SourceDocumentVersion,
-                SourceDocumentVersion.source_document_version_id == JobPosting.source_document_version_id,
+                SourceDocumentVersion.source_document_version_id
+                == JobPosting.source_document_version_id,
             )
             .where(JobPosting.job_posting_id.in_(job_posting_ids))
         ).all()
@@ -337,12 +337,17 @@ def cluster_detail(
                 dt = published_at.date()
             collected_date_map[jid] = dt.strftime("%Y-%m-%d") if dt is not None else None
 
-    grey_zone_members = [(m, j) for m, j in rows if m.assignment_status_code in ('grey_zone', 'boundary', 'uncertain')]
+    grey_zone_members = [
+        (m, j)
+        for m, j in rows
+        if m.assignment_status_code in ("grey_zone", "boundary", "uncertain")
+    ]
     grey_zone_member_count = len(grey_zone_members)
     grey_zone_representative_titles = [
-        j.job_title_raw for m, j in sorted(
+        j.job_title_raw
+        for m, j in sorted(
             grey_zone_members,
-            key=lambda x: (not x[0].is_representative, -float(x[0].similarity_score or 0))
+            key=lambda x: (not x[0].is_representative, -float(x[0].similarity_score or 0)),
         )[:3]
     ]
 
@@ -360,23 +365,33 @@ def cluster_detail(
                     select(JobRoleVersionRequirement, TechnologyNode)
                     .join(
                         TechnologyNode,
-                        TechnologyNode.technology_node_id == JobRoleVersionRequirement.technology_node_id,
+                        TechnologyNode.technology_node_id
+                        == JobRoleVersionRequirement.technology_node_id,
                     )
-                    .where(JobRoleVersionRequirement.job_role_version_id == latest_version.job_role_version_id)
+                    .where(
+                        JobRoleVersionRequirement.job_role_version_id
+                        == latest_version.job_role_version_id
+                    )
                     .order_by(JobRoleVersionRequirement.long_term_importance_score.desc())
                 ).all()
                 for req, node in req_rows:
-                    capability_rankings.append(ClusterCapabilityRankingItem(
-                        technology_code=node.technology_code,
-                        technology_name=node.technology_name,
-                        requirement_type=req.requirement_type_code,
-                        supporting_job_count=req.supporting_job_count,
-                        organization_count=req.independent_organization_count,
-                        importance_weight=req.long_term_importance_score,
-                        coverage_rate=req.coverage_rate,
-                    ))
+                    capability_rankings.append(
+                        ClusterCapabilityRankingItem(
+                            technology_code=node.technology_code,
+                            technology_name=node.technology_name,
+                            requirement_type=req.requirement_type_code,
+                            supporting_job_count=req.supporting_job_count,
+                            organization_count=req.independent_organization_count,
+                            importance_weight=req.long_term_importance_score,
+                            coverage_rate=req.coverage_rate,
+                        )
+                    )
 
-    assigned_members = [(m, j) for m, j in rows if m.assignment_status_code not in ('grey_zone', 'boundary', 'uncertain')]
+    assigned_members = [
+        (m, j)
+        for m, j in rows
+        if m.assignment_status_code not in ("grey_zone", "boundary", "uncertain")
+    ]
     assigned_members = assigned_members[:20]
 
     item = _cluster_item(cluster, domain, role_code)

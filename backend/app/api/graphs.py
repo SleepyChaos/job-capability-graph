@@ -49,7 +49,8 @@ def get_relation_graph(
     # 新岗位候选默认不进图：它们是未入库的提议，默认展示会与观测事实混淆。
     include_candidates: bool = False,
     candidate_limit: Annotated[int, Query(ge=1, le=300)] = 80,
-    industry_stage: Literal["upstream", "midstream", "downstream", "support", "unclassified"] | None = None,
+    industry_stage: Literal["upstream", "midstream", "downstream", "support", "unclassified"]
+    | None = None,
 ):
     try:
         return relation_graph(
@@ -150,7 +151,8 @@ def get_org_tech_graph(
     org_limit: Annotated[int, Query(ge=1, le=500)] = 40,
     capabilities_per_org: Annotated[int, Query(ge=1, le=100)] = 20,
     min_supporting_job_count: Annotated[int, Query(ge=1, le=1000)] = 1,
-    industry_stage: Literal["upstream", "midstream", "downstream", "support", "unclassified"] | None = None,
+    industry_stage: Literal["upstream", "midstream", "downstream", "support", "unclassified"]
+    | None = None,
 ):
     try:
         return org_tech_graph(
@@ -187,6 +189,7 @@ def get_capability_to_cluster_ranking(
 
 
 # ---------------- Layer C: 三元组矛盾打分 ----------------
+
 
 class TripleAuditSummary(BaseModel):
     audit_run_code: str
@@ -238,7 +241,8 @@ def get_latest_triple_audit_summary(
         return {
             "summary": None,
             "low_plausibility_rows": [],
-            "hint": "还未运行矛盾打分。在 backend 容器执行 `python -m tools.layer_c_triple_audit --sample-scope top_200` 即可生成。",
+            "hint": "还未运行矛盾打分。在 backend 容器执行 "
+            "`python -m tools.layer_c_triple_audit --sample-scope top_200` 即可生成。",
         }
     rows = list(
         db.scalars(
@@ -287,7 +291,9 @@ def get_latest_triple_audit_summary(
             plausibility_level=r.plausibility_level,
             review_status_code=r.review_status_code,
             reviewer_code=r.reviewer_code,
-            supporting_job_count=int((r.evidence_summary_json or {}).get("supporting_job_count", 0)),
+            supporting_job_count=int(
+                (r.evidence_summary_json or {}).get("supporting_job_count", 0)
+            ),
             component_scores=r.component_scores or {},
             rule_flags=r.rule_flags or {},
         )

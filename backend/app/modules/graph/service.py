@@ -5,7 +5,7 @@ from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
 from pydantic import BaseModel
-from sqlalchemy import delete, distinct, func, select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from app.modules.clustering.models import (
@@ -155,6 +155,7 @@ def _candidate_projection(
     )
     if not fresh_run_ids:
         return [], []
+
     # **名额两侧各留一半，不把三条路径的分数放在一起排。**
     #
     # 三条路径的评分量纲根本不同：主路径是 0–122 的加权综合分，缺口分析是
@@ -333,7 +334,9 @@ def industry_chain_summary(db: Session) -> dict:
     category_clusters: dict[tuple[str, str], list[JobClusterVersion]] = defaultdict(list)
     for cluster in clusters:
         member_ids = memberships.get(cluster.job_cluster_version_id, set())
-        stage = Counter(job_stage.get(job_id, "unclassified") for job_id in member_ids).most_common(1)
+        stage = Counter(job_stage.get(job_id, "unclassified") for job_id in member_ids).most_common(
+            1
+        )
         stage_code = stage[0][0] if stage else "unclassified"
         category = Counter(job_category.get(job_id, "其他") for job_id in member_ids).most_common(1)
         category_name = category[0][0] if category else "其他"
@@ -366,39 +369,47 @@ def industry_chain_summary(db: Session) -> dict:
             key=lambda org_id: (-org_job_counts[(stage_code, org_id)], org_id),
         )[:5]
         top_clusters = sorted(
-            stage_clusters[stage_code], key=lambda cluster: (-cluster.member_count, cluster.cluster_label)
+            stage_clusters[stage_code],
+            key=lambda cluster: (-cluster.member_count, cluster.cluster_label),
         )[:5]
-        stages.append({
-            "code": stage_code,
-            "name": name,
-            "color": color,
-            "job_count": len(stage_jobs[stage_code]),
-            "organization_count": len(stage_orgs[stage_code]),
-            "cluster_count": len(stage_clusters[stage_code]),
-            "technology_count": len(stage_technologies[stage_code]),
-            "top_organizations": [
-                {
-                    "code": organizations[org_id].organization_code,
-                    "name": organizations[org_id].canonical_name,
-                    "job_count": org_job_counts[(stage_code, org_id)],
-                }
-                for org_id in top_org_ids if org_id in organizations
-            ],
-            "top_clusters": [
-                {"code": cluster.stable_cluster_code, "label": cluster.cluster_label, "job_count": cluster.member_count}
-                for cluster in top_clusters
-            ],
-            "categories": [
-                {
-                    "name": category,
-                    "job_count": len(category_jobs[(stage_code, category)]),
-                    "organization_count": len(category_orgs[(stage_code, category)]),
-                    "cluster_count": len(category_clusters[(stage_code, category)]),
-                    "technology_count": len(category_technologies[(stage_code, category)]),
-                }
-                for category in category_names
-            ],
-        })
+        stages.append(
+            {
+                "code": stage_code,
+                "name": name,
+                "color": color,
+                "job_count": len(stage_jobs[stage_code]),
+                "organization_count": len(stage_orgs[stage_code]),
+                "cluster_count": len(stage_clusters[stage_code]),
+                "technology_count": len(stage_technologies[stage_code]),
+                "top_organizations": [
+                    {
+                        "code": organizations[org_id].organization_code,
+                        "name": organizations[org_id].canonical_name,
+                        "job_count": org_job_counts[(stage_code, org_id)],
+                    }
+                    for org_id in top_org_ids
+                    if org_id in organizations
+                ],
+                "top_clusters": [
+                    {
+                        "code": cluster.stable_cluster_code,
+                        "label": cluster.cluster_label,
+                        "job_count": cluster.member_count,
+                    }
+                    for cluster in top_clusters
+                ],
+                "categories": [
+                    {
+                        "name": category,
+                        "job_count": len(category_jobs[(stage_code, category)]),
+                        "organization_count": len(category_orgs[(stage_code, category)]),
+                        "cluster_count": len(category_clusters[(stage_code, category)]),
+                        "technology_count": len(category_technologies[(stage_code, category)]),
+                    }
+                    for category in category_names
+                ],
+            }
+        )
     return {"data_version": data_version, "target_date": target_date, "stages": stages}
 
 
@@ -465,7 +476,8 @@ def relation_graph(
             for metadata in [metadata or {}]
         }
         clusters = [
-            cluster for cluster in clusters
+            cluster
+            for cluster in clusters
             if Counter(
                 stage_by_job.get(job_id, "unclassified")
                 for job_id in memberships.get(cluster.job_cluster_version_id, set())
@@ -473,7 +485,8 @@ def relation_graph(
             and Counter(
                 stage_by_job.get(job_id, "unclassified")
                 for job_id in memberships.get(cluster.job_cluster_version_id, set())
-            ).most_common(1)[0][0] == industry_stage
+            ).most_common(1)[0][0]
+            == industry_stage
         ]
     signal_by_job = _signals_by_job(context.signals)
     projected = []
@@ -507,9 +520,7 @@ def relation_graph(
         )
         if capability_domain_code:
             capability_metrics = [
-                item
-                for item in capability_metrics
-                if item["domain_code"] == capability_domain_code
+                item for item in capability_metrics if item["domain_code"] == capability_domain_code
             ]
         capability_metrics = [
             item
@@ -557,9 +568,7 @@ def relation_graph(
                 domain_code = metric["domain_code"]
                 level_code = metric["level_code"]
                 layer = _capability_layer(level_code)
-                parent_ids = _capability_parent_ids(
-                    context, technology_id, level_code, domain_code
-                )
+                parent_ids = _capability_parent_ids(context, technology_id, level_code, domain_code)
                 capability_node = {
                     "id": f"technology:{technology_id}",
                     "type": "technology",
@@ -575,9 +584,7 @@ def relation_graph(
                     "parent_ids": parent_ids,
                 }
                 capability_nodes[technology_id] = capability_node
-            capability_node["metrics"]["supporting_job_count"] += metric[
-                "supporting_job_count"
-            ]
+            capability_node["metrics"]["supporting_job_count"] += metric["supporting_job_count"]
             capability_node["metrics"]["recent_activity"] = max(
                 capability_node["metrics"]["recent_activity"], metric["recent_activity"]
             )
@@ -701,8 +708,7 @@ def relation_graph(
     for domain_code in sorted(used_domains):
         name, color = DOMAIN_LEDGER[domain_code]
         domain_capabilities = [
-            node for node in capability_nodes.values()
-            if node.get("domain_code") == domain_code
+            node for node in capability_nodes.values() if node.get("domain_code") == domain_code
         ]
         domain_group_nodes.append(
             {
@@ -716,8 +722,7 @@ def relation_graph(
                     "capability_count": len(domain_capabilities),
                 },
                 "evidence_count": sum(
-                    int(node.get("evidence_count", 0))
-                    for node in domain_capabilities
+                    int(node.get("evidence_count", 0)) for node in domain_capabilities
                 ),
                 "layer": 1,
                 "parent_ids": [],
@@ -1424,9 +1429,7 @@ def _heatmap_aggregates(context: ProjectionContext, *, level_code: str, days: in
             technology_orgs[(projected.technology_node_id, observed_date)].add(
                 signal.organization_id
             )
-        technology_sources[(projected.technology_node_id, observed_date)].add(
-            signal.data_source_id
-        )
+        technology_sources[(projected.technology_node_id, observed_date)].add(signal.data_source_id)
         technology_nodes[projected.technology_node_id] = (projected, domain)
     return {
         "dates": dates,
@@ -1462,9 +1465,7 @@ def _persist_daily_metrics(db: Session, context: ProjectionContext, aggregates: 
                 trigger_document_count=len(job_ids),
                 trigger_mention_count=aggregates["domain_mentions"][(domain, metric_date)],
                 independent_org_count=len(aggregates["domain_orgs"][(domain, metric_date)]),
-                independent_source_count=len(
-                    aggregates["domain_sources"][(domain, metric_date)]
-                ),
+                independent_source_count=len(aggregates["domain_sources"][(domain, metric_date)]),
                 clustering_run_code=run_code,
                 calculation_version=DAILY_METRIC_CALCULATION_VERSION,
             )
@@ -1480,8 +1481,9 @@ def _persist_daily_metrics(db: Session, context: ProjectionContext, aggregates: 
                 technology_domain_code=domain,
                 technology_node_id=technology_id,
                 trigger_document_count=len(job_ids),
-                trigger_mention_count=aggregates["technology_mentions"]
-                [(technology_id, metric_date)],
+                trigger_mention_count=aggregates["technology_mentions"][
+                    (technology_id, metric_date)
+                ],
                 independent_org_count=len(
                     aggregates["technology_orgs"][(technology_id, metric_date)]
                 ),
@@ -1566,9 +1568,17 @@ def _capability_parent_ids(
         return [f"dg-{domain_code}"]
     if level_code in {"L3", "L4"}:
         node = context.nodes.get(technology_id)
-        if node and node.parent_technology_node_id and node.parent_technology_node_id in context.nodes:
+        if (
+            node
+            and node.parent_technology_node_id
+            and node.parent_technology_node_id in context.nodes
+        ):
             parent = context.nodes[node.parent_technology_node_id]
-            if level_code == "L4" and parent.level_code == "L3" and parent.parent_technology_node_id:
+            if (
+                level_code == "L4"
+                and parent.level_code == "L3"
+                and parent.parent_technology_node_id
+            ):
                 grandparent = context.nodes.get(parent.parent_technology_node_id)
                 if grandparent and grandparent.level_code == "L2":
                     return [f"technology:{parent.parent_technology_node_id}"]
@@ -1578,6 +1588,7 @@ def _capability_parent_ids(
 
 
 # ------------------------- 企业 ↔ 技术 图谱 -------------------------
+
 
 def org_tech_graph(
     db: Session,
@@ -1612,7 +1623,10 @@ def org_tech_graph(
     ).all()
     org_tech_counts: Counter[tuple[int, int]] = Counter()
     for oid, tid, _job_id, metadata in rows:
-        if industry_stage and _industry_stage((metadata or {}).get("industry_chain_level")) != industry_stage:
+        if (
+            industry_stage
+            and _industry_stage((metadata or {}).get("industry_chain_level")) != industry_stage
+        ):
             continue
         org_tech_counts[(int(oid), int(tid))] += 1
     org_tech: dict[int, dict[int, int]] = {}
@@ -1627,11 +1641,25 @@ def org_tech_graph(
     org_ids = set(org_ids_sorted)
 
     org_rows = db.execute(
-        select(Organization.organization_id, Organization.organization_code, Organization.canonical_name, Organization.organization_type_code, Organization.province_name, Organization.city_name, Organization.organization_status_code)
-        .where(Organization.organization_id.in_(list(org_ids)))
+        select(
+            Organization.organization_id,
+            Organization.organization_code,
+            Organization.canonical_name,
+            Organization.organization_type_code,
+            Organization.province_name,
+            Organization.city_name,
+            Organization.organization_status_code,
+        ).where(Organization.organization_id.in_(list(org_ids)))
     ).all()
     org_info: dict[int, dict] = {
-        oid: {"code": code, "name": name, "type": type_code, "province": prov, "city": city, "status": status}
+        oid: {
+            "code": code,
+            "name": name,
+            "type": type_code,
+            "province": prov,
+            "city": city,
+            "status": status,
+        }
         for oid, code, name, type_code, prov, city, status in org_rows
     }
 
@@ -1657,16 +1685,21 @@ def org_tech_graph(
                 parent = context.nodes.get(node.parent_technology_node_id)
                 if parent and parent.level_code == "L2":
                     expanded_techs.add(parent.technology_node_id)
-                    orig_cnt = org_tech
                     # Accumulate roll-up counts
                     for oid in list(org_tech.keys()):
                         if tid in org_tech.get(oid, {}):
-                            org_tech[oid][parent.technology_node_id] = org_tech[oid].get(parent.technology_node_id, 0) + org_tech[oid][tid]
+                            org_tech[oid][parent.technology_node_id] = (
+                                org_tech[oid].get(parent.technology_node_id, 0) + org_tech[oid][tid]
+                            )
         if capability_level_code == "L2" and node.level_code == "L2":
             expanded_techs.add(tid)
 
     if capability_domain_code:
-        expanded_techs = {tid for tid in expanded_techs if context.primary_domains.get(tid) == capability_domain_code}
+        expanded_techs = {
+            tid
+            for tid in expanded_techs
+            if context.primary_domains.get(tid) == capability_domain_code
+        }
 
     org_nodes: list[dict] = []
     tech_nodes: dict[int, dict] = {}
@@ -1674,7 +1707,17 @@ def org_tech_graph(
     used_domains: set[str] = set()
 
     for oid in org_ids_sorted:
-        info = org_info.get(oid, {"code": f"ORG{oid}", "name": f"机构{oid}", "type": "unknown", "province": None, "city": None, "status": "active"})
+        info = org_info.get(
+            oid,
+            {
+                "code": f"ORG{oid}",
+                "name": f"机构{oid}",
+                "type": "unknown",
+                "province": None,
+                "city": None,
+                "status": "active",
+            },
+        )
         org_id = f"org:{info['code']}"
         org_nodes.append(
             {
@@ -1712,7 +1755,9 @@ def org_tech_graph(
             used_domains.add(domain_code)
             total_jobs += cnt
             if tid not in tech_nodes:
-                layer = 2 if node.level_code == "L2" else (3 if node.level_code in {"L3", "L4"} else 2)
+                layer = (
+                    2 if node.level_code == "L2" else (3 if node.level_code in {"L3", "L4"} else 2)
+                )
                 tech_nodes[tid] = {
                     "id": f"technology:{tid}",
                     "type": "technology",
@@ -1721,8 +1766,13 @@ def org_tech_graph(
                     "level_code": node.level_code,
                     "domain_code": domain_code,
                     "layer": layer,
-                    "parent_ids": [f"dg-{domain_code}"] if node.level_code == "L2" else (
-                        [f"technology:{node.parent_technology_node_id}"] if node.parent_technology_node_id and node.parent_technology_node_id in context.nodes else [f"dg-{domain_code}"]
+                    "parent_ids": [f"dg-{domain_code}"]
+                    if node.level_code == "L2"
+                    else (
+                        [f"technology:{node.parent_technology_node_id}"]
+                        if node.parent_technology_node_id
+                        and node.parent_technology_node_id in context.nodes
+                        else [f"dg-{domain_code}"]
                     ),
                     "metrics": {"supporting_org_count": 0, "job_count": 0},
                 }
@@ -1743,7 +1793,7 @@ def org_tech_graph(
 
     # Add L2 ancestor edges for L3 nodes, and domain grouping edges
     domain_group_nodes: list[dict] = []
-    for tid, tnode in list(tech_nodes.items()):
+    for _tid, tnode in list(tech_nodes.items()):
         if tnode["level_code"] in {"L3", "L4"}:
             for pid in tnode["parent_ids"]:
                 if pid.startswith("technology:"):
@@ -1825,8 +1875,10 @@ def org_tech_graph(
 
 # ------------------------- 能力 → 岗位簇 排序（GraphRelationsPage Tab 2） -------------------------
 
+
 class CapabilityToClusterRow(BaseModel):
     """一行：某个 L2/L3 技术词 → 需要它的岗位簇排序"""
+
     technology_node_id: int
     technology_code: str
     technology_name: str
@@ -1877,7 +1929,9 @@ def capability_to_cluster_ranking(
         if capability_domain_code and domain_code != capability_domain_code:
             continue
         total_jobs = sum(int(p[1]["supporting_job_count"]) for p in pairs)
-        ranked = sorted(pairs, key=lambda pp: (-pp[1]["importance"], -pp[1]["supporting_job_count"]))
+        ranked = sorted(
+            pairs, key=lambda pp: (-pp[1]["importance"], -pp[1]["supporting_job_count"])
+        )
         rows.append(
             CapabilityToClusterRow(
                 technology_node_id=tid,

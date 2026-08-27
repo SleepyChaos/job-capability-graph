@@ -690,6 +690,13 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .review-tab-bar button.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
 .review-nearest.upstream { background: #fdf4ec; border-left-color: #d98026; }
 .review-nearest.upstream strong { color: #8a4c11; }
+.evidence-jd-list { display: flex; flex-direction: column; gap: 8px; padding: 10px 16px 4px; }
+.evidence-jd-row { padding: 10px 12px; background: #fafcfe; border: 1px solid var(--soft-line); border-radius: 6px; }
+.evidence-jd-row strong { display: block; color: var(--ink); font-size: 11px; line-height: 1.5; }
+.evidence-jd-row span { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; }
+.evidence-jd-row code { display: block; margin-top: 3px; color: var(--muted); font-size: 8.5px; }
+.evidence-jd-more { margin: 4px 0 0; padding: 0 2px; color: var(--muted); font-size: 8.5px; }
+
 .external-anchor { display: flex; flex-direction: column; gap: 12px; padding: 4px 16px 16px; }
 .external-anchor > div { padding: 11px 13px; background: #f5f8fb; border-radius: 6px; }
 .external-anchor strong { display: block; margin-top: 4px; color: var(--ink); font-size: 14px; }

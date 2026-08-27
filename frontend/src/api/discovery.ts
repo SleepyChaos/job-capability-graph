@@ -200,6 +200,26 @@ export type TransmissionLagPrior = {
   technology_classes: string[]
 }
 
+/**
+ * 候选的支撑招聘文本。
+ *
+ * 事实卡里的证据编号是**证据片段**编号，读者展开后只能看到一串数字。
+ * 这里把它解析成岗位标题、企业与日期，让「凭什么提出这条候选」可查到具体文本。
+ */
+export type CandidateEvidenceItem = {
+  job_code: string
+  title: string
+  company: string | null
+  region: string | null
+  published_at: string | null
+  collected_at: string | null
+}
+
+export type CandidateEvidencePage = {
+  total: number
+  items: CandidateEvidenceItem[]
+}
+
 /** 里程碑候选的证据条目：一个有日期、有主体的具体产业事件。 */
 export type MilestoneEvidence = {
   milestone_code: string
@@ -279,6 +299,12 @@ export const discoveryApi = {
       `/role-discovery/reviews/${encodeURIComponent(taskCode)}/actions`,
       { action_code: action, comment_text: comment ?? null },
       { 'X-Reviewer-Code': reviewerCode },
+    )
+  },
+  candidateEvidence(candidateCode: string, signal?: AbortSignal) {
+    return getJson<CandidateEvidencePage>(
+      `/role-discovery/candidates/${encodeURIComponent(candidateCode)}/evidence`,
+      signal,
     )
   },
   unverifiedTechnologies(signal?: AbortSignal) {

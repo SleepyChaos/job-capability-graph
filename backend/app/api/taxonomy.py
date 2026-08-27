@@ -7,10 +7,10 @@ from sqlalchemy.orm import Session, aliased
 
 from app.db.session import get_db
 from app.modules.clustering.models import (
+    JobClusteringRun,
     JobClusterMember,
     JobClusterRole,
     JobClusterVersion,
-    JobClusteringRun,
     JobRoleVersion,
     JobRoleVersionRequirement,
 )
@@ -285,12 +285,13 @@ def get_taxonomy_tree(
             TechnologyNodeDomain,
             TechnologyNodeDomain.technology_node_id == TechnologyNode.technology_node_id,
         )
-        .outerjoin(TechnologyDomain, TechnologyDomain.technology_domain_id == TechnologyNodeDomain.technology_domain_id)
+        .outerjoin(
+            TechnologyDomain,
+            TechnologyDomain.technology_domain_id == TechnologyNodeDomain.technology_domain_id,
+        )
         .where(
             TechnologyNode.taxonomy_version_id == version.taxonomy_version_id,
-            TechnologyNode.level_code.in_(
-                ["L1", "L2", "L3", "L4"][:depth_code]
-            ),
+            TechnologyNode.level_code.in_(["L1", "L2", "L3", "L4"][:depth_code]),
         )
         # sort_order 属于 TechnologyDomain，技术节点表上没有这一列。
         # 技术编码本身带层级序（T1 < T1.01 < T1.01.01），按它排即可得到稳定顺序。
@@ -302,13 +303,18 @@ def get_taxonomy_tree(
     if tids:
         # referenced_job_count
         j_rows = db.execute(
-            select(JobRequirement.technology_node_id, func.count(distinct(JobRequirement.job_posting_id)))
+            select(
+                JobRequirement.technology_node_id,
+                func.count(distinct(JobRequirement.job_posting_id)),
+            )
             .where(JobRequirement.technology_node_id.in_(tids))
             .group_by(JobRequirement.technology_node_id)
         ).all()
         # referenced_organization_count
         o_rows = db.execute(
-            select(JobRequirement.technology_node_id, func.count(distinct(JobPosting.organization_id)))
+            select(
+                JobRequirement.technology_node_id, func.count(distinct(JobPosting.organization_id))
+            )
             .join(JobPosting, JobPosting.job_posting_id == JobRequirement.job_posting_id)
             .where(
                 JobRequirement.technology_node_id.in_(tids),
@@ -326,8 +332,7 @@ def get_taxonomy_tree(
             )
             .join(
                 JobRoleVersion,
-                JobRoleVersion.job_role_version_id
-                == JobRoleVersionRequirement.job_role_version_id,
+                JobRoleVersion.job_role_version_id == JobRoleVersionRequirement.job_role_version_id,
             )
             .join(JobClusterRole, JobClusterRole.job_role_id == JobRoleVersion.job_role_id)
             .where(JobRoleVersionRequirement.technology_node_id.in_(tids))
@@ -355,11 +360,12 @@ def get_taxonomy_tree(
         )
         nodes[int(tid)] = node
         code_to_tid[str(code)] = int(tid)
-    # Attach children to parent (L2→L1 parent_code is L1's code... depends on actual structure; TechnologyNode has parent_technology_node_id)
+    # 挂子节点到父节点：层级关系以 parent_technology_node_id 为准，不靠编码前缀推断。
     # So rather than pcode, join by parent id again
     parent_rows = db.execute(
-        select(TechnologyNode.technology_node_id, TechnologyNode.parent_technology_node_id)
-        .where(TechnologyNode.technology_node_id.in_(tids))
+        select(TechnologyNode.technology_node_id, TechnologyNode.parent_technology_node_id).where(
+            TechnologyNode.technology_node_id.in_(tids)
+        )
     ).all()
     child_rel: dict[int, int] = {}
     for tid, pid in parent_rows:
@@ -372,17 +378,21 @@ def get_taxonomy_tree(
             nodes[pid].children.append(node)
         else:
             roots.append(node)
+
     # Sort each level
     def _sort(level: str, items: list[TaxonomyTreeNode]):
         if level == "L1":
             order = ["T1", "T2", "T3", "T4", "T5", "T6", "T7"]
             items.sort(key=lambda n: (order.index(n.code if n.code in order else "T7"), n.name))
         else:
-            items.sort(key=lambda n: (-(n.referenced_job_count + n.referenced_role_cluster_count), n.code))
+            items.sort(
+                key=lambda n: (-(n.referenced_job_count + n.referenced_role_cluster_count), n.code)
+            )
         for node in items:
             if node.children:
                 next_level = "L" + str({"L1": 2, "L2": 3, "L3": 4, "L4": 4}.get(level, 2))
                 _sort(next_level, node.children)
+
     _sort("L1", roots)
     return {
         "version_code": version.version_code,
@@ -486,8 +496,7 @@ def node_detail(
                     JobRequirement.job_posting_id == JobClusterMember.job_posting_id,
                 )
                 .where(
-                    JobClusterVersion.clustering_run_id
-                    == latest_clustering_run.clustering_run_id,
+                    JobClusterVersion.clustering_run_id == latest_clustering_run.clustering_run_id,
                     JobRequirement.technology_node_id.in_(list(l2_l3_node_ids)),
                 )
             )

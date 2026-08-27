@@ -7,9 +7,10 @@
 实体详情：返回 OrganizationEntity 全部结构化字段 + 原始字段(raw_fields_json) + 技术/人才/交叉验证，
 用于前端侧栏"已有字段全展示"。
 """
+
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -23,8 +24,8 @@ from app.modules.organization.models import (
     ORG_CATEGORY_UNIVERSITY,
     OrganizationCrossValidation,
     OrganizationEntity,
-    OrganizationTechnology,
     OrganizationTalent,
+    OrganizationTechnology,
     Talent,
 )
 
@@ -56,7 +57,7 @@ def _domain_code(code: str | None) -> str:
 
 
 def _now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 def _orgs_with_tech(db: Session, category: str | None, limit: int):
@@ -85,9 +86,7 @@ def get_enterprise_tech_graph(
     org_ids = [o.org_id for o in orgs]
 
     tech_rows = (
-        db.query(OrganizationTechnology)
-        .filter(OrganizationTechnology.org_id.in_(org_ids))
-        .all()
+        db.query(OrganizationTechnology).filter(OrganizationTechnology.org_id.in_(org_ids)).all()
     )
     tech_by_org: dict[int, list[OrganizationTechnology]] = {}
     tech_degree: dict[str, int] = {}
@@ -101,43 +100,49 @@ def get_enterprise_tech_graph(
     for o in orgs:
         first_tech = (tech_by_org.get(o.org_id, []) or [None])[0]
         org_domain = o.industry_chain or (first_tech.technology_code if first_tech else None)
-        nodes.append({
-            "id": f"org:{o.org_id}",
-            "type": "organization",
-            "category": o.org_category,
-            "label": o.org_name,
-            "domain_code": _domain_code(org_domain),
-            "weight": len(tech_by_org.get(o.org_id, [])),
-            "metrics": {
-                "tech_count": len(tech_by_org.get(o.org_id, [])),
-                "patent_family_count": o.patent_family_count,
-                "standard_count": o.standard_count,
-                "job_posting_count": o.job_posting_count,
-                "external_alignment_rate": round(o.external_alignment_rate, 3),
-            },
-        })
+        nodes.append(
+            {
+                "id": f"org:{o.org_id}",
+                "type": "organization",
+                "category": o.org_category,
+                "label": o.org_name,
+                "domain_code": _domain_code(org_domain),
+                "weight": len(tech_by_org.get(o.org_id, [])),
+                "metrics": {
+                    "tech_count": len(tech_by_org.get(o.org_id, [])),
+                    "patent_family_count": o.patent_family_count,
+                    "standard_count": o.standard_count,
+                    "job_posting_count": o.job_posting_count,
+                    "external_alignment_rate": round(o.external_alignment_rate, 3),
+                },
+            }
+        )
         for t in tech_by_org.get(o.org_id, []):
             tid = f"tech:{t.technology_code}"
             if tid not in seen_tech:
                 seen_tech.add(tid)
-                nodes.append({
-                    "id": tid,
-                    "type": "technology",
-                    "label": t.technology_name,
-                    "domain_code": _domain_code(t.technology_code),
-                    "weight": tech_degree.get(t.technology_code, 1),
-                    "metrics": {"org_degree": tech_degree.get(t.technology_code, 1)},
-                })
-            edges.append({
-                "id": f"ot:{o.org_id}:{t.technology_code}",
-                "source": f"org:{o.org_id}",
-                "target": tid,
-                "relation_type": "org_technology",
-                "weight": t.mention_count or 1,
-                "external_aligned": bool(t.external_aligned),
-                "external_skill_label": t.external_skill_label,
-                "level_code": t.level_code,
-            })
+                nodes.append(
+                    {
+                        "id": tid,
+                        "type": "technology",
+                        "label": t.technology_name,
+                        "domain_code": _domain_code(t.technology_code),
+                        "weight": tech_degree.get(t.technology_code, 1),
+                        "metrics": {"org_degree": tech_degree.get(t.technology_code, 1)},
+                    }
+                )
+            edges.append(
+                {
+                    "id": f"ot:{o.org_id}:{t.technology_code}",
+                    "source": f"org:{o.org_id}",
+                    "target": tid,
+                    "relation_type": "org_technology",
+                    "weight": t.mention_count or 1,
+                    "external_aligned": bool(t.external_aligned),
+                    "external_skill_label": t.external_skill_label,
+                    "level_code": t.level_code,
+                }
+            )
 
     return _wrap(
         "enterprise_technology",
@@ -184,49 +189,58 @@ def get_enterprise_job_graph(
         # 佐证：与真实 JD 库（biz_job_posting）按归一名匹配
         real = company_norm.get(nk)
         real_cnt = real[1] if real else 0
-        nodes.append({
-            "id": f"org:{o.org_id}",
-            "type": "organization",
-            "category": o.org_category,
-            "label": o.org_name,
-            "domain_code": _domain_code(o.industry_chain),
-            "weight": max(jpc, real_cnt),
-            "metrics": {
-                "job_posting_count": jpc,
-                "real_jd_postings": real_cnt,
-                "patent_family_count": o.patent_family_count,
-                "standard_count": o.standard_count,
-            },
-        })
+        nodes.append(
+            {
+                "id": f"org:{o.org_id}",
+                "type": "organization",
+                "category": o.org_category,
+                "label": o.org_name,
+                "domain_code": _domain_code(o.industry_chain),
+                "weight": max(jpc, real_cnt),
+                "metrics": {
+                    "job_posting_count": jpc,
+                    "real_jd_postings": real_cnt,
+                    "patent_family_count": o.patent_family_count,
+                    "standard_count": o.standard_count,
+                },
+            }
+        )
         # 仅当来源表自带在聘岗位数 > 0 时绘制企业↔岗位边
         if jpc > 0:
             jid = f"job:{o.org_id}"
             if jid not in seen_job:
                 seen_job.add(jid)
-                label = f"{o.org_name} · 在聘岗位" if not real else f"{real[0]} · 在聘岗位(含真实JD)"
-                nodes.append({
-                    "id": jid,
-                    "type": "job",
-                    "label": label,
-                    "domain_code": _domain_code(o.industry_chain),
+                label = (
+                    f"{o.org_name} · 在聘岗位" if not real else f"{real[0]} · 在聘岗位(含真实JD)"
+                )
+                nodes.append(
+                    {
+                        "id": jid,
+                        "type": "job",
+                        "label": label,
+                        "domain_code": _domain_code(o.industry_chain),
+                        "weight": jpc,
+                        "metrics": {"posting_count": jpc, "real_jd_postings": real_cnt},
+                    }
+                )
+            edges.append(
+                {
+                    "id": f"oj:{o.org_id}",
+                    "source": f"org:{o.org_id}",
+                    "target": jid,
+                    "relation_type": "org_job",
                     "weight": jpc,
-                    "metrics": {"posting_count": jpc, "real_jd_postings": real_cnt},
-                })
-            edges.append({
-                "id": f"oj:{o.org_id}",
-                "source": f"org:{o.org_id}",
-                "target": jid,
-                "relation_type": "org_job",
-                "weight": jpc,
-                "posting_count": jpc,
-                "real_jd_postings": real_cnt,
-            })
+                    "posting_count": jpc,
+                    "real_jd_postings": real_cnt,
+                }
+            )
 
     return _wrap(
         "enterprise_job",
         nodes,
         edges,
-        f"企业↔在聘岗位（{ORG_CATEGORY_LABEL.get(category, '全部机构') if category else '全部机构'}）",
+        f"企业↔在聘岗位（"
+        f"{ORG_CATEGORY_LABEL.get(category, '全部机构') if category else '全部机构'}）"
     )
 
 
@@ -278,18 +292,22 @@ def get_entity_detail(db: Session, org_id: int) -> dict:
         for t, rel, src in talent_rows
     ]
 
-    cv = db.query(OrganizationCrossValidation).filter(
-        OrganizationCrossValidation.org_id == org_id
-    ).first()
+    cv = (
+        db.query(OrganizationCrossValidation)
+        .filter(OrganizationCrossValidation.org_id == org_id)
+        .first()
+    )
     cv_dict = None
     if cv is not None:
-        cv_dict = {c.name: getattr(cv, c.name) for c in OrganizationCrossValidation.__table__.columns}
+        cv_dict = {
+            c.name: getattr(cv, c.name) for c in OrganizationCrossValidation.__table__.columns
+        }
 
     return {
         "org_id": org_id,
         "category_label": ORG_CATEGORY_LABEL.get(org.org_category, org.org_category),
-        "fields": cols,                 # 全部结构化字段
-        "raw_fields": raw,              # 来源表全部原始字段（侧栏展开）
+        "fields": cols,  # 全部结构化字段
+        "raw_fields": raw,  # 来源表全部原始字段（侧栏展开）
         "technologies": tech_list,
         "talents": talent_list,
         "cross_validation": cv_dict,

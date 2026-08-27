@@ -22,6 +22,7 @@ import {
   scoreComponentLabels,
   workflowStatusLabels,
   type CandidateDetail,
+  type CandidateEvidencePage,
   type CandidateForesight,
   type MilestoneEvidence,
   type NearestRoleCard,
@@ -63,6 +64,8 @@ export function CandidateCardPage({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showEvidence, setShowEvidence] = useState(false)
+  const [evidence, setEvidence] = useState<CandidateEvidencePage | null>(null)
+  const [evidenceLoading, setEvidenceLoading] = useState(false)
 
   const load = useCallback(
     (signal?: AbortSignal) => {
@@ -85,6 +88,38 @@ export function CandidateCardPage({
     load(controller.signal)
     return () => controller.abort()
   }, [load])
+
+  /*
+    支撑文本按需拉取：多数读者不会展开，没必要跟数据卡一起加载。
+
+    依赖里**不能放 `evidence`**——`setEvidence` 会让依赖变化，从而触发上一轮的清理
+    函数 abort 掉刚刚完成的那次请求，界面就永远停在加载中。这里改由展开状态与候选
+    编码驱动，取回后落库即可。
+  */
+  useEffect(() => {
+    if (!showEvidence || !candidateCode) return
+    const controller = new AbortController()
+    setEvidenceLoading(true)
+    discoveryApi
+      .candidateEvidence(candidateCode, controller.signal)
+      .then((page) => {
+        if (controller.signal.aborted) return
+        setEvidence(page)
+        setEvidenceLoading(false)
+      })
+      .catch((reason: Error) => {
+        if (reason.name === 'AbortError') return
+        setEvidence({ total: 0, items: [] })
+        setEvidenceLoading(false)
+      })
+    return () => controller.abort()
+  }, [showEvidence, candidateCode])
+
+  // 换一条候选时清掉上一条的支撑文本，避免展开后看到的是别人的证据。
+  useEffect(() => {
+    setEvidence(null)
+    setShowEvidence(false)
+  }, [candidateCode])
 
   if (!candidateCode) {
     return (
@@ -569,15 +604,46 @@ export function CandidateCardPage({
                 </div>
               </div>
             ) : null}
+            {/*
+              此前这里展开的是一串证据片段编号。编号本身读者看不出任何东西——
+              「凭什么提出这条候选」要能查到具体是哪些招聘文本、来自哪家企业。
+              编号解析在后端完成（片段编号与岗位的对应关系记在任务证据表上）。
+            */}
             <button className="ghost-button wide" onClick={() => setShowEvidence((value) => !value)}>
-              {showEvidence ? '收起证据 JD 编号' : `展开证据 JD 编号（${(card?.evidence_ids as unknown[] | undefined)?.length ?? 0}）`}
+              {showEvidence
+                ? '收起支撑招聘文本'
+                : `展开支撑招聘文本（${evidence?.total ?? 0}）`}
             </button>
             {showEvidence ? (
-              <div className="evidence-ids">
-                {((card?.evidence_ids as number[] | undefined) ?? []).map((id) => (
-                  <code key={id}>{id}</code>
-                ))}
-              </div>
+              evidenceLoading ? (
+                <div className="empty-state"><RefreshCw className="spin" size={20} /><strong>加载中…</strong></div>
+              ) : !evidence || evidence.items.length === 0 ? (
+                <div className="empty-state">
+                  <FileText size={20} />
+                  <strong>没有可展开的招聘文本</strong>
+                  <span>外部证据类候选在招聘侧本就没有支撑，这是它的定义而非数据缺失。</span>
+                </div>
+              ) : (
+                <div className="evidence-jd-list">
+                  {evidence.items.map((item) => (
+                    <div key={item.job_code} className="evidence-jd-row">
+                      <strong>{item.title}</strong>
+                      <span>
+                        {item.company ?? '—'}
+                        {item.region ? ` · ${item.region}` : ''}
+                        {item.published_at ? ` · 发布 ${item.published_at}` : ''}
+                        {!item.published_at && item.collected_at ? ` · 采集 ${item.collected_at}` : ''}
+                      </span>
+                      <code>{item.job_code}</code>
+                    </div>
+                  ))}
+                  {evidence.total > evidence.items.length ? (
+                    <p className="evidence-jd-more">
+                      共 {evidence.total} 份，此处列出前 {evidence.items.length} 份。
+                    </p>
+                  ) : null}
+                </div>
+              )
             ) : null}
           </Panel>
           )}

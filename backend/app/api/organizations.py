@@ -7,8 +7,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy import and_, exists, func, or_, select
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 from app.modules.clustering.models import JobClusterMember, JobClusterVersion
@@ -18,7 +18,6 @@ from app.modules.job.models import (
     Organization,
     OrganizationAlias,
 )
-from app.modules.taxonomy.models import TechnologyNode
 from app.modules.organization.models import (
     OrganizationCrossValidation,
     OrganizationEntity,
@@ -26,6 +25,7 @@ from app.modules.organization.models import (
     OrganizationTechnology,
     Talent,
 )
+from app.modules.taxonomy.models import TechnologyNode
 
 router = APIRouter(prefix="/organizations", tags=["organizations"])
 
@@ -108,8 +108,11 @@ def _aggregate_stats(db: Session, org_ids: list[int]) -> tuple[dict, dict, dict]
     node_ids = sorted({nid for _, nid, _ in rows})
     if node_ids:
         node_rows = db.execute(
-            select(TechnologyNode.technology_node_id, TechnologyNode.technology_code, TechnologyNode.technology_name)
-            .where(TechnologyNode.technology_node_id.in_(node_ids))
+            select(
+                TechnologyNode.technology_node_id,
+                TechnologyNode.technology_code,
+                TechnologyNode.technology_name,
+            ).where(TechnologyNode.technology_node_id.in_(node_ids))
         ).all()
         for nid, code, name in node_rows:
             node_id_to_code[nid] = (code, name)
@@ -117,7 +120,9 @@ def _aggregate_stats(db: Session, org_ids: list[int]) -> tuple[dict, dict, dict]
         if not oid or nid not in node_id_to_code:
             continue
         d = tech_counts.setdefault(oid, {})
-        d[node_id_to_code[nid][0] + "|" + node_id_to_code[nid][1]] = int(d.get(node_id_to_code[nid][0] + "|" + node_id_to_code[nid][1], 0) + int(cnt))
+        d[node_id_to_code[nid][0] + "|" + node_id_to_code[nid][1]] = int(
+            d.get(node_id_to_code[nid][0] + "|" + node_id_to_code[nid][1], 0) + int(cnt)
+        )
 
     cluster_counts: dict[int, dict[str, tuple[str, int]]] = {}
     rows = db.execute(
@@ -163,8 +168,7 @@ def list_organizations(
                 Organization.canonical_name.like(f"%{search.strip()}%"),
                 Organization.organization_code.like(f"%{search.strip()}%"),
                 exists(
-                    select(1)
-                    .where(
+                    select(1).where(
                         OrganizationAlias.organization_id == Organization.organization_id,
                         OrganizationAlias.normalized_alias.like(pattern),
                     )
@@ -179,9 +183,7 @@ def list_organizations(
     base = select(Organization).where(and_(True, *filters))
     if with_jobs_only:
         base = base.where(
-            exists(
-                select(1).where(JobPosting.organization_id == Organization.organization_id)
-            )
+            exists(select(1).where(JobPosting.organization_id == Organization.organization_id))
         )
 
     total = db.scalar(select(func.count()).select_from(base.subquery())) or 0
@@ -197,7 +199,9 @@ def list_organizations(
         )
     )
     org_ids = [o.organization_id for o in org_rows]
-    job_count_map, tech_map, _cluster_map = _aggregate_stats(db, org_ids) if org_ids else ({}, {}, {})
+    job_count_map, tech_map, _cluster_map = (
+        _aggregate_stats(db, org_ids) if org_ids else ({}, {}, {})
+    )
 
     alias_map: dict[int, list[str]] = {}
     if org_ids:
@@ -229,7 +233,9 @@ def list_organizations(
                 referenced_technology_count=tech_cnt,
                 cluster_count=0,  # placeholder, heavy count aggregated in detail
                 min_match_score=splink_summary.get("min_match_score"),
-                needs_review=splink_summary.get("needs_review", o.organization_status_code == "needs_review"),
+                needs_review=splink_summary.get(
+                    "needs_review", o.organization_status_code == "needs_review"
+                ),
             )
         )
     return OrganizationPage(total=total, limit=limit, offset=offset, items=items)
@@ -249,12 +255,14 @@ def cross_validation_report(
             filters.append(OrganizationEntity.cross_validation_status == status)
         total_entities = db.scalar(select(func.count()).select_from(OrganizationEntity)) or 0
         category_rows = db.execute(
-            select(OrganizationEntity.org_category, func.count())
-            .group_by(OrganizationEntity.org_category)
+            select(OrganizationEntity.org_category, func.count()).group_by(
+                OrganizationEntity.org_category
+            )
         ).all()
         status_rows = db.execute(
-            select(OrganizationEntity.cross_validation_status, func.count())
-            .group_by(OrganizationEntity.cross_validation_status)
+            select(OrganizationEntity.cross_validation_status, func.count()).group_by(
+                OrganizationEntity.cross_validation_status
+            )
         ).all()
         talent_count = db.scalar(select(func.count()).select_from(Talent)) or 0
         org_talent_count = db.scalar(select(func.count()).select_from(OrganizationTalent)) or 0
@@ -282,24 +290,28 @@ def cross_validation_report(
 
     rows = []
     for org, cv in result_rows:
-        rows.append({
-            "org_code": org.org_code,
-            "org_name": org.org_name,
-            "org_category": org.org_category,
-            "province": org.hq_province,
-            "city": org.hq_city,
-            "source_count": len(org.dedup_source_keys or []),
-            "splink_match_score": float(org.splink_match_score or 0),
-            "external_alignment_rate": float(org.external_alignment_rate or 0),
-            "status": org.cross_validation_status,
-            "consistency_score": int(cv.consistency_score if cv else 0),
-            "business_chain": cv.business_chain if cv else None,
-            "patent_domain_codes": cv.patent_domain_codes if cv else None,
-            "jd_chain": cv.jd_chain if cv else None,
-            "matched_dimensions": int(cv.matched_dimensions if cv else 0),
-            "missing_dimensions": list(cv.missing_dimensions_json or []) if cv else ["validation_record_missing"],
-            "calculated_at": cv.calculated_at.isoformat() if cv and cv.calculated_at else None,
-        })
+        rows.append(
+            {
+                "org_code": org.org_code,
+                "org_name": org.org_name,
+                "org_category": org.org_category,
+                "province": org.hq_province,
+                "city": org.hq_city,
+                "source_count": len(org.dedup_source_keys or []),
+                "splink_match_score": float(org.splink_match_score or 0),
+                "external_alignment_rate": float(org.external_alignment_rate or 0),
+                "status": org.cross_validation_status,
+                "consistency_score": int(cv.consistency_score if cv else 0),
+                "business_chain": cv.business_chain if cv else None,
+                "patent_domain_codes": cv.patent_domain_codes if cv else None,
+                "jd_chain": cv.jd_chain if cv else None,
+                "matched_dimensions": int(cv.matched_dimensions if cv else 0),
+                "missing_dimensions": list(cv.missing_dimensions_json or [])
+                if cv
+                else ["validation_record_missing"],
+                "calculated_at": cv.calculated_at.isoformat() if cv and cv.calculated_at else None,
+            }
+        )
     return CrossValidationPage(
         summary={
             "entity_count": int(total_entities),
@@ -317,7 +329,9 @@ def cross_validation_report(
 
 
 @router.get("/{code}", response_model=OrganizationDetailItem)
-def organization_detail(code: str, db: Annotated[Session, Depends(get_db)]) -> OrganizationDetailItem:
+def organization_detail(
+    code: str, db: Annotated[Session, Depends(get_db)]
+) -> OrganizationDetailItem:
     org = db.scalar(select(Organization).where(Organization.organization_code == code))
     if org is None:
         raise HTTPException(status_code=404, detail="机构不存在")
@@ -339,8 +353,7 @@ def organization_detail(code: str, db: Annotated[Session, Depends(get_db)]) -> O
     cc = cluster_counts.get(org.organization_id, {})
     sorted_clusters = sorted(cc.items(), key=lambda kv: kv[1][1], reverse=True)[:12]
     top_clusters = [
-        {"code": ccode, "label": label, "job_count": cnt}
-        for ccode, (label, cnt) in sorted_clusters
+        {"code": ccode, "label": label, "job_count": cnt} for ccode, (label, cnt) in sorted_clusters
     ]
 
     meta = org.source_metadata_json if isinstance(org.source_metadata_json, dict) else None
