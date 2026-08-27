@@ -101,6 +101,43 @@ export interface RequiredCapabilityGraph {
   items: RequiredCapabilityGraphItem[]
 }
 
+export interface JobGraphAssociation {
+  status: 'linked' | 'unlinked'
+  schema_version: string
+  source_job_id: string | null
+  job_code: string | null
+  job_title: string | null
+  company: string | null
+  standard_role: {
+    role_code: string
+    name: string
+    job_count: number
+    match_confidence: string | null
+    match_method: string | null
+  } | null
+  hierarchy: {
+    direction: string | null
+    category: string | null
+    cluster_code: string | null
+    cluster_name: string | null
+  } | null
+  portrait: {
+    responsibilities: string[]
+    skills: string[]
+    capabilities: string[]
+    scenarios: string[]
+    conditions: string[]
+  } | null
+  technology_paths: Array<{
+    path: Array<{ level: 'L1' | 'L2' | 'L3' | 'L4'; code: string; name: string }>
+    match_method: string | null
+    evidence_grade: boolean
+    hit_terms: string[]
+  }>
+  requirement_coverage: RequiredCapabilityGraph
+  message: string
+}
+
 export interface MatchResult {
   result_code: string
   rank_no: number
@@ -139,6 +176,7 @@ export interface MatchResult {
   } | null
   dimensions: Array<{ code: string; label: string; score: number; lower_score: number; upper_score: number; weight: number; contribution: number; status: string }>
   required_capability_graph: RequiredCapabilityGraph
+  job_graph_association: JobGraphAssociation
   recommendation: { reasons: string[]; warning: string }
   gaps: MatchGap[]
 }

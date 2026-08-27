@@ -61,7 +61,7 @@ const jobChildren: NavItem[] = [
 const graphPages: PageId[] = ['graph', 'graph-heatmap', 'graph-relations', 'graph-clusters']
 const graphChildren: NavItem[] = [
   { id: 'graph-heatmap', label: '能力热力图', icon: Activity },
-  { id: 'graph-relations', label: '岗位—能力关联图', icon: Network },
+  { id: 'graph-relations', label: '新版岗位图谱', icon: Network },
   { id: 'graph-clusters', label: '聚类岗位能力图谱', icon: GitBranch },
 ]
 

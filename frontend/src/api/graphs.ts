@@ -166,6 +166,74 @@ export interface HeatmapResponse extends GraphMetadata {
   detail_series: TechnologyHeatSeries[]
 }
 
+export interface JobArchitectureRole {
+  role_code: string
+  name: string
+  direction: string | null
+  category: string | null
+  cluster_code: string | null
+  cluster_name: string | null
+  job_count: number
+}
+
+export interface JobArchitectureTechnology {
+  code: string
+  name: string
+  level: string
+  path: Array<{ level: string; code: string; name: string }>
+  job_count: number
+  exact_evidence_count: number
+  evidence_rate: number
+  role_codes: string[]
+}
+
+export interface JobArchitectureCompany {
+  name: string
+  job_count: number
+  role_codes: string[]
+}
+
+export interface JobArchitectureOverview {
+  schema_version: string
+  source_version: string
+  metadata: {
+    job_count: number
+    standard_role_count: number
+    direction_count: number
+    category_count: number
+    cluster_count: number
+    technology_count: number
+    company_count: number
+    join_key: string
+    hierarchy: string[]
+  }
+  hierarchy: Record<string, Record<string, Record<string, string[]>>>
+  roles: JobArchitectureRole[]
+  technologies: JobArchitectureTechnology[]
+  companies: JobArchitectureCompany[]
+}
+
+export interface JobArchitectureRoleDetail {
+  role: JobArchitectureRole & {
+    portrait: {
+      responsibilities: string[]
+      skills: string[]
+      capabilities: string[]
+      scenarios: string[]
+      conditions: string[]
+    }
+  }
+  technologies: Array<JobArchitectureTechnology & { hit_terms: string[] }>
+  companies: Array<{ name: string; job_count: number }>
+  jobs: Array<{
+    occ_id: string
+    title: string | null
+    company: string | null
+    match_confidence: string | null
+    match_method: string | null
+  }>
+}
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api/v1'
 
 async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
@@ -201,6 +269,15 @@ function getGraphOrEmpty<T>(path: string, empty: T, signal?: AbortSignal): Promi
 }
 
 export const graphApi = {
+  jobArchitecture(signal?: AbortSignal) {
+    return getJson<JobArchitectureOverview>('/graphs/job-architecture', signal)
+  },
+  jobArchitectureRole(roleCode: string, signal?: AbortSignal) {
+    return getJson<JobArchitectureRoleDetail>(
+      `/graphs/job-architecture/roles/${encodeURIComponent(roleCode)}`,
+      signal,
+    )
+  },
   relations(filters: RelationGraphQuery, signal?: AbortSignal) {
     const query = new URLSearchParams({ capability_level_code: filters.capabilityLevelCode ?? 'L2' })
     if (filters.clusterDomainCode) query.set('cluster_domain_code', filters.clusterDomainCode)

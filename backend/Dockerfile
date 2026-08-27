@@ -20,6 +20,10 @@ RUN pip install --upgrade pip && \
       pip install .; \
     fi
 
+# Read-only bridge used by the person-job matching page to join occ_id with
+# the new standard-role hierarchy, five-dimension portrait and technology path.
+COPY data ./data
+
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \

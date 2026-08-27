@@ -26,6 +26,7 @@ from app.modules.talent.acquisition import (
     plan_minimal_improvement_sets,
 )
 from app.modules.talent.evidence_state import EvidenceState, EvidenceValue
+from app.modules.talent.job_graph_bridge import job_graph_association
 from app.modules.talent.models import (
     CandidateDialogueTurn,
     CandidateLearningPath,
@@ -1784,6 +1785,19 @@ def match_run_snapshot(db: Session, run: CandidateMatchRun) -> dict:
             )
         }
         recommendation = result.recommendation_json or {}
+        required_capability_graph = _required_capability_graph_snapshot(
+            db,
+            profile_version_id=run.candidate_profile_version_id,
+            recommendation=recommendation,
+            gaps=gaps,
+        )
+        graph_association = job_graph_association(
+            source_job_id=posting.source_job_id if posting else None,
+            job_code=posting.job_code if posting else None,
+            job_title=(posting.job_title_normalized or posting.job_title_raw) if posting else None,
+            company=posting.company_name_raw if posting else None,
+            required_capability_graph=required_capability_graph,
+        )
         results.append(
             {
                 "result_code": result.result_code,
@@ -1876,12 +1890,8 @@ def match_run_snapshot(db: Session, run: CandidateMatchRun) -> dict:
                 ),
                 "dimensions": dimensions,
                 "recommendation": recommendation,
-                "required_capability_graph": _required_capability_graph_snapshot(
-                    db,
-                    profile_version_id=run.candidate_profile_version_id,
-                    recommendation=recommendation,
-                    gaps=gaps,
-                ),
+                "required_capability_graph": required_capability_graph,
+                "job_graph_association": graph_association,
                 "gaps": [
                     {
                         "gap_id": gap.candidate_match_gap_id,

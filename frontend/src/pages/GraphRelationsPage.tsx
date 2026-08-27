@@ -1,139 +1,152 @@
-import { Network, Table2 } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { graphApi, type RelationGraphExpansion, type RelationGraphResponse, type RelationNode } from '../api/graphs'
-import { DomainLegend } from '../components/DomainLegend'
-import { RelationGraphFilters, type RelationGraphFilterState } from '../components/GraphFilters'
-import { RelationForceGraph } from '../components/RelationForceGraph'
+import {
+  BriefcaseBusiness, Building2, ChevronRight, Cpu, Database, GitBranch,
+  Layers3, Network, Search, ShieldCheck,
+} from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  graphApi, type JobArchitectureOverview, type JobArchitectureRole,
+  type JobArchitectureRoleDetail,
+} from '../api/graphs'
 import { StatusTag } from '../components/ui'
-import { domainColors } from '../data/graphData'
 
-const densityOptions = [80, 240, 400, 720, 1000]
-const supportOptions = [1, 2, 3, 5]
-const MAX_RENDERED_NODES = 1000
-const FULL_CLUSTER_LIMIT = 1000
+type GraphView = 'job' | 'technology' | 'enterprise'
 
-function mergeRelationExpansion(base: RelationGraphResponse, expansion: RelationGraphExpansion): RelationGraphResponse {
-  const mergeNodes = (current: RelationNode[], incoming: RelationNode[]) => {
-    const nodes = new Map(current.map((node) => [node.id, node]))
-    incoming.forEach((node) => nodes.set(node.id, node))
-    return [...nodes.values()]
-  }
-  const edges = new Map(base.edges.map((edge) => [edge.id, edge]))
-  expansion.edges.forEach((edge) => edges.set(edge.id, edge))
-  return {
-    ...base,
-    generated_at: expansion.generated_at,
-    role_nodes: mergeNodes(base.role_nodes, expansion.role_nodes),
-    capability_nodes: mergeNodes(base.capability_nodes, expansion.capability_nodes),
-    edges: [...edges.values()],
-  }
-}
+const portraitDimensions = [
+  { key: 'responsibilities', label: '职责' },
+  { key: 'skills', label: '技能' },
+  { key: 'capabilities', label: '通用能力' },
+  { key: 'scenarios', label: '场景' },
+  { key: 'conditions', label: '条件' },
+] as const
+
+const graphViews: Array<{ id: GraphView; label: string; description: string; icon: typeof Network }> = [
+  { id: 'job', label: '岗位架构', description: '方向→类别→岗位簇→标准岗位→JD', icon: GitBranch },
+  { id: 'technology', label: '技术—岗位', description: 'L1→L2→L3→标准岗位', icon: Cpu },
+  { id: 'enterprise', label: '企业—岗位', description: '企业→标准岗位→具体JD', icon: Building2 },
+]
+
+const contains = (value: string | null | undefined, query: string) =>
+  Boolean(value?.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
 
 export function GraphRelationsPage({ notify }: { notify: (message: string) => void }) {
-  const [filters, setFilters] = useState<RelationGraphFilterState>({ clusterDomain: '', capabilityDomain: '', capabilityLevel: 'L2' })
-  const [nodeBudget, setNodeBudget] = useState(720)
-  const [minSupportingJobCount, setMinSupportingJobCount] = useState(1)
-  const [focusNodeId, setFocusNodeId] = useState<string | null>(null)
-  const [data, setData] = useState<RelationGraphResponse | null>(null)
-  const [selected, setSelected] = useState<string | null>(null)
-  const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set())
-  const [expandingNodeId, setExpandingNodeId] = useState<string | null>(null)
-  const [tableView, setTableView] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const selectNode = useCallback((id: string) => setSelected(id), [])
-  const changeFilters = useCallback((next: RelationGraphFilterState) => {
-    setFocusNodeId(null)
-    setFilters(next)
-  }, [])
+  const [data, setData] = useState<JobArchitectureOverview | null>(null)
+  const [detail, setDetail] = useState<JobArchitectureRoleDetail | null>(null)
+  const [view, setView] = useState<GraphView>('job')
+  const [query, setQuery] = useState('')
+  const [direction, setDirection] = useState('')
+  const [category, setCategory] = useState('')
+  const [cluster, setCluster] = useState('')
+  const [technologyCode, setTechnologyCode] = useState('')
+  const [companyName, setCompanyName] = useState('')
+  const [roleCode, setRoleCode] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const controller = new AbortController()
-    setError(null)
-    graphApi.relations({
-      clusterDomainCode: filters.clusterDomain || null,
-      capabilityDomainCode: filters.capabilityDomain || null,
-      capabilityLevelCode: filters.capabilityLevel,
-      clusterLimit: FULL_CLUSTER_LIMIT,
-      nodeBudget,
-      minSupportingJobCount,
-      mode: focusNodeId ? 'focus' : 'overview',
-      focusNodeId,
-    }, controller.signal)
-      .then((response) => {
-        setData(response)
-        setExpandedNodeIds(new Set())
-        setSelected((current) => {
-          const ids = new Set([...response.role_nodes, ...response.capability_nodes].map((node) => node.id))
-          return current && ids.has(current) ? current : response.role_nodes[0]?.id ?? response.capability_nodes[0]?.id ?? null
-        })
-      })
-      .catch((reason: Error) => {
-        if (reason.name !== 'AbortError') setError(reason.message)
-      })
+    setLoading(true); setError('')
+    graphApi.jobArchitecture(controller.signal).then((response) => {
+      setData(response)
+      const initialDirection = Object.keys(response.hierarchy)[0] || ''
+      const initialCategory = Object.keys(response.hierarchy[initialDirection] || {})[0] || ''
+      const initialCluster = Object.keys(response.hierarchy[initialDirection]?.[initialCategory] || {})[0] || ''
+      const initialRole = response.hierarchy[initialDirection]?.[initialCategory]?.[initialCluster]?.[0]
+        || response.roles[0]?.role_code || ''
+      setDirection(initialDirection); setCategory(initialCategory); setCluster(initialCluster)
+      setTechnologyCode(response.technologies[0]?.code || '')
+      setCompanyName(response.companies[0]?.name || '')
+      setRoleCode(initialRole)
+    }).catch((reason: Error) => setError(reason.message)).finally(() => setLoading(false))
     return () => controller.abort()
-  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, minSupportingJobCount, nodeBudget])
+  }, [])
 
-  const nodeMap = useMemo(
-    () => new Map<string, RelationNode>(data ? [...data.role_nodes, ...data.capability_nodes].map((node) => [node.id, node]) : []),
+  useEffect(() => {
+    if (!roleCode) { setDetail(null); return }
+    const controller = new AbortController()
+    graphApi.jobArchitectureRole(roleCode, controller.signal).then(setDetail)
+      .catch((reason: Error) => { if (reason.name !== 'AbortError') notify(`岗位详情加载失败：${reason.message}`) })
+    return () => controller.abort()
+  }, [notify, roleCode])
+
+  const roleMap = useMemo(
+    () => new Map(data?.roles.map((role) => [role.role_code, role]) || []),
     [data],
   )
-  const selectedNode = selected ? nodeMap.get(selected) : undefined
-  const connections = useMemo(
-    () => data?.edges.filter((edge) => edge.source === selected || edge.target === selected) ?? [],
-    [data, selected],
-  )
-  const connectedNodes = useMemo(
-    () => connections
-      .map((edge) => nodeMap.get(edge.source === selected ? edge.target : edge.source))
-      .filter((node): node is RelationNode => Boolean(node)),
-    [connections, nodeMap, selected],
-  )
-  const hasProjection = Boolean(data && data.data_version !== 'uninitialized')
-  const totalNodeCount = data ? data.role_nodes.length + data.capability_nodes.length : 0
-  const expandNode = useCallback((nodeId: string) => {
-    if (!data || expandedNodeIds.has(nodeId) || expandingNodeId) return
-    const remainingBudget = MAX_RENDERED_NODES - totalNodeCount
-    if (remainingBudget < 2) {
-      notify(`已达到 ${MAX_RENDERED_NODES} 个节点的交互预算；请先收窄筛选条件。`)
-      return
-    }
-    const controller = new AbortController()
-    setExpandingNodeId(nodeId)
-    graphApi.relationNeighbors(nodeId, {
-      clusterDomainCode: filters.clusterDomain || null,
-      capabilityDomainCode: filters.capabilityDomain || null,
-      capabilityLevelCode: filters.capabilityLevel,
-      minSupportingJobCount,
-    }, Math.min(80, remainingBudget), controller.signal)
-      .then((expansion) => {
-        setData((current) => current ? mergeRelationExpansion(current, expansion) : current)
-        setExpandedNodeIds((current) => new Set(current).add(nodeId))
-        notify(`已展开 ${expansion.expansion.returned_neighbor_count} 个关联节点${expansion.expansion.truncated ? '（达到本次上限）' : ''}。`)
-      })
-      .catch((reason: Error) => {
-        if (reason.name !== 'AbortError') notify(`展开邻居失败：${reason.message}`)
-      })
-      .finally(() => setExpandingNodeId(null))
-  }, [data, expandedNodeIds, expandingNodeId, filters.capabilityDomain, filters.capabilityLevel, filters.clusterDomain, minSupportingJobCount, notify, totalNodeCount])
+  const categories = data?.hierarchy[direction] || {}
+  const clusters = categories[category] || {}
+  const selectedTechnology = data?.technologies.find((item) => item.code === technologyCode)
+  const selectedCompany = data?.companies.find((item) => item.name === companyName)
+  const relatedRoleCodes = useMemo(() => {
+    if (!data) return []
+    if (view === 'technology') return selectedTechnology?.role_codes || []
+    if (view === 'enterprise') return selectedCompany?.role_codes || []
+    return clusters[cluster] || []
+  }, [cluster, clusters, data, selectedCompany, selectedTechnology, view])
+  const visibleRoles = useMemo(() => relatedRoleCodes
+    .map((code) => roleMap.get(code))
+    .filter((role): role is JobArchitectureRole => Boolean(role))
+    .filter((role) => !query || [role.name, role.direction, role.category, role.cluster_name]
+      .some((value) => contains(value, query)))
+    .sort((a, b) => b.job_count - a.job_count), [query, relatedRoleCodes, roleMap])
 
-  return (
-    <div className="graph-page graph-subpage">
-      <div className="graph-subpage-intro"><div><h2>岗位—能力关联图</h2><p>展示当前岗位聚类及其高频标准技术能力；仅使用通过语境校验的真实 JD 证据。</p></div><StatusTag tone={hasProjection ? 'success' : 'info'}>{data ? (hasProjection ? `数据版本 ${data.data_version.slice(0, 8)}` : '暂无图谱快照') : '加载中'}</StatusTag></div>
-      <RelationGraphFilters onChange={changeFilters} onApply={(summary) => notify(`关联图筛选已更新：${summary}`)} />
-      {hasProjection ? <div className="relation-density-toolbar" aria-label="图谱展示密度">
-        <label>节点预算<select value={nodeBudget} onChange={(event) => setNodeBudget(Number(event.target.value))}>{densityOptions.map((value) => <option key={value} value={value}>{value} 个节点</option>)}</select></label>
-        <label>最小支持 JD<select value={minSupportingJobCount} onChange={(event) => setMinSupportingJobCount(Number(event.target.value))}>{supportOptions.map((value) => <option key={value} value={value}>{value} 条</option>)}</select></label>
-        <span>当前 {totalNodeCount} 个节点 · {data?.edges.length ?? 0} 条关系{expandedNodeIds.size ? ` · 已展开 ${expandedNodeIds.size} 处邻居` : ''}</span>
-        {focusNodeId ? <button className="secondary-button relation-focus-exit" onClick={() => setFocusNodeId(null)}>返回全局图</button> : null}
-      </div> : null}
-      {error ? <div className="empty-state"><Network size={24} /><strong>图谱加载失败</strong><span>{error}</span></div> : null}
-      {!error && !data ? <div className="empty-state"><Network size={24} /><strong>正在生成关系投影</strong><span>从最新岗位聚类和有效技术证据读取数据。</span></div> : null}
-      {data && !hasProjection ? <div className="empty-state"><Network size={24} /><strong>暂无关联图快照</strong><span>当前数据库尚未生成成功的岗位聚类运行；完成 JD 解析和聚类后，这里会显示岗位与能力关系。</span></div> : null}
-      {data && hasProjection ? <div className="graph-workspace graph-workspace--global">
-        <div className="graph-legend"><strong>节点类型</strong><span><i className="legend-cluster" />岗位聚类</span><span><i className="legend-skill" />标准技术能力</span><hr /><strong>T1–T7 领域色</strong><DomainLegend compact /><hr /><p>{focusNodeId ? '当前为单岗位聚类局部图；返回全局图可继续浏览其他聚类。' : '岗位聚类按 T1–T7 技术域锚点形成七个语义簇，能力节点位于关联岗位簇的加权中心；远景保留岗位名称，中近景尽量展示全部节点名称。'}</p><button onClick={() => setTableView((value) => !value)}><Table2 size={15} />{tableView ? '图谱视图' : '表格视图'}</button></div>
-        {tableView ? <div className="relation-table-view"><table><thead><tr><th>岗位聚类</th><th>重要能力</th><th>覆盖率</th><th>支持 JD</th></tr></thead><tbody>{data.edges.map((edge) => <tr key={edge.id}><td><button onClick={() => selectNode(edge.source)}>{nodeMap.get(edge.source)?.label}</button></td><td><button onClick={() => selectNode(edge.target)}>{nodeMap.get(edge.target)?.label}</button></td><td>{Math.round(edge.coverage_rate * 100)}%</td><td>{edge.supporting_job_count}</td></tr>)}</tbody></table></div> : <RelationForceGraph graph={data} selectedId={selected} onSelect={selectNode} onExpand={expandNode} />}
-        <aside className="evidence-inspector">{selectedNode ? <><div className="inspector-title"><div><span>{selectedNode.type === 'job_cluster' ? '岗位聚类详情' : '标准技术能力'}</span><h3>{selectedNode.label}</h3></div></div><StatusTag tone={selectedNode.type === 'job_cluster' ? 'info' : 'success'}>{selectedNode.domain_code}</StatusTag><div className="evidence-count-stat"><span>证据数量</span><strong>{selectedNode.evidence_count}</strong><small>条</small></div><dl className="inspector-facts"><div><dt>关联节点</dt><dd>{connectedNodes.length} 个</dd></div><div><dt>目标日期</dt><dd>{data.target_date}</dd></div><div><dt>证据规则</dt><dd>已通过语境校验</dd></div><div><dt>图谱层级</dt><dd>{selectedNode.type === 'technology' ? filters.capabilityLevel : '岗位聚类'}</dd></div></dl>{selectedNode.type === 'job_cluster' && !focusNodeId ? <button className="secondary-button relation-focus-button" onClick={() => setFocusNodeId(selectedNode.id)}>聚焦此岗位聚类</button> : null}<button className="secondary-button relation-expand-button" onClick={() => expandNode(selectedNode.id)} disabled={Boolean(expandingNodeId) || expandedNodeIds.has(selectedNode.id)}>{expandingNodeId === selectedNode.id ? '正在展开邻居…' : expandedNodeIds.has(selectedNode.id) ? '邻居已展开' : '展开关联邻居'}</button><h4>{selectedNode.type === 'job_cluster' ? '重要能力' : '关联岗位聚类'}</h4><div className="connected-node-list">{connectedNodes.map((node) => <button key={node.id} onClick={() => selectNode(node.id)}><i style={{ background: domainColors[node.domain_code] }} /><span>{node.label}</span><strong>{node.evidence_count}</strong></button>)}</div></> : <div className="empty-state"><strong>当前筛选没有关系</strong><span>可分别调整岗位聚类和能力筛选。</span></div>}</aside>
-      </div> : null}
-    </div>
-  )
+  const chooseDirection = (next: string) => {
+    const nextCategory = Object.keys(data?.hierarchy[next] || {})[0] || ''
+    const nextCluster = Object.keys(data?.hierarchy[next]?.[nextCategory] || {})[0] || ''
+    const nextRole = data?.hierarchy[next]?.[nextCategory]?.[nextCluster]?.[0] || ''
+    setDirection(next); setCategory(nextCategory); setCluster(nextCluster); setRoleCode(nextRole)
+  }
+  const chooseCategory = (next: string) => {
+    const nextCluster = Object.keys(categories[next] || {})[0] || ''
+    setCategory(next); setCluster(nextCluster); setRoleCode(categories[next]?.[nextCluster]?.[0] || '')
+  }
+  const chooseCluster = (next: string) => {
+    setCluster(next); setRoleCode(clusters[next]?.[0] || '')
+  }
+  const chooseTechnology = (code: string) => {
+    const technology = data?.technologies.find((item) => item.code === code)
+    setTechnologyCode(code); setRoleCode(technology?.role_codes[0] || '')
+  }
+  const chooseCompany = (name: string) => {
+    const company = data?.companies.find((item) => item.name === name)
+    setCompanyName(name); setRoleCode(company?.role_codes[0] || '')
+  }
+
+  if (loading) return <div className="empty-state new-graph-loading"><Network size={25} /><strong>正在读取新版岗位图谱</strong><span>加载岗位架构、技术关联与企业岗位投影。</span></div>
+  if (error || !data) return <div className="empty-state new-graph-loading"><Network size={25} /><strong>新版岗位图谱加载失败</strong><span>{error || '没有可展示的数据'}</span></div>
+
+  return <div className="graph-page graph-subpage new-job-graph-page">
+    <div className="graph-subpage-intro"><div><h2>新版岗位图谱</h2><p>三个视角共享同一批岗位事实，并在标准岗位处交汇；点击任一节点即可查看五维画像和JD证据。</p></div><StatusTag tone="success">v4 · {data.metadata.job_count.toLocaleString()} 条岗位</StatusTag></div>
+    <section className="new-graph-metrics">
+      <div><span>职业方向</span><strong>{data.metadata.direction_count}</strong></div><div><span>职业类别</span><strong>{data.metadata.category_count}</strong></div><div><span>岗位簇</span><strong>{data.metadata.cluster_count}</strong></div><div><span>标准岗位</span><strong>{data.metadata.standard_role_count}</strong></div><div><span>技术节点</span><strong>{data.metadata.technology_count}</strong></div><div><span>企业实体</span><strong>{data.metadata.company_count}</strong></div>
+    </section>
+    <section className="new-graph-toolbar">
+      <div>{graphViews.map(({ id, label, description, icon: Icon }) => <button className={view === id ? 'active' : ''} key={id} onClick={() => setView(id)}><Icon size={17} /><span><strong>{label}</strong><small>{description}</small></span></button>)}</div>
+      <label><Search size={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索标准岗位或关联节点" /></label>
+    </section>
+    <section className="new-graph-workspace">
+      <aside className="new-graph-browser">
+        {view === 'job' ? <div className="hierarchy-browser">
+          <section><header><span>01</span><strong>职业方向</strong></header>{Object.keys(data.hierarchy).map((item) => <button className={direction === item ? 'active' : ''} key={item} onClick={() => chooseDirection(item)}><span>{item}</span><ChevronRight size={13} /></button>)}</section>
+          <section><header><span>02</span><strong>职业类别</strong></header>{Object.keys(categories).map((item) => <button className={category === item ? 'active' : ''} key={item} onClick={() => chooseCategory(item)}><span>{item}</span><ChevronRight size={13} /></button>)}</section>
+          <section><header><span>03</span><strong>岗位簇</strong></header>{Object.keys(clusters).map((item) => { const [code, name] = item.split('|'); return <button className={cluster === item ? 'active' : ''} key={item} onClick={() => chooseCluster(item)}><span><small>{code}</small>{name}</span><ChevronRight size={13} /></button> })}</section>
+        </div> : null}
+        {view === 'technology' ? <div className="entity-node-list"><header><Cpu size={16} /><div><strong>技术分层节点</strong><span>按岗位覆盖数量排序</span></div></header>{data.technologies.filter((item) => !query || contains(item.name, query) || contains(item.code, query)).slice(0, 120).map((item) => <button className={technologyCode === item.code ? 'active' : ''} key={item.code} onClick={() => chooseTechnology(item.code)}><div><strong>{item.name}</strong><span>{item.path.map((node) => node.code).join(' → ')}</span></div><b>{item.job_count}</b></button>)}</div> : null}
+        {view === 'enterprise' ? <div className="entity-node-list"><header><Building2 size={16} /><div><strong>企业实体</strong><span>按具体JD数量排序</span></div></header>{data.companies.filter((item) => !query || contains(item.name, query)).slice(0, 160).map((item) => <button className={companyName === item.name ? 'active' : ''} key={item.name} onClick={() => chooseCompany(item.name)}><div><strong>{item.name}</strong><span>{item.role_codes.length} 个标准岗位</span></div><b>{item.job_count}</b></button>)}</div> : null}
+      </aside>
+      <main className="new-graph-role-stage">
+        <header><div><Layers3 size={17} /><span><strong>关联标准岗位</strong><small>{view === 'job' ? cluster.split('|')[1] : view === 'technology' ? selectedTechnology?.name : selectedCompany?.name}</small></span></div><StatusTag tone="info">{visibleRoles.length} 个节点</StatusTag></header>
+        <div className="role-node-cloud">{visibleRoles.length ? visibleRoles.map((role) => <button className={roleCode === role.role_code ? 'active' : ''} key={role.role_code} onClick={() => setRoleCode(role.role_code)}><BriefcaseBusiness size={16} /><div><strong>{role.name}</strong><span>{role.cluster_code} · {role.cluster_name}</span></div><b>{role.job_count}<small> JD</small></b></button>) : <div className="empty-state"><strong>没有匹配的标准岗位</strong><span>请清空搜索词或选择其他节点。</span></div>}</div>
+        {view === 'technology' && selectedTechnology ? <footer className="graph-evidence-policy"><ShieldCheck size={14} /><span>该技术节点覆盖 {selectedTechnology.job_count} 条岗位，其中 {selectedTechnology.exact_evidence_count} 条为JD精确证据；其余仅作候选分类。</span></footer> : null}
+      </main>
+      <aside className="new-graph-inspector">
+        {detail ? <>
+          <header><span>标准岗位详情</span><h3>{detail.role.name}</h3><p>{detail.role.direction} → {detail.role.category} → {detail.role.cluster_code} {detail.role.cluster_name}</p></header>
+          <div className="inspector-summary"><div><span>岗位事实</span><strong>{detail.jobs.length}</strong></div><div><span>关联企业</span><strong>{detail.companies.length}</strong></div><div><span>技术节点</span><strong>{detail.technologies.length}</strong></div></div>
+          <section><h4>五维岗位画像</h4><div className="inspector-portrait">{portraitDimensions.map((dimension) => { const items = detail.role.portrait?.[dimension.key] || []; return <article key={dimension.key}><strong>{dimension.label}</strong>{items.length ? <ul>{items.slice(0, 4).map((item) => <li key={item}>{item}</li>)}</ul> : <span>暂无可靠画像项</span>}</article> })}</div></section>
+          <section><h4>高频技术关联</h4><div className="inspector-technology-list">{detail.technologies.slice(0, 8).map((item) => <button key={item.code} onClick={() => { setView('technology'); chooseTechnology(item.code) }}><Cpu size={13} /><span><strong>{item.name}</strong><small>{item.path.map((node) => node.code).join(' → ')}</small></span><b>{item.job_count}</b></button>)}</div></section>
+          <section><h4>具体JD证据</h4><div className="inspector-job-list">{detail.jobs.slice(0, 12).map((job) => <article key={job.occ_id}><Database size={13} /><div><strong>{job.title || '岗位名称未注明'}</strong><span>{job.company || '企业信息未公开'} · {job.occ_id}</span></div></article>)}</div></section>
+        </> : <div className="empty-state"><BriefcaseBusiness size={22} /><strong>选择标准岗位</strong><span>右侧将显示五维画像、技术路径和JD证据。</span></div>}
+      </aside>
+    </section>
+  </div>
 }

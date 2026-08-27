@@ -12,8 +12,23 @@ from app.modules.graph.service import (
     relation_graph,
     relation_graph_neighbors,
 )
+from app.modules.talent.job_graph_bridge import job_graph_overview, job_graph_role_detail
 
 router = APIRouter(tags=["capability-graphs"])
+
+
+@router.get("/graphs/job-architecture", response_model=dict)
+def get_job_architecture_graph():
+    """Return the shared overview for job, technology and enterprise graph views."""
+    return job_graph_overview()
+
+
+@router.get("/graphs/job-architecture/roles/{role_code}", response_model=dict)
+def get_job_architecture_role(role_code: str):
+    detail = job_graph_role_detail(role_code)
+    if detail is None:
+        raise HTTPException(status_code=404, detail="未找到指定的新版标准岗位")
+    return detail
 
 
 @router.get("/graphs/relations", response_model=dict)
