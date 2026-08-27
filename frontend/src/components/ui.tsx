@@ -26,7 +26,7 @@ export function Panel({
           {action}
         </header>
       ) : null}
-      {children}
+      <div className="panel-body">{children}</div>
     </section>
   )
 }

@@ -9,6 +9,9 @@ import { GraphClusterPage } from './pages/GraphClusterPage'
 import { GraphHeatmapPage } from './pages/GraphHeatmapPage'
 import { GraphRelationsPage } from './pages/GraphRelationsPage'
 import { JobKeywordPage } from './pages/JobKeywordPage'
+import { JobEcosystemPage } from './pages/JobEcosystemPage'
+import { JobDiscoveryPage } from './pages/JobDiscoveryPage'
+import { TechToRolePage } from './pages/TechToRolePage'
 import { JobNamePage } from './pages/JobNamePage'
 import { JobRecordsPage } from './pages/JobRecordsPage'
 import { JobsPage } from './pages/JobsPage'
@@ -33,6 +36,12 @@ const pageTitles: Record<PageId, string> = {
   'job-name': '岗位名称推演',
   'job-records': '推演结果记录库',
   graph: '动态岗位能力图谱',
+  'job-graph': '产业·技术·岗位三图谱',
+  'industry-job-graph': '产业—岗位图谱',
+  'technology-job-graph': '技术—岗位图谱',
+  'job-portrait-graph': '岗位画像图谱',
+  'job-discovery': '标准岗位发现流水线',
+  'tech-to-role': '技术词引出岗位',
   'graph-heatmap': '能力热力图',
   'graph-relations': '岗位—能力关联图',
   'graph-clusters': '聚类岗位能力图谱',
@@ -44,7 +53,15 @@ const pageTitles: Record<PageId, string> = {
 }
 
 function getInitialPage(): PageId {
-  const value = window.location.hash.replace('#/', '').split('?')[0] as PageId
+  const [route, query = ''] = window.location.hash.replace('#/', '').split('?')
+  if (route === 'graph') return 'industry-job-graph'
+  if (route === 'job-graph') {
+    const view = new URLSearchParams(query).get('view')
+    if (view === 'technology') return 'technology-job-graph'
+    if (view === 'portrait' || view === 'ecosystem' || view === 'discovery') return 'job-portrait-graph'
+    return 'industry-job-graph'
+  }
+  const value = route as PageId
   return value in pageTitles ? value : 'overview'
 }
 
@@ -61,7 +78,19 @@ export default function App() {
   const [managementQuery, setManagementQuery] = useState('')
 
   useEffect(() => {
-    if (getInitialPage() !== page) window.location.hash = `/${page}`
+    const [currentRoute, query = ''] = window.location.hash.replace('#/', '').split('?')
+    if (currentRoute !== page) {
+      const legacyParams = new URLSearchParams(query)
+      const portraitParams = new URLSearchParams()
+      if (page === 'job-portrait-graph') {
+        for (const key of ['role', 'job', 'dimension']) {
+          const value = legacyParams.get(key)
+          if (value) portraitParams.set(key, value)
+        }
+      }
+      const canonicalQuery = portraitParams.toString()
+      window.location.hash = `/${page}${canonicalQuery ? `?${canonicalQuery}` : ''}`
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [page])
 
@@ -82,7 +111,14 @@ export default function App() {
     talentApi.profiles(controller.signal).then((items) => {
       setProfiles(items)
       setSelectedVersionCode((current) => current || items[0]?.version_code || '')
-    }).catch((reason: Error) => { if (reason.name !== 'AbortError') setToast(`画像库加载失败：${reason.message}`) })
+    }).catch((reason: Error) => {
+      if (reason.name === 'AbortError') return
+      // The three-graph static demo is valid before the optional candidate-profile
+      // API is deployed.  Keep the library empty on a missing endpoint instead of
+      // covering the judge-facing graph with an unrelated 404 toast.
+      if (reason.message.includes('404')) setProfiles([])
+      else setToast(`画像库加载失败：${reason.message}`)
+    })
     return () => controller.abort()
   }, [])
 
@@ -117,6 +153,12 @@ export default function App() {
     case 'job-name': content = <JobNamePage notify={notify} />; break
     case 'job-records': content = <JobRecordsPage notify={notify} />; break
     case 'graph': content = <GraphPage onNavigate={setPage} />; break
+    case 'job-graph': content = <JobEcosystemPage key="industry" fixedView="industry" />; break
+    case 'industry-job-graph': content = <JobEcosystemPage key="industry" fixedView="industry" />; break
+    case 'technology-job-graph': content = <JobEcosystemPage key="technology" fixedView="technology" />; break
+    case 'job-portrait-graph': content = <JobEcosystemPage key="portrait" fixedView="portrait" />; break
+    case 'job-discovery': content = <JobDiscoveryPage />; break
+    case 'tech-to-role': content = <TechToRolePage />; break
     case 'graph-heatmap': content = <GraphHeatmapPage notify={notify} />; break
     case 'graph-relations': content = <GraphRelationsPage notify={notify} />; break
     case 'graph-clusters': content = <GraphClusterPage notify={notify} />; break

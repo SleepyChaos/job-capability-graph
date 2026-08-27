@@ -1,0 +1,39 @@
+{
+  "dataset_id": "jd_parsing_test_set_v1_1",
+  "status": "frozen_test_set_single_annotator_two_pass",
+  "frozen_at": "2026-08-21",
+  "sample_count": 120,
+  "dataset_file": "jd_parsing_test_set_v1_1.json",
+  "dataset_sha256": "43c358f652fe76f601d97be288b58a6c9cf61d072193f8f2547cbe7c989456a1",
+  "annotation_guideline": "ANNOTATION_GUIDELINE_V1_1.md",
+  "annotation_guideline_sha256": "40768fb6737d570913fcb07638a550eb0872db56388f033cfffdf5cee96eb060",
+  "candidate_file": "annotation_candidates_v1.json",
+  "candidate_sha256": "52c0859895d8916e3a770cfd6fdc3f649a696cc3394855bffe4386f748ef1bbe",
+  "actual_annotator_count": 1,
+  "annotation_passes": 2,
+  "second_pass_blind_to_first": true,
+  "final_label_source": "second_pass",
+  "independent_double_annotation": false,
+  "source_files": [
+    {
+      "file": "JD人工标注_第一遍_120条_20260821_v3.xlsx",
+      "sha256": "a2e1f75223d17edb87bce9bde04fb4561208dac76df68f5f84a517a6d5c4a4af"
+    },
+    {
+      "file": "JD人工标注_第二遍盲审_第1批_0001-0030_20260821.xlsx",
+      "sha256": "8ab84bb2a26e4af8f2ef7e9ffc84cfd821a249f23d2cc55b18ea6a1c0ca7165c"
+    },
+    {
+      "file": "JD人工标注_第二遍盲审_第2批_0031-0060_20260821.xlsx",
+      "sha256": "331f8e1b9b9410d9c4ceea805d52f30564738a112f9ee62ab6b68fd1297076cf"
+    },
+    {
+      "file": "JD人工标注_第二遍盲审_第3批_0061-0090_20260821.xlsx",
+      "sha256": "1613b0d00a98b1f1e18119d31274c745d35938959b0d8a1796d6dc0aefafdd3f"
+    },
+    {
+      "file": "JD人工标注_第二遍盲审_第4批_0091-0120_20260821.xlsx",
+      "sha256": "a4b234a0c910337cd8398ed90c4dff823bf0fa409f1dd1eead7790b4fe1141ac"
+    }
+  ]
+}
