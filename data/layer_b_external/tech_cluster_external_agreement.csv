@@ -1,0 +1,1980 @@
+﻿cluster_code,role_name,technology_code,technology_name,support_count_in_cluster,esco_skill_hit_count,esco_occupation_hit,overlap_matched,external_agreement_score,status_flag
+JC-404786f4ee5fa73e,,T1.04.01,SLAM,1,6,1,1,1.0,high_agreement
+JC-349ecbd26dab83d0,,T3.04.02,灵巧手(多指),1,5,1,1,1.0,high_agreement
+JC-349ecbd26dab83d0,,T3.05.04,电机与驱动,1,5,1,1,1.0,high_agreement
+JC-5b420abdc893a05e,,T1.01.11,VLA端到端大模型,1,6,1,1,1.0,high_agreement
+JC-5b420abdc893a05e,,T4.02.01,合成数据,1,3,1,1,1.0,high_agreement
+JC-0f6508f3c7fc52c3,,T2.01.01,激光雷达,1,2,1,1,1.0,high_agreement
+JC-0f6508f3c7fc52c3,,T3.01.08,人形机器人(通用),1,6,1,1,1.0,high_agreement
+JC-0f6508f3c7fc52c3,,T3.04.03,末端执行器,1,3,1,1,1.0,high_agreement
+JC-0f6508f3c7fc52c3,,T3.05.04,电机与驱动,1,5,1,1,1.0,high_agreement
+JC-0f6508f3c7fc52c3,,T5.01.01,ROS,1,4,1,1,1.0,high_agreement
+JC-a4eabd4908c94062,,T1.01.11,VLA端到端大模型,2,6,1,1,1.0,high_agreement
+JC-a4eabd4908c94062,,T2.01.01,激光雷达,2,2,1,1,1.0,high_agreement
+JC-a4eabd4908c94062,,T5.01.01,ROS,2,4,1,1,1.0,high_agreement
+JC-5b420abdc893a05e,,T1.05.05,机器人学习,2,3,1,1,1.0,high_agreement
+JC-5d3babf8bc39b54a,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-9dc8328b5f133673,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-9dc8328b5f133673,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-9dc8328b5f133673,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-d9bc30152cf35ec7,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-d9bc30152cf35ec7,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-d9bc30152cf35ec7,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-d9bc30152cf35ec7,,T6.04.02,评测基础设施,1,2,0,0,0.5,needs_human_review
+JC-dcb66d5a50b626ee,,T1.01.06,大模型部署与推理优化,1,5,0,0,0.5,needs_human_review
+JC-dcb66d5a50b626ee,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-dcb66d5a50b626ee,,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-150873345b368615,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-150873345b368615,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-e648b0d6c24526c3,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-e648b0d6c24526c3,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-e648b0d6c24526c3,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-e648b0d6c24526c3,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-e648b0d6c24526c3,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-e648b0d6c24526c3,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-e648b0d6c24526c3,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-611577b63bc2dfd5,agent应用负责人 · T1,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-611577b63bc2dfd5,agent应用负责人 · T1,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-f2945c4b0fb664ed,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-f2945c4b0fb664ed,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-f2945c4b0fb664ed,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-f2945c4b0fb664ed,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-f2945c4b0fb664ed,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-f2945c4b0fb664ed,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-f2945c4b0fb664ed,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-383c789399a09d83,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-383c789399a09d83,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-383c789399a09d83,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-383c789399a09d83,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-383c789399a09d83,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-9f60d927f41ba1cd,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-150873345b368615,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-450f0cc1ed541dac,ai产品经理 · T1,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-450f0cc1ed541dac,ai产品经理 · T1,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-bed8082cc8a764e6,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-bed8082cc8a764e6,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-bed8082cc8a764e6,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T1.03.01,全身控制(WBC),1,5,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-53c485a0e1c60a45,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-53c485a0e1c60a45,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-53c485a0e1c60a45,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-53c485a0e1c60a45,,T6.04.02,评测基础设施,1,2,0,0,0.5,needs_human_review
+JC-8a17722c74604001,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-8a17722c74604001,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T3.05.02,关节驱动控制,1,6,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-c2eb1ed7f1555d8b,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-c22c9977551769ca,,T1.01.05,具身推理机制,1,5,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-3dafca16fdced034,,T1.06.04,视觉感知与理解,1,6,0,0,0.5,needs_human_review
+JC-3dafca16fdced034,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-3dafca16fdced034,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-3e4d93ceb633e109,,T3.08.02,域控制器,1,2,0,0,0.5,needs_human_review
+JC-bfb73addc087f3aa,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-bfb73addc087f3aa,,T2.02.03,电子皮肤与柔性触觉,1,4,0,0,0.5,needs_human_review
+JC-bfb73addc087f3aa,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-c793c2e9e50464a3,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-c793c2e9e50464a3,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-c793c2e9e50464a3,,T2.01.02,深度相机,1,2,0,0,0.5,needs_human_review
+JC-c793c2e9e50464a3,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-c793c2e9e50464a3,,T3.08.04,算力硬件,1,2,0,0,0.5,needs_human_review
+JC-c793c2e9e50464a3,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-c793c2e9e50464a3,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T1.01.06,大模型部署与推理优化,1,5,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T1.03.05,双足行走与步态,1,5,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T3.05.02,关节驱动控制,1,6,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T3.08.02,域控制器,1,2,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-458b4d4f2f947c00,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-458b4d4f2f947c00,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-daef40a0ba9ba1ab,机械工程师 · T7,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-daef40a0ba9ba1ab,机械工程师 · T7,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-45fd4e5cd50a6b4d,资产定价 · T3,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T3.08.02,域控制器,1,2,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-440cda046629b5c8,采购工程师 · T3,T3.06.04,精密传动,1,2,0,0,0.5,needs_human_review
+JC-fb47d7fb8ae57b96,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-fb47d7fb8ae57b96,,T3.05.02,关节驱动控制,1,6,0,0,0.5,needs_human_review
+JC-fb47d7fb8ae57b96,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-fb47d7fb8ae57b96,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-1f07ca079098de4d,,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-1f07ca079098de4d,,T7.02.02,智能仓储,1,6,0,0,0.5,needs_human_review
+JC-2abede12816114a9,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-2abede12816114a9,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-2abede12816114a9,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-2abede12816114a9,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-2abede12816114a9,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-821a1d6ffba15f88,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-bcf9e28d871053a0,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-bcf9e28d871053a0,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-bcf9e28d871053a0,,T7.01.01,巡检机器人(工业),1,6,0,0,0.5,needs_human_review
+JC-bcf9e28d871053a0,,T7.02.04,物流配送机器人,1,3,0,0,0.5,needs_human_review
+JC-611577b63bc2dfd5,agent应用负责人 · T1,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-611577b63bc2dfd5,agent应用负责人 · T1,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-611577b63bc2dfd5,agent应用负责人 · T1,T6.01.01,多模态交互,1,3,0,0,0.5,needs_human_review
+JC-611577b63bc2dfd5,agent应用负责人 · T1,T7.07.05,消费级机器人(通用),1,2,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T4.03.03,数字孪生,1,1,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-2801d1010b68e7b3,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-148920849a04b7ee,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-148920849a04b7ee,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-148920849a04b7ee,,T3.02.03,仿生机器人,1,5,0,0,0.5,needs_human_review
+JC-148920849a04b7ee,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-69b7f97648c34125,具身智能数据采购负责人 · T4,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T1.05.01,扩散策略,1,5,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T3.01.01,双足人形机器人,1,5,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-f492396adacf294b,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-0d5b4f6174ffcb20,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-0d5b4f6174ffcb20,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-0d5b4f6174ffcb20,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-0d5b4f6174ffcb20,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-b8218cf9c45b79fa,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-b8218cf9c45b79fa,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-b8c826c19e28ac5b,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-502e7e2d90252456,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-502e7e2d90252456,,T6.01.01,多模态交互,1,3,0,0,0.5,needs_human_review
+JC-c56c215b45f1b04a,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-c56c215b45f1b04a,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-c56c215b45f1b04a,,T3.02.03,仿生机器人,1,5,0,0,0.5,needs_human_review
+JC-c56c215b45f1b04a,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-c56d7b3e65bd4d89,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-c56d7b3e65bd4d89,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-c56d7b3e65bd4d89,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-c56d7b3e65bd4d89,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-c56d7b3e65bd4d89,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-c56d7b3e65bd4d89,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-c56d7b3e65bd4d89,,T5.04.01,算力基础设施,1,2,0,0,0.5,needs_human_review
+JC-c56d7b3e65bd4d89,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-fff4331c07fbc34f,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-fff4331c07fbc34f,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-fff4331c07fbc34f,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-fff4331c07fbc34f,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-fff4331c07fbc34f,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-fff4331c07fbc34f,,T7.06.05,空间智能与空间机器人,1,4,0,0,0.5,needs_human_review
+JC-090df9034557f941,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T1.04.08,具身智能导航,1,6,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-9052571d6e277687,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-9052571d6e277687,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-9052571d6e277687,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-e1d242b04107b296,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-e1d242b04107b296,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-0c236466368d13dc,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-0c236466368d13dc,,T1.02.08,世界模型数据集,1,3,0,0,0.5,needs_human_review
+JC-0c236466368d13dc,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-0c236466368d13dc,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-0c236466368d13dc,,T4.02.01,合成数据,1,3,0,0,0.5,needs_human_review
+JC-fdd09c71b7423280,嵌入式软件组负责人 · T5,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-fdd09c71b7423280,嵌入式软件组负责人 · T5,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-fdd09c71b7423280,嵌入式软件组负责人 · T5,T3.02.03,仿生机器人,1,5,0,0,0.5,needs_human_review
+JC-404096d600c8ea20,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-404096d600c8ea20,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-404096d600c8ea20,,T1.09.05,灵巧操作,1,5,0,0,0.5,needs_human_review
+JC-404096d600c8ea20,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-404096d600c8ea20,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-83947529d7bc5bb5,,T1.02.08,世界模型数据集,1,3,0,0,0.5,needs_human_review
+JC-83947529d7bc5bb5,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-fb1919f03b7ee756,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-fb1919f03b7ee756,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-abad3cffa4eb60cd,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-284075dcfc7db2c5,数据治理专家 · T4,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-f5812a526cf987b5,,T3.01.05,人形机器人整机与商业化,1,5,0,0,0.5,needs_human_review
+JC-ff8da93f40b204c6,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-ff8da93f40b204c6,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-ff8da93f40b204c6,,T3.08.02,域控制器,1,2,0,0,0.5,needs_human_review
+JC-225ccf266c48709e,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-225ccf266c48709e,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-96bfc764dbc55915,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-96bfc764dbc55915,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-96bfc764dbc55915,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-96bfc764dbc55915,,T4.04.04,系统辨识,1,5,0,0,0.5,needs_human_review
+JC-96bfc764dbc55915,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-96bfc764dbc55915,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-5d24da6f7e8240e9,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-7e2a881b603bc318,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-7e2a881b603bc318,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-7e2a881b603bc318,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-7e2a881b603bc318,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T3.02.03,仿生机器人,1,5,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-bf70a82292906154,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-bf70a82292906154,,T1.04.08,具身智能导航,1,6,0,0,0.5,needs_human_review
+JC-bf70a82292906154,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-bf70a82292906154,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-bf70a82292906154,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-2280d6edcda2f4fc,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-2280d6edcda2f4fc,,T3.02.03,仿生机器人,1,5,0,0,0.5,needs_human_review
+JC-2280d6edcda2f4fc,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-2280d6edcda2f4fc,,T6.01.01,多模态交互,1,3,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T2.01.03,视觉传感器,1,2,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T3.01.01,双足人形机器人,1,5,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T3.01.05,人形机器人整机与商业化,1,5,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T3.06.01,谐波减速器,1,2,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-b2e3c5c8de39182e,,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-18bc7f91fc2595d3,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-18bc7f91fc2595d3,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-18bc7f91fc2595d3,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-18bc7f91fc2595d3,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-18bc7f91fc2595d3,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-ba1a3c1ffcc93dd7,嵌入式应用开发工程师(ai视觉) · T3,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-ba1a3c1ffcc93dd7,嵌入式应用开发工程师(ai视觉) · T3,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-085166ddbca7be97,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-085166ddbca7be97,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-085166ddbca7be97,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-30e0377c91396ba6,gr高级经理 · T7,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-e7b0a516507dc616,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-e7b0a516507dc616,,T3.02.03,仿生机器人,1,5,0,0,0.5,needs_human_review
+JC-e7b0a516507dc616,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T1.05.05,机器人学习,1,3,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T1.06.02,3D视觉感知,1,7,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-e3f177b63b621405,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-e3f177b63b621405,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-e3f177b63b621405,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-e3f177b63b621405,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-e3f177b63b621405,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-e3f177b63b621405,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-3ae07e7da0122714,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-3ae07e7da0122714,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T2.02.05,触觉传感器,1,4,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-c1d3c139666dd646,销售经理 · T3,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-97f6ce4c075e077f,,T2.01.03,视觉传感器,1,2,0,0,0.5,needs_human_review
+JC-97f6ce4c075e077f,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-97f6ce4c075e077f,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-97f6ce4c075e077f,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-97f6ce4c075e077f,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-d056d1593f93900e,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-d056d1593f93900e,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-f92fdad3cd78cc8d,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-f92fdad3cd78cc8d,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-f92fdad3cd78cc8d,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-f92fdad3cd78cc8d,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-f92fdad3cd78cc8d,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-3ec2ad20e0c25c92,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-3ec2ad20e0c25c92,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-3ec2ad20e0c25c92,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-abdc915d3d6fc860,,T1.03.01,全身控制(WBC),1,5,0,0,0.5,needs_human_review
+JC-abdc915d3d6fc860,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-abdc915d3d6fc860,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-abdc915d3d6fc860,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-abdc915d3d6fc860,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-abdc915d3d6fc860,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-abdc915d3d6fc860,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T3.05.02,关节驱动控制,1,6,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-b08cab5134fb6432,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-34bc211586b292e8,机械结构工程师 · T3,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-e72b297fdb7412a5,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-e72b297fdb7412a5,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-e72b297fdb7412a5,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-e72b297fdb7412a5,,T2.01.02,深度相机,1,2,0,0,0.5,needs_human_review
+JC-e72b297fdb7412a5,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-e72b297fdb7412a5,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-184341145f54e351,,T1.01.02,动作表示与分词,1,5,0,0,0.5,needs_human_review
+JC-184341145f54e351,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-184341145f54e351,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-184341145f54e351,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-184341145f54e351,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-184341145f54e351,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-85d08ee294b167ab,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-85d08ee294b167ab,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-85d08ee294b167ab,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-85d08ee294b167ab,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-85d08ee294b167ab,,T7.02.02,智能仓储,1,6,0,0,0.5,needs_human_review
+JC-883a704b1c10c40b,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-883a704b1c10c40b,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-883a704b1c10c40b,,T1.05.05,机器人学习,1,3,0,0,0.5,needs_human_review
+JC-883a704b1c10c40b,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-523252d6cd65cf7d,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-523252d6cd65cf7d,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-96decf92096ce26b,高级项目经理 · T7,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T1.07.01,具身推理与ECoT,1,5,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-3c03803d7ea7b4df,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-3c03803d7ea7b4df,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-3c03803d7ea7b4df,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-3c03803d7ea7b4df,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-3c03803d7ea7b4df,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-8bcf6587e16998ce,,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-9a42e48ca4372fef,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-9a42e48ca4372fef,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-9a42e48ca4372fef,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-9a42e48ca4372fef,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-34ce42a9b393a474,算子开发工程师 · T3,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-2c2cc6faeb53d8ec,渠道销售经理 · T7,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-2c2cc6faeb53d8ec,渠道销售经理 · T7,T1.08.01,群体智能与协同,1,4,0,0,0.5,needs_human_review
+JC-2c2cc6faeb53d8ec,渠道销售经理 · T7,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-2c2cc6faeb53d8ec,渠道销售经理 · T7,T6.01.01,多模态交互,1,3,0,0,0.5,needs_human_review
+JC-c1dc95babf93598b,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-c1dc95babf93598b,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-c1dc95babf93598b,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-c1dc95babf93598b,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-c1dc95babf93598b,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-c1dc95babf93598b,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-2afa19f1a52c22de,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-4723fd40f2d19db4,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-4723fd40f2d19db4,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-2e8e7f6092a087d5,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-2e8e7f6092a087d5,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-2e8e7f6092a087d5,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-2e8e7f6092a087d5,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-2e8e7f6092a087d5,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-847d4a09ce28c57b,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-847d4a09ce28c57b,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-847d4a09ce28c57b,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-4720382e31c0e68b,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-4720382e31c0e68b,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-4720382e31c0e68b,,T3.06.04,精密传动,1,2,0,0,0.5,needs_human_review
+JC-d4e5a51911254444,,T1.01.02,动作表示与分词,1,5,0,0,0.5,needs_human_review
+JC-d4e5a51911254444,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-d4e5a51911254444,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-283243fa191559f5,,T2.01.02,深度相机,1,2,0,0,0.5,needs_human_review
+JC-283243fa191559f5,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-283243fa191559f5,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-283243fa191559f5,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-283243fa191559f5,,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-ce6b050c4b985444,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-ce6b050c4b985444,,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-bb31ea7f2d47f64d,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-bb31ea7f2d47f64d,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-bb31ea7f2d47f64d,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-bb31ea7f2d47f64d,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-7a7aadc13d54940d,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-7a7aadc13d54940d,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-7a7aadc13d54940d,,T4.01.02,数字训练场,1,2,0,0,0.5,needs_human_review
+JC-7a7aadc13d54940d,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-c2fc9225b55c2e5c,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-c2fc9225b55c2e5c,,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-f16328ee9ccc988b,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-f16328ee9ccc988b,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-f16328ee9ccc988b,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-f16328ee9ccc988b,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-f6e9097ee9b55364,,T1.01.06,大模型部署与推理优化,1,5,0,0,0.5,needs_human_review
+JC-f6e9097ee9b55364,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-f6e9097ee9b55364,,T7.07.02,陪伴机器人,1,1,0,0,0.5,needs_human_review
+JC-4a31686bb41953fe,nvh专家 · T3,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-903e7efdfaf71451,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-8ecb2df08f37ed87,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-8ecb2df08f37ed87,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-8ecb2df08f37ed87,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-8ecb2df08f37ed87,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-8ecb2df08f37ed87,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-c611c1db06d22870,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-c611c1db06d22870,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-c611c1db06d22870,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-c6b01afdce99add8,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-c6b01afdce99add8,,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-84c46669f229b231,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-84c46669f229b231,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-84c46669f229b231,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-f20e32ab9d21a3be,减速器 · T3,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-f5031f5ef61abf5a,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-f5031f5ef61abf5a,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-f5031f5ef61abf5a,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-f5031f5ef61abf5a,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T1.03.11,具身操作,1,5,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-7fbf8af4ae5aa3a8,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-11673ab92b0b7d31,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-11673ab92b0b7d31,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-bb5da81f422f2e2f,,T1.03.01,全身控制(WBC),1,5,0,0,0.5,needs_human_review
+JC-bb5da81f422f2e2f,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-bb5da81f422f2e2f,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-bb5da81f422f2e2f,,T4.04.04,系统辨识,1,5,0,0,0.5,needs_human_review
+JC-bb5da81f422f2e2f,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-bb5da81f422f2e2f,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-a46d0a8c51fbd9c8,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-a46d0a8c51fbd9c8,,T2.01.02,深度相机,1,2,0,0,0.5,needs_human_review
+JC-a46d0a8c51fbd9c8,,T2.02.05,触觉传感器,1,4,0,0,0.5,needs_human_review
+JC-a46d0a8c51fbd9c8,,T3.01.05,人形机器人整机与商业化,1,5,0,0,0.5,needs_human_review
+JC-a46d0a8c51fbd9c8,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-a46d0a8c51fbd9c8,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-a46d0a8c51fbd9c8,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-a46d0a8c51fbd9c8,,T3.08.04,算力硬件,1,2,0,0,0.5,needs_human_review
+JC-29d65d6e088a9ab5,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-29d65d6e088a9ab5,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-29d65d6e088a9ab5,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T1.05.05,机器人学习,1,3,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-39832359c61455b5,,T3.01.05,人形机器人整机与商业化,1,5,0,0,0.5,needs_human_review
+JC-39832359c61455b5,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-1453e3a6280648d8,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-add7dba292b77c86,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-add7dba292b77c86,,T3.05.02,关节驱动控制,1,6,0,0,0.5,needs_human_review
+JC-12c3a0af59787f6a,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-12c3a0af59787f6a,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-12c3a0af59787f6a,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-12c3a0af59787f6a,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-465cf6f634fcdd41,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-465cf6f634fcdd41,,T2.01.03,视觉传感器,1,2,0,0,0.5,needs_human_review
+JC-465cf6f634fcdd41,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-465cf6f634fcdd41,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-d65f77c3e4f1d082,自动化工程师 · T1,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-94dc3058ec1093df,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-94dc3058ec1093df,,T3.03.04,并联机器人,1,3,0,0,0.5,needs_human_review
+JC-94dc3058ec1093df,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-94dc3058ec1093df,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-94dc3058ec1093df,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-94dc3058ec1093df,,T3.06.01,谐波减速器,1,2,0,0,0.5,needs_human_review
+JC-ffe03c04ade9280a,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-ffe03c04ade9280a,,T1.06.04,视觉感知与理解,1,6,0,0,0.5,needs_human_review
+JC-ffe03c04ade9280a,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-f51d1156f9c9bdb2,解决方案经理 · T3,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-fd9aae0f8d1f015d,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-fd9aae0f8d1f015d,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-fd9aae0f8d1f015d,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-fd9aae0f8d1f015d,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-e459f99462711c90,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-e459f99462711c90,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-9a1848264e552516,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-9a1848264e552516,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-9a1848264e552516,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-9a1848264e552516,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T3.04.04,夹爪,1,3,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-21db5b18e50bc3bc,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-d7c69b5f7f5a0ba7,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-d7c69b5f7f5a0ba7,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-d7c69b5f7f5a0ba7,,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-1cf6c1f4bd2fc95a,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-1cf6c1f4bd2fc95a,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-1cf6c1f4bd2fc95a,,T3.08.04,算力硬件,1,2,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-b53f08c73d985fc4,科教行业大客户经理——机器人行业 · T7,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-c829f3cd6afaadb1,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-a34994295e34bd5a,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-a34994295e34bd5a,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-a34994295e34bd5a,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-2992d1a8da4a42b4,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-2992d1a8da4a42b4,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-2992d1a8da4a42b4,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-2992d1a8da4a42b4,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-2992d1a8da4a42b4,,T7.02.04,物流配送机器人,1,3,0,0,0.5,needs_human_review
+JC-c1e2466040c553a6,减速器专家 · T3,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-c1e2466040c553a6,减速器专家 · T3,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-f240dddd3abf8b7b,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-f240dddd3abf8b7b,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-f240dddd3abf8b7b,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-f240dddd3abf8b7b,,T3.06.01,谐波减速器,1,2,0,0,0.5,needs_human_review
+JC-f240dddd3abf8b7b,,T3.06.04,精密传动,1,2,0,0,0.5,needs_human_review
+JC-cf500b93c8f57cf0,,T2.01.03,视觉传感器,1,2,0,0,0.5,needs_human_review
+JC-cf500b93c8f57cf0,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-cf500b93c8f57cf0,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-aad761a07edbaa42,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-aad761a07edbaa42,,T1.05.05,机器人学习,1,3,0,0,0.5,needs_human_review
+JC-aad761a07edbaa42,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-0be4c24e8828658b,,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-30e0377c91396ba6,gr高级经理 · T7,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-b836650b1962be61,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-b836650b1962be61,,T7.02.05,智慧物流,1,3,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-82b25b0bee0a3be6,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-208f1d8bc5873639,,T3.02.03,仿生机器人,1,5,0,0,0.5,needs_human_review
+JC-208f1d8bc5873639,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-75735435baa67c35,,T1.04.08,具身智能导航,1,6,0,0,0.5,needs_human_review
+JC-75735435baa67c35,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-75735435baa67c35,,T1.09.05,灵巧操作,1,5,0,0,0.5,needs_human_review
+JC-75735435baa67c35,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-dbfcc46b539b2b1c,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-dbfcc46b539b2b1c,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-dbfcc46b539b2b1c,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-dbfcc46b539b2b1c,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-dbfcc46b539b2b1c,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-3ac6054bfafce773,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-3ac6054bfafce773,,T1.09.05,灵巧操作,1,5,0,0,0.5,needs_human_review
+JC-3ac6054bfafce773,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-3ac6054bfafce773,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-3ac6054bfafce773,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-80a98fdeee516665,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-80a98fdeee516665,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-80a98fdeee516665,,T1.06.02,3D视觉感知,1,7,0,0,0.5,needs_human_review
+JC-80a98fdeee516665,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-80a98fdeee516665,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-88c76f2fd3e3d0ba,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-88c76f2fd3e3d0ba,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-88c76f2fd3e3d0ba,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-88c76f2fd3e3d0ba,,T2.01.02,深度相机,1,2,0,0,0.5,needs_human_review
+JC-88c76f2fd3e3d0ba,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-88c76f2fd3e3d0ba,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-88c76f2fd3e3d0ba,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-33922ff92b60cb49,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-33922ff92b60cb49,,T4.04.04,系统辨识,1,5,0,0,0.5,needs_human_review
+JC-f72cc8ad5ad7e8b0,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-d2ae7e61052036fb,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-d2ae7e61052036fb,,T1.09.05,灵巧操作,1,5,0,0,0.5,needs_human_review
+JC-d2ae7e61052036fb,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-d2ae7e61052036fb,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-6f4db05f5d007a91,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-6f4db05f5d007a91,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-6f4db05f5d007a91,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-6f4db05f5d007a91,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-6f4db05f5d007a91,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-6f4db05f5d007a91,,T6.01.01,多模态交互,1,3,0,0,0.5,needs_human_review
+JC-6f4db05f5d007a91,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-b06993b19ef580e3,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-b06993b19ef580e3,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-b06993b19ef580e3,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-b06993b19ef580e3,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-b06993b19ef580e3,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-b06993b19ef580e3,,T7.07.03,教育机器人,1,2,0,0,0.5,needs_human_review
+JC-2bbe146a7ad07ff1,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-2bbe146a7ad07ff1,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-2bbe146a7ad07ff1,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-2bbe146a7ad07ff1,,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-2bbe146a7ad07ff1,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-2bbe146a7ad07ff1,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-2bbe146a7ad07ff1,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-93410fdbda74e7da,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-93410fdbda74e7da,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-93410fdbda74e7da,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-b7a44824aca2e838,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-b7a44824aca2e838,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-b7a44824aca2e838,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-b7a44824aca2e838,,T3.07.02,轻量化材料,1,1,0,0,0.5,needs_human_review
+JC-f51d1156f9c9bdb2,解决方案经理 · T3,T7.03.01,清洁机器人,1,3,0,0,0.5,needs_human_review
+JC-570e17fd9a069fdb,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-570e17fd9a069fdb,,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-570e17fd9a069fdb,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-570e17fd9a069fdb,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-570e17fd9a069fdb,,T3.05.02,关节驱动控制,1,6,0,0,0.5,needs_human_review
+JC-570e17fd9a069fdb,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-570e17fd9a069fdb,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-33d7a0cfa438d878,,T1.06.02,3D视觉感知,1,7,0,0,0.5,needs_human_review
+JC-aad761a07edbaa42,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-660aedc8c291f314,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-660aedc8c291f314,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-199a5f4c8dc4984d,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-e71700d83fb0109d,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-e71700d83fb0109d,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-76d7ba9859f8a647,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-76d7ba9859f8a647,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-76d7ba9859f8a647,,T7.08.02,eVTOL飞行器,1,3,0,0,0.5,needs_human_review
+JC-fef6957467a91059,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-fef6957467a91059,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-fef6957467a91059,,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-28039c9037b71794,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-28039c9037b71794,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-28039c9037b71794,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-28039c9037b71794,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-28039c9037b71794,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-28039c9037b71794,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-28039c9037b71794,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-8715e9263c0244eb,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-8715e9263c0244eb,,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-8715e9263c0244eb,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-8715e9263c0244eb,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-88a7a6341c914872,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-88a7a6341c914872,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-b08fd1a3d7b7ac60,电机工程师 · T3,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-864c7a834d8bd8cf,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-9dcf3f22c1bf42c9,软件测试工程师 · T5,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-c43bb3974f4f0b93,,T3.03.03,外骨骼机器人,1,5,0,0,0.5,needs_human_review
+JC-c43bb3974f4f0b93,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-c43bb3974f4f0b93,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T1.03.05,双足行走与步态,1,5,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-d87ec2a8cceec48b,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-427d0b81559b2ab6,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-427d0b81559b2ab6,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-427d0b81559b2ab6,,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-427d0b81559b2ab6,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-4448c0e86364874e,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-4448c0e86364874e,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-9e06a3a6d602abc2,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-9e06a3a6d602abc2,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-9e06a3a6d602abc2,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-9e06a3a6d602abc2,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-60f4215d9193ef76,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-60f4215d9193ef76,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-60f4215d9193ef76,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-1bc79d48b36b2853,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-1bc79d48b36b2853,,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-4fcbb45c5d4f64c1,电机驱动硬件工程师 · T3,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-0b7157896262446d,大模型预训练研究员 · T1,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-46dd4f194f81dea8,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-46dd4f194f81dea8,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-93d51309c20dbf74,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-93d51309c20dbf74,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-93d51309c20dbf74,,T3.08.04,算力硬件,1,2,0,0,0.5,needs_human_review
+JC-93d51309c20dbf74,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T3.02.02,轮足机器人,1,3,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-2afa19f1a52c22de,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-593362d2b351caca,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-593362d2b351caca,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-593362d2b351caca,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-593362d2b351caca,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-593362d2b351caca,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-593362d2b351caca,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-5327993e8b69deff,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-5327993e8b69deff,,T4.02.01,合成数据,1,3,0,0,0.5,needs_human_review
+JC-5327993e8b69deff,,T7.06.05,空间智能与空间机器人,1,4,0,0,0.5,needs_human_review
+JC-794fd03000c5f6c0,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-284075dcfc7db2c5,数据治理专家 · T4,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-df1d59de20c92193,遥操算法工程师 · T4,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-df1d59de20c92193,遥操算法工程师 · T4,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-df1d59de20c92193,遥操算法工程师 · T4,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-692f0e4bf28ffeab,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-692f0e4bf28ffeab,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-2afa19f1a52c22de,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-281fdeb927d61bfb,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-281fdeb927d61bfb,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-281fdeb927d61bfb,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-281fdeb927d61bfb,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-96e9b62706812559,高级产品经理 · T6,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-b42fee9c1b97ffc5,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-b42fee9c1b97ffc5,,T1.09.05,灵巧操作,1,5,0,0,0.5,needs_human_review
+JC-b42fee9c1b97ffc5,,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-4a93bb862a43a0b1,,T3.03.04,并联机器人,1,3,0,0,0.5,needs_human_review
+JC-adc9c50c1591ec82,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-adc9c50c1591ec82,,T2.02.05,触觉传感器,1,4,0,0,0.5,needs_human_review
+JC-adc9c50c1591ec82,,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-adc9c50c1591ec82,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-76d7ba9859f8a647,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-2ec10a3e5269ad9c,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-2ec10a3e5269ad9c,,T7.04.02,康复机器人,1,5,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T1.04.08,具身智能导航,1,6,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-6bb165d32bfdd067,大模型算法工程师 · T1,T1.01.05,具身推理机制,1,5,0,0,0.5,needs_human_review
+JC-fe64a7fd4383c7f8,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-fe64a7fd4383c7f8,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-fe64a7fd4383c7f8,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-fe64a7fd4383c7f8,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-dc03e9b5b305262a,嵌入式软件开发 · T3,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-f20e32ab9d21a3be,减速器 · T3,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-f20e32ab9d21a3be,减速器 · T3,T3.06.01,谐波减速器,1,2,0,0,0.5,needs_human_review
+JC-0457828c46f34a65,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-0457828c46f34a65,,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-f0f422ec63385cef,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-f0f422ec63385cef,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-f0f422ec63385cef,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-f0f422ec63385cef,,T3.08.02,域控制器,1,2,0,0,0.5,needs_human_review
+JC-bb8fd9b512982194,,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-d6d587275f8577b6,,T3.01.05,人形机器人整机与商业化,1,5,0,0,0.5,needs_human_review
+JC-d6d587275f8577b6,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-d6d587275f8577b6,,T3.03.03,外骨骼机器人,1,5,0,0,0.5,needs_human_review
+JC-d6d587275f8577b6,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-d6d587275f8577b6,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-d6d587275f8577b6,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-88a7a6341c914872,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-88a7a6341c914872,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-88a7a6341c914872,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-88a7a6341c914872,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-d609e7dcbdb38d1e,大客户项目经理-机器人以及自动驾驶方向 · T2,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-5818d6b94f579245,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-579c82aeac558904,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-579c82aeac558904,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-579c82aeac558904,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-579c82aeac558904,,T4.02.01,合成数据,1,3,0,0,0.5,needs_human_review
+JC-8261057cee240f51,机器人全身规划算法工程师 · T1,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-63652d4ee3701b06,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-63652d4ee3701b06,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-63652d4ee3701b06,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-26069d8853839fc9,,T1.02.10,世界模型架构,1,3,0,0,0.5,needs_human_review
+JC-26069d8853839fc9,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-c65c70ba0655c2b4,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-c65c70ba0655c2b4,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-c65c70ba0655c2b4,,T5.04.01,算力基础设施,1,2,0,0,0.5,needs_human_review
+JC-2c4df0eda62981de,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-2c4df0eda62981de,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-2c4df0eda62981de,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-2c4df0eda62981de,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-2c4df0eda62981de,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-2c4df0eda62981de,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-2c4df0eda62981de,,T3.08.04,算力硬件,1,2,0,0,0.5,needs_human_review
+JC-694c91bac2ecda6b,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-490bfd6f1020b2fb,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-490bfd6f1020b2fb,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-490bfd6f1020b2fb,,T3.06.01,谐波减速器,1,2,0,0,0.5,needs_human_review
+JC-490bfd6f1020b2fb,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-7c75bf9cc2697636,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-7c75bf9cc2697636,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-7c75bf9cc2697636,,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-7c75bf9cc2697636,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-7c75bf9cc2697636,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-fb0479f356267910,具身数据评估工程师 · T6,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-4448c0e86364874e,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-4448c0e86364874e,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-3b4019f5f2805741,,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-3b4019f5f2805741,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-3e2cd55d08605e78,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-08e065d58a0ebf4b,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-f74f6421442d37ce,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-0e1ec4411456f905,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-0e1ec4411456f905,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-35462fd23ce89605,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-35462fd23ce89605,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-35462fd23ce89605,,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-ac37b863363f8376,博士后 · T3,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-4ca3b716c1a0cfc5,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-4ca3b716c1a0cfc5,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-4ca3b716c1a0cfc5,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-4448c0e86364874e,,T3.03.02,复合机器人,1,3,0,0,0.5,needs_human_review
+JC-4448c0e86364874e,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-5818d6b94f579245,,T3.01.01,双足人形机器人,1,5,0,0,0.5,needs_human_review
+JC-0e4e8d652db3bc6a,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-e1af4cfae0127388,资深硬件工程师 · T3,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-a246e40bc72bedab,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-5fe79190867bbc42,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-5fe79190867bbc42,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-5fe79190867bbc42,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-4b7b17efe43cc289,,T2.02.04,视触觉传感与融合,1,4,0,0,0.5,needs_human_review
+JC-4b7b17efe43cc289,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-ee6e55acc6dd136b,,T1.09.05,灵巧操作,1,5,0,0,0.5,needs_human_review
+JC-16b1daeee454c14d,,T1.09.05,灵巧操作,1,5,0,0,0.5,needs_human_review
+JC-16b1daeee454c14d,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-f20e32ab9d21a3be,减速器 · T3,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-2518e77fe5a6b76b,具身大模型算法工程师 · T1,T4.01.04,数据集,1,3,0,0,0.5,needs_human_review
+JC-3a62579696900055,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-3a62579696900055,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-3a62579696900055,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-3a62579696900055,,T3.03.02,复合机器人,1,3,0,0,0.5,needs_human_review
+JC-3a62579696900055,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-3a62579696900055,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-e81583fc6d9c9451,嵌入式软件经理 · T5,T2.02.09,力觉感知,1,2,0,0,0.5,needs_human_review
+JC-e0abb6da8b38fd8d,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-e0abb6da8b38fd8d,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-ae1b7ee104637e67,本体研发总监 · T3,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-16b1daeee454c14d,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-d0dfe0b169f7d223,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-9dcf3f22c1bf42c9,软件测试工程师 · T5,T1.06.02,3D视觉感知,1,7,0,0,0.5,needs_human_review
+JC-9dcf3f22c1bf42c9,软件测试工程师 · T5,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-05ecb57bd196099f,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-05ecb57bd196099f,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-c4d5c4da8c5375bc,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-c4d5c4da8c5375bc,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-2835aa120a47a7a0,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-2835aa120a47a7a0,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-44f476b7dfdc038f,,T7.02.02,智能仓储,1,6,0,0,0.5,needs_human_review
+JC-c7a30630c47b2eda,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-c7a30630c47b2eda,,T2.02.08,具身感知与交互,1,5,0,0,0.5,needs_human_review
+JC-b20593f9be5b6489,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-328018438460b7ed,,T2.01.03,视觉传感器,1,2,0,0,0.5,needs_human_review
+JC-9c42936f071ba60d,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-f67e404a112bc3c5,机器视觉算法工程师 · T2,T1.06.02,3D视觉感知,1,7,0,0,0.5,needs_human_review
+JC-e0d4d68e02d83a42,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-e0d4d68e02d83a42,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-e0d4d68e02d83a42,,T3.08.04,算力硬件,1,2,0,0,0.5,needs_human_review
+JC-cb79d790a66e4558,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-cb79d790a66e4558,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-0a2929ec3a5f3d08,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-f404787ad4a2b5b9,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-f404787ad4a2b5b9,,T2.02.05,触觉传感器,1,4,0,0,0.5,needs_human_review
+JC-f404787ad4a2b5b9,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-f404787ad4a2b5b9,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-f404787ad4a2b5b9,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-df44abcae933f4e3,,T1.06.10,感知认知(通用),1,4,0,0,0.5,needs_human_review
+JC-df44abcae933f4e3,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-df44abcae933f4e3,,T6.01.06,人机交互(通用),1,5,0,0,0.5,needs_human_review
+JC-df44abcae933f4e3,,T7.06.05,空间智能与空间机器人,1,4,0,0,0.5,needs_human_review
+JC-55a1c107c6a104c6,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-55a1c107c6a104c6,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-55a1c107c6a104c6,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-55a1c107c6a104c6,,T5.04.02,云边端协同,1,1,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T7.05.01,农业机器人,1,2,0,0,0.5,needs_human_review
+JC-1095ca4ddbf5b65c,感知算法工程师(自主导航方向) · T2,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-d2d3be66c638366e,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-d2d3be66c638366e,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-44c29b45a0fdaa7a,,T3.01.05,人形机器人整机与商业化,1,5,0,0,0.5,needs_human_review
+JC-44c29b45a0fdaa7a,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-44c29b45a0fdaa7a,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-e145aca9bbb0a588,,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-e145aca9bbb0a588,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.01.05,人形机器人整机与商业化,1,5,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.06.01,谐波减速器,1,2,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.06.03,行星滚柱丝杠,1,2,0,0,0.5,needs_human_review
+JC-4acf34d2aa295533,,T3.06.04,精密传动,1,2,0,0,0.5,needs_human_review
+JC-960fc1f8d201839c,,T1.04.08,具身智能导航,1,6,0,0,0.5,needs_human_review
+JC-960fc1f8d201839c,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-960fc1f8d201839c,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-960fc1f8d201839c,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-960fc1f8d201839c,,T7.06.06,特种机器人(通用),1,2,0,0,0.5,needs_human_review
+JC-b13b26f395590642,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-cd9ab1ba2f66192d,me助理工程师 · T7,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-e99f22a85ab7cc5e,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-e99f22a85ab7cc5e,,T1.05.05,机器人学习,1,3,0,0,0.5,needs_human_review
+JC-e99f22a85ab7cc5e,,T1.09.05,灵巧操作,1,5,0,0,0.5,needs_human_review
+JC-d00c4fafa50420a0,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-6a9fbda00fb32606,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-6a9fbda00fb32606,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-6a9fbda00fb32606,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-6a9fbda00fb32606,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-38d7103ab2224c89,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-d6e28d95af42584e,,T3.03.07,服务机器人,1,5,0,0,0.5,needs_human_review
+JC-d6e28d95af42584e,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-d6e28d95af42584e,,T7.03.01,清洁机器人,1,3,0,0,0.5,needs_human_review
+JC-613912d0b4afe05a,高级解决方案经理 · T7,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-1bfafd6174e7c9b6,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-1bfafd6174e7c9b6,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-1bfafd6174e7c9b6,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-1bfafd6174e7c9b6,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-1bfafd6174e7c9b6,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-f20e32ab9d21a3be,减速器 · T3,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-81e6c5b91a4eaa65,视频生成/世界模型算法工程师 · T1,T1.04.08,具身智能导航,1,6,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-b33a7370139b86c6,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-e0463dd289009911,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-e0463dd289009911,,T1.09.01,双臂协同操作,1,3,0,0,0.5,needs_human_review
+JC-6394cad933008790,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-6394cad933008790,,T1.06.03,多模态感知融合,1,6,0,0,0.5,needs_human_review
+JC-6394cad933008790,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-6394cad933008790,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-2f82e3fbadfc2a52,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-2f82e3fbadfc2a52,,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-b46fa410353db145,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-b46fa410353db145,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-bf1d58bd8e8ab878,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-bf1d58bd8e8ab878,,T5.01.02,机器人操作系统,1,4,0,0,0.5,needs_human_review
+JC-a345b67f4898090e,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-a345b67f4898090e,,T2.02.02,关节力矩传感器,1,2,0,0,0.5,needs_human_review
+JC-a345b67f4898090e,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-3986a593f29a9104,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-3986a593f29a9104,,T3.05.02,关节驱动控制,1,6,0,0,0.5,needs_human_review
+JC-6adde19b880907bc,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-6adde19b880907bc,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-6adde19b880907bc,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-6adde19b880907bc,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-f28f0203d81b4f8e,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-d92792235713b164,,T1.01.05,具身推理机制,1,5,0,0,0.5,needs_human_review
+JC-060c83caa496d62d,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-060c83caa496d62d,,T1.06.04,视觉感知与理解,1,6,0,0,0.5,needs_human_review
+JC-060c83caa496d62d,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-060c83caa496d62d,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-b1c0f36117d8b5d9,,T3.06.04,精密传动,1,2,0,0,0.5,needs_human_review
+JC-5a6d7c789ff38e62,,T4.03.03,数字孪生,1,1,0,0,0.5,needs_human_review
+JC-ac37b863363f8376,博士后 · T3,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-b022336fb5b4cf74,,T1.04.08,具身智能导航,1,6,0,0,0.5,needs_human_review
+JC-b022336fb5b4cf74,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-b022336fb5b4cf74,,T3.02.02,轮足机器人,1,3,0,0,0.5,needs_human_review
+JC-b022336fb5b4cf74,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-b022336fb5b4cf74,,T6.01.03,人机共融,1,5,0,0,0.5,needs_human_review
+JC-261d857ca285fca9,,T3.01.05,人形机器人整机与商业化,1,5,0,0,0.5,needs_human_review
+JC-261d857ca285fca9,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-f74f6421442d37ce,,T2.02.05,触觉传感器,1,4,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T3.04.04,夹爪,1,3,0,0,0.5,needs_human_review
+JC-de020f005213cc2e,,T7.01.01,巡检机器人(工业),1,6,0,0,0.5,needs_human_review
+JC-de020f005213cc2e,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-f9eb08417b889035,slam算法工程师 · T1,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-f9eb08417b889035,slam算法工程师 · T1,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-1c2e0bddfdf7402e,嵌入式软件工程师 · T3,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-228333164d3b5930,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-228333164d3b5930,,T3.02.03,仿生机器人,1,5,0,0,0.5,needs_human_review
+JC-0d24c6a22cbb44cd,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-1a2e427e807b3b54,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-1a2e427e807b3b54,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-1a2e427e807b3b54,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-1a2e427e807b3b54,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-5d80e128ce75d8fd,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-5d80e128ce75d8fd,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-5d80e128ce75d8fd,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-e1b8d10bd4098db9,阳极博士 · T6,T6.03.04,检测认证,1,0,0,0,0.5,needs_human_review
+JC-e1b8d10bd4098db9,阳极博士 · T6,T7.01.04,汽车制造,1,4,0,0,0.5,needs_human_review
+JC-12c3a0af59787f6a,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-3b3bd48ef989f8e0,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-3b3bd48ef989f8e0,,T4.02.01,合成数据,1,3,0,0,0.5,needs_human_review
+JC-3b3bd48ef989f8e0,,T4.03.03,数字孪生,1,1,0,0,0.5,needs_human_review
+JC-3b3bd48ef989f8e0,,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-3b3bd48ef989f8e0,,T4.04.01,域随机化,1,5,0,0,0.5,needs_human_review
+JC-3b3bd48ef989f8e0,,T4.04.12,Sim-to-Real虚实迁移,1,5,0,0,0.5,needs_human_review
+JC-bbcbe6d88ca1b846,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-bbcbe6d88ca1b846,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-bbcbe6d88ca1b846,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-7c86a7f0d57f4bce,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-7c86a7f0d57f4bce,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-7c86a7f0d57f4bce,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-02b0e31679dec236,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-02b0e31679dec236,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-02b0e31679dec236,,T2.01.03,视觉传感器,1,2,0,0,0.5,needs_human_review
+JC-f2e7aff43de9ff90,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-f2e7aff43de9ff90,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-f2e7aff43de9ff90,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-87738c79afc87b37,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-87738c79afc87b37,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-87738c79afc87b37,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-87738c79afc87b37,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-87738c79afc87b37,,T3.03.01,协作机器人,1,6,0,0,0.5,needs_human_review
+JC-87738c79afc87b37,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-da52eff9aee4ea4a,电机驱动 · T3,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-6020069c2897239c,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-6020069c2897239c,,T3.05.01,一体化关节模组,1,5,0,0,0.5,needs_human_review
+JC-6020069c2897239c,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-6020069c2897239c,,T3.06.02,精密减速器,1,3,0,0,0.5,needs_human_review
+JC-6020069c2897239c,,T3.06.04,精密传动,1,2,0,0,0.5,needs_human_review
+JC-0ecdec08a86cd0a5,小脑(力控)负责人/运动控制算法总监/专家 · T1,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-1910cdfc88fe4c47,,T6.03.02,工业检测,1,0,0,0,0.5,needs_human_review
+JC-44f140f5ad0632d3,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-44f140f5ad0632d3,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-44f140f5ad0632d3,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-44f140f5ad0632d3,,T7.08.01,无人机,1,6,0,0,0.5,needs_human_review
+JC-e3b6f1bc0c007706,电机控制算法工程师 · T3,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-69e76df6c598d6ef,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-69e76df6c598d6ef,,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-69e76df6c598d6ef,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-7a27f01e31894d5a,,T3.05.03,执行器,1,5,0,0,0.5,needs_human_review
+JC-7a27f01e31894d5a,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-3e69732c25250ba4,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-3e69732c25250ba4,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-f67e404a112bc3c5,机器视觉算法工程师 · T2,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-a179daa91c070adb,机器人仿真-3dgs · T4,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-f6e68301004e93b9,机器人运动控制工程师 · T1,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-92e112427779c1ab,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-92e112427779c1ab,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-92e112427779c1ab,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-92e112427779c1ab,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-2ab989562d4395de,,T7.01.03,焊接机器人,1,5,0,0,0.5,needs_human_review
+JC-79b963659d7b4f74,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-79b963659d7b4f74,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-5767325ccdf21445,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T4.03.05,仿真平台与工具链,1,2,0,0,0.5,needs_human_review
+JC-d6110519f50d8312,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-694c91bac2ecda6b,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-694c91bac2ecda6b,,T2.02.07,机器视觉,1,4,0,0,0.5,needs_human_review
+JC-87d40d50fb3900d2,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-c56c215b45f1b04a,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-00a7e2d792dbb312,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-78f7540cf85b8f7d,,T3.01.08,人形机器人(通用),1,6,0,0,0.5,needs_human_review
+JC-78f7540cf85b8f7d,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-78f7540cf85b8f7d,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-78f7540cf85b8f7d,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-617c8d8f6f186c90,,T3.01.01,双足人形机器人,1,5,0,0,0.5,needs_human_review
+JC-617c8d8f6f186c90,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-ee9077b000e2da28,,T1.01.06,大模型部署与推理优化,1,5,0,0,0.5,needs_human_review
+JC-ee9077b000e2da28,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-447f5197b9bde724,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-3f8f5c49c88b9849,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-3f8f5c49c88b9849,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-3f8f5c49c88b9849,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-3f8f5c49c88b9849,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-61afe82d858db099,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-61afe82d858db099,,T3.08.03,嵌入式计算,1,2,0,0,0.5,needs_human_review
+JC-61afe82d858db099,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-708d1b64cd01af2d,,T3.04.02,灵巧手(多指),1,5,0,0,0.5,needs_human_review
+JC-708d1b64cd01af2d,,T4.01.05,数据采集设备与工具链,1,3,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-a8ac7167614dbaab,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-a8ac7167614dbaab,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-a8ac7167614dbaab,,T3.04.03,末端执行器,1,3,0,0,0.5,needs_human_review
+JC-a8ac7167614dbaab,,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-a8ac7167614dbaab,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-4ecc7bdb68493db4,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-a944f77a8f46c9e5,强化学习算法工程师 · T1,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-a141bf51f6fff45d,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-a141bf51f6fff45d,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-38cac92ee93ed7df,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-d63a9595a63a28da,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-d63a9595a63a28da,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-d63a9595a63a28da,,T3.03.09,工业机械臂,1,5,0,0,0.5,needs_human_review
+JC-f62c9849b9bc642d,,T2.02.03,电子皮肤与柔性触觉,1,4,0,0,0.5,needs_human_review
+JC-f62c9849b9bc642d,,T2.02.05,触觉传感器,1,4,0,0,0.5,needs_human_review
+JC-534140574b8c6803,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-534140574b8c6803,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-534140574b8c6803,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-cddc9c8fc8a4bdd0,,T1.01.11,VLA端到端大模型,1,6,0,0,0.5,needs_human_review
+JC-cddc9c8fc8a4bdd0,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-cddc9c8fc8a4bdd0,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-cddc9c8fc8a4bdd0,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-cddc9c8fc8a4bdd0,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-a5de397d3674f78d,关节总监 · T3,T3.05.04,电机与驱动,1,5,0,0,0.5,needs_human_review
+JC-fb0d7362116cf27e,,T1.06.02,3D视觉感知,1,7,0,0,0.5,needs_human_review
+JC-4f1bd8407cc115ef,,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-4f1bd8407cc115ef,,T3.01.01,双足人形机器人,1,5,0,0,0.5,needs_human_review
+JC-4f1bd8407cc115ef,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-4f1bd8407cc115ef,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-6af122ec7c0f577f,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-6af122ec7c0f577f,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-6af122ec7c0f577f,,T4.01.01,遥操作数据采集,1,3,0,0,0.5,needs_human_review
+JC-dee7d3c7779f0e9a,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-dee7d3c7779f0e9a,,T1.04.06,路径规划与轨迹,1,3,0,0,0.5,needs_human_review
+JC-dee7d3c7779f0e9a,,T3.03.08,移动机器人(AMR/AGV),1,6,0,0,0.5,needs_human_review
+JC-dee7d3c7779f0e9a,,T7.01.08,智能制造与工业自动化,1,6,0,0,0.5,needs_human_review
+JC-447f5197b9bde724,,T1.05.03,模仿学习,1,3,0,0,0.5,needs_human_review
+JC-1ed087ad12e31d3d,,T1.03.03,力控与柔顺控制,1,6,0,0,0.5,needs_human_review
+JC-1ed087ad12e31d3d,,T4.04.04,系统辨识,1,5,0,0,0.5,needs_human_review
+JC-d4f272bf36b95cb0,,T2.02.01,六维力传感器,1,4,0,0,0.5,needs_human_review
+JC-d4f272bf36b95cb0,,T2.02.02,关节力矩传感器,1,2,0,0,0.5,needs_human_review
+JC-d4f272bf36b95cb0,,T5.01.01,ROS,1,4,0,0,0.5,needs_human_review
+JC-e2e71b8c86a7d772,,T7.01.09,智能装备,1,5,0,0,0.5,needs_human_review
+JC-c361aeab057241b6,infra算法工程师(三维重建方向) · T1,T1.05.02,强化学习,1,6,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T3.01.02,轮式人形机器人,1,5,0,0,0.5,needs_human_review
+JC-538dc093900efbeb,,T7.01.01,巡检机器人(工业),1,6,0,0,0.5,needs_human_review
+JC-b8f563451e02c724,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-20ca9f3e849d9d38,,T2.01.01,激光雷达,1,2,0,0,0.5,needs_human_review
+JC-84a31af751223ba4,,T1.03.12,运动控制(通用),1,5,0,0,0.5,needs_human_review
+JC-84a31af751223ba4,,T3.02.01,四足机器人,1,5,0,0,0.5,needs_human_review
+JC-74d170077bf4c4fc,,T1.04.01,SLAM,1,6,0,0,0.5,needs_human_review
+JC-8670e139e11d1009,,T7.01.01,巡检机器人(工业),1,6,0,0,0.5,needs_human_review
+JC-674fee997bc4c3a8,,T4.02.01,合成数据,1,3,0,0,0.5,needs_human_review
+JC-3bcfd1866e01bc9f,,T4.01.01,遥操作数据采集,2,3,0,0,0.5,needs_human_review
+JC-9dc8328b5f133673,,T2.01.03,视觉传感器,2,2,0,0,0.5,needs_human_review
+JC-9dc8328b5f133673,,T2.02.01,六维力传感器,2,4,0,0,0.5,needs_human_review
+JC-9dc8328b5f133673,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-9dc8328b5f133673,,T7.01.08,智能制造与工业自动化,2,6,0,0,0.5,needs_human_review
+JC-9dc8328b5f133673,,T7.08.01,无人机,2,6,0,0,0.5,needs_human_review
+JC-e648b0d6c24526c3,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T2.01.03,视觉传感器,2,2,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T2.02.01,六维力传感器,2,4,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-739602bf18185571,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-739602bf18185571,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-150873345b368615,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-383c789399a09d83,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-450f0cc1ed541dac,ai产品经理 · T1,T6.01.01,多模态交互,2,3,0,0,0.5,needs_human_review
+JC-583613f31e23f056,,T7.01.09,智能装备,2,5,0,0,0.5,needs_human_review
+JC-bed8082cc8a764e6,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-bed8082cc8a764e6,,T1.04.06,路径规划与轨迹,2,3,0,0,0.5,needs_human_review
+JC-bed8082cc8a764e6,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-bed8082cc8a764e6,,T3.03.08,移动机器人(AMR/AGV),2,6,0,0,0.5,needs_human_review
+JC-bed8082cc8a764e6,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-7df7279bbb91daa7,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-53c485a0e1c60a45,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-5a04a7d515e4fd5c,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-5a04a7d515e4fd5c,,T1.03.01,全身控制(WBC),2,5,0,0,0.5,needs_human_review
+JC-5a04a7d515e4fd5c,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-5a04a7d515e4fd5c,,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-5a04a7d515e4fd5c,,T1.06.04,视觉感知与理解,2,6,0,0,0.5,needs_human_review
+JC-5a04a7d515e4fd5c,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-5a04a7d515e4fd5c,,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-8a17722c74604001,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-8a17722c74604001,,T3.03.01,协作机器人,2,6,0,0,0.5,needs_human_review
+JC-8a17722c74604001,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-8a17722c74604001,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-8a17722c74604001,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-c22c9977551769ca,,T3.08.01,AI芯片,2,4,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-1bdbc29c753141cc,,T5.04.01,算力基础设施,2,2,0,0,0.5,needs_human_review
+JC-bfb73addc087f3aa,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-8216a228376f393c,,T3.06.04,精密传动,2,2,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T3.01.05,人形机器人整机与商业化,2,5,0,0,0.5,needs_human_review
+JC-fa2295d95ecbf11f,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-458b4d4f2f947c00,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-458b4d4f2f947c00,,T3.06.02,精密减速器,2,3,0,0,0.5,needs_human_review
+JC-97928031c1f704b8,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-5114ab87858a4254,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-69b7f97648c34125,具身智能数据采购负责人 · T4,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-f0657f13d1456c35,,T6.01.01,多模态交互,2,3,0,0,0.5,needs_human_review
+JC-2801d1010b68e7b3,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-2801d1010b68e7b3,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-2672284d03457f4c,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-2672284d03457f4c,,T3.03.07,服务机器人,2,5,0,0,0.5,needs_human_review
+JC-2672284d03457f4c,,T3.03.08,移动机器人(AMR/AGV),2,6,0,0,0.5,needs_human_review
+JC-15ea80706360f3c3,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-15ea80706360f3c3,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-15ea80706360f3c3,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-15ea80706360f3c3,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-15ea80706360f3c3,,T3.08.02,域控制器,2,2,0,0,0.5,needs_human_review
+JC-15ea80706360f3c3,,T6.01.06,人机交互(通用),2,5,0,0,0.5,needs_human_review
+JC-502e7e2d90252456,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-c56c215b45f1b04a,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-60f99c4fc05d8804,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-60f99c4fc05d8804,,T1.02.10,世界模型架构,2,3,0,0,0.5,needs_human_review
+JC-60f99c4fc05d8804,,T2.02.01,六维力传感器,2,4,0,0,0.5,needs_human_review
+JC-60f99c4fc05d8804,,T2.02.09,力觉感知,2,2,0,0,0.5,needs_human_review
+JC-60f99c4fc05d8804,,T4.01.01,遥操作数据采集,2,3,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-abad3cffa4eb60cd,,T3.08.04,算力硬件,2,2,0,0,0.5,needs_human_review
+JC-225ccf266c48709e,,T2.02.05,触觉传感器,2,4,0,0,0.5,needs_human_review
+JC-225ccf266c48709e,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-225ccf266c48709e,,T3.06.01,谐波减速器,2,2,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-aac3aa883aa3ecef,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-bf70a82292906154,,T5.04.02,云边端协同,2,1,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T3.06.02,精密减速器,2,3,0,0,0.5,needs_human_review
+JC-2280d6edcda2f4fc,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-140521b25e639114,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-b2e3c5c8de39182e,,T2.01.03,视觉传感器,2,2,0,0,0.5,needs_human_review
+JC-b2e3c5c8de39182e,,T2.02.07,机器视觉,2,4,0,0,0.5,needs_human_review
+JC-b2e3c5c8de39182e,,T7.01.08,智能制造与工业自动化,2,6,0,0,0.5,needs_human_review
+JC-085166ddbca7be97,,T1.03.01,全身控制(WBC),2,5,0,0,0.5,needs_human_review
+JC-085166ddbca7be97,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-08d06258887fd3dc,,T1.06.06,目标检测,2,4,0,0,0.5,needs_human_review
+JC-08d06258887fd3dc,,T3.01.01,双足人形机器人,2,5,0,0,0.5,needs_human_review
+JC-e3f177b63b621405,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T3.03.01,协作机器人,2,6,0,0,0.5,needs_human_review
+JC-1c2e0bddfdf7402e,嵌入式软件工程师 · T3,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-1c2e0bddfdf7402e,嵌入式软件工程师 · T3,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-1c2e0bddfdf7402e,嵌入式软件工程师 · T3,T3.02.03,仿生机器人,2,5,0,0,0.5,needs_human_review
+JC-b8c826c19e28ac5b,,T2.02.07,机器视觉,2,4,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-1065d4d89aaa48f3,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-d4e5a51911254444,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-d4e5a51911254444,,T1.02.10,世界模型架构,2,3,0,0,0.5,needs_human_review
+JC-d4e5a51911254444,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-d4e5a51911254444,,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-d4e5a51911254444,,T1.05.05,机器人学习,2,3,0,0,0.5,needs_human_review
+JC-cdc2bc1267fcd4dc,,T3.03.07,服务机器人,2,5,0,0,0.5,needs_human_review
+JC-cdc2bc1267fcd4dc,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-cdc2bc1267fcd4dc,,T7.01.01,巡检机器人(工业),2,6,0,0,0.5,needs_human_review
+JC-cdc2bc1267fcd4dc,,T7.03.01,清洁机器人,2,3,0,0,0.5,needs_human_review
+JC-b88786f073acaad0,,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-b88786f073acaad0,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-b88786f073acaad0,,T3.03.01,协作机器人,2,6,0,0,0.5,needs_human_review
+JC-b88786f073acaad0,,T3.05.02,关节驱动控制,2,6,0,0,0.5,needs_human_review
+JC-b88786f073acaad0,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-b88786f073acaad0,,T3.08.03,嵌入式计算,2,2,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T1.04.06,路径规划与轨迹,2,3,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T7.08.01,无人机,2,6,0,0,0.5,needs_human_review
+JC-7d8af5d77c262052,基础几何模型算法工程师 · T1,T1.06.02,3D视觉感知,2,7,0,0,0.5,needs_human_review
+JC-7d8af5d77c262052,基础几何模型算法工程师 · T1,T1.06.04,视觉感知与理解,2,6,0,0,0.5,needs_human_review
+JC-81e6c5b91a4eaa65,视频生成/世界模型算法工程师 · T1,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-81e6c5b91a4eaa65,视频生成/世界模型算法工程师 · T1,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-3ec2ad20e0c25c92,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-3ec2ad20e0c25c92,,T7.01.08,智能制造与工业自动化,2,6,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-de790560ae679397,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-883a704b1c10c40b,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-883a704b1c10c40b,,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-883a704b1c10c40b,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-523252d6cd65cf7d,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-523252d6cd65cf7d,,T3.04.03,末端执行器,2,3,0,0,0.5,needs_human_review
+JC-7dd6da9ccaa4c3b2,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-96decf92096ce26b,高级项目经理 · T7,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-e65415e4749b7922,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-25b8b7f90416a40b,硬件副总裁 · T1,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-3c03803d7ea7b4df,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-8bcf6587e16998ce,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-3c3e7858e1b18d65,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-3c3e7858e1b18d65,,T4.01.05,数据采集设备与工具链,2,3,0,0,0.5,needs_human_review
+JC-3c3e7858e1b18d65,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-3c3e7858e1b18d65,,T5.04.02,云边端协同,2,1,0,0,0.5,needs_human_review
+JC-60101aeb6c089254,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-60101aeb6c089254,,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-5767325ccdf21445,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-c2cb41f2b285f4a8,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-c2cb41f2b285f4a8,,T1.02.08,世界模型数据集,2,3,0,0,0.5,needs_human_review
+JC-c2cb41f2b285f4a8,,T4.01.04,数据集,2,3,0,0,0.5,needs_human_review
+JC-2c2cc6faeb53d8ec,渠道销售经理 · T7,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-2c2cc6faeb53d8ec,渠道销售经理 · T7,T7.07.03,教育机器人,2,2,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T3.03.02,复合机器人,2,3,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T3.05.03,执行器,2,5,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T3.06.02,精密减速器,2,3,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T3.08.04,算力硬件,2,2,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T7.01.08,智能制造与工业自动化,2,6,0,0,0.5,needs_human_review
+JC-8aef9a4756fc08d7,,T7.08.01,无人机,2,6,0,0,0.5,needs_human_review
+JC-495f8a5108ce3bf8,,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-495f8a5108ce3bf8,,T6.03.04,检测认证,2,0,0,0,0.5,needs_human_review
+JC-495f8a5108ce3bf8,,T7.01.04,汽车制造,2,4,0,0,0.5,needs_human_review
+JC-2e8e7f6092a087d5,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-847d4a09ce28c57b,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-847d4a09ce28c57b,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-283243fa191559f5,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-ce6b050c4b985444,,T6.03.04,检测认证,2,0,0,0,0.5,needs_human_review
+JC-f51d1156f9c9bdb2,解决方案经理 · T3,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-f51d1156f9c9bdb2,解决方案经理 · T3,T3.03.07,服务机器人,2,5,0,0,0.5,needs_human_review
+JC-f51d1156f9c9bdb2,解决方案经理 · T3,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-4a31686bb41953fe,nvh专家 · T3,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-c38c4e6f487632bb,,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-c38c4e6f487632bb,,T3.03.01,协作机器人,2,6,0,0,0.5,needs_human_review
+JC-c38c4e6f487632bb,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-c38c4e6f487632bb,,T3.04.03,末端执行器,2,3,0,0,0.5,needs_human_review
+JC-c38c4e6f487632bb,,T3.04.04,夹爪,2,3,0,0,0.5,needs_human_review
+JC-c38c4e6f487632bb,,T3.06.04,精密传动,2,2,0,0,0.5,needs_human_review
+JC-903e7efdfaf71451,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-903e7efdfaf71451,,T1.04.06,路径规划与轨迹,2,3,0,0,0.5,needs_human_review
+JC-c611c1db06d22870,,T1.04.06,路径规划与轨迹,2,3,0,0,0.5,needs_human_review
+JC-7280c47fa3699325,,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-7280c47fa3699325,,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-7280c47fa3699325,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-84c46669f229b231,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-4ecc7bdb68493db4,,T1.05.05,机器人学习,2,3,0,0,0.5,needs_human_review
+JC-bb5da81f422f2e2f,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T4.01.04,数据集,2,3,0,0,0.5,needs_human_review
+JC-4cb10666b1983bd2,,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-4cb10666b1983bd2,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-39832359c61455b5,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-801045f063719d11,,T4.01.05,数据采集设备与工具链,2,3,0,0,0.5,needs_human_review
+JC-1453e3a6280648d8,,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-1453e3a6280648d8,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-12c3a0af59787f6a,,T2.02.07,机器视觉,2,4,0,0,0.5,needs_human_review
+JC-94dc3058ec1093df,,T3.06.04,精密传动,2,2,0,0,0.5,needs_human_review
+JC-1c1a5547f59834b3,c++开发资深工程师(sdk) · T5,T5.01.02,机器人操作系统,2,4,0,0,0.5,needs_human_review
+JC-f51d1156f9c9bdb2,解决方案经理 · T3,T3.03.08,移动机器人(AMR/AGV),2,6,0,0,0.5,needs_human_review
+JC-f51d1156f9c9bdb2,解决方案经理 · T3,T7.01.08,智能制造与工业自动化,2,6,0,0,0.5,needs_human_review
+JC-fd9aae0f8d1f015d,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-812be5a852027249,,T6.03.04,检测认证,2,0,0,0,0.5,needs_human_review
+JC-812be5a852027249,,T7.06.03,防爆机器人,2,2,0,0,0.5,needs_human_review
+JC-da52eff9aee4ea4a,电机驱动 · T3,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-1cf6c1f4bd2fc95a,,T3.01.05,人形机器人整机与商业化,2,5,0,0,0.5,needs_human_review
+JC-1cf6c1f4bd2fc95a,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-b9eaeec59a8b7f07,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-b9eaeec59a8b7f07,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-84ab2035d81b152a,资深仿真算法工程师(3dgs) · T4,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-a34994295e34bd5a,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-a34994295e34bd5a,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-a34994295e34bd5a,,T5.01.02,机器人操作系统,2,4,0,0,0.5,needs_human_review
+JC-f240dddd3abf8b7b,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-f240dddd3abf8b7b,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-f240dddd3abf8b7b,,T3.06.02,精密减速器,2,3,0,0,0.5,needs_human_review
+JC-aad761a07edbaa42,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-aad761a07edbaa42,,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-aad761a07edbaa42,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-228333164d3b5930,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-228333164d3b5930,,T3.06.04,精密传动,2,2,0,0,0.5,needs_human_review
+JC-82b25b0bee0a3be6,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-82b25b0bee0a3be6,,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-82b25b0bee0a3be6,,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-208f1d8bc5873639,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-174e06711fec1627,系统资深工程师 · T3,T3.01.05,人形机器人整机与商业化,2,5,0,0,0.5,needs_human_review
+JC-174e06711fec1627,系统资深工程师 · T3,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-174e06711fec1627,系统资深工程师 · T3,T3.05.03,执行器,2,5,0,0,0.5,needs_human_review
+JC-174e06711fec1627,系统资深工程师 · T3,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-174e06711fec1627,系统资深工程师 · T3,T5.01.02,机器人操作系统,2,4,0,0,0.5,needs_human_review
+JC-eb662c5b6b476ca1,,T7.01.08,智能制造与工业自动化,2,6,0,0,0.5,needs_human_review
+JC-c1d3c139666dd646,销售经理 · T3,T7.01.09,智能装备,2,5,0,0,0.5,needs_human_review
+JC-d2ae7e61052036fb,,T4.01.01,遥操作数据采集,2,3,0,0,0.5,needs_human_review
+JC-9fa4cdc0d1da142d,,T7.02.02,智能仓储,2,6,0,0,0.5,needs_human_review
+JC-b06993b19ef580e3,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-b06993b19ef580e3,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-2bbe146a7ad07ff1,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-d9fdac5a502e1287,,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-d9fdac5a502e1287,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-d9fdac5a502e1287,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-d9fdac5a502e1287,,T3.04.03,末端执行器,2,3,0,0,0.5,needs_human_review
+JC-d9fdac5a502e1287,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-33d7a0cfa438d878,,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-da79b236217a7aac,高级硬件测试工程师 · T3,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-6058b9d561eb1b0f,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-6058b9d561eb1b0f,,T1.06.02,3D视觉感知,2,7,0,0,0.5,needs_human_review
+JC-6058b9d561eb1b0f,,T4.01.04,数据集,2,3,0,0,0.5,needs_human_review
+JC-b3c74e9f531401a2,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-b3c74e9f531401a2,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-199a5f4c8dc4984d,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-76d7ba9859f8a647,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-76d7ba9859f8a647,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-88a7a6341c914872,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-88a7a6341c914872,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-84457ec07a631c50,强化学习研究员 · T1,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-84457ec07a631c50,强化学习研究员 · T1,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-0e4e8d652db3bc6a,,T2.02.05,触觉传感器,2,4,0,0,0.5,needs_human_review
+JC-864c7a834d8bd8cf,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-9d78fcb7e98ff5d0,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-d87ec2a8cceec48b,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-1095ca4ddbf5b65c,感知算法工程师(自主导航方向) · T2,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-1095ca4ddbf5b65c,感知算法工程师(自主导航方向) · T2,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-4448c0e86364874e,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-9e06a3a6d602abc2,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-2c5fd47122144c35,多模态交互大模型研究员/专家 · T6,T6.01.06,人机交互(通用),2,5,0,0,0.5,needs_human_review
+JC-5760adf35d32f76e,电机控制负责人 · T5,T1.06.10,感知认知(通用),2,4,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-2afa19f1a52c22de,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-794fd03000c5f6c0,,T3.05.03,执行器,2,5,0,0,0.5,needs_human_review
+JC-9dcf3f22c1bf42c9,软件测试工程师 · T5,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-df1d59de20c92193,遥操算法工程师 · T4,T4.01.05,数据采集设备与工具链,2,3,0,0,0.5,needs_human_review
+JC-26e6570ac677f53c,,T1.06.02,3D视觉感知,2,7,0,0,0.5,needs_human_review
+JC-26e6570ac677f53c,,T1.06.04,视觉感知与理解,2,6,0,0,0.5,needs_human_review
+JC-26e6570ac677f53c,,T1.06.10,感知认知(通用),2,4,0,0,0.5,needs_human_review
+JC-26e6570ac677f53c,,T4.01.05,数据采集设备与工具链,2,3,0,0,0.5,needs_human_review
+JC-26e6570ac677f53c,,T5.04.02,云边端协同,2,1,0,0,0.5,needs_human_review
+JC-b42fee9c1b97ffc5,,T3.03.08,移动机器人(AMR/AGV),2,6,0,0,0.5,needs_human_review
+JC-b42fee9c1b97ffc5,,T7.01.08,智能制造与工业自动化,2,6,0,0,0.5,needs_human_review
+JC-d00c4fafa50420a0,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-7aed1f42db635c7d,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-7aed1f42db635c7d,,T3.03.01,协作机器人,2,6,0,0,0.5,needs_human_review
+JC-7aed1f42db635c7d,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-7aed1f42db635c7d,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-18cb0971505c1e98,材料工程师 · T2,T7.01.04,汽车制造,2,4,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T1.03.01,全身控制(WBC),2,5,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T3.01.01,双足人形机器人,2,5,0,0,0.5,needs_human_review
+JC-b13b26f395590642,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-b13b26f395590642,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-440cda046629b5c8,采购工程师 · T3,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-08a320ecb5f73219,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-08a320ecb5f73219,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-08a320ecb5f73219,,T1.06.02,3D视觉感知,2,7,0,0,0.5,needs_human_review
+JC-08a320ecb5f73219,,T1.06.03,多模态感知融合,2,6,0,0,0.5,needs_human_review
+JC-08a320ecb5f73219,,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-08a320ecb5f73219,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-08a320ecb5f73219,,T5.04.01,算力基础设施,2,2,0,0,0.5,needs_human_review
+JC-0457828c46f34a65,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-06637026aeb7ac85,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-06637026aeb7ac85,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-06637026aeb7ac85,,T3.08.03,嵌入式计算,2,2,0,0,0.5,needs_human_review
+JC-06637026aeb7ac85,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-e81583fc6d9c9451,嵌入式软件经理 · T5,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-e81583fc6d9c9451,嵌入式软件经理 · T5,T5.04.02,云边端协同,2,1,0,0,0.5,needs_human_review
+JC-bb8fd9b512982194,,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-5818d6b94f579245,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-5818d6b94f579245,,T1.04.06,路径规划与轨迹,2,3,0,0,0.5,needs_human_review
+JC-5818d6b94f579245,,T7.08.01,无人机,2,6,0,0,0.5,needs_human_review
+JC-f9eb08417b889035,slam算法工程师 · T1,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-b6c4dbc3867cf086,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-b6c4dbc3867cf086,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-694c91bac2ecda6b,,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-71d05a91f20dc823,,T3.03.04,并联机器人,2,3,0,0,0.5,needs_human_review
+JC-7c75bf9cc2697636,,T4.01.01,遥操作数据采集,2,3,0,0,0.5,needs_human_review
+JC-5f3cd5696710a5e3,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-5f3cd5696710a5e3,,T1.06.04,视觉感知与理解,2,6,0,0,0.5,needs_human_review
+JC-5f3cd5696710a5e3,,T2.02.09,力觉感知,2,2,0,0,0.5,needs_human_review
+JC-5f3cd5696710a5e3,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-3b4019f5f2805741,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-3b4019f5f2805741,,T3.03.03,外骨骼机器人,2,5,0,0,0.5,needs_human_review
+JC-3b4019f5f2805741,,T4.01.01,遥操作数据采集,2,3,0,0,0.5,needs_human_review
+JC-08e065d58a0ebf4b,,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-e81583fc6d9c9451,嵌入式软件经理 · T5,T6.01.06,人机交互(通用),2,5,0,0,0.5,needs_human_review
+JC-f74f6421442d37ce,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-f74f6421442d37ce,,T2.02.09,力觉感知,2,2,0,0,0.5,needs_human_review
+JC-f74f6421442d37ce,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-f74f6421442d37ce,,T3.08.03,嵌入式计算,2,2,0,0,0.5,needs_human_review
+JC-f74f6421442d37ce,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-f74f6421442d37ce,,T6.01.06,人机交互(通用),2,5,0,0,0.5,needs_human_review
+JC-0e1ec4411456f905,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-e1af4cfae0127388,资深硬件工程师 · T3,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T1.05.01,扩散策略,2,5,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T4.01.04,数据集,2,3,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T4.04.12,Sim-to-Real虚实迁移,2,5,0,0,0.5,needs_human_review
+JC-5f755fc0210dc532,,T4.01.01,遥操作数据采集,2,3,0,0,0.5,needs_human_review
+JC-e9a75a4c2ac74102,,T7.01.09,智能装备,2,5,0,0,0.5,needs_human_review
+JC-16b1daeee454c14d,,T3.04.03,末端执行器,2,3,0,0,0.5,needs_human_review
+JC-f9eb08417b889035,slam算法工程师 · T1,T1.06.10,感知认知(通用),2,4,0,0,0.5,needs_human_review
+JC-e0abb6da8b38fd8d,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-f0b3b1bfdbd51c32,,T2.02.05,触觉传感器,2,4,0,0,0.5,needs_human_review
+JC-f0b3b1bfdbd51c32,,T4.01.05,数据采集设备与工具链,2,3,0,0,0.5,needs_human_review
+JC-ee5f1f1efca9d3f6,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-ee5f1f1efca9d3f6,,T6.01.01,多模态交互,2,3,0,0,0.5,needs_human_review
+JC-f28f0203d81b4f8e,,T5.03.01,开发与部署工具链,2,2,0,0,0.5,needs_human_review
+JC-b20593f9be5b6489,,T3.01.05,人形机器人整机与商业化,2,5,0,0,0.5,needs_human_review
+JC-b20593f9be5b6489,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-0014aedfaf97dc2f,,T2.02.05,触觉传感器,2,4,0,0,0.5,needs_human_review
+JC-0014aedfaf97dc2f,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-0014aedfaf97dc2f,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-9c42936f071ba60d,,T3.04.03,末端执行器,2,3,0,0,0.5,needs_human_review
+JC-f67e404a112bc3c5,机器视觉算法工程师 · T2,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-3d06cf87f620700c,具身模型算法工程师 · T1,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-dc03e9b5b305262a,嵌入式软件开发 · T3,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-dc03e9b5b305262a,嵌入式软件开发 · T3,T1.04.06,路径规划与轨迹,2,3,0,0,0.5,needs_human_review
+JC-dc03e9b5b305262a,嵌入式软件开发 · T3,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-b9a2693ad4dd4bec,售后服务工程师 · T3,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-d0dfe0b169f7d223,,T6.01.01,多模态交互,2,3,0,0,0.5,needs_human_review
+JC-936f456812e33881,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-382a3db61c5ad4a7,涂布工程师 · T6,T6.03.04,检测认证,2,0,0,0,0.5,needs_human_review
+JC-e99f22a85ab7cc5e,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-4040d0c515fe7ca4,算法招聘专家 · T1,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-da802f65b99cc8b2,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-da802f65b99cc8b2,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-da802f65b99cc8b2,,T1.04.06,路径规划与轨迹,2,3,0,0,0.5,needs_human_review
+JC-da802f65b99cc8b2,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-da802f65b99cc8b2,,T1.05.05,机器人学习,2,3,0,0,0.5,needs_human_review
+JC-da802f65b99cc8b2,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-f233e36928c032ae,,T7.01.08,智能制造与工业自动化,2,6,0,0,0.5,needs_human_review
+JC-f233e36928c032ae,,T7.01.09,智能装备,2,5,0,0,0.5,needs_human_review
+JC-758f10ab5746fb9e,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-758f10ab5746fb9e,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-758f10ab5746fb9e,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-b33a7370139b86c6,,T7.04.04,医疗机器人(通用),2,2,0,0,0.5,needs_human_review
+JC-1938677cb27d2243,,T1.04.06,路径规划与轨迹,2,3,0,0,0.5,needs_human_review
+JC-1938677cb27d2243,,T1.04.08,具身智能导航,2,6,0,0,0.5,needs_human_review
+JC-1938677cb27d2243,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-1938677cb27d2243,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-1938677cb27d2243,,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-1938677cb27d2243,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-e0463dd289009911,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-8e3c16d0cee86826,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-8e3c16d0cee86826,,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-8e3c16d0cee86826,,T4.03.05,仿真平台与工具链,2,2,0,0,0.5,needs_human_review
+JC-d60e3652a7628c44,,T4.01.05,数据采集设备与工具链,2,3,0,0,0.5,needs_human_review
+JC-3986a593f29a9104,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-6adde19b880907bc,,T3.05.02,关节驱动控制,2,6,0,0,0.5,needs_human_review
+JC-1b416ed5d1c45f96,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-b022336fb5b4cf74,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-a4dfabd5ecf0ed52,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-a4dfabd5ecf0ed52,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-a4dfabd5ecf0ed52,,T2.01.01,激光雷达,2,2,0,0,0.5,needs_human_review
+JC-a4dfabd5ecf0ed52,,T3.03.08,移动机器人(AMR/AGV),2,6,0,0,0.5,needs_human_review
+JC-a4dfabd5ecf0ed52,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-a4dfabd5ecf0ed52,,T3.05.01,一体化关节模组,2,5,0,0,0.5,needs_human_review
+JC-a4dfabd5ecf0ed52,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-0588cde1ea5f40d8,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-0588cde1ea5f40d8,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-0588cde1ea5f40d8,,T6.03.04,检测认证,2,0,0,0,0.5,needs_human_review
+JC-5b7e52160f2b3d0c,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-5b7e52160f2b3d0c,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-5b7e52160f2b3d0c,,T5.04.01,算力基础设施,2,2,0,0,0.5,needs_human_review
+JC-085166ddbca7be97,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-5d80e128ce75d8fd,,T3.02.03,仿生机器人,2,5,0,0,0.5,needs_human_review
+JC-3f8f5c49c88b9849,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-71d05a91f20dc823,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-02b0e31679dec236,,T1.05.05,机器人学习,2,3,0,0,0.5,needs_human_review
+JC-6ad949d3dc59c06a,,T1.05.02,强化学习,2,6,0,0,0.5,needs_human_review
+JC-6ad949d3dc59c06a,,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-6ad949d3dc59c06a,,T3.04.02,灵巧手(多指),2,5,0,0,0.5,needs_human_review
+JC-6ad949d3dc59c06a,,T4.01.04,数据集,2,3,0,0,0.5,needs_human_review
+JC-6ad949d3dc59c06a,,T4.01.05,数据采集设备与工具链,2,3,0,0,0.5,needs_human_review
+JC-6ad949d3dc59c06a,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-5ca5ca04b4c45612,,T3.03.08,移动机器人(AMR/AGV),2,6,0,0,0.5,needs_human_review
+JC-5ca5ca04b4c45612,,T7.02.05,智慧物流,2,3,0,0,0.5,needs_human_review
+JC-92e112427779c1ab,,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-5767325ccdf21445,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-567e8c9ce0bb5e05,,T1.03.12,运动控制(通用),2,5,0,0,0.5,needs_human_review
+JC-567e8c9ce0bb5e05,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-567e8c9ce0bb5e05,,T3.05.04,电机与驱动,2,5,0,0,0.5,needs_human_review
+JC-567e8c9ce0bb5e05,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-d6110519f50d8312,,T3.02.01,四足机器人,2,5,0,0,0.5,needs_human_review
+JC-d6110519f50d8312,,T4.03.03,数字孪生,2,1,0,0,0.5,needs_human_review
+JC-d6110519f50d8312,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-fe9411131d521da5,,T1.04.01,SLAM,2,6,0,0,0.5,needs_human_review
+JC-fe9411131d521da5,,T1.05.03,模仿学习,2,3,0,0,0.5,needs_human_review
+JC-447f5197b9bde724,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-e9997212635b0128,,T3.03.09,工业机械臂,2,5,0,0,0.5,needs_human_review
+JC-e9997212635b0128,,T5.01.01,ROS,2,4,0,0,0.5,needs_human_review
+JC-00577ccc53352603,,T1.01.11,VLA端到端大模型,2,6,0,0,0.5,needs_human_review
+JC-00577ccc53352603,,T3.01.08,人形机器人(通用),2,6,0,0,0.5,needs_human_review
+JC-6c39c1e1f3918494,,T3.03.01,协作机器人,2,6,0,0,0.5,needs_human_review
+JC-d4f272bf36b95cb0,,T1.03.03,力控与柔顺控制,2,6,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-541a7e9a556756c5,,T3.03.01,协作机器人,3,6,0,0,0.5,needs_human_review
+JC-611577b63bc2dfd5,agent应用负责人 · T1,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T1.04.01,SLAM,3,6,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T1.04.06,路径规划与轨迹,3,3,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T1.04.08,具身智能导航,3,6,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T3.03.07,服务机器人,3,5,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T3.03.08,移动机器人(AMR/AGV),3,6,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T5.01.01,ROS,3,4,0,0,0.5,needs_human_review
+JC-2db34ba1fd881297,,T6.01.03,人机共融,3,5,0,0,0.5,needs_human_review
+JC-45fd4e5cd50a6b4d,资产定价 · T3,T3.03.07,服务机器人,3,5,0,0,0.5,needs_human_review
+JC-b911234d507e0f58,,T3.03.09,工业机械臂,3,5,0,0,0.5,needs_human_review
+JC-b911234d507e0f58,,T7.01.04,汽车制造,3,4,0,0,0.5,needs_human_review
+JC-b911234d507e0f58,,T7.02.02,智能仓储,3,6,0,0,0.5,needs_human_review
+JC-b911234d507e0f58,,T7.03.01,清洁机器人,3,3,0,0,0.5,needs_human_review
+JC-6bb165d32bfdd067,大模型算法工程师 · T1,T4.01.04,数据集,3,3,0,0,0.5,needs_human_review
+JC-d186d4a64b2d5ab5,,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-d186d4a64b2d5ab5,,T3.01.01,双足人形机器人,3,5,0,0,0.5,needs_human_review
+JC-d186d4a64b2d5ab5,,T3.01.02,轮式人形机器人,3,5,0,0,0.5,needs_human_review
+JC-d186d4a64b2d5ab5,,T3.02.01,四足机器人,3,5,0,0,0.5,needs_human_review
+JC-d186d4a64b2d5ab5,,T5.01.01,ROS,3,4,0,0,0.5,needs_human_review
+JC-ce470d42b6e5d701,政企业务总监 · T3,T7.01.08,智能制造与工业自动化,3,6,0,0,0.5,needs_human_review
+JC-523f8155f32c24dc,,T3.01.08,人形机器人(通用),3,6,0,0,0.5,needs_human_review
+JC-523f8155f32c24dc,,T7.01.08,智能制造与工业自动化,3,6,0,0,0.5,needs_human_review
+JC-b08cab5134fb6432,,T2.01.01,激光雷达,3,2,0,0,0.5,needs_human_review
+JC-b08cab5134fb6432,,T3.02.01,四足机器人,3,5,0,0,0.5,needs_human_review
+JC-b08cab5134fb6432,,T3.02.03,仿生机器人,3,5,0,0,0.5,needs_human_review
+JC-b08cab5134fb6432,,T3.05.04,电机与驱动,3,5,0,0,0.5,needs_human_review
+JC-85e12e7bc2244a00,泰国 人力资源经理(泰国) · T2,T7.01.04,汽车制造,3,4,0,0,0.5,needs_human_review
+JC-6a9fbda00fb32606,,T3.06.02,精密减速器,3,3,0,0,0.5,needs_human_review
+JC-090df9034557f941,,T3.05.01,一体化关节模组,3,5,0,0,0.5,needs_human_review
+JC-090df9034557f941,,T3.05.04,电机与驱动,3,5,0,0,0.5,needs_human_review
+JC-dbc13567bee7652c,,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-dbc13567bee7652c,,T1.02.10,世界模型架构,3,3,0,0,0.5,needs_human_review
+JC-dbc13567bee7652c,,T2.01.01,激光雷达,3,2,0,0,0.5,needs_human_review
+JC-dbc13567bee7652c,,T3.03.08,移动机器人(AMR/AGV),3,6,0,0,0.5,needs_human_review
+JC-dbc13567bee7652c,,T4.02.01,合成数据,3,3,0,0,0.5,needs_human_review
+JC-dbc13567bee7652c,,T4.04.12,Sim-to-Real虚实迁移,3,5,0,0,0.5,needs_human_review
+JC-dbc13567bee7652c,,T5.01.01,ROS,3,4,0,0,0.5,needs_human_review
+JC-fdd09c71b7423280,嵌入式软件组负责人 · T5,T3.05.04,电机与驱动,3,5,0,0,0.5,needs_human_review
+JC-225ccf266c48709e,,T3.04.02,灵巧手(多指),3,5,0,0,0.5,needs_human_review
+JC-5d24da6f7e8240e9,,T1.06.03,多模态感知融合,3,6,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T4.01.04,数据集,3,3,0,0,0.5,needs_human_review
+JC-73082ba71ec58b43,,T7.01.04,汽车制造,3,4,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T1.05.03,模仿学习,3,3,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T4.01.01,遥操作数据采集,3,3,0,0,0.5,needs_human_review
+JC-b8c826c19e28ac5b,,T1.06.04,视觉感知与理解,3,6,0,0,0.5,needs_human_review
+JC-eba8ab302024872f,,T1.04.01,SLAM,3,6,0,0,0.5,needs_human_review
+JC-eba8ab302024872f,,T3.01.08,人形机器人(通用),3,6,0,0,0.5,needs_human_review
+JC-eba8ab302024872f,,T3.04.02,灵巧手(多指),3,5,0,0,0.5,needs_human_review
+JC-eba8ab302024872f,,T5.01.01,ROS,3,4,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T3.03.08,移动机器人(AMR/AGV),3,6,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T1.02.10,世界模型架构,3,3,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T1.06.03,多模态感知融合,3,6,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T3.03.08,移动机器人(AMR/AGV),3,6,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T4.03.05,仿真平台与工具链,3,2,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T4.04.12,Sim-to-Real虚实迁移,3,5,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T6.01.06,人机交互(通用),3,5,0,0,0.5,needs_human_review
+JC-7dd6da9ccaa4c3b2,,T5.01.02,机器人操作系统,3,4,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T1.06.03,多模态感知融合,3,6,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T3.01.08,人形机器人(通用),3,6,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T3.04.02,灵巧手(多指),3,5,0,0,0.5,needs_human_review
+JC-2c2cc6faeb53d8ec,渠道销售经理 · T7,T7.01.08,智能制造与工业自动化,3,6,0,0,0.5,needs_human_review
+JC-fb0479f356267910,具身数据评估工程师 · T6,T6.01.01,多模态交互,3,3,0,0,0.5,needs_human_review
+JC-2afa19f1a52c22de,,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-ea62dc499db58c62,,T1.03.03,力控与柔顺控制,3,6,0,0,0.5,needs_human_review
+JC-ea62dc499db58c62,,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-ea62dc499db58c62,,T1.05.03,模仿学习,3,3,0,0,0.5,needs_human_review
+JC-ea62dc499db58c62,,T1.09.05,灵巧操作,3,5,0,0,0.5,needs_human_review
+JC-ea62dc499db58c62,,T4.03.05,仿真平台与工具链,3,2,0,0,0.5,needs_human_review
+JC-29d65d6e088a9ab5,,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-29d65d6e088a9ab5,,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-29d65d6e088a9ab5,,T3.02.02,轮足机器人,3,3,0,0,0.5,needs_human_review
+JC-4cb10666b1983bd2,,T3.01.08,人形机器人(通用),3,6,0,0,0.5,needs_human_review
+JC-c361aeab057241b6,infra算法工程师(三维重建方向) · T1,T3.01.08,人形机器人(通用),3,6,0,0,0.5,needs_human_review
+JC-12c3a0af59787f6a,,T1.06.02,3D视觉感知,3,7,0,0,0.5,needs_human_review
+JC-aad761a07edbaa42,,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-0be4c24e8828658b,,T1.06.02,3D视觉感知,3,7,0,0,0.5,needs_human_review
+JC-f72cc8ad5ad7e8b0,,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-174e06711fec1627,系统资深工程师 · T3,T3.03.09,工业机械臂,3,5,0,0,0.5,needs_human_review
+JC-174e06711fec1627,系统资深工程师 · T3,T3.05.04,电机与驱动,3,5,0,0,0.5,needs_human_review
+JC-a246e40bc72bedab,,T5.01.02,机器人操作系统,3,4,0,0,0.5,needs_human_review
+JC-eb662c5b6b476ca1,,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-9fa4cdc0d1da142d,,T3.03.08,移动机器人(AMR/AGV),3,6,0,0,0.5,needs_human_review
+JC-93410fdbda74e7da,,T1.02.10,世界模型架构,3,3,0,0,0.5,needs_human_review
+JC-93410fdbda74e7da,,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-7e8fdf586e246bf6,,T3.03.08,移动机器人(AMR/AGV),3,6,0,0,0.5,needs_human_review
+JC-e6b4a8096cb4fb74,产品行销经理 · T7,T7.01.04,汽车制造,3,4,0,0,0.5,needs_human_review
+JC-e6b4a8096cb4fb74,产品行销经理 · T7,T7.01.08,智能制造与工业自动化,3,6,0,0,0.5,needs_human_review
+JC-2518e77fe5a6b76b,具身大模型算法工程师 · T1,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-84457ec07a631c50,强化学习研究员 · T1,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-84457ec07a631c50,强化学习研究员 · T1,T1.05.03,模仿学习,3,3,0,0,0.5,needs_human_review
+JC-84457ec07a631c50,强化学习研究员 · T1,T1.09.05,灵巧操作,3,5,0,0,0.5,needs_human_review
+JC-4fcbb45c5d4f64c1,电机驱动硬件工程师 · T3,T3.05.03,执行器,3,5,0,0,0.5,needs_human_review
+JC-8b4ac2cc1729b5b8,,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-b13b26f395590642,,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-b13b26f395590642,,T1.04.06,路径规划与轨迹,3,3,0,0,0.5,needs_human_review
+JC-b13b26f395590642,,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-b13b26f395590642,,T1.05.03,模仿学习,3,3,0,0,0.5,needs_human_review
+JC-e5dc02741d849d08,感知算法工程师 · T1,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-e5dc02741d849d08,感知算法工程师 · T1,T1.06.03,多模态感知融合,3,6,0,0,0.5,needs_human_review
+JC-dc03e9b5b305262a,嵌入式软件开发 · T3,T3.03.08,移动机器人(AMR/AGV),3,6,0,0,0.5,needs_human_review
+JC-c3bec5ba3a1eebc8,具身智能仿真工程师 · T1,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-e81583fc6d9c9451,嵌入式软件经理 · T5,T3.05.04,电机与驱动,3,5,0,0,0.5,needs_human_review
+JC-e81583fc6d9c9451,嵌入式软件经理 · T5,T3.08.03,嵌入式计算,3,2,0,0,0.5,needs_human_review
+JC-e81583fc6d9c9451,嵌入式软件经理 · T5,T5.01.01,ROS,3,4,0,0,0.5,needs_human_review
+JC-96e9b62706812559,高级产品经理 · T6,T1.01.11,VLA端到端大模型,3,6,0,0,0.5,needs_human_review
+JC-f9eb08417b889035,slam算法工程师 · T1,T3.02.01,四足机器人,3,5,0,0,0.5,needs_human_review
+JC-8261057cee240f51,机器人全身规划算法工程师 · T1,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-8261057cee240f51,机器人全身规划算法工程师 · T1,T7.08.01,无人机,3,6,0,0,0.5,needs_human_review
+JC-84ff7fe7754dbdb4,,T3.05.01,一体化关节模组,3,5,0,0,0.5,needs_human_review
+JC-a4af69c66de4dfe4,供应链产品经理 · T7,T7.01.08,智能制造与工业自动化,3,6,0,0,0.5,needs_human_review
+JC-2fdd290ee6f65a96,智元-商务总监 · T5,T5.04.01,算力基础设施,3,2,0,0,0.5,needs_human_review
+JC-e1af4cfae0127388,资深硬件工程师 · T3,T3.01.08,人形机器人(通用),3,6,0,0,0.5,needs_human_review
+JC-16b1daeee454c14d,,T3.04.02,灵巧手(多指),3,5,0,0,0.5,needs_human_review
+JC-38d7103ab2224c89,,T7.07.03,教育机器人,3,2,0,0,0.5,needs_human_review
+JC-bb0d68096d0af03d,,T1.06.03,多模态感知融合,3,6,0,0,0.5,needs_human_review
+JC-bb0d68096d0af03d,,T4.04.12,Sim-to-Real虚实迁移,3,5,0,0,0.5,needs_human_review
+JC-d0dfe0b169f7d223,,T6.01.06,人机交互(通用),3,5,0,0,0.5,needs_human_review
+JC-613912d0b4afe05a,高级解决方案经理 · T7,T7.01.08,智能制造与工业自动化,3,6,0,0,0.5,needs_human_review
+JC-613912d0b4afe05a,高级解决方案经理 · T7,T7.07.03,教育机器人,3,2,0,0,0.5,needs_human_review
+JC-f67e404a112bc3c5,机器视觉算法工程师 · T2,T2.02.07,机器视觉,3,4,0,0,0.5,needs_human_review
+JC-0a2929ec3a5f3d08,,T1.03.11,具身操作,3,5,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T1.04.08,具身智能导航,3,6,0,0,0.5,needs_human_review
+JC-936f456812e33881,,T3.01.05,人形机器人整机与商业化,3,5,0,0,0.5,needs_human_review
+JC-936f456812e33881,,T3.05.01,一体化关节模组,3,5,0,0,0.5,needs_human_review
+JC-bc0fd60a128f8054,嵌入式硬件工程师 · T3,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-3f8f5c49c88b9849,,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-f6e68301004e93b9,机器人运动控制工程师 · T1,T1.05.02,强化学习,3,6,0,0,0.5,needs_human_review
+JC-a179daa91c070adb,机器人仿真-3dgs · T4,T4.02.01,合成数据,3,3,0,0,0.5,needs_human_review
+JC-d6110519f50d8312,,T1.03.12,运动控制(通用),3,5,0,0,0.5,needs_human_review
+JC-583613f31e23f056,,T7.01.08,智能制造与工业自动化,4,6,0,0,0.5,needs_human_review
+JC-5a04a7d515e4fd5c,,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-467bb7501fdd21e1,高级导航算法工程师 · T1,T1.04.06,路径规划与轨迹,4,3,0,0,0.5,needs_human_review
+JC-2672284d03457f4c,,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-b8c826c19e28ac5b,,T1.06.10,感知认知(通用),4,4,0,0,0.5,needs_human_review
+JC-b8c826c19e28ac5b,,T2.01.01,激光雷达,4,2,0,0,0.5,needs_human_review
+JC-b8c826c19e28ac5b,,T3.01.01,双足人形机器人,4,5,0,0,0.5,needs_human_review
+JC-b8c826c19e28ac5b,,T5.01.01,ROS,4,4,0,0,0.5,needs_human_review
+JC-090df9034557f941,,T3.03.01,协作机器人,4,6,0,0,0.5,needs_human_review
+JC-fdd09c71b7423280,嵌入式软件组负责人 · T5,T5.03.01,开发与部署工具链,4,2,0,0,0.5,needs_human_review
+JC-aac3aa883aa3ecef,,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-73082ba71ec58b43,,T2.01.01,激光雷达,4,2,0,0,0.5,needs_human_review
+JC-ba1a3c1ffcc93dd7,嵌入式应用开发工程师(ai视觉) · T3,T3.05.04,电机与驱动,4,5,0,0,0.5,needs_human_review
+JC-08d06258887fd3dc,,T1.06.04,视觉感知与理解,4,6,0,0,0.5,needs_human_review
+JC-e7b0a516507dc616,,T5.01.01,ROS,4,4,0,0,0.5,needs_human_review
+JC-cdc2bc1267fcd4dc,,T3.03.08,移动机器人(AMR/AGV),4,6,0,0,0.5,needs_human_review
+JC-cdc2bc1267fcd4dc,,T7.01.08,智能制造与工业自动化,4,6,0,0,0.5,needs_human_review
+JC-cdc2bc1267fcd4dc,,T7.02.02,智能仓储,4,6,0,0,0.5,needs_human_review
+JC-c14a35e42dc8da28,,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-c14a35e42dc8da28,,T3.03.07,服务机器人,4,5,0,0,0.5,needs_human_review
+JC-c14a35e42dc8da28,,T3.03.08,移动机器人(AMR/AGV),4,6,0,0,0.5,needs_human_review
+JC-c14a35e42dc8da28,,T7.03.03,商用服务机器人,4,1,0,0,0.5,needs_human_review
+JC-81e6c5b91a4eaa65,视频生成/世界模型算法工程师 · T1,T1.02.10,世界模型架构,4,3,0,0,0.5,needs_human_review
+JC-25b8b7f90416a40b,硬件副总裁 · T1,T1.03.03,力控与柔顺控制,4,6,0,0,0.5,needs_human_review
+JC-25b8b7f90416a40b,硬件副总裁 · T1,T1.03.12,运动控制(通用),4,5,0,0,0.5,needs_human_review
+JC-552f644f26c5e5f7,抛光工程师 · T2,T2.02.07,机器视觉,4,4,0,0,0.5,needs_human_review
+JC-60101aeb6c089254,,T4.01.04,数据集,4,3,0,0,0.5,needs_human_review
+JC-e7f44e78f67db850,,T1.03.12,运动控制(通用),4,5,0,0,0.5,needs_human_review
+JC-2afa19f1a52c22de,,T1.02.10,世界模型架构,4,3,0,0,0.5,needs_human_review
+JC-4a31686bb41953fe,nvh专家 · T3,T3.05.03,执行器,4,5,0,0,0.5,needs_human_review
+JC-e2c53e98796d1c79,数据运营高级经理 · T4,T1.01.11,VLA端到端大模型,4,6,0,0,0.5,needs_human_review
+JC-da52eff9aee4ea4a,电机驱动 · T3,T3.05.04,电机与驱动,4,5,0,0,0.5,needs_human_review
+JC-953e13f3c3119665,,T4.01.02,数字训练场,4,2,0,0,0.5,needs_human_review
+JC-a260e3bfdba106fa,高级web后端工程师 · T6,T6.01.06,人机交互(通用),4,5,0,0,0.5,needs_human_review
+JC-c1e2466040c553a6,减速器专家 · T3,T3.06.01,谐波减速器,4,2,0,0,0.5,needs_human_review
+JC-c1e2466040c553a6,减速器专家 · T3,T3.06.02,精密减速器,4,3,0,0,0.5,needs_human_review
+JC-c4f0f3982fbc5507,,T5.04.02,云边端协同,4,1,0,0,0.5,needs_human_review
+JC-eb662c5b6b476ca1,,T6.01.06,人机交互(通用),4,5,0,0,0.5,needs_human_review
+JC-5760adf35d32f76e,电机控制负责人 · T5,T5.04.02,云边端协同,4,1,0,0,0.5,needs_human_review
+JC-4333863f8c616e91,机器人运控软件工程师 · T5,T1.01.11,VLA端到端大模型,4,6,0,0,0.5,needs_human_review
+JC-4333863f8c616e91,机器人运控软件工程师 · T5,T5.01.01,ROS,4,4,0,0,0.5,needs_human_review
+JC-2c5fd47122144c35,多模态交互大模型研究员/专家 · T6,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-2c5fd47122144c35,多模态交互大模型研究员/专家 · T6,T6.01.01,多模态交互,4,3,0,0,0.5,needs_human_review
+JC-7e8fdf586e246bf6,,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-7e8fdf586e246bf6,,T3.03.09,工业机械臂,4,5,0,0,0.5,needs_human_review
+JC-852d2aa041f49dd4,高级机电控制工程师 · T3,T1.03.12,运动控制(通用),4,5,0,0,0.5,needs_human_review
+JC-852d2aa041f49dd4,高级机电控制工程师 · T3,T3.05.04,电机与驱动,4,5,0,0,0.5,needs_human_review
+JC-0ecdec08a86cd0a5,小脑(力控)负责人/运动控制算法总监/专家 · T1,T1.03.12,运动控制(通用),4,5,0,0,0.5,needs_human_review
+JC-9dcf3f22c1bf42c9,软件测试工程师 · T5,T5.01.01,ROS,4,4,0,0,0.5,needs_human_review
+JC-f20e32ab9d21a3be,减速器 · T3,T3.02.01,四足机器人,4,5,0,0,0.5,needs_human_review
+JC-4448c0e86364874e,,T5.01.01,ROS,4,4,0,0,0.5,needs_human_review
+JC-9dcf3f22c1bf42c9,软件测试工程师 · T5,T3.04.02,灵巧手(多指),4,5,0,0,0.5,needs_human_review
+JC-96e9b62706812559,高级产品经理 · T6,T6.01.06,人机交互(通用),4,5,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-3d06cf87f620700c,具身模型算法工程师 · T1,T1.01.11,VLA端到端大模型,4,6,0,0,0.5,needs_human_review
+JC-2320a80ec6b3d181,,T1.01.11,VLA端到端大模型,4,6,0,0,0.5,needs_human_review
+JC-2320a80ec6b3d181,,T1.05.02,强化学习,4,6,0,0,0.5,needs_human_review
+JC-2320a80ec6b3d181,,T4.01.04,数据集,4,3,0,0,0.5,needs_human_review
+JC-2320a80ec6b3d181,,T5.01.01,ROS,4,4,0,0,0.5,needs_human_review
+JC-2320a80ec6b3d181,,T6.01.06,人机交互(通用),4,5,0,0,0.5,needs_human_review
+JC-06637026aeb7ac85,,T1.03.12,运动控制(通用),4,5,0,0,0.5,needs_human_review
+JC-c3bec5ba3a1eebc8,具身智能仿真工程师 · T1,T1.04.06,路径规划与轨迹,4,3,0,0,0.5,needs_human_review
+JC-c3bec5ba3a1eebc8,具身智能仿真工程师 · T1,T5.01.01,ROS,4,4,0,0,0.5,needs_human_review
+JC-e81583fc6d9c9451,嵌入式软件经理 · T5,T1.03.12,运动控制(通用),4,5,0,0,0.5,needs_human_review
+JC-093515bc75f5eb4a,,T7.03.01,清洁机器人,4,3,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T1.05.02,强化学习,4,6,0,0,0.5,needs_human_review
+JC-5818d6b94f579245,,T3.03.08,移动机器人(AMR/AGV),4,6,0,0,0.5,needs_human_review
+JC-f9eb08417b889035,slam算法工程师 · T1,T1.04.08,具身智能导航,4,6,0,0,0.5,needs_human_review
+JC-1673cda7af4ad662,,T1.01.02,动作表示与分词,4,5,0,0,0.5,needs_human_review
+JC-1673cda7af4ad662,,T1.01.11,VLA端到端大模型,4,6,0,0,0.5,needs_human_review
+JC-1673cda7af4ad662,,T1.03.03,力控与柔顺控制,4,6,0,0,0.5,needs_human_review
+JC-1673cda7af4ad662,,T2.01.02,深度相机,4,2,0,0,0.5,needs_human_review
+JC-1673cda7af4ad662,,T4.01.04,数据集,4,3,0,0,0.5,needs_human_review
+JC-71d05a91f20dc823,,T3.05.01,一体化关节模组,4,5,0,0,0.5,needs_human_review
+JC-08e065d58a0ebf4b,,T1.05.02,强化学习,4,6,0,0,0.5,needs_human_review
+JC-08e065d58a0ebf4b,,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T3.01.08,人形机器人(通用),4,6,0,0,0.5,needs_human_review
+JC-52d8169cd2acfcd9,运维开发 · T4,T4.03.05,仿真平台与工具链,4,2,0,0,0.5,needs_human_review
+JC-4040d0c515fe7ca4,算法招聘专家 · T1,T1.05.02,强化学习,4,6,0,0,0.5,needs_human_review
+JC-ee5f1f1efca9d3f6,,T1.02.10,世界模型架构,4,3,0,0,0.5,needs_human_review
+JC-14c695c540d51547,机械工程师 · T3,T3.05.04,电机与驱动,4,5,0,0,0.5,needs_human_review
+JC-936f456812e33881,,T3.06.02,精密减速器,4,3,0,0,0.5,needs_human_review
+JC-f233e36928c032ae,,T2.02.07,机器视觉,4,4,0,0,0.5,needs_human_review
+JC-5ba16170b621ae69,导航算法工程师 · T1,T1.04.06,路径规划与轨迹,4,3,0,0,0.5,needs_human_review
+JC-f6e68301004e93b9,机器人运动控制工程师 · T1,T1.03.03,力控与柔顺控制,4,6,0,0,0.5,needs_human_review
+JC-fe9411131d521da5,,T1.01.11,VLA端到端大模型,4,6,0,0,0.5,needs_human_review
+JC-450f0cc1ed541dac,ai产品经理 · T1,T1.01.11,VLA端到端大模型,5,6,0,0,0.5,needs_human_review
+JC-583613f31e23f056,,T1.01.11,VLA端到端大模型,5,6,0,0,0.5,needs_human_review
+JC-583613f31e23f056,,T4.03.05,仿真平台与工具链,5,2,0,0,0.5,needs_human_review
+JC-583613f31e23f056,,T5.01.02,机器人操作系统,5,4,0,0,0.5,needs_human_review
+JC-7d8af5d77c262052,基础几何模型算法工程师 · T1,T1.04.01,SLAM,5,6,0,0,0.5,needs_human_review
+JC-440cda046629b5c8,采购工程师 · T3,T3.06.02,精密减速器,5,3,0,0,0.5,needs_human_review
+JC-aac3aa883aa3ecef,,T1.04.01,SLAM,5,6,0,0,0.5,needs_human_review
+JC-30e0377c91396ba6,gr高级经理 · T7,T3.01.08,人形机器人(通用),5,6,0,0,0.5,needs_human_review
+JC-1c2e0bddfdf7402e,嵌入式软件工程师 · T3,T7.08.04,飞行器(通用),5,3,0,0,0.5,needs_human_review
+JC-a91677292b44146e,具身智能算法工程师 · T1 · 44146e,T1.05.02,强化学习,5,6,0,0,0.5,needs_human_review
+JC-c855cbe81eec5b51,,T3.03.08,移动机器人(AMR/AGV),5,6,0,0,0.5,needs_human_review
+JC-96decf92096ce26b,高级项目经理 · T7,T7.07.03,教育机器人,5,2,0,0,0.5,needs_human_review
+JC-39bb51793b5ae4d3,嵌入式系统工程师 · T1,T1.03.12,运动控制(通用),5,5,0,0,0.5,needs_human_review
+JC-5f94279a52a203f6,电商运营经理 · T7,T7.08.01,无人机,5,6,0,0,0.5,needs_human_review
+JC-5767325ccdf21445,,T1.05.02,强化学习,5,6,0,0,0.5,needs_human_review
+JC-5767325ccdf21445,,T1.05.03,模仿学习,5,3,0,0,0.5,needs_human_review
+JC-8aef9a4756fc08d7,,T3.05.04,电机与驱动,5,5,0,0,0.5,needs_human_review
+JC-e2c53e98796d1c79,数据运营高级经理 · T4,T4.01.01,遥操作数据采集,5,3,0,0,0.5,needs_human_review
+JC-84ab2035d81b152a,资深仿真算法工程师(3dgs) · T4,T4.03.05,仿真平台与工具链,5,2,0,0,0.5,needs_human_review
+JC-2c5fd47122144c35,多模态交互大模型研究员/专家 · T6,T1.01.11,VLA端到端大模型,5,6,0,0,0.5,needs_human_review
+JC-da79b236217a7aac,高级硬件测试工程师 · T3,T3.03.07,服务机器人,5,5,0,0,0.5,needs_human_review
+JC-e6b4a8096cb4fb74,产品行销经理 · T7,T3.01.08,人形机器人(通用),5,6,0,0,0.5,needs_human_review
+JC-96e9b62706812559,高级产品经理 · T6,T3.01.08,人形机器人(通用),5,6,0,0,0.5,needs_human_review
+JC-af5c7c479f009bc3,,T1.03.12,运动控制(通用),5,5,0,0,0.5,needs_human_review
+JC-d61e183c3d7200cb,嵌入式软件工程师(机器人方向) (mj001063) · T3,T3.05.01,一体化关节模组,5,5,0,0,0.5,needs_human_review
+JC-d61e183c3d7200cb,嵌入式软件工程师(机器人方向) (mj001063) · T3,T3.05.04,电机与驱动,5,5,0,0,0.5,needs_human_review
+JC-14decad758fea660,,T7.03.01,清洁机器人,5,3,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T3.03.01,协作机器人,5,6,0,0,0.5,needs_human_review
+JC-ae1b7ee104637e67,本体研发总监 · T3,T3.05.04,电机与驱动,5,5,0,0,0.5,needs_human_review
+JC-df1d59de20c92193,遥操算法工程师 · T4,T1.03.12,运动控制(通用),5,5,0,0,0.5,needs_human_review
+JC-d9e33e7dc7f2f7b1,工具链架构师 · T1,T1.01.11,VLA端到端大模型,6,6,0,0,0.5,needs_human_review
+JC-bdb3360412432440,机械结构 · T3,T3.01.08,人形机器人(通用),6,6,0,0,0.5,needs_human_review
+JC-6bb165d32bfdd067,大模型算法工程师 · T1,T1.05.02,强化学习,6,6,0,0,0.5,needs_human_review
+JC-7d8af5d77c262052,基础几何模型算法工程师 · T1,T1.01.11,VLA端到端大模型,6,6,0,0,0.5,needs_human_review
+JC-284075dcfc7db2c5,数据治理专家 · T4,T4.01.04,数据集,6,3,0,0,0.5,needs_human_review
+JC-2b2814f0771c95cc,招聘专家 · T1,T1.01.11,VLA端到端大模型,6,6,0,0,0.5,needs_human_review
+JC-6383de01d28baa6d,市场高级经理 · T3,T3.03.09,工业机械臂,6,5,0,0,0.5,needs_human_review
+JC-e7b0a516507dc616,,T3.02.01,四足机器人,6,5,0,0,0.5,needs_human_review
+JC-546571a6cae5fa5e,vla算法专家 · T1,T1.01.11,VLA端到端大模型,6,6,0,0,0.5,needs_human_review
+JC-1c2e0bddfdf7402e,嵌入式软件工程师 · T3,T3.05.03,执行器,6,5,0,0,0.5,needs_human_review
+JC-baf05c9c77a17b37,仓库管理员 · T3,T3.02.01,四足机器人,6,5,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T3.01.08,人形机器人(通用),6,6,0,0,0.5,needs_human_review
+JC-2201726b2d829aec,具身智能大模型算法专家 · T1,T3.02.01,四足机器人,6,5,0,0,0.5,needs_human_review
+JC-8aef9a4756fc08d7,,T1.03.12,运动控制(通用),6,5,0,0,0.5,needs_human_review
+JC-8aef9a4756fc08d7,,T1.04.01,SLAM,6,6,0,0,0.5,needs_human_review
+JC-8aef9a4756fc08d7,,T5.01.01,ROS,6,4,0,0,0.5,needs_human_review
+JC-1095ca4ddbf5b65c,感知算法工程师(自主导航方向) · T2,T2.01.01,激光雷达,6,2,0,0,0.5,needs_human_review
+JC-1095ca4ddbf5b65c,感知算法工程师(自主导航方向) · T2,T2.01.02,深度相机,6,2,0,0,0.5,needs_human_review
+JC-4a31686bb41953fe,nvh专家 · T3,T3.05.04,电机与驱动,6,5,0,0,0.5,needs_human_review
+JC-4a31686bb41953fe,nvh专家 · T3,T3.06.02,精密减速器,6,3,0,0,0.5,needs_human_review
+JC-b9a2693ad4dd4bec,售后服务工程师 · T3,T3.03.08,移动机器人(AMR/AGV),6,6,0,0,0.5,needs_human_review
+JC-ea62dc499db58c62,,T1.03.12,运动控制(通用),6,5,0,0,0.5,needs_human_review
+JC-ea62dc499db58c62,,T3.01.08,人形机器人(通用),6,6,0,0,0.5,needs_human_review
+JC-da52eff9aee4ea4a,电机驱动 · T3,T3.08.03,嵌入式计算,6,2,0,0,0.5,needs_human_review
+JC-2518e77fe5a6b76b,具身大模型算法工程师 · T1,T1.01.11,VLA端到端大模型,6,6,0,0,0.5,needs_human_review
+JC-801045f063719d11,,T2.01.01,激光雷达,6,2,0,0,0.5,needs_human_review
+JC-801045f063719d11,,T7.01.08,智能制造与工业自动化,6,6,0,0,0.5,needs_human_review
+JC-f72cc8ad5ad7e8b0,,T4.01.04,数据集,6,3,0,0,0.5,needs_human_review
+JC-e6b4a8096cb4fb74,产品行销经理 · T7,T7.03.03,商用服务机器人,6,1,0,0,0.5,needs_human_review
+JC-84457ec07a631c50,强化学习研究员 · T1,T1.05.02,强化学习,6,6,0,0,0.5,needs_human_review
+JC-b08fd1a3d7b7ac60,电机工程师 · T3,T3.05.04,电机与驱动,6,5,0,0,0.5,needs_human_review
+JC-994f8ca5dd93543a,资产管理专员 · T7,T7.01.04,汽车制造,6,4,0,0,0.5,needs_human_review
+JC-4b37bca0d0a73af5,ai算法资深工程师(ai算法评测) · T1,T1.06.04,视觉感知与理解,6,6,0,0,0.5,needs_human_review
+JC-84ff7fe7754dbdb4,,T3.01.08,人形机器人(通用),6,6,0,0,0.5,needs_human_review
+JC-71d05a91f20dc823,,T3.03.01,协作机器人,6,6,0,0,0.5,needs_human_review
+JC-ae1b7ee104637e67,本体研发总监 · T3,T3.03.01,协作机器人,6,6,0,0,0.5,needs_human_review
+JC-bb0d68096d0af03d,,T1.05.02,强化学习,6,6,0,0,0.5,needs_human_review
+JC-bb0d68096d0af03d,,T3.04.02,灵巧手(多指),6,5,0,0,0.5,needs_human_review
+JC-4040d0c515fe7ca4,算法招聘专家 · T1,T1.01.11,VLA端到端大模型,6,6,0,0,0.5,needs_human_review
+JC-4040d0c515fe7ca4,算法招聘专家 · T1,T3.04.02,灵巧手(多指),6,5,0,0,0.5,needs_human_review
+JC-0a2929ec3a5f3d08,,T1.01.11,VLA端到端大模型,6,6,0,0,0.5,needs_human_review
+JC-6dbbe3f32040740e,推理框架开发工程师 · T1,T1.01.11,VLA端到端大模型,6,6,0,0,0.5,needs_human_review
+JC-150873345b368615,,T1.01.11,VLA端到端大模型,7,6,0,0,0.5,needs_human_review
+JC-150873345b368615,,T4.03.05,仿真平台与工具链,7,2,0,0,0.5,needs_human_review
+JC-150873345b368615,,T5.01.02,机器人操作系统,7,4,0,0,0.5,needs_human_review
+JC-bdb3360412432440,机械结构 · T3,T3.02.01,四足机器人,7,5,0,0,0.5,needs_human_review
+JC-c53386fb88353a62,软件开发工程师(c++/c#/机器视觉) (mj000888) · T2,T2.02.07,机器视觉,7,4,0,0,0.5,needs_human_review
+JC-c53386fb88353a62,软件开发工程师(c++/c#/机器视觉) (mj000888) · T2,T7.01.08,智能制造与工业自动化,7,6,0,0,0.5,needs_human_review
+JC-daef40a0ba9ba1ab,机械工程师 · T7,T7.08.01,无人机,7,6,0,0,0.5,needs_human_review
+JC-c361aeab057241b6,infra算法工程师(三维重建方向) · T1,T1.01.11,VLA端到端大模型,7,6,0,0,0.5,needs_human_review
+JC-30e0377c91396ba6,gr高级经理 · T7,T7.01.08,智能制造与工业自动化,7,6,0,0,0.5,needs_human_review
+JC-34bc211586b292e8,机械结构工程师 · T3,T3.01.05,人形机器人整机与商业化,7,5,0,0,0.5,needs_human_review
+JC-34bc211586b292e8,机械结构工程师 · T3,T3.02.01,四足机器人,7,5,0,0,0.5,needs_human_review
+JC-34bc211586b292e8,机械结构工程师 · T3,T3.03.01,协作机器人,7,6,0,0,0.5,needs_human_review
+JC-34bc211586b292e8,机械结构工程师 · T3,T3.04.02,灵巧手(多指),7,5,0,0,0.5,needs_human_review
+JC-d65f77c3e4f1d082,自动化工程师 · T1,T1.03.12,运动控制(通用),7,5,0,0,0.5,needs_human_review
+JC-d00c4fafa50420a0,,T3.08.02,域控制器,7,2,0,0,0.5,needs_human_review
+JC-0ecdec08a86cd0a5,小脑(力控)负责人/运动控制算法总监/专家 · T1,T1.03.03,力控与柔顺控制,7,6,0,0,0.5,needs_human_review
+JC-df1d59de20c92193,遥操算法工程师 · T4,T3.01.08,人形机器人(通用),7,6,0,0,0.5,needs_human_review
+JC-4b37bca0d0a73af5,ai算法资深工程师(ai算法评测) · T1,T1.01.11,VLA端到端大模型,7,6,0,0,0.5,needs_human_review
+JC-71d05a91f20dc823,,T3.02.01,四足机器人,7,5,0,0,0.5,needs_human_review
+JC-6dbbe3f32040740e,推理框架开发工程师 · T1,T1.01.05,具身推理机制,7,5,0,0,0.5,needs_human_review
+JC-611577b63bc2dfd5,agent应用负责人 · T1,T1.01.06,大模型部署与推理优化,8,5,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T1.03.12,运动控制(通用),8,5,0,0,0.5,needs_human_review
+JC-6bb165d32bfdd067,大模型算法工程师 · T1,T1.01.11,VLA端到端大模型,8,6,0,0,0.5,needs_human_review
+JC-440cda046629b5c8,采购工程师 · T3,T3.05.04,电机与驱动,8,5,0,0,0.5,needs_human_review
+JC-c361aeab057241b6,infra算法工程师(三维重建方向) · T1,T1.02.10,世界模型架构,8,3,0,0,0.5,needs_human_review
+JC-b8c826c19e28ac5b,,T1.06.02,3D视觉感知,8,7,0,0,0.5,needs_human_review
+JC-1c2e0bddfdf7402e,嵌入式软件工程师 · T3,T1.03.12,运动控制(通用),8,5,0,0,0.5,needs_human_review
+JC-1c2e0bddfdf7402e,嵌入式软件工程师 · T3,T3.05.04,电机与驱动,8,5,0,0,0.5,needs_human_review
+JC-df1d59de20c92193,遥操算法工程师 · T4,T3.03.03,外骨骼机器人,8,5,0,0,0.5,needs_human_review
+JC-2320a80ec6b3d181,,T3.01.08,人形机器人(通用),8,6,0,0,0.5,needs_human_review
+JC-ac37b863363f8376,博士后 · T3,T3.04.02,灵巧手(多指),8,5,0,0,0.5,needs_human_review
+JC-a4af69c66de4dfe4,供应链产品经理 · T7,T7.02.02,智能仓储,8,6,0,0,0.5,needs_human_review
+JC-e3b6f1bc0c007706,电机控制算法工程师 · T3,T1.03.12,运动控制(通用),8,5,0,0,0.5,needs_human_review
+JC-440cda046629b5c8,采购工程师 · T3,T3.05.01,一体化关节模组,9,5,0,0,0.5,needs_human_review
+JC-ce470d42b6e5d701,政企业务总监 · T3,T3.03.07,服务机器人,9,5,0,0,0.5,needs_human_review
+JC-ce470d42b6e5d701,政企业务总监 · T3,T3.03.09,工业机械臂,9,5,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T3.02.01,四足机器人,9,5,0,0,0.5,needs_human_review
+JC-d609e7dcbdb38d1e,大客户项目经理-机器人以及自动驾驶方向 · T2,T2.01.01,激光雷达,9,2,0,0,0.5,needs_human_review
+JC-34ce42a9b393a474,算子开发工程师 · T3,T3.08.01,AI芯片,9,4,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T3.06.02,精密减速器,9,3,0,0,0.5,needs_human_review
+JC-bdd4915930f591e2,海外售后工程师 · T7,T7.01.08,智能制造与工业自动化,9,6,0,0,0.5,needs_human_review
+JC-a5de397d3674f78d,关节总监 · T3,T3.04.02,灵巧手(多指),9,5,0,0,0.5,needs_human_review
+JC-978c67a677316e65,产品经理 · T3,T3.01.08,人形机器人(通用),10,6,0,0,0.5,needs_human_review
+JC-7d8af5d77c262052,基础几何模型算法工程师 · T1,T1.02.10,世界模型架构,10,3,0,0,0.5,needs_human_review
+JC-fdaabab802baa9d6,采购总监 · T7,T7.01.04,汽车制造,10,4,0,0,0.5,needs_human_review
+JC-e7b0a516507dc616,,T1.05.02,强化学习,10,6,0,0,0.5,needs_human_review
+JC-34bc211586b292e8,机械结构工程师 · T3,T3.05.01,一体化关节模组,10,5,0,0,0.5,needs_human_review
+JC-a944f77a8f46c9e5,强化学习算法工程师 · T1,T3.01.08,人形机器人(通用),10,6,0,0,0.5,needs_human_review
+JC-ba1a3c1ffcc93dd7,嵌入式应用开发工程师(ai视觉) · T3,T3.08.03,嵌入式计算,11,2,0,0,0.5,needs_human_review
+JC-74713b8b787832a5,销售工程师 (mj000754) · T2,T2.02.07,机器视觉,11,4,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T1.01.11,VLA端到端大模型,11,6,0,0,0.5,needs_human_review
+JC-a944f77a8f46c9e5,强化学习算法工程师 · T1,T1.05.02,强化学习,11,6,0,0,0.5,needs_human_review
+JC-e3b6f1bc0c007706,电机控制算法工程师 · T3,T3.05.04,电机与驱动,11,5,0,0,0.5,needs_human_review
+JC-582e3249fc914965,ai算法工程师(大模型) · T1,T1.01.11,VLA端到端大模型,12,6,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T1.05.02,强化学习,12,6,0,0,0.5,needs_human_review
+JC-f04d1ce33a5b9736,具身智能算法工程师 · T1,T1.05.03,模仿学习,12,3,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T3.06.01,谐波减速器,12,2,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T3.05.01,一体化关节模组,13,5,0,0,0.5,needs_human_review
+JC-df1d59de20c92193,遥操算法工程师 · T4,T4.01.01,遥操作数据采集,13,3,0,0,0.5,needs_human_review
+JC-f9eb08417b889035,slam算法工程师 · T1,T1.04.01,SLAM,13,6,0,0,0.5,needs_human_review
+JC-f9eb08417b889035,slam算法工程师 · T1,T2.01.01,激光雷达,13,2,0,0,0.5,needs_human_review
+JC-c1d3c139666dd646,销售经理 · T3,T3.02.01,四足机器人,14,5,0,0,0.5,needs_human_review
+JC-34bc211586b292e8,机械结构工程师 · T3,T3.06.02,精密减速器,14,3,0,0,0.5,needs_human_review
+JC-95f853e46e26eeef,关节模组工程师 · T3,T3.05.04,电机与驱动,14,5,0,0,0.5,needs_human_review
+JC-fc43dc41286a320a,fae工程师 · T5,T5.01.01,ROS,15,4,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T2.01.01,激光雷达,15,2,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T3.02.03,仿生机器人,15,5,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T3.05.04,电机与驱动,15,5,0,0,0.5,needs_human_review
+JC-69b7f97648c34125,具身智能数据采购负责人 · T4,T4.01.04,数据集,15,3,0,0,0.5,needs_human_review
+JC-85e12e7bc2244a00,泰国 人力资源经理(泰国) · T2,T2.01.01,激光雷达,15,2,0,0,0.5,needs_human_review
+JC-b8d3eb7cf4c62406,刀具经理 · T6,T6.03.04,检测认证,15,0,0,0,0.5,needs_human_review
+JC-34bc211586b292e8,机械结构工程师 · T3,T3.05.04,电机与驱动,15,5,0,0,0.5,needs_human_review
+JC-14c695c540d51547,机械工程师 · T3,T3.06.02,精密减速器,15,3,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T5.01.01,ROS,16,4,0,0,0.5,needs_human_review
+JC-1c1a5547f59834b3,c++开发资深工程师(sdk) · T5,T5.01.01,ROS,16,4,0,0,0.5,needs_human_review
+JC-78253fd4cd04a2c9,仪校工程师 · T6,T6.03.04,检测认证,17,0,0,0,0.5,needs_human_review
+JC-f20e32ab9d21a3be,减速器 · T3,T3.05.04,电机与驱动,17,5,0,0,0.5,needs_human_review
+JC-d123f3c410a6b153,slam算法工程师 · T5,T1.04.01,SLAM,18,6,0,0,0.5,needs_human_review
+JC-2ca73e0ae4ddde42,,T3.02.01,四足机器人,18,5,0,0,0.5,needs_human_review
+JC-f20e32ab9d21a3be,减速器 · T3,T3.06.02,精密减速器,18,3,0,0,0.5,needs_human_review
+JC-6ec1d2bc0fb6d928,质量经理 · T3,T3.05.04,电机与驱动,18,5,0,0,0.5,needs_human_review
+JC-c946672de0698058,海外销售 · T3,T3.01.08,人形机器人(通用),22,6,0,0,0.5,needs_human_review
+JC-74593e0527bccb69,采购经理 · T3,T3.01.08,人形机器人(通用),26,6,0,0,0.5,needs_human_review
+JC-0b7157896262446d,大模型预训练研究员 · T1,T1.01.11,VLA端到端大模型,30,6,0,0,0.5,needs_human_review
+JC-18cb0971505c1e98,材料工程师 · T2,T2.01.01,激光雷达,31,2,0,0,0.5,needs_human_review
+JC-3e2cd55d08605e78,,T3.08.01,AI芯片,32,4,0,0,0.5,needs_human_review
+JC-b53f08c73d985fc4,科教行业大客户经理——机器人行业 · T7,T7.01.08,智能制造与工业自动化,47,6,0,0,0.5,needs_human_review
+JC-bc0fd60a128f8054,嵌入式硬件工程师 · T3,T3.05.04,电机与驱动,58,5,0,0,0.5,needs_human_review

@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>岗位能力图谱 · 交互参考稿</title>
+  <style>
+    :root {
+      font-family: Inter, "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+      color: #102a47;
+      background: #f4f7fb;
+      font-synthesis: none;
+      --navy: #052849;
+      --ink: #102a47;
+      --muted: #687b91;
+      --blue: #1769e0;
+      --teal: #0b9c93;
+      --amber: #f2a43a;
+      --coral: #df645e;
+      --line: #dce4ee;
+      --soft-line: #e9eef4;
+      --surface: #ffffff;
+      --canvas: #f4f7fb;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1180px; min-height: 100%; background: var(--canvas); }
+    body { overflow-x: auto; }
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid rgba(23,105,224,.22); outline-offset: 2px; }
+
+    .app { min-height: 100vh; }
+    .topbar {
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; padding: 0 24px; color: #fff; background: var(--navy);
+      border-bottom: 1px solid #173f60;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 36px; height: 36px; display: grid; place-items: center; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.34); background: rgba(255,255,255,.06);
+    }
+    .brand-mark svg { width: 20px; height: 20px; }
+    .brand strong { display: block; font-size: 17px; letter-spacing: .04em; }
+    .brand span { display: block; margin-top: 2px; color: #8fa9bf; font-size: 9px; letter-spacing: .08em; }
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .top-actions button {
+      height: 34px; display: inline-flex; align-items: center; gap: 7px; padding: 0 12px;
+      color: #dce8f5; background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.18); border-radius: 7px;
+    }
+    .top-actions button:hover { background: rgba(255,255,255,.11); }
+
+    .subnav {
+      height: 52px; display: flex; align-items: stretch; justify-content: space-between;
+      padding: 0 24px; background: #fff; border-bottom: 1px solid var(--line);
+    }
+    .breadcrumbs { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+    .breadcrumbs b { color: var(--ink); }
+    .view-tabs { display: flex; align-items: stretch; gap: 6px; }
+    .view-tabs button {
+      position: relative; min-width: 130px; border: 0; background: transparent; color: #526980; font-size: 12px;
+    }
+    .view-tabs button:hover { color: var(--blue); }
+    .view-tabs button.active { color: var(--blue); font-weight: 700; }
+    .view-tabs button.active::after { content: ""; position: absolute; right: 12px; bottom: 0; left: 12px; height: 3px; background: var(--blue); border-radius: 3px 3px 0 0; }
+
+    main { padding: 18px 20px 28px; }
+    .page-wrap { max-width: 1760px; margin: 0 auto; }
+    .page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 14px; }
+    .page-head h1 { margin: 0; color: var(--ink); font-size: 22px; letter-spacing: -.02em; }
+    .page-head p { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .page-actions { display: flex; align-items: center; gap: 8px; }
+    .button {
+      min-height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 0 13px; border: 1px solid #b9c9dc; border-radius: 7px; background: #fff; color: #264766; font-size: 12px;
+    }
+    .button:hover { border-color: #89acd4; background: #f6faff; }
+    .button.primary { color: #fff; background: var(--blue); border-color: var(--blue); }
+    .button.primary:hover { background: #0f5dca; }
+    .button.icon { width: 36px; padding: 0; }
+    .button svg { width: 15px; height: 15px; }
+
+    .definition-bar {
+      display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px;
+      min-height: 48px; margin-bottom: 12px; padding: 10px 14px; background: #edf5ff;
+      border: 1px solid #cddff5; border-left: 4px solid var(--blue); border-radius: 8px;
+    }
+    .definition-bar strong { font-size: 12px; }
+    .definition-bar span { margin-left: 8px; color: #48647f; font-size: 11px; }
+    .definition-bar em { color: #0b6f69; font-size: 10px; font-style: normal; font-weight: 700; }
+
+    .metrics {
+      display: grid; grid-template-columns: repeat(6, 1fr); min-height: 72px; margin-bottom: 12px;
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    }
+    .metric { position: relative; display: flex; flex-direction: column; justify-content: center; padding: 10px 18px; border-right: 1px solid var(--line); }
+    .metric:last-child { border-right: 0; }
+    .metric span { color: var(--muted); font-size: 10px; }
+    .metric strong { margin-top: 5px; color: var(--ink); font-size: 22px; letter-spacing: -.02em; }
+    .metric small { margin-left: 6px; color: var(--teal); font-size: 9px; font-weight: 600; }
+    .metric::before { content: ""; position: absolute; top: 17px; right: 15px; width: 6px; height: 6px; border-radius: 50%; background: var(--metric-color, var(--blue)); }
+
+    .workspace {
+      display: grid; grid-template-columns: 238px minmax(620px, 1fr) 354px; gap: 12px; min-height: 716px;
+    }
+    .panel { min-width: 0; overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+    .panel-head { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 14px; border-bottom: 1px solid var(--soft-line); }
+    .panel-head h2 { margin: 0; font-size: 13px; }
+    .panel-head small { color: var(--muted); font-size: 9px; }
+
+    .filters { display: flex; flex-direction: column; }
+    .filter-body { flex: 1; padding: 14px; }
+    .field { display: block; margin-bottom: 17px; }
+    .field > span { display: block; margin-bottom: 7px; color: #405b75; font-size: 10px; font-weight: 700; }
+    .field input, .field select {
+      width: 100%; height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: #fff; font-size: 11px;
+    }
+    .search-field { position: relative; }
+    .search-field input { padding-left: 31px; }
+    .search-field svg { position: absolute; top: 10px; left: 10px; width: 15px; height: 15px; color: #8193a6; }
+    .filter-group-title { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 9px; font-size: 10px; font-weight: 700; }
+    .filter-group-title button { padding: 0; color: var(--blue); border: 0; background: transparent; font-size: 9px; }
+    .category-filters { display: grid; gap: 5px; }
+    .category-filter {
+      width: 100%; min-height: 32px; display: grid; grid-template-columns: 9px 1fr auto; align-items: center; gap: 8px;
+      padding: 0 8px; border: 1px solid transparent; border-radius: 6px; background: transparent; text-align: left; font-size: 10px;
+    }
+    .category-filter:hover { background: #f7f9fc; }
+    .category-filter.off { opacity: .42; }
+    .category-filter i { width: 8px; height: 8px; border-radius: 2px; background: var(--category-color); }
+    .category-filter b { color: #64788d; font-size: 9px; }
+    .check-row { display: flex; align-items: center; gap: 8px; min-height: 32px; font-size: 10px; }
+    .check-row input { accent-color: var(--blue); }
+    .filter-note { margin-top: 15px; padding: 10px; color: #5a6f84; background: #f7f9fc; border-radius: 7px; font-size: 9px; line-height: 1.6; }
+    .filter-foot { padding: 12px 14px; border-top: 1px solid var(--soft-line); }
+    .filter-foot .button { width: 100%; }
+
+    .graph-panel { display: flex; flex-direction: column; }
+    .graph-toolbar { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 12px; border-bottom: 1px solid var(--soft-line); }
+    .graph-title { display: flex; align-items: center; gap: 9px; }
+    .graph-title i { width: 9px; height: 9px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 5px rgba(23,105,224,.1); }
+    .graph-title strong { font-size: 12px; }
+    .graph-title small { color: var(--muted); font-size: 9px; }
+    .toolbar-actions { display: flex; align-items: center; gap: 6px; }
+    .segmented { display: flex; height: 31px; padding: 2px; background: #eef2f6; border-radius: 6px; }
+    .segmented button { min-width: 62px; padding: 0 9px; border: 0; border-radius: 5px; background: transparent; color: #607489; font-size: 9px; }
+    .segmented button.active { color: var(--blue); background: #fff; box-shadow: 0 1px 3px rgba(25,50,80,.11); font-weight: 700; }
+    .mini-button { width: 31px; height: 31px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: #526c85; }
+    .mini-button:hover { color: var(--blue); border-color: #a8c3e3; }
+    .mini-button svg { width: 14px; height: 14px; }
+
+    .graph-stage { position: relative; flex: 1; min-height: 620px; overflow: hidden; background-color: #fbfdff; background-image: radial-gradient(#d8e1eb 0.7px, transparent 0.7px); background-size: 16px 16px; }
+    #graphSvg { width: 100%; height: 100%; min-height: 620px; display: block; user-select: none; }
+    .ring { fill: none; stroke: #dce6f1; stroke-width: 1; stroke-dasharray: 4 7; opacity: .88; }
+    .center-halo { fill: rgba(23,105,224,.06); stroke: rgba(23,105,224,.17); stroke-width: 1; }
+    .edge { fill: none; stroke-linecap: round; transition: opacity .18s, stroke-width .18s; }
+    .edge.center-edge { stroke: #9eb9d7; stroke-width: 1.5; }
+    .edge.leaf-edge { stroke: #c8d5e3; stroke-width: 1.1; }
+    .edge.active { stroke: var(--blue); stroke-width: 2.2; opacity: 1 !important; }
+    .node { cursor: pointer; transition: opacity .18s, filter .18s; }
+    .node:hover { filter: drop-shadow(0 4px 5px rgba(22,52,83,.18)); }
+    .node.dim, .edge.dim { opacity: .12; }
+    .category-node circle { fill: #fff; stroke: var(--node-color); stroke-width: 2.2; }
+    .category-node .category-fill { fill: var(--node-soft); stroke: none; }
+    .category-node text { fill: #183b5b; font-size: 11px; font-weight: 700; text-anchor: middle; pointer-events: none; }
+    .category-node .count { fill: #6d8296; font-size: 8px; font-weight: 500; }
+    .leaf-node rect { fill: #fff; stroke: #cbd8e6; stroke-width: 1; rx: 8; }
+    .leaf-node.required rect { stroke: var(--node-color); }
+    .leaf-node .accent { fill: var(--node-color); stroke: none; }
+    .leaf-node text { fill: #27445f; font-size: 9.5px; text-anchor: middle; pointer-events: none; }
+    .leaf-node .evidence-count { fill: #71859a; font-size: 7.5px; }
+    .center-node circle.main { fill: var(--navy); stroke: #fff; stroke-width: 5; }
+    .center-node circle.outline { fill: none; stroke: #8ab9f4; stroke-width: 1.5; stroke-dasharray: 4 4; }
+    .center-node text { fill: #fff; text-anchor: middle; pointer-events: none; }
+    .center-node .name { font-size: 14px; font-weight: 800; }
+    .center-node .meta { fill: #bcd1e6; font-size: 8px; }
+    .selected-node circle, .selected-node rect { stroke: #072b4b !important; stroke-width: 3 !important; }
+    .graph-legend { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 13px; padding: 8px 10px; background: rgba(255,255,255,.94); border: 1px solid var(--line); border-radius: 7px; color: #62768a; font-size: 8px; backdrop-filter: blur(5px); }
+    .graph-legend span { display: inline-flex; align-items: center; gap: 5px; }
+    .graph-legend i { width: 9px; height: 9px; border-radius: 50%; }
+    .graph-legend i.job { background: var(--navy); }
+    .graph-legend i.category { background: #fff; border: 2px solid var(--blue); }
+    .graph-legend i.required { border-radius: 3px; background: #fff; border: 1px solid var(--teal); }
+    .graph-legend i.optional { border-radius: 3px; background: #fff; border: 1px solid #cbd8e6; }
+    .graph-help { position: absolute; top: 12px; left: 12px; padding: 7px 9px; color: #657a90; background: rgba(255,255,255,.92); border: 1px solid var(--soft-line); border-radius: 6px; font-size: 8px; }
+    .empty { position: absolute; inset: 0; display: none; place-content: center; text-align: center; color: var(--muted); }
+    .empty.show { display: grid; }
+    .empty strong { display: block; color: var(--ink); font-size: 14px; }
+    .empty span { display: block; margin-top: 6px; font-size: 10px; }
+
+    .table-stage { display: none; flex: 1; overflow: auto; }
+    .table-stage.show { display: block; }
+    .cap-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    .cap-table th { position: sticky; top: 0; z-index: 1; height: 38px; padding: 0 12px; color: #5f7388; background: #f7f9fc; text-align: left; font-weight: 700; }
+    .cap-table td { min-height: 48px; padding: 10px 12px; border-top: 1px solid var(--soft-line); vertical-align: top; }
+    .cap-table tr:hover td { background: #f9fbfe; }
+    .cap-table button { padding: 0; border: 0; background: transparent; color: var(--blue); font-weight: 700; text-align: left; }
+    .cap-table small { display: block; margin-top: 4px; color: var(--muted); line-height: 1.5; }
+    .tag { display: inline-flex; align-items: center; min-height: 20px; padding: 0 6px; border-radius: 4px; background: #edf3f9; color: #536b82; font-size: 8px; font-weight: 650; }
+    .tag.required { color: #08766f; background: #e5f7f4; }
+    .tag.optional { color: #a45d08; background: #fff1dc; }
+
+    .detail-panel { display: flex; flex-direction: column; }
+    .detail-tabs { display: flex; height: 48px; border-bottom: 1px solid var(--soft-line); }
+    .detail-tabs button { position: relative; flex: 1; border: 0; background: #fff; color: #5e7388; font-size: 10px; }
+    .detail-tabs button.active { color: var(--blue); font-weight: 700; }
+    .detail-tabs button.active::after { content: ""; position: absolute; right: 24px; bottom: 0; left: 24px; height: 2px; background: var(--blue); }
+    .detail-content { flex: 1; min-height: 0; overflow-y: auto; }
+    .node-detail, .jd-detail { padding: 15px; }
+    .detail-eyebrow { display: flex; align-items: center; gap: 7px; color: var(--blue); font-size: 9px; font-weight: 750; }
+    .detail-eyebrow i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .detail-title { margin: 8px 0 5px; color: var(--ink); font-size: 18px; line-height: 1.35; }
+    .detail-subtitle { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .detail-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 11px; }
+    .detail-section { margin-top: 18px; }
+    .detail-section h3 { display: flex; align-items: center; justify-content: space-between; margin: 0 0 8px; font-size: 11px; }
+    .detail-section h3 span { color: var(--muted); font-size: 8px; font-weight: 500; }
+    .kv-list { border-top: 1px solid var(--soft-line); }
+    .kv { min-height: 34px; display: grid; grid-template-columns: 82px 1fr; gap: 9px; align-items: start; padding: 9px 0; border-bottom: 1px solid var(--soft-line); font-size: 9px; line-height: 1.55; }
+    .kv span { color: var(--muted); }
+    .kv strong { color: #294863; font-weight: 600; }
+    .evidence-card { margin-top: 8px; padding: 10px; border: 1px solid #d9e4ef; border-left: 3px solid var(--teal); border-radius: 6px; background: #fbfefe; }
+    .evidence-card p { margin: 0; color: #34516b; font-size: 9px; line-height: 1.7; }
+    .evidence-card footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; color: var(--muted); font-size: 8px; }
+    .evidence-card footer b { color: var(--teal); }
+    .score-row { display: grid; grid-template-columns: 70px 1fr 28px; align-items: center; gap: 8px; margin-top: 8px; font-size: 8px; }
+    .score-row > span { color: var(--muted); }
+    .score-track { height: 5px; overflow: hidden; border-radius: 4px; background: #e8edf3; }
+    .score-track i { display: block; height: 100%; border-radius: inherit; background: var(--teal); }
+    .jd-header { padding-bottom: 13px; border-bottom: 1px solid var(--soft-line); }
+    .jd-header h2 { margin: 0; font-size: 17px; }
+    .jd-header p { margin: 6px 0 0; color: var(--muted); font-size: 9px; }
+    .jd-block { margin-top: 16px; }
+    .jd-block h3 { margin: 0 0 8px; font-size: 11px; }
+    .jd-block ol, .jd-block ul { margin: 0; padding-left: 17px; color: #36516a; font-size: 9px; line-height: 1.85; }
+    .raw-jd { max-height: 560px; overflow: auto; padding: 11px; color: #36516a; background: #f7f9fc; border: 1px solid var(--soft-line); border-radius: 7px; font-size: 9px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .detail-foot { padding: 11px 14px; border-top: 1px solid var(--soft-line); }
+    .detail-foot .button { width: 100%; }
+
+    .evidence-panel { margin-top: 12px; }
+    .evidence-summary { display: grid; grid-template-columns: 1.2fr .8fr .8fr .8fr; }
+    .summary-cell { min-height: 84px; padding: 14px 16px; border-right: 1px solid var(--soft-line); }
+    .summary-cell:last-child { border-right: 0; }
+    .summary-cell span { color: var(--muted); font-size: 9px; }
+    .summary-cell strong { display: block; margin-top: 7px; font-size: 17px; }
+    .summary-cell p { margin: 6px 0 0; color: #62768a; font-size: 8px; line-height: 1.5; }
+    .stacked { display: flex; height: 7px; margin-top: 9px; overflow: hidden; background: #edf1f5; border-radius: 5px; }
+    .stacked i { height: 100%; }
+
+    .toast { position: fixed; z-index: 100; top: 76px; left: 50%; transform: translate(-50%, -12px); padding: 10px 14px; color: #fff; background: #102a47; border-radius: 7px; box-shadow: 0 10px 26px rgba(8,34,60,.2); font-size: 11px; opacity: 0; pointer-events: none; transition: .2s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media print {
+      html, body { min-width: 0; background: #fff; }
+      .top-actions, .page-actions, .filters, .detail-foot, .toast { display: none !important; }
+      .workspace { grid-template-columns: 1fr 340px; }
+      main { padding: 10px; }
+      .graph-stage { min-height: 660px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="7" r="2.3"/><circle cx="18" cy="6" r="2.3"/><circle cx="17" cy="18" r="2.3"/><circle cx="7" cy="17" r="2.3"/><path d="M8 8.5l7.6-1.3M16.5 8l.4 7.6M14.9 17.8l-5.6-.5M7 14.7l-.7-5.4M8 9l7.4 6.8"/></svg>
+        </div>
+        <div><strong>具身图谱</strong><span>EMBODIED INTELLIGENCE TALENT MAP</span></div>
+      </div>
+      <div class="top-actions">
+        <button id="explainButton">ⓘ 图谱说明</button>
+        <button id="printButton">⇩ 导出参考页</button>
+      </div>
+    </header>
+
+    <nav class="subnav">
+      <div class="breadcrumbs"><span>能力图谱</span><span>›</span><b>岗位能力图谱</b></div>
+      <div class="view-tabs" aria-label="图谱视图">
+        <button data-demo-tab="全景图谱">全景图谱</button>
+        <button data-demo-tab="技术—岗位匹配图">技术—岗位匹配图</button>
+        <button class="active">岗位能力图谱</button>
+      </div>
+    </nav>
+
+    <main>
+      <div class="page-wrap">
+        <section class="page-head">
+          <div>
+            <h1>岗位能力图谱</h1>
+            <p>从真实招聘 JD 中提取岗位职责、技能、工具、学历、经验与场景；点击任一节点可查看原文证据。</p>
+          </div>
+          <div class="page-actions">
+            <button class="button" id="restoreButton">↺ 恢复默认视图</button>
+            <button class="button primary" id="switchTechButton">连接技术—岗位图 →</button>
+          </div>
+        </section>
+
+        <section class="definition-bar">
+          <div><strong>本图谱回答：</strong><span>“完成这个岗位的工作，一个人需要具备什么能力？”</span></div>
+          <em id="datasetLabel">正在读取真实JD聚合数据…</em>
+        </section>
+
+        <section class="metrics" id="metrics"></section>
+
+        <section class="workspace">
+          <aside class="panel filters">
+            <div class="panel-head"><h2>岗位与能力筛选</h2><small id="filterResult">—</small></div>
+            <div class="filter-body">
+              <label class="field">
+                <span>岗位簇</span>
+                <select id="roleSelect"></select>
+              </label>
+              <label class="field">
+                <span>搜索具体能力</span>
+                <div class="search-field">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                  <input id="searchInput" placeholder="例如 Python、模型训练" />
+                </div>
+              </label>
+              <label class="field">
+                <span>岗位能力等级</span>
+                <select id="senioritySelect"><option value="全部">全部等级</option><option>初级</option><option selected>中级</option><option>高级</option></select>
+              </label>
+              <label class="field">
+                <span>最低 JD 证据数</span>
+                <select id="evidenceSelect"><option value="1">1 条以上</option><option value="3" selected>3 条以上</option><option value="5">5 条以上</option><option value="10">10 条以上</option></select>
+              </label>
+              <div class="filter-group-title"><span>能力类别</span><button id="toggleAllCategories">全部隐藏</button></div>
+              <div class="category-filters" id="categoryFilters"></div>
+              <label class="check-row"><input id="requiredOnly" type="checkbox" /> 只看必备能力</label>
+              <div class="filter-note">节点越靠近中心，表示它与岗位关系越直接；节点旁的数字表示支持该能力的 JD 数量。</div>
+            </div>
+            <div class="filter-foot"><button class="button" id="resetFilters">清空筛选条件</button></div>
+          </aside>
+
+          <section class="panel graph-panel">
+            <div class="graph-toolbar">
+              <div class="graph-title"><i></i><div><strong id="graphRoleTitle">—</strong><br><small id="graphMeta">—</small></div></div>
+              <div class="toolbar-actions">
+                <div class="segmented"><button class="active" data-view="graph">图谱视图</button><button data-view="table">表格视图</button></div>
+                <button class="mini-button" id="zoomOut" title="缩小">−</button>
+                <button class="mini-button" id="zoomIn" title="放大">＋</button>
+                <button class="mini-button" id="fitGraph" title="适应画布">⌗</button>
+              </div>
+            </div>
+            <div class="graph-stage" id="graphStage">
+              <svg id="graphSvg" viewBox="0 0 900 690" role="img" aria-label="岗位能力关系图"></svg>
+              <div class="graph-help">点击节点查看详细解释和 JD 原文证据</div>
+              <div class="graph-legend"><span><i class="job"></i>岗位簇</span><span><i class="category"></i>能力类别</span><span><i class="required"></i>必备能力</span><span><i class="optional"></i>加分/辅助能力</span></div>
+              <div class="empty" id="emptyState"><div><strong>当前条件没有匹配能力</strong><span>请降低证据门槛或清空搜索条件</span></div></div>
+            </div>
+            <div class="table-stage" id="tableStage"><table class="cap-table"><thead><tr><th>能力类别</th><th>具体能力</th><th>重要性</th><th>JD证据</th><th>证据示例</th></tr></thead><tbody id="capabilityTableBody"></tbody></table></div>
+          </section>
+
+          <aside class="panel detail-panel">
+            <div class="detail-tabs"><button class="active" data-detail-tab="node">节点详情</button><button data-detail-tab="jd">代表完整JD</button></div>
+            <div class="detail-content"><div class="node-detail" id="nodeDetail"></div><div class="jd-detail" id="jdDetail" hidden></div></div>
+            <div class="detail-foot"><button class="button primary" id="traceButton">查看全部来源证据</button></div>
+          </aside>
+        </section>
+
+        <section class="panel evidence-panel">
+          <div class="panel-head"><div><h2>图谱构建与证据覆盖</h2><small>每条关系都保留“岗位—能力—JD原文”的可追溯链路</small></div><span class="tag required">数据可追溯</span></div>
+          <div class="evidence-summary" id="evidenceSummary"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="./job-capability-graph-data.js"></script>
+  <script>
+    const categoryMeta = {
+      responsibility: { name: '岗位职责', color: '#1769e0', soft: '#eaf2ff', description: '这个岗位入职以后主要负责完成的工作。' },
+      required_skill: { name: '必备技能', color: '#0b9c93', soft: '#e5f7f4', description: 'JD中使用“必须、熟练、精通”等词强调的技能。' },
+      bonus_skill: { name: '加分技能', color: '#f2a43a', soft: '#fff1dc', description: 'JD中使用“优先、有经验者优先”等词描述的能力。' },
+      tool: { name: '工具平台', color: '#7257c8', soft: '#f0ecfb', description: '完成工作时需要使用的软件、框架和开发平台。' },
+      education: { name: '学历专业', color: '#3f8fc7', soft: '#e8f5fb', description: '岗位要求的学历层次和专业背景。' },
+      experience: { name: '工作经验', color: '#df645e', soft: '#fceceb', description: '岗位要求的工作年限、项目经验或量产经验。' },
+      scenario: { name: '应用场景', color: '#34a56f', soft: '#e8f7ef', description: '能力实际应用的产品、行业和工作场景。' },
+      general: { name: '通用能力', color: '#6b7f94', soft: '#eef2f6', description: '沟通、协作、分析和学习等跨岗位能力。' }
+    };
+
+    const fallbackCategoryMeta = {
+      name: '其他能力', color: '#6b7f94', soft: '#eef2f6', description: '该能力来自JD原文，暂未归入预设能力类别。'
+    };
+
+    function getCategoryMeta(category) {
+      return categoryMeta[category] || { ...fallbackCategoryMeta, name: category || fallbackCategoryMeta.name };
+    }
+
+    function roleCategoryKeys(role) {
+      return [...new Set([...Object.keys(categoryMeta), ...Object.keys(role?.categories || {})])];
+    }
+
+    const sampleRoles = {
+      embodied: {
+        name: '具身智能算法工程师', code: 'JC-AI-017', company: '某头部机器人企业', seniority: '中级', location: '上海 · 浦东', salary: '30–50K · 15薪', jdCount: 46, companyCount: 18,
+        source: '企业招聘官网、BOSS直聘、猎聘', updated: '2026-08-20',
+        responsibilities: ['负责具身智能多模态感知与决策算法的研发和优化。', '构建并训练视觉—语言—动作模型，完成真实机器人验证。', '与机器人平台团队协作，推进算法部署、评测和迭代。'],
+        requirements: ['计算机、自动化、人工智能相关专业，硕士及以上学历。', '熟练掌握 Python、PyTorch，理解 Transformer 与强化学习。', '具备3年以上算法研发经验，有机器人模型部署经验。', '具备良好的论文阅读、问题分析和跨团队协作能力。'],
+        bonus: ['有 VLA、模仿学习或大模型微调项目经验者优先。', '熟悉 ROS2、Isaac Sim、CUDA 优化者优先。'],
+        categories: {
+          responsibility: [
+            ['多模态模型研发', 32, true, '负责视觉、语言与动作多模态模型的设计、训练和迭代。'],
+            ['机器人策略学习', 25, true, '负责机器人操作策略、模仿学习及强化学习算法研发。'],
+            ['模型部署优化', 18, true, '推进算法在真实机器人平台上的部署、性能优化和验证。']
+          ],
+          required_skill: [
+            ['Python', 41, true, '熟练使用Python完成算法开发、数据处理与实验验证。'],
+            ['PyTorch', 38, true, '熟悉PyTorch深度学习框架，具备模型训练经验。'],
+            ['Transformer', 21, true, '理解Transformer、多模态大模型的核心原理。'],
+            ['强化学习', 17, true, '熟悉强化学习或模仿学习方法及其机器人应用。']
+          ],
+          bonus_skill: [
+            ['VLA论文复现', 12, false, '有VLA、多模态大模型相关论文复现或研究经验者优先。'],
+            ['ROS2', 10, false, '熟悉ROS/ROS2机器人软件生态者优先。'],
+            ['Isaac Sim', 7, false, '具备Isaac Sim仿真与数据生成经验。']
+          ],
+          tool: [
+            ['Linux', 35, true, '熟悉Linux开发环境及常用命令。'],
+            ['Git', 29, true, '熟练使用Git进行代码协作与版本管理。'],
+            ['Docker', 16, false, '熟悉Docker容器化环境及服务部署。'],
+            ['CUDA', 14, false, '具备CUDA或TensorRT性能优化经验。']
+          ],
+          education: [
+            ['硕士及以上', 28, true, '计算机、自动化、人工智能等相关专业硕士及以上学历。'],
+            ['计算机/自动化', 34, true, '计算机、自动化、人工智能或机器人相关专业。']
+          ],
+          experience: [
+            ['3年以上', 31, true, '具备3年以上机器人、深度学习或算法研发经验。'],
+            ['机器人部署经验', 19, true, '具有算法在真实机器人平台部署和调试经验。'],
+            ['量产项目经验', 8, false, '有机器人产品量产或规模化交付经验者优先。']
+          ],
+          scenario: [
+            ['具身机器人', 39, true, '面向具身机器人感知、决策、规划与控制场景。'],
+            ['机械臂操作', 22, true, '面向机械臂抓取、装配与灵巧操作任务。'],
+            ['仿真到现实', 11, false, '参与仿真训练及Sim-to-Real迁移验证。']
+          ],
+          general: [
+            ['问题分析', 27, true, '能够拆解复杂问题，设计实验并根据结果持续优化。'],
+            ['跨团队协作', 23, true, '能够与硬件、平台及产品团队高效沟通协作。'],
+            ['英文文献阅读', 16, false, '能够快速阅读英文论文并跟进前沿研究。']
+          ]
+        }
+      },
+      robot_software: {
+        name: '机器人软件工程师', code: 'JC-SW-023', company: '某服务机器人企业', seniority: '中级', location: '深圳 · 南山', salary: '25–40K · 14薪', jdCount: 38, companyCount: 15,
+        source: '企业招聘官网、智联招聘、猎聘', updated: '2026-08-19',
+        responsibilities: ['负责机器人软件架构、运动控制及设备通信模块开发。', '完成ROS2节点设计、系统集成、故障定位与性能优化。', '配合算法和硬件团队完成整机联调及产品交付。'],
+        requirements: ['本科及以上学历，计算机、自动化、电子信息相关专业。', '熟练掌握C++，熟悉Linux、ROS2和常用通信协议。', '具备3年以上机器人软件开发或系统集成经验。'],
+        bonus: ['熟悉导航、SLAM或实时系统者优先。', '有机器人量产、现场交付经验者优先。'],
+        categories: {
+          responsibility: [['机器人软件开发', 31, true, '负责机器人核心软件模块设计、开发和维护。'], ['系统集成联调', 27, true, '完成算法、硬件与上层应用的系统集成和整机联调。'], ['故障定位优化', 18, true, '定位系统故障并完成稳定性和实时性优化。']],
+          required_skill: [['C++', 35, true, '熟练掌握C/C++，具备良好的工程编码能力。'], ['ROS2', 29, true, '熟悉ROS/ROS2通信机制、节点和工具链。'], ['数据结构', 16, true, '掌握常用数据结构、算法和设计模式。']],
+          bonus_skill: [['SLAM', 11, false, '具有SLAM、导航或机器人定位项目经验者优先。'], ['实时系统', 8, false, '了解实时操作系统或实时调度机制。']],
+          tool: [['Linux', 34, true, '熟悉Linux开发、调试和部署环境。'], ['Git', 25, true, '掌握Git协作开发流程。'], ['GDB', 12, false, '熟悉GDB等调试工具。']],
+          education: [['本科及以上', 32, true, '计算机、自动化或电子信息相关专业本科及以上。'], ['计算机/自动化', 26, true, '具有计算机、自动化、电子信息等专业背景。']],
+          experience: [['3年以上', 26, true, '具备3年以上机器人软件或嵌入式软件经验。'], ['整机联调经验', 19, true, '具备机器人整机软硬件联调经验。'], ['产品交付经验', 9, false, '具备机器人产品现场部署和交付经验。']],
+          scenario: [['移动机器人', 28, true, '面向移动机器人导航、控制和任务执行。'], ['服务机器人', 21, true, '应用于服务机器人产品研发和交付。']],
+          general: [['问题定位', 24, true, '能够独立定位跨模块复杂系统问题。'], ['跨团队协作', 20, true, '能够协同算法、硬件与测试团队推进项目。'], ['技术文档', 12, false, '能够编写清晰的软件设计和接口文档。']]
+        }
+      },
+      embedded: {
+        name: '嵌入式硬件工程师', code: 'JC-HW-011', company: '某智能硬件企业', seniority: '中级', location: '杭州 · 余杭', salary: '20–35K · 14薪', jdCount: 33, companyCount: 14,
+        source: '企业招聘官网、前程无忧、BOSS直聘', updated: '2026-08-18',
+        responsibilities: ['负责机器人控制器原理图、PCB及接口电路设计。', '完成样机调试、硬件测试、问题定位和可靠性验证。', '与嵌入式软件、结构团队协作推进产品量产。'],
+        requirements: ['电子信息、电气、自动化相关专业本科及以上学历。', '熟悉MCU、UART、SPI、I²C等接口和常用测试仪器。', '具备3年以上硬件开发经验，能够独立完成板卡设计。'],
+        bonus: ['有机器人、电机驱动或功能安全经验者优先。', '熟悉EMC整改和硬件量产测试者优先。'],
+        categories: {
+          responsibility: [['硬件方案设计', 28, true, '负责控制器硬件方案、器件选型和原理图设计。'], ['样机调试测试', 25, true, '完成样机焊接、调试、测试和问题整改。'], ['量产导入', 13, true, '配合供应链和生产完成硬件量产导入。']],
+          required_skill: [['电路设计', 31, true, '掌握模拟、数字电路和常用接口电路设计。'], ['MCU', 27, true, '熟悉STM32等MCU及其外围电路。'], ['UART/SPI/I²C', 24, true, '熟悉UART、SPI、I²C等硬件通信接口。']],
+          bonus_skill: [['EMC整改', 12, false, '具有EMC测试、分析和整改经验者优先。'], ['功能安全', 6, false, '了解硬件功能安全设计与验证。']],
+          tool: [['示波器', 29, true, '熟练使用示波器、万用表和逻辑分析仪。'], ['Altium Designer', 23, true, '熟练使用Altium Designer进行原理图与PCB设计。'], ['焊接工具', 15, false, '具备样机焊接、返修和调试能力。']],
+          education: [['本科及以上', 29, true, '电子信息、电气或自动化相关专业本科及以上。'], ['电子/电气专业', 27, true, '具有电子信息、电气工程、自动化专业背景。']],
+          experience: [['3年以上', 25, true, '具备3年以上硬件产品设计开发经验。'], ['板卡独立开发', 21, true, '能够独立完成控制板从设计到调试。'], ['量产经验', 11, false, '具备硬件量产和供应链协同经验。']],
+          scenario: [['机器人控制器', 26, true, '面向机器人主控板、驱动板和传感器接口。'], ['电机驱动', 15, true, '面向电机驱动及运动控制硬件。']],
+          general: [['问题定位', 22, true, '能够通过测量与实验定位复杂硬件问题。'], ['跨团队协作', 16, true, '能够与软件、结构、测试和供应链团队协作。'], ['文档规范', 10, false, '能够编写设计说明、BOM和测试报告。']]
+        }
+      }
+    };
+
+    const graphData = window.JOB_CAPABILITY_GRAPH_DATA || null;
+    const roles = graphData?.roles && Object.keys(graphData.roles).length ? graphData.roles : sampleRoles;
+    const state = {
+      roleKey: Object.keys(roles)[0], search: '', minEvidence: 3, requiredOnly: false,
+      enabledCategories: new Set(roleCategoryKeys(roles[Object.keys(roles)[0]])), selected: { type: 'role' },
+      graphView: 'graph', detailTab: 'node', zoom: 1
+    };
+
+    const el = (id) => document.getElementById(id);
+    const svgNS = 'http://www.w3.org/2000/svg';
+    let toastTimer;
+
+    function h(input) {
+      return String(input ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+    }
+
+    function showToast(message) {
+      const toast = el('toast');
+      toast.textContent = message; toast.classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function icon(name) {
+      const paths = {
+        evidence: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>',
+        link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"/></svg>'
+      };
+      return paths[name] || '';
+    }
+
+    function allLeaves(role = roles[state.roleKey]) {
+      return Object.entries(role?.categories || {}).flatMap(([category, items]) => (Array.isArray(items) ? items : []).map((item, index) => ({
+        id: `${category}:${index}`, category, name: item[0], evidence: item[1], required: item[2], quote: item[3],
+        company: item[4] || role.representativeCompany || role.company,
+        jobTitle: item[5] || role.representativeTitle || role.name,
+        url: item[6] || role.representativeUrl || '',
+        occId: item[7] || role.representativeOccId || ''
+      })));
+    }
+
+    function visibleLeaves() {
+      const query = state.search.trim().toLowerCase();
+      return allLeaves().filter(item => state.enabledCategories.has(item.category))
+        .filter(item => item.evidence >= state.minEvidence)
+        .filter(item => !state.requiredOnly || item.required)
+        .filter(item => !query || String(item.name || '').toLowerCase().includes(query) || String(item.quote || '').toLowerCase().includes(query));
+    }
+
+    function createSvg(tag, attrs = {}) {
+      const node = document.createElementNS(svgNS, tag);
+      Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+      return node;
+    }
+
+    function polar(cx, cy, radius, angle) {
+      const rad = angle * Math.PI / 180;
+      return { x: cx + Math.cos(rad) * radius, y: cy + Math.sin(rad) * radius };
+    }
+
+    function wrappedLabel(group, text, x, y, className = '') {
+      const textNode = createSvg('text', { x, y, class: className });
+      const max = 9;
+      const chunks = text.length > max ? [text.slice(0, max), text.slice(max, max * 2)] : [text];
+      chunks.forEach((chunk, i) => {
+        const tspan = createSvg('tspan', { x, dy: i === 0 ? (chunks.length > 1 ? -2 : 2) : 12 });
+        tspan.textContent = chunk.length === max && text.length > max * 2 ? chunk.slice(0, -1) + '…' : chunk;
+        textNode.appendChild(tspan);
+      });
+      group.appendChild(textNode);
+    }
+
+    function renderGraph() {
+      const svg = el('graphSvg');
+      svg.innerHTML = '';
+      const role = roles[state.roleKey];
+      const visible = visibleLeaves();
+      const categoryKeys = roleCategoryKeys(role);
+      const grouped = Object.fromEntries(categoryKeys.map(key => [key, visible.filter(item => item.category === key)]));
+      el('emptyState').classList.toggle('show', visible.length === 0);
+      const cx = 450, cy = 345;
+
+      const viewport = createSvg('g', { transform: `translate(${cx * (1 - state.zoom)} ${cy * (1 - state.zoom)}) scale(${state.zoom})` });
+      viewport.appendChild(createSvg('circle', { cx, cy, r: 170, class: 'ring' }));
+      viewport.appendChild(createSvg('circle', { cx, cy, r: 300, class: 'ring' }));
+      viewport.appendChild(createSvg('circle', { cx, cy, r: 94, class: 'center-halo' }));
+      svg.appendChild(viewport);
+
+      const categoryPositions = {};
+      categoryKeys.forEach((category, index) => {
+        const angle = -90 + index * (360 / Math.max(1, categoryKeys.length));
+        categoryPositions[category] = { ...polar(cx, cy, 170, angle), angle };
+      });
+
+      Object.entries(grouped).forEach(([category, leaves]) => {
+        if (!leaves.length) return;
+        const cat = categoryPositions[category];
+        const edge = createSvg('path', {
+          d: `M ${cx} ${cy} Q ${(cx + cat.x) / 2} ${(cy + cat.y) / 2} ${cat.x} ${cat.y}`,
+          class: 'edge center-edge', 'data-category': category
+        });
+        viewport.appendChild(edge);
+        leaves.forEach((leaf, leafIndex) => {
+          const count = leaves.length;
+          const spread = Math.min(28, 78 / Math.max(1, count - 1));
+          const offset = (leafIndex - (count - 1) / 2) * spread;
+          const radius = leafIndex % 2 === 0 ? 296 : 314;
+          const pos = polar(cx, cy, radius, cat.angle + offset);
+          leaf.position = pos;
+          const mid = polar(cx, cy, 238, cat.angle + offset * .52);
+          const leafEdge = createSvg('path', {
+            d: `M ${cat.x} ${cat.y} Q ${mid.x} ${mid.y} ${pos.x} ${pos.y}`,
+            class: 'edge leaf-edge', 'data-category': category, 'data-leaf': leaf.id
+          });
+          viewport.appendChild(leafEdge);
+        });
+      });
+
+      Object.entries(grouped).forEach(([category, leaves]) => {
+        if (!leaves.length) return;
+        const meta = getCategoryMeta(category), pos = categoryPositions[category];
+        const group = createSvg('g', {
+          class: `node category-node${state.selected.type === 'category' && state.selected.category === category ? ' selected-node' : ''}`,
+          transform: `translate(${pos.x} ${pos.y})`, style: `--node-color:${meta.color};--node-soft:${meta.soft}`, 'data-category': category
+        });
+        group.appendChild(createSvg('circle', { r: 47, class: 'category-fill' }));
+        group.appendChild(createSvg('circle', { r: 42 }));
+        wrappedLabel(group, meta.name, 0, -4);
+        const countText = createSvg('text', { x: 0, y: 18, class: 'count' }); countText.textContent = `${leaves.length} 项能力`; group.appendChild(countText);
+        group.addEventListener('click', () => selectNode({ type: 'category', category }));
+        viewport.appendChild(group);
+      });
+
+      Object.values(grouped).flat().forEach(leaf => {
+        const meta = getCategoryMeta(leaf.category), pos = leaf.position;
+        const group = createSvg('g', {
+          class: `node leaf-node ${leaf.required ? 'required' : ''}${state.selected.type === 'leaf' && state.selected.id === leaf.id ? ' selected-node' : ''}`,
+          transform: `translate(${pos.x} ${pos.y})`, style: `--node-color:${meta.color}`, 'data-category': leaf.category, 'data-leaf': leaf.id
+        });
+        group.appendChild(createSvg('rect', { x: -54, y: -24, width: 108, height: 48, rx: 8 }));
+        group.appendChild(createSvg('rect', { x: -54, y: -24, width: 4, height: 48, rx: 3, class: 'accent' }));
+        wrappedLabel(group, leaf.name, 0, -2);
+        const count = createSvg('text', { x: 0, y: 17, class: 'evidence-count' }); count.textContent = `${leaf.evidence} 条JD证据`; group.appendChild(count);
+        group.addEventListener('click', () => selectNode({ type: 'leaf', ...leaf }));
+        viewport.appendChild(group);
+      });
+
+      const center = createSvg('g', { class: `node center-node${state.selected.type === 'role' ? ' selected-node' : ''}`, transform: `translate(${cx} ${cy})` });
+      center.appendChild(createSvg('circle', { r: 75, class: 'outline' }));
+      center.appendChild(createSvg('circle', { r: 67, class: 'main' }));
+      const nameParts = role.name.length > 8 ? [role.name.slice(0, 8), role.name.slice(8)] : [role.name];
+      const nameText = createSvg('text', { x: 0, y: nameParts.length > 1 ? -10 : -2, class: 'name' });
+      nameParts.forEach((part, i) => { const t = createSvg('tspan', { x: 0, dy: i ? 17 : 0 }); t.textContent = part; nameText.appendChild(t); }); center.appendChild(nameText);
+      const metaText = createSvg('text', { x: 0, y: nameParts.length > 1 ? 31 : 20, class: 'meta' }); metaText.textContent = `${role.seniority} · ${role.jdCount}份JD`; center.appendChild(metaText);
+      center.addEventListener('click', () => selectNode({ type: 'role' }));
+      viewport.appendChild(center);
+      applyHighlight();
+    }
+
+    function applyHighlight() {
+      const svg = el('graphSvg');
+      svg.querySelectorAll('.node,.edge').forEach(node => node.classList.remove('dim', 'active'));
+      if (state.selected.type === 'role') return;
+      const category = state.selected.category;
+      svg.querySelectorAll('.node,.edge').forEach(node => {
+        const keepCategory = node.dataset.category === category;
+        const keepLeaf = state.selected.type === 'leaf' && node.dataset.leaf === state.selected.id;
+        if (!keepCategory && !keepLeaf && !node.classList.contains('center-node')) node.classList.add('dim');
+      });
+      svg.querySelectorAll(`.edge[data-category="${category}"]`).forEach(edge => {
+        if (state.selected.type !== 'leaf' || !edge.dataset.leaf || edge.dataset.leaf === state.selected.id) edge.classList.add('active');
+        else edge.classList.add('dim');
+      });
+    }
+
+    function selectNode(next) {
+      state.selected = next;
+      renderGraph(); renderDetail();
+    }
+
+    function renderMetrics() {
+      const role = roles[state.roleKey], leaves = allLeaves(role), required = leaves.filter(x => x.required).length;
+      const items = [
+        ['支持JD', role.jdCount, '真实招聘'], ['能力类别', Object.keys(role.categories).length, '结构化'], ['具体能力', leaves.length, '已归一'],
+        ['必备能力', required, `${Math.round(required/leaves.length*100)}%`], ['来源企业', role.companyCount, '已去重'], ['关系证据', leaves.reduce((s,x)=>s+x.evidence,0), '可追溯']
+      ];
+      const colors = ['#1769e0','#7257c8','#3f8fc7','#0b9c93','#f2a43a','#df645e'];
+      el('metrics').innerHTML = items.map((item,i) => `<div class="metric" style="--metric-color:${colors[i]}"><span>${item[0]}</span><div><strong>${item[1]}</strong><small>${item[2]}</small></div></div>`).join('');
+    }
+
+    function renderFilters() {
+      const role = roles[state.roleKey];
+      el('senioritySelect').value = role.seniority || '全部';
+      el('roleSelect').innerHTML = Object.entries(roles).map(([key, item]) => `<option value="${h(key)}" ${key===state.roleKey?'selected':''}>${h(item.name)}（${item.jdCount}份JD）</option>`).join('');
+      el('categoryFilters').innerHTML = roleCategoryKeys(role).map((key) => {
+        const meta = getCategoryMeta(key);
+        const count = role.categories[key]?.length || 0, on = state.enabledCategories.has(key);
+        return `<button class="category-filter ${on?'':'off'}" style="--category-color:${meta.color}" data-category-toggle="${key}"><i></i><span>${meta.name}</span><b>${count}</b></button>`;
+      }).join('');
+      document.querySelectorAll('[data-category-toggle]').forEach(button => button.addEventListener('click', () => {
+        const key = button.dataset.categoryToggle;
+        if (state.enabledCategories.has(key)) state.enabledCategories.delete(key); else state.enabledCategories.add(key);
+        state.selected = { type: 'role' }; renderAll(false);
+      }));
+      el('toggleAllCategories').textContent = state.enabledCategories.size ? '全部隐藏' : '全部显示';
+    }
+
+    function renderDetail() {
+      const role = roles[state.roleKey], node = state.selected;
+      let html = '';
+      if (node.type === 'role') {
+        html = `<div class="detail-eyebrow"><i></i>岗位簇 · ${h(role.code)}</div><h2 class="detail-title">${h(role.name)}</h2><p class="detail-subtitle">${h(role.company)} · ${h(role.location)}</p>
+          <div class="detail-badges"><span class="tag required">${h(role.seniority)}</span><span class="tag">${h(role.salary)}</span><span class="tag">${role.jdCount}份JD支持</span></div>
+          <section class="detail-section"><h3>岗位基本信息 <span>来自真实JD</span></h3><div class="kv-list">
+            <div class="kv"><span>职业方向</span><strong>${h(role.direction || '具身智能相关岗位')}</strong></div><div class="kv"><span>能力等级</span><strong>${h(role.seniority)}（岗位簇中占比最高）</strong></div>
+            <div class="kv"><span>产业链位置</span><strong>${h(role.industryStage || '未说明')}</strong></div><div class="kv"><span>来源企业</span><strong>${role.companyCount}家去重企业</strong></div>
+            <div class="kv"><span>数据来源</span><strong>${h(role.source)}</strong></div><div class="kv"><span>数据版本</span><strong>${h(role.updated)}</strong></div></div></section>
+          <section class="detail-section"><h3>能力结构 <span>点击外圈节点查看证据</span></h3>${Object.entries(role.categories || {}).map(([key, items]) => { const meta = getCategoryMeta(key); return `<div class="score-row"><span>${meta.name}</span><div class="score-track"><i style="width:${Math.min(100,(Array.isArray(items) ? items.length : 0)*23)}%;background:${meta.color}"></i></div><b>${Array.isArray(items) ? items.length : 0}</b></div>` }).join('')}</section>`;
+      } else if (node.type === 'category') {
+        const meta = getCategoryMeta(node.category), items = visibleLeaves().filter(x => x.category === node.category);
+        html = `<div class="detail-eyebrow" style="color:${meta.color}"><i></i>能力类别</div><h2 class="detail-title">${meta.name}</h2><p class="detail-subtitle">${meta.description}</p>
+          <div class="detail-badges"><span class="tag">${items.length}项能力</span><span class="tag required">${items.reduce((s,x)=>s+x.evidence,0)}条证据</span></div>
+          <section class="detail-section"><h3>类别中的具体能力 <span>按证据数量排序</span></h3><div class="kv-list">${items.sort((a,b)=>b.evidence-a.evidence).map(item => `<div class="kv"><span>${item.required?'核心/必备':'加分/辅助'}</span><strong>${h(item.name)} · ${item.evidence}条JD</strong></div>`).join('')}</div></section>`;
+      } else {
+        const meta = getCategoryMeta(node.category);
+        const sourceLink = node.url ? `<a href="${h(node.url)}" target="_blank" rel="noreferrer">打开招聘来源</a>` : '<span>来源链接未收录</span>';
+        html = `<div class="detail-eyebrow" style="color:${meta.color}"><i></i>${meta.name} · ${node.required?'核心/必备':'加分/辅助'}</div><h2 class="detail-title">${h(node.name)}</h2><p class="detail-subtitle">该节点由工作簿中的标准字段或真实JD文本聚合形成。</p>
+          <div class="detail-badges"><span class="tag ${node.required?'required':'optional'}">${node.required?'核心/必备能力':'加分/辅助能力'}</span><span class="tag">${node.evidence}份JD支持</span><span class="tag">可追溯</span></div>
+          <section class="detail-section"><h3>关系解释 <span>岗位 → ${meta.name}</span></h3><div class="kv-list"><div class="kv"><span>关联岗位簇</span><strong>${h(role.name)}</strong></div><div class="kv"><span>标准名称</span><strong>${h(node.name)}</strong></div><div class="kv"><span>提取方法</span><strong>工作簿标准字段 + JD关键词抽取 + 同义词归一</strong></div><div class="kv"><span>证据岗位</span><strong>${h(node.jobTitle)}</strong></div><div class="kv"><span>证据企业</span><strong>${h(node.company)}</strong></div><div class="kv"><span>岗位ID</span><strong>${h(node.occId || '未标注')}</strong></div></div></section>
+          <section class="detail-section"><h3>JD原文证据 <span>示例 1 / ${node.evidence}</span></h3><article class="evidence-card"><p>“${h(node.quote)}”</p><footer><span>${h(node.company)} · ${h(node.jobTitle)}</span><b>表格原文</b></footer></article><div style="margin-top:8px;font-size:9px">${sourceLink}</div></section>`;
+      }
+      el('nodeDetail').innerHTML = html;
+      renderJD();
+    }
+
+    function renderJD() {
+      const role = roles[state.roleKey];
+      const representativeLink = role.representativeUrl ? `<a href="${h(role.representativeUrl)}" target="_blank" rel="noreferrer">打开原始招聘页面</a>` : '来源链接未收录';
+      el('jdDetail').innerHTML = `<div class="jd-header"><h2>${h(role.representativeTitle || role.name)}</h2><p>${h(role.representativeCompany || role.company)}　${h(role.location)}　${h(role.salary)}</p><div class="detail-badges"><span class="tag required">${h(role.seniority)}</span><span class="tag">代表JD</span><span class="tag">${h(role.representativeOccId || role.code)}</span></div></div>
+        <section class="jd-block"><h3>从代表JD提取的岗位职责</h3><ol>${(role.responsibilities || []).map(x=>`<li>${h(x)}</li>`).join('') || '<li>该代表JD未识别到明确岗位职责</li>'}</ol></section>
+        <section class="jd-block"><h3>从代表JD提取的任职要求</h3><ol>${(role.requirements || []).map(x=>`<li>${h(x)}</li>`).join('') || '<li>该代表JD未识别到明确任职要求</li>'}</ol></section>
+        <section class="jd-block"><h3>从代表JD提取的加分项</h3><ul>${(role.bonus || []).length ? role.bonus.map(x=>`<li>${h(x)}</li>`).join('') : '<li>该代表JD未识别到明确加分项</li>'}</ul></section>
+        ${role.rawJd ? `<section class="jd-block"><h3>清洗后的完整JD原文</h3><div class="raw-jd">${h(role.rawJd)}</div></section>` : ''}
+        <section class="detail-section"><h3>数据说明 <span>证据可追溯</span></h3><div class="kv-list"><div class="kv"><span>JD来源</span><strong>${h(role.source)}</strong></div><div class="kv"><span>数据版本</span><strong>${h(role.updated)}</strong></div><div class="kv"><span>原始链接</span><strong>${representativeLink}</strong></div><div class="kv"><span>清洗状态</span><strong>使用工作簿“清洗JD描述”字段，页面不改写原文</strong></div></div></section>`;
+    }
+
+    function renderTable() {
+      const rows = visibleLeaves();
+      el('capabilityTableBody').innerHTML = rows.map(item => { const meta = getCategoryMeta(item.category); return `<tr><td><span class="tag" style="color:${meta.color};background:${meta.soft}">${meta.name}</span></td><td><button data-table-node="${h(item.id)}">${h(item.name)}</button></td><td><span class="tag ${item.required?'required':'optional'}">${item.required?'核心/必备':'加分/辅助'}</span></td><td><b>${item.evidence}</b> 份JD</td><td>${h(item.quote)}<small>${h(item.company)} · ${h(item.jobTitle)}</small></td></tr>` }).join('');
+      document.querySelectorAll('[data-table-node]').forEach(button => button.addEventListener('click', () => {
+        const item = allLeaves().find(x => x.id === button.dataset.tableNode); if (item) selectNode({ type:'leaf', ...item });
+      }));
+    }
+
+    function renderSummary() {
+      const role = roles[state.roleKey], leaves = allLeaves(role), total = leaves.reduce((s,x)=>s+x.evidence,0), required = leaves.filter(x=>x.required).reduce((s,x)=>s+x.evidence,0);
+      const metadata = graphData?.metadata;
+      const coverage = metadata ? Math.round(metadata.validJdRows / metadata.totalRows * 1000) / 10 : 100;
+      el('evidenceSummary').innerHTML = `<div class="summary-cell"><span>构建流程</span><strong>真实JD → 字段提取 → 归一聚类 → 建立关系</strong><p>不是大模型凭空生成，每个节点都保留原始招聘文本。</p></div>
+        <div class="summary-cell"><span>有效JD覆盖</span><strong>${coverage}%</strong><div class="stacked"><i style="width:${coverage}%;background:#0b9c93"></i></div><p>${metadata ? `${metadata.validJdRows} / ${metadata.totalRows}条岗位记录` : `${role.jdCount}条岗位记录`}</p></div>
+        <div class="summary-cell"><span>必备 / 加分证据</span><strong>${required} / ${total-required}</strong><div class="stacked"><i style="width:${required/total*100}%;background:#1769e0"></i><i style="width:${(total-required)/total*100}%;background:#f2a43a"></i></div><p>通过“必须/优先”等语义规则区分</p></div>
+        <div class="summary-cell"><span>质量状态</span><strong>规则提取 · 待人工复核</strong><div class="stacked"><i style="width:70%;background:#7257c8"></i></div><p>已做标准字段聚合，职责与场景节点仍需抽样校准</p></div>`;
+    }
+
+    function renderAll(includeFilters = true) {
+      const role = roles[state.roleKey], visible = visibleLeaves();
+      if (includeFilters) renderFilters();
+      renderMetrics(); renderGraph(); renderTable(); renderDetail(); renderSummary();
+      el('datasetLabel').textContent = graphData?.metadata
+        ? `真实数据：${graphData.metadata.validJdRows}份有效JD · ${graphData.metadata.clusterCount}个岗位簇 · ${graphData.metadata.standardSkillCount}个标准技能`
+        : '当前为交互示例数据；T/L属于技术层级，不作为能力等级';
+      el('graphRoleTitle').textContent = role.name;
+      el('graphMeta').textContent = `中心岗位 · ${visible.length}项能力 · ${visible.reduce((s,x)=>s+x.evidence,0)}条关系证据`;
+      el('filterResult').textContent = `显示 ${visible.length}/${allLeaves().length}`;
+      el('graphStage').style.display = state.graphView === 'graph' ? 'block' : 'none';
+      el('tableStage').classList.toggle('show', state.graphView === 'table');
+    }
+
+    function resetFilters() {
+      state.search = ''; state.minEvidence = 3; state.requiredOnly = false; state.enabledCategories = new Set(roleCategoryKeys(roles[state.roleKey])); state.selected = {type:'role'}; state.zoom = 1;
+      el('searchInput').value = ''; el('evidenceSelect').value = '3'; el('requiredOnly').checked = false; el('senioritySelect').value = roles[state.roleKey].seniority;
+      renderAll(); showToast('已恢复默认图谱');
+    }
+
+    el('roleSelect').addEventListener('change', event => { state.roleKey = event.target.value; state.enabledCategories = new Set(roleCategoryKeys(roles[state.roleKey])); state.selected = {type:'role'}; el('senioritySelect').value = roles[state.roleKey].seniority; renderAll(); });
+    el('searchInput').addEventListener('input', event => { state.search = event.target.value; state.selected = {type:'role'}; renderAll(false); });
+    el('evidenceSelect').addEventListener('change', event => { state.minEvidence = Number(event.target.value); state.selected = {type:'role'}; renderAll(false); });
+    el('requiredOnly').addEventListener('change', event => { state.requiredOnly = event.target.checked; state.selected = {type:'role'}; renderAll(false); });
+    el('senioritySelect').addEventListener('change', event => { if (event.target.value !== '全部' && event.target.value !== roles[state.roleKey].seniority) showToast(`参考数据中当前岗位判定为“${roles[state.roleKey].seniority}”`); });
+    el('toggleAllCategories').addEventListener('click', () => { state.enabledCategories = state.enabledCategories.size ? new Set() : new Set(roleCategoryKeys(roles[state.roleKey])); state.selected = {type:'role'}; renderAll(); });
+    el('resetFilters').addEventListener('click', resetFilters); el('restoreButton').addEventListener('click', resetFilters);
+    document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => { state.graphView = button.dataset.view; document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x===button)); renderAll(false); }));
+    document.querySelectorAll('[data-detail-tab]').forEach(button => button.addEventListener('click', () => { state.detailTab = button.dataset.detailTab; document.querySelectorAll('[data-detail-tab]').forEach(x=>x.classList.toggle('active',x===button)); el('nodeDetail').hidden = state.detailTab !== 'node'; el('jdDetail').hidden = state.detailTab !== 'jd'; }));
+    document.querySelectorAll('[data-demo-tab]').forEach(button => button.addEventListener('click', () => showToast(`${button.dataset.demoTab}将在正式版中通过接口跳转，本参考页只演示岗位能力图谱`)));
+    el('zoomIn').addEventListener('click', () => { state.zoom = Math.min(1.25, +(state.zoom+.08).toFixed(2)); renderGraph(); });
+    el('zoomOut').addEventListener('click', () => { state.zoom = Math.max(.72, +(state.zoom-.08).toFixed(2)); renderGraph(); });
+    el('fitGraph').addEventListener('click', () => { state.zoom = 1; renderGraph(); });
+    el('printButton').addEventListener('click', () => window.print());
+    el('explainButton').addEventListener('click', () => showToast('中心是岗位，第一圈是能力类别，第二圈是从JD抽取的具体能力'));
+    el('switchTechButton').addEventListener('click', () => showToast('正式版将携带当前岗位ID跳转到“技术—岗位匹配图”'));
+    el('traceButton').addEventListener('click', () => showToast(state.selected.type === 'leaf' ? `已定位“${state.selected.name}”的全部JD证据` : '请先点击一个具体能力节点'));
+
+    renderAll();
+  </script>
+</body>
+</html>

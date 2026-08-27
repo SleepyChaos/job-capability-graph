@@ -1,0 +1,15 @@
+{
+  "dataset_id": "layer_c_calibration_frozen_v1",
+  "status": "frozen_for_double_annotation",
+  "audit_run_code": "validation_fixed",
+  "sample_count": 150,
+  "stratum_counts": {
+    "low": 50,
+    "medium": 50,
+    "high": 50
+  },
+  "selection": "stable_sha256_within_stratum",
+  "annotator_A_sha256": "373fb26a7e55ea1d4c74f7cc97018c67333273639abbaf5232675eed03c1edb9",
+  "annotator_B_sha256": "373fb26a7e55ea1d4c74f7cc97018c67333273639abbaf5232675eed03c1edb9",
+  "requires_adjudication": true
+}

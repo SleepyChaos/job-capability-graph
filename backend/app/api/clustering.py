@@ -1,9 +1,10 @@
 from decimal import Decimal
 from typing import Annotated, Literal
+from collections import defaultdict
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
-from sqlalchemy import func, select
+from sqlalchemy import and_, desc, func, select
 from sqlalchemy.orm import Session
 
 from app.api.data_center import get_reviewer
@@ -28,7 +29,7 @@ from app.modules.clustering.service import (
     run_full_clustering,
 )
 from app.modules.data_center.models import AppUser, ReviewTask
-from app.modules.job.models import JobPosting
+from app.modules.job.models import JobPosting, JobRequirement, SourceDocumentVersion
 from app.modules.taxonomy.models import TechnologyDomain, TechnologyNode
 
 router = APIRouter(tags=["job-clustering"])
@@ -89,6 +90,8 @@ class ClusterMemberItem(BaseModel):
     job_code: str
     title: str
     company: str | None
+    source_collected_at_date: str | None
+    technology_evidence_count: int
     similarity_score: Decimal
     assignment_status: str
     assignment_confidence: Decimal | None
@@ -96,10 +99,23 @@ class ClusterMemberItem(BaseModel):
     top_candidates: list
 
 
+class ClusterCapabilityRankingItem(BaseModel):
+    technology_code: str
+    technology_name: str
+    requirement_type: str
+    supporting_job_count: int
+    organization_count: int
+    importance_weight: Decimal
+    coverage_rate: Decimal | None
+
+
 class ClusterDetail(ClusterListItem):
     description: str | None
     centroid: dict
     members: list[ClusterMemberItem]
+    capability_rankings: list[ClusterCapabilityRankingItem]
+    grey_zone_member_count: int
+    grey_zone_representative_titles: list[str]
 
 
 class RoleListItem(BaseModel):
@@ -281,6 +297,88 @@ def cluster_detail(
             JobClusterMember.is_representative.desc(), JobClusterMember.similarity_score.desc()
         )
     ).all()
+
+    job_posting_ids = [job.job_posting_id for _, job in rows]
+    evidence_count_map: dict[int, int] = {}
+    if job_posting_ids:
+        ev_rows = db.execute(
+            select(
+                JobRequirement.job_posting_id,
+                func.count(JobRequirement.job_requirement_id),
+            )
+            .where(JobRequirement.job_posting_id.in_(job_posting_ids))
+            .group_by(JobRequirement.job_posting_id)
+        ).all()
+        for jid, cnt in ev_rows:
+            evidence_count_map[jid] = cnt
+
+    collected_date_map: dict[int, str | None] = {}
+    if job_posting_ids:
+        sd_rows = db.execute(
+            select(
+                JobPosting.job_posting_id,
+                SourceDocumentVersion.collected_at,
+                JobPosting.published_at,
+                JobPosting.source_collected_at,
+            )
+            .outerjoin(
+                SourceDocumentVersion,
+                SourceDocumentVersion.source_document_version_id == JobPosting.source_document_version_id,
+            )
+            .where(JobPosting.job_posting_id.in_(job_posting_ids))
+        ).all()
+        for jid, sdv_collected_at, published_at, src_collected_at in sd_rows:
+            dt = None
+            if src_collected_at is not None:
+                dt = src_collected_at.date()
+            elif sdv_collected_at is not None:
+                dt = sdv_collected_at.date()
+            elif published_at is not None:
+                dt = published_at.date()
+            collected_date_map[jid] = dt.strftime("%Y-%m-%d") if dt is not None else None
+
+    grey_zone_members = [(m, j) for m, j in rows if m.assignment_status_code in ('grey_zone', 'boundary', 'uncertain')]
+    grey_zone_member_count = len(grey_zone_members)
+    grey_zone_representative_titles = [
+        j.job_title_raw for m, j in sorted(
+            grey_zone_members,
+            key=lambda x: (not x[0].is_representative, -float(x[0].similarity_score or 0))
+        )[:3]
+    ]
+
+    capability_rankings: list[ClusterCapabilityRankingItem] = []
+    if role_code:
+        role = db.scalar(select(JobRole).where(JobRole.role_code == role_code))
+        if role:
+            latest_version = db.scalar(
+                select(JobRoleVersion)
+                .where(JobRoleVersion.job_role_id == role.job_role_id)
+                .order_by(JobRoleVersion.version_no.desc())
+            )
+            if latest_version:
+                req_rows = db.execute(
+                    select(JobRoleVersionRequirement, TechnologyNode)
+                    .join(
+                        TechnologyNode,
+                        TechnologyNode.technology_node_id == JobRoleVersionRequirement.technology_node_id,
+                    )
+                    .where(JobRoleVersionRequirement.job_role_version_id == latest_version.job_role_version_id)
+                    .order_by(JobRoleVersionRequirement.long_term_importance_score.desc())
+                ).all()
+                for req, node in req_rows:
+                    capability_rankings.append(ClusterCapabilityRankingItem(
+                        technology_code=node.technology_code,
+                        technology_name=node.technology_name,
+                        requirement_type=req.requirement_type_code,
+                        supporting_job_count=req.supporting_job_count,
+                        organization_count=req.independent_organization_count,
+                        importance_weight=req.long_term_importance_score,
+                        coverage_rate=req.coverage_rate,
+                    ))
+
+    assigned_members = [(m, j) for m, j in rows if m.assignment_status_code not in ('grey_zone', 'boundary', 'uncertain')]
+    assigned_members = assigned_members[:20]
+
     item = _cluster_item(cluster, domain, role_code)
     return ClusterDetail(
         **item.model_dump(),
@@ -291,14 +389,19 @@ def cluster_detail(
                 job_code=job.job_code,
                 title=job.job_title_raw,
                 company=job.company_name_raw,
+                source_collected_at_date=collected_date_map.get(job.job_posting_id),
+                technology_evidence_count=evidence_count_map.get(job.job_posting_id, 0),
                 similarity_score=member.similarity_score,
                 assignment_status=member.assignment_status_code,
                 assignment_confidence=member.assignment_confidence,
                 is_representative=member.is_representative,
                 top_candidates=member.top_candidates_json,
             )
-            for member, job in rows
+            for member, job in assigned_members
         ],
+        capability_rankings=capability_rankings,
+        grey_zone_member_count=grey_zone_member_count,
+        grey_zone_representative_titles=grey_zone_representative_titles,
     )
 
 

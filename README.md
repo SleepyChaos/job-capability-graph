@@ -4,12 +4,29 @@
 
 ## 一键启动
 
+### Windows 本地开发（推荐用于当前工作区）
+
+仓库根目录提供统一启动入口，固定使用前端 `8080`、后端 `8000`。脚本会复用已健康的服务、拒绝占用冲突端口，并在 `.runtime` 保存进程与日志。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\start-local.ps1
+```
+
+停止由该脚本启动的服务：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\stop-local.ps1
+```
+
+开发服务器与 `vite preview` 均代理 `/api` 到后端，避免预览模式打开页面后筛选请求失效。
+
+### Docker Compose
+
 要求：Docker Desktop 或兼容的 Docker Engine，支持 `docker compose`。
 
 ```bash
 git clone https://github.com/SleepyChaos/job-capability-graph.git
 cd job-capability-graph
-git switch codex/redesign-from-scratch
 docker compose up --build -d
 ```
 
@@ -40,6 +57,19 @@ docker compose down
 
 ## 当前数据版本
 
+岗位生态图谱已升级为 v4 企业增强候选版，数据源位于 `data/source/20260826/core/岗位信息v4_企业增强分析.xlsx`：
+
+- 岗位事实：4,655 条；
+- 企业库：633 条企业实体；
+- 已关联企业属性的岗位：4,472 条（96.1%），覆盖 102 个企业实体；
+- 待核验或待补全：183 条，未强行赋予产业链、地区或融资属性；
+- 岗位图谱：6 个职业方向、17 个职业种类、42 个可解释候选岗位簇；
+- 企业图谱：岗位连接企业，再连接产业链层级、细分领域、融资轮次、所属地区和总部城市。
+
+前端“岗位生态图谱”可在“岗位层级”和“企业视角”之间切换。候选岗位簇仍需 Embedding + HDBSCAN 稳定性检验和专家校准后才能作为正式发布版本。
+
+以下 MySQL 快照仍是后端默认运行库基线，不与上述 v4 文件口径混用：
+
 仓库内的 `data/runtime/job-capability-graph-mysql-20260812.sql.gz` 是默认恢复快照：
 
 - Alembic：`20260812_0013`
@@ -60,10 +90,10 @@ docker compose down
 ```dotenv
 APP_LLM_API_KEY=your-key
 APP_LLM_BASE_URL=https://api.deepseek.com/v1
-APP_LLM_MODEL=deepseek-chat
+APP_LLM_MODEL=deepseek-v4-flash
 ```
 
-旧变量名 `OPENAI_API_KEY`、`OPENAI_BASE_URL`、`LLM_MODEL` 也兼容。先做不回写测试：
+默认调用模型为 `deepseek-v4-flash`。旧变量名 `OPENAI_API_KEY`、`OPENAI_BASE_URL`、`LLM_MODEL` 也兼容。先做不回写测试：
 
 ```bash
 docker compose exec backend python -m tools.reassess_technologies_llm \

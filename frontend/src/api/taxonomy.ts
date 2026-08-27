@@ -66,6 +66,47 @@ export interface TechnologyNodePage {
   items: TechnologyNode[]
 }
 
+export interface TechnologyNodeDetail {
+  node_id: number
+  code: string
+  name: string
+  level_code: string
+  definition_text: string | null
+  alias_text: string[]
+  deprecated: boolean
+  replaced_by_code: string | null
+  review_status_code: string
+  referenced_job_count: number
+  referenced_organization_count: number
+  referenced_role_cluster_count: number
+  source_sheet: string | null
+  source_row_number: number | null
+  alias_count: number
+  source_job_count: number
+  role_cluster_requirement_count: number
+}
+
+export interface TaxonomyTreeNode {
+  node_id: number
+  code: string
+  name: string
+  level_code: string
+  domain_code: string
+  parent_code: string | null
+  referenced_job_count: number
+  referenced_organization_count: number
+  referenced_role_cluster_count: number
+  children: TaxonomyTreeNode[]
+}
+
+export interface TaxonomyTreeResponse {
+  version_code: string
+  max_depth: string
+  total_nodes: number
+  root_count: number
+  roots: TaxonomyTreeNode[]
+}
+
 let domainCache: Promise<TechnologyDomain[]> | null = null
 
 /** 模块级缓存的领域列表，供图例/筛选等轻量组件复用。 */
@@ -103,5 +144,13 @@ export const taxonomyApi = {
       { total: 0, limit: params.limit ?? 100, offset: params.offset ?? 0, items: [] },
       signal,
     )
+  },
+  nodeDetail(code: string, signal?: AbortSignal) {
+    return getJson<TechnologyNodeDetail>(`/taxonomy/nodes/${encodeURIComponent(code)}/detail`, signal)
+  },
+  tree(maxDepth: 'L1' | 'L2' | 'L3' | 'L4' = 'L3', versionCode?: string | null, signal?: AbortSignal) {
+    const query = new URLSearchParams({ max_depth: maxDepth })
+    if (versionCode) query.set('version_code', versionCode)
+    return getJson<TaxonomyTreeResponse>(`/taxonomy/tree?${query}`, signal)
   },
 }

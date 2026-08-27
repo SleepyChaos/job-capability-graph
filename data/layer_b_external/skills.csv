@@ -1,0 +1,29 @@
+conceptUri,preferredLabel,skillType,description
+http://data.europa.eu/esco/skill/S1_1,reading comprehension,S,skill
+http://data.europa.eu/esco/skill/S1_2,writing,S,skill
+http://data.europa.eu/esco/skill/S2_1,robotics manipulation,S,skill
+http://data.europa.eu/esco/skill/S2_2,motion control,S,skill
+http://data.europa.eu/esco/skill/S2_3,servo drive,S,skill
+http://data.europa.eu/esco/skill/S2_4,path planning,S,skill
+http://data.europa.eu/esco/skill/S2_5,computer vision,S,skill
+http://data.europa.eu/esco/skill/S2_6,natural language processing,S,skill
+http://data.europa.eu/esco/skill/S2_7,machine learning,S,skill
+http://data.europa.eu/esco/skill/S2_8,deep learning,S,skill
+http://data.europa.eu/esco/skill/S2_9,reinforcement learning,S,skill
+http://data.europa.eu/esco/skill/S2_10,slam,S,skill
+http://data.europa.eu/esco/skill/S2_11,point cloud processing,S,skill
+http://data.europa.eu/esco/skill/S2_12,embedded systems,S,skill
+http://data.europa.eu/esco/skill/S2_13,fpga design,S,skill
+http://data.europa.eu/esco/skill/S2_14,mechanical design,S,skill
+http://data.europa.eu/esco/skill/S2_15,convolutional neural networks,S,skill
+http://data.europa.eu/esco/skill/S2_16,transformer models,S,skill
+http://data.europa.eu/esco/skill/S2_17,3d vision,S,skill
+http://data.europa.eu/esco/skill/S2_18,grasping,S,skill
+http://data.europa.eu/esco/skill/S2_19,force control,S,skill
+http://data.europa.eu/esco/skill/S2_20,sensor fusion,S,skill
+http://data.europa.eu/esco/skill/S2_21,ros robot operating system,S,skill
+http://data.europa.eu/esco/skill/S2_22,collaborative robotics,S,skill
+http://data.europa.eu/esco/skill/S2_23,industrial robotics,S,skill
+http://data.europa.eu/esco/skill/S2_24,control algorithms,S,skill
+http://data.europa.eu/esco/skill/S2_25,simulation modelling,S,skill
+http://data.europa.eu/esco/skill/S2_26,knowledge graph,S,skill

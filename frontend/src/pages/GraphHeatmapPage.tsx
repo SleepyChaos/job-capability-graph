@@ -1,4 +1,4 @@
-import { Activity, AlertTriangle } from 'lucide-react'
+import { Activity, AlertTriangle, ArrowLeft } from 'lucide-react'
 import type { CSSProperties } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -66,6 +66,7 @@ export function GraphHeatmapPage({ notify }: { notify: (message: string) => void
   const hasProjection = Boolean(data && data.data_version !== 'uninitialized')
 
   return <div className="page-stack graph-analysis-page">
+    <div className="graph-breadcrumb"><button onClick={() => { window.location.hash = '/graph-relations' }}><ArrowLeft size={13} />产业链全局图谱</button><span>/</span><strong>能力时间热力图</strong></div>
     <div className="page-intro"><div><h2>能力热力图</h2><p>每个日格统计当天新进入正式库、去重并通过语境校验的材料触发数；同一 JD 对同一技术点每天只计一次。</p></div>{data ? <StatusTag tone={data.window.data_status === 'partial' ? 'warning' : 'success'}>{data.window.observed_date_count}/45 天有可靠数据</StatusTag> : null}</div>
     {error ? <div className="empty-state"><Activity size={24} /><strong>热力图加载失败</strong><span>{error}</span></div> : null}
     {!error && !data ? <div className="empty-state"><Activity size={24} /><strong>正在聚合 45 天触发数据</strong><span>按技术域和标准技术层级生成日格。</span></div> : null}

@@ -1,0 +1,1382 @@
+[
+  {
+    "id": "edge-direction-01-category-01",
+    "source": "direction-01",
+    "target": "category-01",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-01",
+    "source": "category-01",
+    "target": "cluster-01",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-02",
+    "source": "category-01",
+    "target": "cluster-02",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-03",
+    "source": "category-01",
+    "target": "cluster-03",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-04",
+    "source": "category-01",
+    "target": "cluster-04",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-05",
+    "source": "category-01",
+    "target": "cluster-05",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-01-category-02",
+    "source": "direction-01",
+    "target": "category-02",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-06",
+    "source": "category-02",
+    "target": "cluster-06",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-07",
+    "source": "category-02",
+    "target": "cluster-07",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-08",
+    "source": "category-02",
+    "target": "cluster-08",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-09",
+    "source": "category-02",
+    "target": "cluster-09",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-10",
+    "source": "category-02",
+    "target": "cluster-10",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-01-category-03",
+    "source": "direction-01",
+    "target": "category-03",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-03-cluster-11",
+    "source": "category-03",
+    "target": "cluster-11",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-03-cluster-12",
+    "source": "category-03",
+    "target": "cluster-12",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-01-category-04",
+    "source": "direction-01",
+    "target": "category-04",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-04-cluster-13",
+    "source": "category-04",
+    "target": "cluster-13",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-04-cluster-14",
+    "source": "category-04",
+    "target": "cluster-14",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-02-category-05",
+    "source": "direction-02",
+    "target": "category-05",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-15",
+    "source": "category-05",
+    "target": "cluster-15",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-16",
+    "source": "category-05",
+    "target": "cluster-16",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-17",
+    "source": "category-05",
+    "target": "cluster-17",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-18",
+    "source": "category-05",
+    "target": "cluster-18",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-19",
+    "source": "category-05",
+    "target": "cluster-19",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-20",
+    "source": "category-05",
+    "target": "cluster-20",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-02-category-06",
+    "source": "direction-02",
+    "target": "category-06",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-06-cluster-21",
+    "source": "category-06",
+    "target": "cluster-21",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-06-cluster-22",
+    "source": "category-06",
+    "target": "cluster-22",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-06-cluster-23",
+    "source": "category-06",
+    "target": "cluster-23",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-02-category-07",
+    "source": "direction-02",
+    "target": "category-07",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-07-cluster-24",
+    "source": "category-07",
+    "target": "cluster-24",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-07-cluster-25",
+    "source": "category-07",
+    "target": "cluster-25",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-07-cluster-26",
+    "source": "category-07",
+    "target": "cluster-26",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-03-category-08",
+    "source": "direction-03",
+    "target": "category-08",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-08-cluster-27",
+    "source": "category-08",
+    "target": "cluster-27",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-08-cluster-28",
+    "source": "category-08",
+    "target": "cluster-28",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-03-category-09",
+    "source": "direction-03",
+    "target": "category-09",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-09-cluster-29",
+    "source": "category-09",
+    "target": "cluster-29",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-09-cluster-30",
+    "source": "category-09",
+    "target": "cluster-30",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-04-category-10",
+    "source": "direction-04",
+    "target": "category-10",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-10-cluster-31",
+    "source": "category-10",
+    "target": "cluster-31",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-10-cluster-32",
+    "source": "category-10",
+    "target": "cluster-32",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-04-category-11",
+    "source": "direction-04",
+    "target": "category-11",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-11-cluster-33",
+    "source": "category-11",
+    "target": "cluster-33",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-04-category-12",
+    "source": "direction-04",
+    "target": "category-12",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-12-cluster-34",
+    "source": "category-12",
+    "target": "cluster-34",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-12-cluster-35",
+    "source": "category-12",
+    "target": "cluster-35",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-05-category-13",
+    "source": "direction-05",
+    "target": "category-13",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-13-cluster-36",
+    "source": "category-13",
+    "target": "cluster-36",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-13-cluster-37",
+    "source": "category-13",
+    "target": "cluster-37",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-06-category-14",
+    "source": "direction-06",
+    "target": "category-14",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-14-cluster-38",
+    "source": "category-14",
+    "target": "cluster-38",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-14-cluster-39",
+    "source": "category-14",
+    "target": "cluster-39",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-06-category-15",
+    "source": "direction-06",
+    "target": "category-15",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-15-cluster-40",
+    "source": "category-15",
+    "target": "cluster-40",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-06-category-16",
+    "source": "direction-06",
+    "target": "category-16",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-16-cluster-41",
+    "source": "category-16",
+    "target": "cluster-41",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-06-category-17",
+    "source": "direction-06",
+    "target": "category-17",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-17-cluster-42",
+    "source": "category-17",
+    "target": "cluster-42",
+    "type": "contains"
+  },
+  {
+    "id": "edge-root-direction-01",
+    "source": "root",
+    "target": "direction-01",
+    "type": "contains"
+  },
+  {
+    "id": "edge-root-direction-02",
+    "source": "root",
+    "target": "direction-02",
+    "type": "contains"
+  },
+  {
+    "id": "edge-root-direction-03",
+    "source": "root",
+    "target": "direction-03",
+    "type": "contains"
+  },
+  {
+    "id": "edge-root-direction-04",
+    "source": "root",
+    "target": "direction-04",
+    "type": "contains"
+  },
+  {
+    "id": "edge-root-direction-05",
+    "source": "root",
+    "target": "direction-05",
+    "type": "contains"
+  },
+  {
+    "id": "edge-root-direction-06",
+    "source": "root",
+    "target": "direction-06",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-02-category-01",
+    "source": "direction-02",
+    "target": "category-01",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-02-category-02",
+    "source": "direction-02",
+    "target": "category-02",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-02-category-03",
+    "source": "direction-02",
+    "target": "category-03",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-02-category-04",
+    "source": "direction-02",
+    "target": "category-04",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-03-category-05",
+    "source": "direction-03",
+    "target": "category-05",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-03-category-06",
+    "source": "direction-03",
+    "target": "category-06",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-03-category-07",
+    "source": "direction-03",
+    "target": "category-07",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-05-category-08",
+    "source": "direction-05",
+    "target": "category-08",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-05-category-09",
+    "source": "direction-05",
+    "target": "category-09",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-04-category-10",
+    "source": "direction-04",
+    "target": "category-10",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-04-category-11",
+    "source": "direction-04",
+    "target": "category-11",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-04-category-12",
+    "source": "direction-04",
+    "target": "category-12",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-06-category-13",
+    "source": "direction-06",
+    "target": "category-13",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-01-category-14",
+    "source": "direction-01",
+    "target": "category-14",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-01-category-15",
+    "source": "direction-01",
+    "target": "category-15",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-01-category-16",
+    "source": "direction-01",
+    "target": "category-16",
+    "type": "contains"
+  },
+  {
+    "id": "edge-direction-01-category-17",
+    "source": "direction-01",
+    "target": "category-17",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-01",
+    "source": "category-01",
+    "target": "cluster-01",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-02",
+    "source": "category-01",
+    "target": "cluster-02",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-03",
+    "source": "category-01",
+    "target": "cluster-03",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-04",
+    "source": "category-01",
+    "target": "cluster-04",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-01-cluster-05",
+    "source": "category-01",
+    "target": "cluster-05",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-06",
+    "source": "category-02",
+    "target": "cluster-06",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-07",
+    "source": "category-02",
+    "target": "cluster-07",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-08",
+    "source": "category-02",
+    "target": "cluster-08",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-09",
+    "source": "category-02",
+    "target": "cluster-09",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-02-cluster-10",
+    "source": "category-02",
+    "target": "cluster-10",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-03-cluster-11",
+    "source": "category-03",
+    "target": "cluster-11",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-03-cluster-12",
+    "source": "category-03",
+    "target": "cluster-12",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-04-cluster-13",
+    "source": "category-04",
+    "target": "cluster-13",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-04-cluster-14",
+    "source": "category-04",
+    "target": "cluster-14",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-15",
+    "source": "category-05",
+    "target": "cluster-15",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-16",
+    "source": "category-05",
+    "target": "cluster-16",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-17",
+    "source": "category-05",
+    "target": "cluster-17",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-18",
+    "source": "category-05",
+    "target": "cluster-18",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-19",
+    "source": "category-05",
+    "target": "cluster-19",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-05-cluster-20",
+    "source": "category-05",
+    "target": "cluster-20",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-06-cluster-21",
+    "source": "category-06",
+    "target": "cluster-21",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-06-cluster-22",
+    "source": "category-06",
+    "target": "cluster-22",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-06-cluster-23",
+    "source": "category-06",
+    "target": "cluster-23",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-07-cluster-24",
+    "source": "category-07",
+    "target": "cluster-24",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-07-cluster-25",
+    "source": "category-07",
+    "target": "cluster-25",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-07-cluster-26",
+    "source": "category-07",
+    "target": "cluster-26",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-08-cluster-27",
+    "source": "category-08",
+    "target": "cluster-27",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-08-cluster-28",
+    "source": "category-08",
+    "target": "cluster-28",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-09-cluster-29",
+    "source": "category-09",
+    "target": "cluster-29",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-09-cluster-30",
+    "source": "category-09",
+    "target": "cluster-30",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-10-cluster-31",
+    "source": "category-10",
+    "target": "cluster-31",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-10-cluster-32",
+    "source": "category-10",
+    "target": "cluster-32",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-11-cluster-33",
+    "source": "category-11",
+    "target": "cluster-33",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-12-cluster-34",
+    "source": "category-12",
+    "target": "cluster-34",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-12-cluster-35",
+    "source": "category-12",
+    "target": "cluster-35",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-13-cluster-36",
+    "source": "category-13",
+    "target": "cluster-36",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-13-cluster-37",
+    "source": "category-13",
+    "target": "cluster-37",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-14-cluster-38",
+    "source": "category-14",
+    "target": "cluster-38",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-14-cluster-39",
+    "source": "category-14",
+    "target": "cluster-39",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-15-cluster-40",
+    "source": "category-15",
+    "target": "cluster-40",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-16-cluster-41",
+    "source": "category-16",
+    "target": "cluster-41",
+    "type": "contains"
+  },
+  {
+    "id": "edge-category-17-cluster-42",
+    "source": "category-17",
+    "target": "cluster-42",
+    "type": "contains"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-001",
+    "source": "cluster-42",
+    "target": "role-cl42-001",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-36-role-cl36-002",
+    "source": "cluster-36",
+    "target": "role-cl36-002",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-41-role-cl41-003",
+    "source": "cluster-41",
+    "target": "role-cl41-003",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-16-role-cl16-004",
+    "source": "cluster-16",
+    "target": "role-cl16-004",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-005",
+    "source": "cluster-42",
+    "target": "role-cl42-005",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-27-role-cl27-006",
+    "source": "cluster-27",
+    "target": "role-cl27-006",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-25-role-cl25-007",
+    "source": "cluster-25",
+    "target": "role-cl25-007",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-41-role-cl41-008",
+    "source": "cluster-41",
+    "target": "role-cl41-008",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-30-role-cl30-009",
+    "source": "cluster-30",
+    "target": "role-cl30-009",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-15-role-cl15-010",
+    "source": "cluster-15",
+    "target": "role-cl15-010",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-05-role-cl05-011",
+    "source": "cluster-05",
+    "target": "role-cl05-011",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-012",
+    "source": "cluster-42",
+    "target": "role-cl42-012",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-39-role-cl39-013",
+    "source": "cluster-39",
+    "target": "role-cl39-013",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-014",
+    "source": "cluster-40",
+    "target": "role-cl40-014",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-015",
+    "source": "cluster-42",
+    "target": "role-cl42-015",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-01-role-cl01-016",
+    "source": "cluster-01",
+    "target": "role-cl01-016",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-15-role-cl15-017",
+    "source": "cluster-15",
+    "target": "role-cl15-017",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-10-role-cl10-018",
+    "source": "cluster-10",
+    "target": "role-cl10-018",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-04-role-cl04-019",
+    "source": "cluster-04",
+    "target": "role-cl04-019",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-31-role-cl31-020",
+    "source": "cluster-31",
+    "target": "role-cl31-020",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-39-role-cl39-021",
+    "source": "cluster-39",
+    "target": "role-cl39-021",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-13-role-cl13-022",
+    "source": "cluster-13",
+    "target": "role-cl13-022",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-18-role-cl18-023",
+    "source": "cluster-18",
+    "target": "role-cl18-023",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-024",
+    "source": "cluster-38",
+    "target": "role-cl38-024",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-21-role-cl21-025",
+    "source": "cluster-21",
+    "target": "role-cl21-025",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-11-role-cl11-026",
+    "source": "cluster-11",
+    "target": "role-cl11-026",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-11-role-cl11-027",
+    "source": "cluster-11",
+    "target": "role-cl11-027",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-028",
+    "source": "cluster-40",
+    "target": "role-cl40-028",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-39-role-cl39-029",
+    "source": "cluster-39",
+    "target": "role-cl39-029",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-030",
+    "source": "cluster-40",
+    "target": "role-cl40-030",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-32-role-cl32-031",
+    "source": "cluster-32",
+    "target": "role-cl32-031",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-032",
+    "source": "cluster-42",
+    "target": "role-cl42-032",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-26-role-cl26-033",
+    "source": "cluster-26",
+    "target": "role-cl26-033",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-32-role-cl32-034",
+    "source": "cluster-32",
+    "target": "role-cl32-034",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-035",
+    "source": "cluster-40",
+    "target": "role-cl40-035",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-036",
+    "source": "cluster-42",
+    "target": "role-cl42-036",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-037",
+    "source": "cluster-42",
+    "target": "role-cl42-037",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-29-role-cl29-038",
+    "source": "cluster-29",
+    "target": "role-cl29-038",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-10-role-cl10-039",
+    "source": "cluster-10",
+    "target": "role-cl10-039",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-040",
+    "source": "cluster-40",
+    "target": "role-cl40-040",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-041",
+    "source": "cluster-38",
+    "target": "role-cl38-041",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-12-role-cl12-042",
+    "source": "cluster-12",
+    "target": "role-cl12-042",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-043",
+    "source": "cluster-38",
+    "target": "role-cl38-043",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-29-role-cl29-044",
+    "source": "cluster-29",
+    "target": "role-cl29-044",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-045",
+    "source": "cluster-42",
+    "target": "role-cl42-045",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-046",
+    "source": "cluster-40",
+    "target": "role-cl40-046",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-34-role-cl34-047",
+    "source": "cluster-34",
+    "target": "role-cl34-047",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-048",
+    "source": "cluster-40",
+    "target": "role-cl40-048",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-39-role-cl39-049",
+    "source": "cluster-39",
+    "target": "role-cl39-049",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-050",
+    "source": "cluster-42",
+    "target": "role-cl42-050",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-28-role-cl28-051",
+    "source": "cluster-28",
+    "target": "role-cl28-051",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-31-role-cl31-052",
+    "source": "cluster-31",
+    "target": "role-cl31-052",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-053",
+    "source": "cluster-42",
+    "target": "role-cl42-053",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-054",
+    "source": "cluster-42",
+    "target": "role-cl42-054",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-06-role-cl06-055",
+    "source": "cluster-06",
+    "target": "role-cl06-055",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-056",
+    "source": "cluster-40",
+    "target": "role-cl40-056",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-057",
+    "source": "cluster-38",
+    "target": "role-cl38-057",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-08-role-cl08-058",
+    "source": "cluster-08",
+    "target": "role-cl08-058",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-41-role-cl41-059",
+    "source": "cluster-41",
+    "target": "role-cl41-059",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-33-role-cl33-060",
+    "source": "cluster-33",
+    "target": "role-cl33-060",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-09-role-cl09-061",
+    "source": "cluster-09",
+    "target": "role-cl09-061",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-34-role-cl34-062",
+    "source": "cluster-34",
+    "target": "role-cl34-062",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-41-role-cl41-063",
+    "source": "cluster-41",
+    "target": "role-cl41-063",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-064",
+    "source": "cluster-42",
+    "target": "role-cl42-064",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-065",
+    "source": "cluster-42",
+    "target": "role-cl42-065",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-066",
+    "source": "cluster-42",
+    "target": "role-cl42-066",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-39-role-cl39-067",
+    "source": "cluster-39",
+    "target": "role-cl39-067",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-068",
+    "source": "cluster-38",
+    "target": "role-cl38-068",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-069",
+    "source": "cluster-38",
+    "target": "role-cl38-069",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-070",
+    "source": "cluster-40",
+    "target": "role-cl40-070",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-071",
+    "source": "cluster-38",
+    "target": "role-cl38-071",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-072",
+    "source": "cluster-40",
+    "target": "role-cl40-072",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-073",
+    "source": "cluster-42",
+    "target": "role-cl42-073",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-074",
+    "source": "cluster-42",
+    "target": "role-cl42-074",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-075",
+    "source": "cluster-38",
+    "target": "role-cl38-075",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-19-role-cl19-076",
+    "source": "cluster-19",
+    "target": "role-cl19-076",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-12-role-cl12-077",
+    "source": "cluster-12",
+    "target": "role-cl12-077",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-07-role-cl07-078",
+    "source": "cluster-07",
+    "target": "role-cl07-078",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-41-role-cl41-079",
+    "source": "cluster-41",
+    "target": "role-cl41-079",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-11-role-cl11-080",
+    "source": "cluster-11",
+    "target": "role-cl11-080",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-33-role-cl33-081",
+    "source": "cluster-33",
+    "target": "role-cl33-081",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-082",
+    "source": "cluster-38",
+    "target": "role-cl38-082",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-29-role-cl29-083",
+    "source": "cluster-29",
+    "target": "role-cl29-083",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-084",
+    "source": "cluster-42",
+    "target": "role-cl42-084",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-085",
+    "source": "cluster-40",
+    "target": "role-cl40-085",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-12-role-cl12-086",
+    "source": "cluster-12",
+    "target": "role-cl12-086",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-29-role-cl29-087",
+    "source": "cluster-29",
+    "target": "role-cl29-087",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-32-role-cl32-088",
+    "source": "cluster-32",
+    "target": "role-cl32-088",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-089",
+    "source": "cluster-42",
+    "target": "role-cl42-089",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-40-role-cl40-090",
+    "source": "cluster-40",
+    "target": "role-cl40-090",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-17-role-cl17-091",
+    "source": "cluster-17",
+    "target": "role-cl17-091",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-41-role-cl41-092",
+    "source": "cluster-41",
+    "target": "role-cl41-092",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-093",
+    "source": "cluster-42",
+    "target": "role-cl42-093",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-094",
+    "source": "cluster-38",
+    "target": "role-cl38-094",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-33-role-cl33-095",
+    "source": "cluster-33",
+    "target": "role-cl33-095",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-28-role-cl28-096",
+    "source": "cluster-28",
+    "target": "role-cl28-096",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-097",
+    "source": "cluster-38",
+    "target": "role-cl38-097",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-098",
+    "source": "cluster-38",
+    "target": "role-cl38-098",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-10-role-cl10-099",
+    "source": "cluster-10",
+    "target": "role-cl10-099",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-38-role-cl38-100",
+    "source": "cluster-38",
+    "target": "role-cl38-100",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-101",
+    "source": "cluster-42",
+    "target": "role-cl42-101",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-41-role-cl41-102",
+    "source": "cluster-41",
+    "target": "role-cl41-102",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-103",
+    "source": "cluster-42",
+    "target": "role-cl42-103",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-31-role-cl31-104",
+    "source": "cluster-31",
+    "target": "role-cl31-104",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-32-role-cl32-105",
+    "source": "cluster-32",
+    "target": "role-cl32-105",
+    "type": "contains_standard_role"
+  },
+  {
+    "id": "edge-clrole-cluster-42-role-cl42-106",
+    "source": "cluster-42",
+    "target": "role-cl42-106",
+    "type": "contains_standard_role"
+  }
+]

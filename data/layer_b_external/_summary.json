@@ -1,0 +1,38 @@
+{
+  "task": "layer_b_esco_external_agreement",
+  "generated_at": "2026-08-18T10:54:21",
+  "data_source": "database_real",
+  "inputs": {
+    "skills_csv": "data\\layer_b_external\\skills.csv",
+    "skill_occupation_hierarchy_csv": "data\\layer_b_external\\skillOccupationHierarchy.csv",
+    "tech_to_esco_manual_map_v1_json": "data\\layer_b_external\\tech_to_esco_manual_map_v1.json",
+    "skills_count": 28,
+    "skill_occupation_pairs_count": 268,
+    "manual_map_count": 185,
+    "occupation_labels_count": 20
+  },
+  "total_edges_scored": 1979,
+  "metrics": {
+    "avg_external_agreement_score": 0.5035,
+    "edges_with_esco_skill_hit": 1961,
+    "edges_with_esco_occupation_hit": 14,
+    "edges_with_skill_occupation_overlap": 14,
+    "score_distribution": {
+      "0.5": 1965,
+      "1.0": 14
+    },
+    "status_distribution": {
+      "needs_human_review": 1965,
+      "high_agreement": 14
+    }
+  },
+  "scoring_rules": {
+    "both_hit_and_overlap_in_hierarchy": "+1.0 (high_agreement if >=0.9)",
+    "either_skill_or_occupation_missing": "0.5 (needs_human_review if >=0.5)",
+    "both_hit_but_no_hierarchy_overlap": "0.1 (low_external_agreement if <0.5)"
+  },
+  "db_connection": {
+    "connected": true,
+    "note": "Connected to DB via SQLAlchemy SessionLocal."
+  }
+}

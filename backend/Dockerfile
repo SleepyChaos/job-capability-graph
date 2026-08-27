@@ -3,7 +3,8 @@ FROM python:3.11-slim
 WORKDIR /srv/backend
 
 ENV PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 
 COPY pyproject.toml README.md ./
 COPY app ./app

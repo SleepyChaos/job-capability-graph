@@ -8,6 +8,11 @@ import { GraphPage } from './pages/GraphPage'
 import { GraphClusterPage } from './pages/GraphClusterPage'
 import { GraphHeatmapPage } from './pages/GraphHeatmapPage'
 import { GraphRelationsPage } from './pages/GraphRelationsPage'
+import { JobKeywordPage } from './pages/JobKeywordPage'
+import { JobEcosystemPage } from './pages/JobEcosystemPage'
+import { JobDiscoveryPage } from './pages/JobDiscoveryPage'
+import { TechToRolePage } from './pages/TechToRolePage'
+import { JobNamePage } from './pages/JobNamePage'
 import { JobRecordsPage } from './pages/JobRecordsPage'
 import { CandidateCardPage } from './pages/CandidateCardPage'
 import { CandidateReviewPage } from './pages/CandidateReviewPage'
@@ -37,6 +42,12 @@ const pageTitles: Record<PageId, string> = {
   'job-directed': '定向推演',
   'job-records': '推演结果记录库',
   graph: '动态岗位能力图谱',
+  'job-graph': '产业·技术·岗位三图谱',
+  'industry-job-graph': '产业—岗位图谱',
+  'technology-job-graph': '技术—岗位图谱',
+  'job-portrait-graph': '岗位画像图谱',
+  'job-discovery': '标准岗位发现流水线',
+  'tech-to-role': '技术词引出岗位',
   'graph-heatmap': '能力热力图',
   'graph-relations': '岗位—能力关联图',
   'graph-clusters': '聚类岗位能力图谱',
@@ -50,11 +61,24 @@ const pageTitles: Record<PageId, string> = {
 /**
  * 解析 hash 路由。
  *
- * 形如 `#/candidate/candidate_xxx` 的路由带一个参数段——岗位数据卡需要能被直接
- * 分享，也要能从图谱的候选节点跳过来，因此候选编码必须落在 URL 上而不是组件状态里。
+ * 两种形态并存，因为两侧页面对 URL 的要求不同：岗位数据卡要能被直接分享、也要能从
+ * 图谱的候选节点跳进来，候选编码必须落在 URL 上，走路径段 `#/candidate/candidate_xxx`；
+ * 三图谱各视图之间靠查询串切换，形如 `#/job-graph?view=technology`，并保留旧路由别名，
+ * 使早期链接不至于落回总览。
  */
 function parseHash(): { page: PageId; param: string | null } {
-  const [rawPage, rawParam] = window.location.hash.replace('#/', '').split('/')
+  const [rawRoute, query = ''] = window.location.hash.replace('#/', '').split('?')
+  const [rawPage, rawParam] = rawRoute.split('/')
+
+  if (rawPage === 'job-graph') {
+    const view = new URLSearchParams(query).get('view')
+    if (view === 'technology') return { page: 'technology-job-graph', param: null }
+    if (view === 'portrait' || view === 'ecosystem' || view === 'discovery') {
+      return { page: 'job-portrait-graph', param: null }
+    }
+    return { page: 'industry-job-graph', param: null }
+  }
+
   const page = rawPage as PageId
   return {
     page: page in pageTitles ? page : 'overview',
@@ -79,8 +103,23 @@ export default function App() {
   const [managementQuery, setManagementQuery] = useState('')
 
   useEffect(() => {
-    const next = param ? `/${page}/${encodeURIComponent(param)}` : `/${page}`
-    if (window.location.hash !== `#${next}`) window.location.hash = next
+    // 岗位画像图谱保留其 role/job/dimension 查询串——从旧链接进来后若被抹掉，
+    // 页面会丢失定位；其余页面统一写成路径段形态。
+    const [currentRoute, query = ''] = window.location.hash.replace('#/', '').split('?')
+    if (page === 'job-portrait-graph') {
+      const legacy = new URLSearchParams(query)
+      const kept = new URLSearchParams()
+      for (const key of ['role', 'job', 'dimension']) {
+        const value = legacy.get(key)
+        if (value) kept.set(key, value)
+      }
+      const suffix = kept.toString()
+      const next = `/${page}${suffix ? `?${suffix}` : ''}`
+      if (currentRoute !== page) window.location.hash = next
+    } else {
+      const next = param ? `/${page}/${encodeURIComponent(param)}` : `/${page}`
+      if (window.location.hash !== `#${next}`) window.location.hash = next
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [page, param])
 
@@ -101,7 +140,14 @@ export default function App() {
     talentApi.profiles(controller.signal).then((items) => {
       setProfiles(items)
       setSelectedVersionCode((current) => current || items[0]?.version_code || '')
-    }).catch((reason: Error) => { if (reason.name !== 'AbortError') setToast(`画像库加载失败：${reason.message}`) })
+    }).catch((reason: Error) => {
+      if (reason.name === 'AbortError') return
+      // The three-graph static demo is valid before the optional candidate-profile
+      // API is deployed.  Keep the library empty on a missing endpoint instead of
+      // covering the judge-facing graph with an unrelated 404 toast.
+      if (reason.message.includes('404')) setProfiles([])
+      else setToast(`画像库加载失败：${reason.message}`)
+    })
     return () => controller.abort()
   }, [])
 
@@ -138,6 +184,12 @@ export default function App() {
     case 'job-directed': content = <DirectedDiscoveryPage notify={notify} />; break
     case 'job-records': content = <JobRecordsPage notify={notify} />; break
     case 'graph': content = <GraphPage onNavigate={setPage} />; break
+    case 'job-graph': content = <JobEcosystemPage key="industry" fixedView="industry" />; break
+    case 'industry-job-graph': content = <JobEcosystemPage key="industry" fixedView="industry" />; break
+    case 'technology-job-graph': content = <JobEcosystemPage key="technology" fixedView="technology" />; break
+    case 'job-portrait-graph': content = <JobEcosystemPage key="portrait" fixedView="portrait" />; break
+    case 'job-discovery': content = <JobDiscoveryPage />; break
+    case 'tech-to-role': content = <TechToRolePage />; break
     case 'graph-heatmap': content = <GraphHeatmapPage notify={notify} />; break
     case 'graph-relations': content = <GraphRelationsPage notify={notify} />; break
     case 'graph-clusters': content = <GraphClusterPage notify={notify} />; break

@@ -74,8 +74,22 @@ const jobChildren: NavItem[] = [
   { id: 'job-records', label: '推演结果记录库', icon: FileClock },
 ]
 
-const graphPages: PageId[] = ['graph', 'graph-heatmap', 'graph-relations', 'graph-clusters']
+// 两套图谱并存：前三项是产业/技术/画像三视角，后三项是能力侧的既有视图。
+// 「岗位—能力关联图」是新岗位候选叠加所在的页面，必须留在导航里，
+// 否则候选节点只能靠直接改 hash 才能看到。
+const graphPages: PageId[] = [
+  'industry-job-graph',
+  'technology-job-graph',
+  'job-portrait-graph',
+  'graph',
+  'graph-heatmap',
+  'graph-relations',
+  'graph-clusters',
+]
 const graphChildren: NavItem[] = [
+  { id: 'industry-job-graph', label: '产业—岗位图谱', icon: BriefcaseBusiness },
+  { id: 'technology-job-graph', label: '技术—岗位图谱', icon: Tags },
+  { id: 'job-portrait-graph', label: '岗位画像图谱', icon: FileUser },
   { id: 'graph-heatmap', label: '能力热力图', icon: Activity },
   { id: 'graph-relations', label: '岗位—能力关联图', icon: Network },
   { id: 'graph-clusters', label: '聚类岗位能力图谱', icon: GitBranch },
@@ -194,10 +208,9 @@ export function AppShell({
           <div className={`nav-group ${graphPages.includes(page) ? 'nav-group--active' : ''}`}>
             <button
               type="button"
-              className={`nav-item nav-parent ${page === 'graph' ? 'nav-item--active' : ''}`}
+              className="nav-item nav-parent"
               title={sidebarCollapsed ? '能力图谱' : undefined}
-              onClick={() => { onNavigate('graph'); onSidebarOpenChange(false) }}
-              aria-current={page === 'graph' ? 'page' : undefined}
+              onClick={() => { onNavigate('industry-job-graph'); onSidebarOpenChange(false) }}
             >
               <Network size={19} strokeWidth={1.8} />
               <span>能力图谱</span>

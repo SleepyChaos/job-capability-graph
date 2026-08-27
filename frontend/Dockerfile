@@ -3,7 +3,9 @@ FROM node:22-alpine AS build
 WORKDIR /srv/frontend
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN corepack enable && corepack prepare pnpm@10.29.3 --activate && pnpm install --frozen-lockfile
+RUN npm config set registry https://registry.npmmirror.com && \
+    npm install -g pnpm@10.29.3 && \
+    pnpm install --frozen-lockfile --registry https://registry.npmmirror.com
 
 COPY . .
 RUN pnpm build

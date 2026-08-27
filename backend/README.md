@@ -11,7 +11,7 @@ uv run alembic upgrade head
 uv run uvicorn app.main:app --reload
 ```
 
-默认配置见 `.env.example`。通过 `APP_DATABASE_URL` 切换数据库；DeepSeek 使用 `APP_LLM_API_KEY`、`APP_LLM_BASE_URL` 和 `APP_LLM_MODEL`。密钥不得提交到仓库。
+默认配置见 `.env.example`。通过 `APP_DATABASE_URL` 切换数据库；DeepSeek 使用 `APP_LLM_API_KEY`、`APP_LLM_BASE_URL` 和 `APP_LLM_MODEL`，默认模型为 `deepseek-v4-flash`。密钥不得提交到仓库。
 
 启动后：
 
