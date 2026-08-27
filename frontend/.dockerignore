@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.codegraph/
+dist/
+coverage/
+assets/
+*.log
+*.tsbuildinfo
+.DS_Store

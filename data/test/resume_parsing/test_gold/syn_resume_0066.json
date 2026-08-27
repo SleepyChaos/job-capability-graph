@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0066",
+  "file": "syn_resume_0066.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.07.09",
+      "term_name": "细分方法与技术(其他)",
+      "evidence_text": "主导细分方法与技术(其他)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.03",
+      "term_name": "外骨骼机器人",
+      "evidence_text": "主导外骨骼机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.03.01",
+      "term_name": "语音交互",
+      "evidence_text": "在项目中使用语音交互解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.04",
+      "term_name": "图检索增强(GraphRAG)",
+      "evidence_text": "负责图检索增强(GraphRAG)模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.09",
+      "term_name": "力觉感知",
+      "evidence_text": "在项目中使用力觉感知解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

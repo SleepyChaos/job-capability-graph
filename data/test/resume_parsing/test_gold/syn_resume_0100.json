@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0100",
+  "file": "syn_resume_0100.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人控制算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.03.08",
+      "term_name": "学习驱动运动控制",
+      "evidence_text": "在项目中使用学习驱动运动控制解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.02",
+      "term_name": "强化学习",
+      "evidence_text": "在项目中使用强化学习解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.11",
+      "term_name": "具身操作",
+      "evidence_text": "主导具身操作相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.01.03",
+      "term_name": "视觉传感器",
+      "evidence_text": "主导视觉传感器相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.04",
+      "term_name": "视觉感知与理解",
+      "evidence_text": "主导视觉感知与理解相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

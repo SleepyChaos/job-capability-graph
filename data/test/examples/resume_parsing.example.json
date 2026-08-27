@@ -1,0 +1,58 @@
+{
+  "sample_id": "resume_demo_0001",
+  "dataset_version": "resume_parsing_demo_v1",
+  "split": "demo",
+  "input": {
+    "resume_file": "resume_demo_0001.txt",
+    "file_type": "text",
+    "ocr_required": false,
+    "language": "zh-CN",
+    "raw_text_for_fixture": "求职方向：机器人感知算法工程师。教育：2022.09-2025.06 控制科学与工程硕士。项目：使用C++与PCL实现室内点云分割；尚未使用ROS 2。",
+    "content_hash": "sha256:synthetic-resume-demo-0001",
+    "privacy_level": "public_synthetic"
+  },
+  "gold": {
+    "target_job_titles": ["机器人感知算法工程师"],
+    "education": [
+      {
+        "degree": "硕士",
+        "major": "控制科学与工程",
+        "start": "2022-09",
+        "end": "2025-06"
+      }
+    ],
+    "experiences": [
+      {
+        "type": "project",
+        "role": "点云算法开发",
+        "start": null,
+        "end": null,
+        "evidence_text": "使用C++与PCL实现室内点云分割"
+      }
+    ],
+    "skills": [
+      {
+        "term_id": "tech_cpp",
+        "level": "applied",
+        "evidence_text": "使用C++与PCL实现室内点云分割"
+      },
+      {
+        "term_id": "tech_pcl",
+        "level": "applied",
+        "evidence_text": "使用C++与PCL实现室内点云分割"
+      }
+    ],
+    "explicit_preferences": ["机器人感知算法工程师"],
+    "unsupported_inferences": [
+      "不得把‘尚未使用ROS 2’提取为已掌握ROS 2",
+      "不得无依据推断性格或管理能力"
+    ],
+    "annotation_status": "demo_adjudicated"
+  },
+  "quality": {
+    "layout_type": "plain_text",
+    "difficulty": "hard_negation",
+    "adjudication_notes": "该样例用于测试否定表达。"
+  }
+}
+

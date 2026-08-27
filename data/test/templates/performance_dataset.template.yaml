@@ -1,0 +1,25 @@
+dataset_id: ""
+version: ""
+generator_version: ""
+random_seed: 0
+is_synthetic: true
+scale:
+  jd_count: 0
+  technology_term_count: 0
+  job_cluster_count: 0
+  profile_count: 0
+  graph_event_days: 0
+  graph_event_count: 0
+distribution:
+  t_domains: {}
+  jd_length_chars:
+    min: 0
+    p50: 0
+    p95: 0
+    max: 0
+workloads: []
+acceptance: []
+forbidden_metrics:
+  - accuracy
+notes: ""
+

@@ -1,0 +1,89 @@
+{
+  "mapping_code": "cleaned_job_posting_20260810",
+  "mapping_version": "1.0.0",
+  "source_workbook": "core/具身智能岗位_清洗后_v3(1).xlsx",
+  "source_sheet": "岗位数据",
+  "entity": "job_posting",
+  "strategy": "STAGING_THEN_VERIFY",
+  "truth_classification": "migrated_cleaned_source",
+  "fields": {
+    "序号": ["raw_spreadsheet_row.external_record_key"],
+    "occ_id": [
+      "raw_source_document.source_record_key",
+      "biz_job_posting.source_job_id"
+    ],
+    "group_id": ["biz_job_posting.source_group_key"],
+    "公司": [
+      "biz_job_posting.company_name_raw",
+      "md_organization_alias.alias_text"
+    ],
+    "关联公司": ["md_organization.canonical_name"],
+    "岗位": [
+      "raw_source_document.title",
+      "biz_job_posting.job_title_raw"
+    ],
+    "城市": ["biz_job_posting.region_text"],
+    "薪资": ["biz_job_posting.salary_text"],
+    "学历(原始)": ["biz_job_posting.education_text"],
+    "学历(标准化)": ["biz_job_posting.education_code"],
+    "经验(原始)": ["biz_job_posting.experience_text"],
+    "经验(标准化)": [
+      "biz_job_posting.experience_min_years",
+      "biz_job_posting.experience_max_years"
+    ],
+    "能力等级": ["biz_job_posting.job_level_code"],
+    "职业方向": ["biz_job_posting.source_metadata_json.career_direction"],
+    "职业种类": ["biz_job_posting.source_metadata_json.career_type"],
+    "产业链层级": ["biz_job_posting.source_metadata_json.industry_chain_level"],
+    "公司细分领域": [
+      "md_organization.industry_text",
+      "biz_job_posting.source_metadata_json.company_subfield"
+    ],
+    "融资轮次": [
+      "md_organization.source_metadata_json.funding_round",
+      "biz_job_posting.source_metadata_json.funding_round"
+    ],
+    "公司所属地区": [
+      "md_organization.source_metadata_json.region",
+      "biz_job_posting.source_metadata_json.company_region"
+    ],
+    "公司总部城市": [
+      "md_organization.city_name",
+      "biz_job_posting.source_metadata_json.company_headquarters_city"
+    ],
+    "技能标签": ["biz_job_posting.source_metadata_json.source_skill_tags"],
+    "清洗JD描述": [
+      "raw_source_document_version.content_text",
+      "biz_job_posting.jd_clean_text"
+    ],
+    "链接": [
+      "raw_source_document.canonical_url",
+      "biz_job_posting.source_metadata_json.source_url_raw"
+    ],
+    "收录时间": [
+      "raw_source_document_version.source_collected_at",
+      "biz_job_posting.source_collected_at",
+      "biz_job_posting.time_quality_code"
+    ],
+    "来源列表": ["rel_job_posting_data_source.data_source_id"],
+    "是否有有效JD": ["biz_file_import_row_result.row_status_code"]
+  },
+  "derived_outputs": {
+    "content_hash": "raw_source_document_version.content_hash",
+    "exact_duplicate_group": "biz_duplicate_document_group",
+    "duplicate_evidence_weight": "biz_job_posting.evidence_weight",
+    "technology_requirement": "biz_job_requirement.technology_node_id",
+    "technology_evidence": "rel_job_requirement_evidence.evidence_span_id",
+    "document_quality": "biz_document_quality"
+  },
+  "quality_gates": [
+    "岗位数据工作表必须恰好包含3718条记录",
+    "occ_id和group_id必须唯一且非空",
+    "公司缺失的3条保留JD但不自动创建空机构，并标记质量警告",
+    "链接缺失或格式无效的200条保留原值并标记质量警告",
+    "清洗JD描述按SHA-256检测235组、562条完全重复成员，组内证据权重之和必须为1",
+    "缺失源收录时间的2027条标记为migration_only，不得进入严格时间回测",
+    "技能标签只做迁移留痕；正式技术关系使用v1.1技术主数据的可匹配L4别名重新抽取",
+    "所有技术命中必须保留原文起止位置和L4别名证据"
+  ]
+}

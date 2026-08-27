@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0084",
+  "file": "syn_resume_0084.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人控制算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T3.03.01",
+      "term_name": "协作机器人",
+      "evidence_text": "在项目中使用协作机器人解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.07",
+      "term_name": "抓取合成与数据",
+      "evidence_text": "负责抓取合成与数据模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.03",
+      "term_name": "动作专家与混合专家",
+      "evidence_text": "在项目中使用动作专家与混合专家解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.03",
+      "term_name": "知识图谱构建与更新",
+      "evidence_text": "在项目中使用知识图谱构建与更新解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.03",
+      "term_name": "仿生机器人",
+      "evidence_text": "主导仿生机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.10",
+      "term_name": "感知认知(通用)",
+      "evidence_text": "主导感知认知(通用)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

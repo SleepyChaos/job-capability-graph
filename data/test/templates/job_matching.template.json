@@ -1,0 +1,25 @@
+{
+  "pair_id": "",
+  "dataset_version": "",
+  "split": "test",
+  "profile_version_id": "",
+  "job_version_id": "",
+  "gold": {
+    "label": "B_PARTIAL_FIT",
+    "required_skill_coverage": null,
+    "strength_term_ids": [],
+    "gap_term_ids": [],
+    "blocking_gaps": [],
+    "transferable_evidence": [],
+    "seniority_fit": "unknown",
+    "expert_rationale": "",
+    "rank_position": null,
+    "annotation_status": "pending"
+  },
+  "quality": {
+    "difficulty": "normal",
+    "annotator_agreement": "pending",
+    "adjudication_notes": ""
+  }
+}
+

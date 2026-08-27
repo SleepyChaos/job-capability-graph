@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0001",
+  "file": "syn_resume_0001.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人控制算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.01.09",
+      "term_name": "具身感知统一表示",
+      "evidence_text": "主导具身感知统一表示相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.05",
+      "term_name": "光学/电磁定位",
+      "evidence_text": "在项目中使用光学/电磁定位解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.04",
+      "term_name": "软体机器人",
+      "evidence_text": "负责软体机器人模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

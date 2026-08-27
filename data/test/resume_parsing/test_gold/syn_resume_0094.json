@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0094",
+  "file": "syn_resume_0094.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.04.08",
+      "term_name": "具身智能导航",
+      "evidence_text": "主导具身智能导航相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.05",
+      "term_name": "人形机器人整机与商业化",
+      "evidence_text": "负责人形机器人整机与商业化模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.01",
+      "term_name": "协作机器人",
+      "evidence_text": "在项目中使用协作机器人解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.04",
+      "term_name": "深度学习",
+      "evidence_text": "在项目中使用深度学习解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

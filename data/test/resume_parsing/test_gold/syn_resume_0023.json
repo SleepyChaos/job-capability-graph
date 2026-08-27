@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0023",
+  "file": "syn_resume_0023.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.07.01",
+      "term_name": "具身推理与ECoT",
+      "evidence_text": "在项目中使用具身推理与ECoT解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.03.02",
+      "term_name": "听觉传感",
+      "evidence_text": "负责听觉传感模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.03",
+      "term_name": "电子皮肤与柔性触觉",
+      "evidence_text": "主导电子皮肤与柔性触觉相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.09",
+      "term_name": "力觉感知",
+      "evidence_text": "负责力觉感知模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.05",
+      "term_name": "图神经网络与嵌入",
+      "evidence_text": "主导图神经网络与嵌入相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

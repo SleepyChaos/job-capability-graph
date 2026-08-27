@@ -1,0 +1,7 @@
+event_date,term_id,t_domain,level,job_cluster_id,source_material_id,trigger_count,is_verified,timezone,dataset_version
+2026-06-17,tech_ros2,T3,L3,cluster_robot_control,material_demo_outside,9,true,Asia/Shanghai,graph_demo_v1
+2026-06-18,tech_ros2,T3,L3,cluster_robot_control,material_demo_0001,2,true,Asia/Shanghai,graph_demo_v1
+2026-06-19,tech_ros2,T3,L3,cluster_robot_control,material_demo_0002,1,true,Asia/Shanghai,graph_demo_v1
+2026-07-31,tech_vla,T2,L2,cluster_robot_algorithm,material_demo_0044,4,true,Asia/Shanghai,graph_demo_v1
+2026-08-01,tech_vla,T2,L2,cluster_robot_algorithm,material_demo_0045,5,true,Asia/Shanghai,graph_demo_v1
+2026-08-01,tech_unverified,T7,L2,cluster_robot_product,material_demo_candidate,7,false,Asia/Shanghai,graph_demo_v1

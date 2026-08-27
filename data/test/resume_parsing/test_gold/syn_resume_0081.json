@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0081",
+  "file": "syn_resume_0081.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.04.09",
+      "term_name": "导航(通用)",
+      "evidence_text": "负责导航(通用)模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.06",
+      "term_name": "路径规划与轨迹",
+      "evidence_text": "主导路径规划与轨迹相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.05.04",
+      "term_name": "主动感知",
+      "evidence_text": "主导主动感知相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.07",
+      "term_name": "具身智能体(Agent)",
+      "evidence_text": "负责具身智能体(Agent)模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.03.01",
+      "term_name": "语音交互",
+      "evidence_text": "主导语音交互相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

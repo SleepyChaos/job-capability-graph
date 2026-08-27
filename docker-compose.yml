@@ -1,0 +1,141 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_change_me
+      MYSQL_DATABASE: job_capability_graph
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app_password_change_me
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_password_change_me"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # 新环境默认恢复仓库内已审计的最新开发快照；设置 RESTORE_RUNTIME_SNAPSHOT=0
+  # 可跳过恢复并让 bootstrap 只从核心 XLSX 重建。
+  restore:
+    image: mysql:8.0
+    environment:
+      MYSQL_PWD: root_password_change_me
+      RESTORE_RUNTIME_SNAPSHOT: ${RESTORE_RUNTIME_SNAPSHOT:-1}
+    volumes:
+      - ./data/runtime:/srv/data/runtime:ro
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        table_count="$$(mysql -hmysql -uroot -N -e \
+          "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='job_capability_graph'")"
+        if [ "$$RESTORE_RUNTIME_SNAPSHOT" = "1" ] && [ "$$table_count" = "0" ]; then
+          echo 'Restoring audited runtime snapshot...'
+          gunzip -c /srv/data/runtime/job-capability-graph-mysql-20260812.sql.gz | \
+            mysql -hmysql -uroot job_capability_graph
+        else
+          echo "Runtime restore skipped (enabled=$$RESTORE_RUNTIME_SNAPSHOT, tables=$$table_count)."
+        fi
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: "no"
+
+  migrate:
+    build: ./backend
+    environment:
+      APP_DATABASE_URL: mysql+pymysql://app:app_password_change_me@mysql:3306/job_capability_graph?charset=utf8mb4
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    depends_on:
+      restore:
+        condition: service_completed_successfully
+    restart: "no"
+
+  # 使用仓库内的核心 XLSX 在 MySQL 中重建当前运行数据；不执行数据包附带的旧 SQL。
+  bootstrap:
+    build: ./backend
+    environment:
+      APP_DATABASE_URL: mysql+pymysql://app:app_password_change_me@mysql:3306/job_capability_graph?charset=utf8mb4
+    volumes:
+      - ./data/source/20260810/core:/srv/data/source/20260810/core:ro
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        python -m tools.seed_reviewers
+        python -m tools.stage_workbook \
+          --file '/srv/data/source/20260810/core/技术词主数据_20260727.xlsx' \
+          --storage-key data/source/20260810/core/技术词主数据_20260727.xlsx \
+          --importer-code taxonomy_xlsx_v1 \
+          --mapping-code technology_taxonomy_20260810 \
+          --mapping-version 1.0.0 \
+          --classification project_internal \
+          --external-key 'L1技术域=L1编码' \
+          --external-key 'L2技术类=L2编码' \
+          --external-key 'L3技术点=L3编码' \
+          --external-key 'L4技术词=技术词'
+        python -m tools.import_taxonomy \
+          --mapping-code technology_taxonomy_20260810 \
+          --version-code v1.1 \
+          --version-name '具身智能技术词主数据v1.1' \
+          --effective-date 2026-07-27 \
+          --domain-version v1.1
+        python -m tools.stage_workbook \
+          --file '/srv/data/source/20260810/core/具身智能岗位_清洗后_v3(1).xlsx' \
+          --storage-key 'data/source/20260810/core/具身智能岗位_清洗后_v3(1).xlsx' \
+          --importer-code cleaned_job_xlsx_v1 \
+          --mapping-code cleaned_job_posting_20260810 \
+          --mapping-version 1.0.0 \
+          --classification project_internal \
+          --external-key '岗位数据=occ_id' \
+          --sheet '岗位数据'
+        python -m tools.import_jobs \
+          --mapping-code cleaned_job_posting_20260810 \
+          --taxonomy-version v1.1 \
+          --received-at 2026-08-10T00:00:00
+        parse_output="$$(python -m tools.parse_jobs --taxonomy-version v1.1 --target-date 2026-08-10)"
+        parse_run_code="$$(printf '%s' "$$parse_output" | python -c 'import json,sys; print(json.load(sys.stdin)["run_code"])')"
+        python -m tools.cluster_jobs --parse-run-code "$$parse_run_code" \
+          --assign-threshold 0.36 \
+          --grey-threshold 0.24 \
+          --top-k 3 \
+          --max-cluster-size 120
+        python -m tools.approve_all_role_reviews --reviewer-code reviewer-demo
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: "no"
+
+  backend:
+    build: ./backend
+    environment:
+      APP_DATABASE_URL: mysql+pymysql://app:app_password_change_me@mysql:3306/job_capability_graph?charset=utf8mb4
+      # LLM 网关（可选）：无 Key 时全部调用降级为规则输出
+      # 兼容数据包早期使用的 OPENAI_* / LLM_MODEL 命名；值仍只从未入库的 .env 注入。
+      APP_LLM_API_KEY: ${APP_LLM_API_KEY:-${OPENAI_API_KEY:-}}
+      APP_LLM_BASE_URL: ${APP_LLM_BASE_URL:-${OPENAI_BASE_URL:-https://api.deepseek.com/v1}}
+      APP_LLM_MODEL: ${APP_LLM_MODEL:-${LLM_MODEL:-deepseek-v4-flash}}
+      APP_AUTH_SECRET: ${APP_AUTH_SECRET:-change-me-in-production}
+    volumes:
+      # 数据导入与评测需要访问仓库数据目录
+      - ./data:/srv/data:ro
+    ports:
+      - "8001:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      bootstrap:
+        condition: service_completed_successfully
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql-data:

@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0062",
+  "file": "syn_resume_0062.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人控制算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.04.02",
+      "term_name": "视觉导航",
+      "evidence_text": "主导视觉导航相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.02",
+      "term_name": "关节力矩传感器",
+      "evidence_text": "负责关节力矩传感器模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.01",
+      "term_name": "分层与双系统VLA架构",
+      "evidence_text": "负责分层与双系统VLA架构模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.09",
+      "term_name": "自主认知",
+      "evidence_text": "主导自主认知相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.03",
+      "term_name": "世界模型推理与加速",
+      "evidence_text": "在项目中使用世界模型推理与加速解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

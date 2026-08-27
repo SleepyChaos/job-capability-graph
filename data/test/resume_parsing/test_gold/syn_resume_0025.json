@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0025",
+  "file": "syn_resume_0025.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.02.08",
+      "term_name": "具身感知与交互",
+      "evidence_text": "负责具身感知与交互模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.08",
+      "term_name": "人形机器人(通用)",
+      "evidence_text": "在项目中使用人形机器人(通用)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.10",
+      "term_name": "感知认知(通用)",
+      "evidence_text": "主导感知认知(通用)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.01",
+      "term_name": "协作机器人",
+      "evidence_text": "主导协作机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.04",
+      "term_name": "并联机器人",
+      "evidence_text": "负责并联机器人模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

@@ -1,0 +1,19 @@
+case_id: ""
+dataset_version: ""
+category: ""
+severity: medium
+input:
+  source_material_ids: []
+  raw_text: ""
+  metadata: {}
+attack_or_risk: ""
+expected:
+  decision: review
+  publish_allowed: false
+  confidence_max: null
+  flags: []
+  sanitized_output: ""
+assertions: []
+metric_contribution: []
+notes: ""
+

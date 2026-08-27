@@ -1,0 +1,69 @@
+scenario_id: existing_job_demo_001
+scenario_type: existing_job_evolution
+name: 机器人算法工程师能力更新演示
+dataset_version: existing_job_demo_v1
+taxonomy_version: technology_taxonomy_20260727
+job_cluster_id: cluster_robot_algorithm
+baseline:
+  window_start: 2026-04-01
+  window_end: 2026-05-15
+  jd_ids:
+    - jd_demo_robot_001
+    - jd_demo_robot_002
+    - jd_demo_robot_003
+  job_version_id: job_robot_algorithm_v1
+  capability_metrics:
+    - term_id: tech_cpp
+      long_term_importance: 0.92
+      recent_activity: 0.70
+    - term_id: tech_ros2
+      long_term_importance: 0.65
+      recent_activity: 0.40
+update:
+  window_start: 2026-05-16
+  window_end: 2026-06-29
+  new_jd_ids:
+    - jd_demo_robot_004
+    - jd_demo_robot_005
+    - jd_demo_robot_006
+  expected_job_version_id: job_robot_algorithm_v2
+expected_changes:
+  added_capabilities:
+    - term_id: tech_vla
+      reason: 连续多个独立来源出现并达到新增门槛
+  strengthened_capabilities:
+    - term_id: tech_ros2
+      old_importance: 0.65
+      new_importance: 0.80
+      old_activity: 0.40
+      new_activity: 0.88
+  weakened_capabilities: []
+  deletion_candidates:
+    - term_id: tech_legacy_middleware
+      auto_delete_allowed: false
+      reason: 近期未出现，只能进入人工复核
+  unchanged_capabilities:
+    - tech_cpp
+expected_graph:
+  node_distance_metric: long_term_importance
+  node_color_metric: recent_activity
+  expected_nodes:
+    - node_id: tech_cpp
+      distance_band: near
+      color_band: medium
+    - node_id: tech_ros2
+      distance_band: near
+      color_band: dark
+    - node_id: tech_vla
+      distance_band: far
+      color_band: dark
+  expected_edges:
+    - source: cluster_robot_algorithm
+      target: tech_ros2
+      status: important
+assertions:
+  - 生成新岗位能力版本且旧版本仍可查询
+  - 长期重要度和近期活跃度分别计算
+  - 短期未出现的能力不得自动删除
+notes: 合成样例，用于验证版本、重要度、活跃度和删除审核。
+

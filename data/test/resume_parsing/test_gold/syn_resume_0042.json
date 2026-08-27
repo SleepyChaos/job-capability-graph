@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0042",
+  "file": "syn_resume_0042.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.01.03",
+      "term_name": "动作专家与混合专家",
+      "evidence_text": "主导动作专家与混合专家相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.07",
+      "term_name": "机器视觉",
+      "evidence_text": "主导机器视觉相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.08",
+      "term_name": "移动操控一体化",
+      "evidence_text": "负责移动操控一体化模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

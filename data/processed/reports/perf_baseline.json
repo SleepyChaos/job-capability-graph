@@ -1,0 +1,17 @@
+{
+  "near_duplicate": {
+    "input_documents": 3150,
+    "near_duplicate_clusters": 6,
+    "elapsed_seconds": 1.308,
+    "throughput_docs_per_second": 2408.3
+  },
+  "graph": {
+    "heatmap_seconds": 0.107,
+    "relation_graph_seconds": 0.106
+  },
+  "matching": {
+    "profile_version_code": "CPV-8560e1537a814143bd",
+    "result_count": 3,
+    "elapsed_seconds": 0.085
+  }
+}

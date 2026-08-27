@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0010",
+  "file": "syn_resume_0010.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "人工智能"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T3.01.02",
+      "term_name": "轮式人形机器人",
+      "evidence_text": "负责轮式人形机器人模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.02",
+      "term_name": "轮足机器人",
+      "evidence_text": "主导轮足机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.05.01",
+      "term_name": "多模态传感融合",
+      "evidence_text": "主导多模态传感融合相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

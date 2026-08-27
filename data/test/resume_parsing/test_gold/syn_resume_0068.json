@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0068",
+  "file": "syn_resume_0068.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.05.01",
+      "term_name": "多模态传感融合",
+      "evidence_text": "主导多模态传感融合相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.08",
+      "term_name": "移动操控一体化",
+      "evidence_text": "主导移动操控一体化相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.07",
+      "term_name": "多模态运动生成",
+      "evidence_text": "主导多模态运动生成相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

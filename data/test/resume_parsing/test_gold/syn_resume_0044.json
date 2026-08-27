@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0044",
+  "file": "syn_resume_0044.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.02.03",
+      "term_name": "世界模型推理与加速",
+      "evidence_text": "主导世界模型推理与加速相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.05",
+      "term_name": "触觉传感器",
+      "evidence_text": "负责触觉传感器模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.11",
+      "term_name": "VLA端到端大模型",
+      "evidence_text": "在项目中使用VLA端到端大模型解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0007",
+  "file": "syn_resume_0007.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.01.12",
+      "term_name": "细分方法与技术(其他)",
+      "evidence_text": "在项目中使用细分方法与技术(其他)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.04",
+      "term_name": "人形机器人核心零部件",
+      "evidence_text": "负责人形机器人核心零部件模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.13",
+      "term_name": "细分方法与技术(其他)",
+      "evidence_text": "主导细分方法与技术(其他)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.01.01",
+      "term_name": "激光雷达",
+      "evidence_text": "在项目中使用激光雷达解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.05",
+      "term_name": "图神经网络与嵌入",
+      "evidence_text": "在项目中使用图神经网络与嵌入解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.04",
+      "term_name": "图检索增强(GraphRAG)",
+      "evidence_text": "在项目中使用图检索增强(GraphRAG)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

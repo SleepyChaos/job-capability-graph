@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0040",
+  "file": "syn_resume_0040.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.01.09",
+      "term_name": "具身感知统一表示",
+      "evidence_text": "在项目中使用具身感知统一表示解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.05",
+      "term_name": "触觉传感器",
+      "evidence_text": "在项目中使用触觉传感器解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.06",
+      "term_name": "世界模型评测基准",
+      "evidence_text": "负责世界模型评测基准模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.03.02",
+      "term_name": "听觉传感",
+      "evidence_text": "负责听觉传感模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

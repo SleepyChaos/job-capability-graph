@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0070",
+  "file": "syn_resume_0070.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.05.01",
+      "term_name": "多模态传感融合",
+      "evidence_text": "主导多模态传感融合相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.04",
+      "term_name": "并联机器人",
+      "evidence_text": "主导并联机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.04",
+      "term_name": "运动规划",
+      "evidence_text": "在项目中使用运动规划解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.08",
+      "term_name": "学习驱动运动控制",
+      "evidence_text": "在项目中使用学习驱动运动控制解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

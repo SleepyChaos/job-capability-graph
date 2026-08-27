@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0091",
+  "file": "syn_resume_0091.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.02.08",
+      "term_name": "具身感知与交互",
+      "evidence_text": "在项目中使用具身感知与交互解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.08.01",
+      "term_name": "群体智能与协同",
+      "evidence_text": "在项目中使用群体智能与协同解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.04",
+      "term_name": "运动规划",
+      "evidence_text": "主导运动规划相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

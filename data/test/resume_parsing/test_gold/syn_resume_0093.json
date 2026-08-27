@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0093",
+  "file": "syn_resume_0093.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.02.04",
+      "term_name": "视触觉传感与融合",
+      "evidence_text": "主导视触觉传感与融合相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.08.01",
+      "term_name": "群体智能与协同",
+      "evidence_text": "负责群体智能与协同模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.08",
+      "term_name": "人形机器人(通用)",
+      "evidence_text": "负责人形机器人(通用)模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.04",
+      "term_name": "大小脑分层架构",
+      "evidence_text": "在项目中使用大小脑分层架构解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.06",
+      "term_name": "任务规划与分解",
+      "evidence_text": "负责任务规划与分解模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

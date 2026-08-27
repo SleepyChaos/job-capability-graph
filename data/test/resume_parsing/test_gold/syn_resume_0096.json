@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0096",
+  "file": "syn_resume_0096.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.02.02",
+      "term_name": "关节力矩传感器",
+      "evidence_text": "主导关节力矩传感器相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.02",
+      "term_name": "轮足机器人",
+      "evidence_text": "负责轮足机器人模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.10",
+      "term_name": "传感器",
+      "evidence_text": "在项目中使用传感器解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.04",
+      "term_name": "图检索增强(GraphRAG)",
+      "evidence_text": "在项目中使用图检索增强(GraphRAG)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.03",
+      "term_name": "灵巧度基准与评测",
+      "evidence_text": "负责灵巧度基准与评测模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

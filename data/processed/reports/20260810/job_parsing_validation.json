@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "run": {
+    "run_code": "jdparse_8ad8184577692c219c983899",
+    "parser_version": "jd_structure_rules_v1",
+    "target_date": "2026-08-10",
+    "input_snapshot_hash": "6546f0e8c16713cb86cb04c4edd50cfe880593db686c8bc9b0849763dae64654",
+    "status": "completed"
+  },
+  "counts": {
+    "input_jobs": 3718,
+    "parse_results": 3718,
+    "responsibilities": 17176,
+    "responsibility_evidence_links": 17176,
+    "technology_assessments": 7591,
+    "cluster_features": 3718,
+    "eligible_cluster_features": 3540,
+    "excluded_cluster_features": 178,
+    "jobs_with_source_time": 1691
+  },
+  "parse_status": {
+    "needs_review": 675,
+    "parsed": 3043
+  },
+  "assessment_status": {
+    "accepted": 6857,
+    "needs_review": 734
+  },
+  "ambiguity_reviews_by_alias": {
+    "检测": 251,
+    "大模型": 233,
+    "汽车": 226,
+    "控制系统": 24
+  },
+  "primary_domain_distribution": {
+    "T1": 490,
+    "T2": 112,
+    "T3": 635,
+    "T4": 68,
+    "T5": 67,
+    "T6": 98,
+    "T7": 208
+  },
+  "quality": {
+    "average_parse_quality": 85.42,
+    "bad_evidence_offsets": 0,
+    "invalid_feature_hashes": 0,
+    "invalid_domain_codes": 0
+  },
+  "checks": {
+    "all_jobs_have_parse_result": true,
+    "all_jobs_have_feature_snapshot": true,
+    "all_responsibilities_have_evidence": true,
+    "all_technology_evidence_assessed": true
+  }
+}

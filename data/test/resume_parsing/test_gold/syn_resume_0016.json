@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0016",
+  "file": "syn_resume_0016.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.03.02",
+      "term_name": "听觉传感",
+      "evidence_text": "在项目中使用听觉传感解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.04",
+      "term_name": "多源融合定位",
+      "evidence_text": "负责多源融合定位模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.04",
+      "term_name": "灵巧抓取",
+      "evidence_text": "在项目中使用灵巧抓取解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.05.02",
+      "term_name": "标定与同步采集",
+      "evidence_text": "在项目中使用标定与同步采集解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.01.01",
+      "term_name": "激光雷达",
+      "evidence_text": "在项目中使用激光雷达解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.05",
+      "term_name": "世界模型价值与策略",
+      "evidence_text": "负责世界模型价值与策略模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

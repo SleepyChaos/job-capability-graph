@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0057",
+  "file": "syn_resume_0057.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.04.07",
+      "term_name": "端到端导航",
+      "evidence_text": "主导端到端导航相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.04.01",
+      "term_name": "惯性测量单元(IMU)",
+      "evidence_text": "主导惯性测量单元(IMU)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.09.07",
+      "term_name": "抓取合成与数据",
+      "evidence_text": "主导抓取合成与数据相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0058",
+  "file": "syn_resume_0058.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "人工智能"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.04.03",
+      "term_name": "激光导航",
+      "evidence_text": "在项目中使用激光导航解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.08",
+      "term_name": "世界模型数据集",
+      "evidence_text": "在项目中使用世界模型数据集解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.07",
+      "term_name": "机器视觉",
+      "evidence_text": "主导机器视觉相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.10",
+      "term_name": "感知认知(通用)",
+      "evidence_text": "主导感知认知(通用)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

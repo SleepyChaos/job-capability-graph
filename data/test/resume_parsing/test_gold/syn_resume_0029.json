@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0029",
+  "file": "syn_resume_0029.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "运动规划算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "机械工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.07.04",
+      "term_name": "图检索增强(GraphRAG)",
+      "evidence_text": "主导图检索增强(GraphRAG)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.06",
+      "term_name": "任务规划与分解",
+      "evidence_text": "在项目中使用任务规划与分解解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.03",
+      "term_name": "电子皮肤与柔性触觉",
+      "evidence_text": "负责电子皮肤与柔性触觉模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.03",
+      "term_name": "激光导航",
+      "evidence_text": "负责激光导航模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.01",
+      "term_name": "SLAM",
+      "evidence_text": "主导SLAM相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.04.02",
+      "term_name": "视觉导航",
+      "evidence_text": "在项目中使用视觉导航解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

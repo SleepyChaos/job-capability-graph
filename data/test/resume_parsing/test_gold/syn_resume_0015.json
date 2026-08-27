@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0015",
+  "file": "syn_resume_0015.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.03.12",
+      "term_name": "运动控制(通用)",
+      "evidence_text": "在项目中使用运动控制(通用)解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.02.08",
+      "term_name": "世界模型数据集",
+      "evidence_text": "主导世界模型数据集相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.08",
+      "term_name": "具身感知与交互",
+      "evidence_text": "主导具身感知与交互相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.01",
+      "term_name": "具身推理与ECoT",
+      "evidence_text": "在项目中使用具身推理与ECoT解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

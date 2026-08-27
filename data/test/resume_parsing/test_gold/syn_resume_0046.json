@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0046",
+  "file": "syn_resume_0046.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "本科",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.09.08",
+      "term_name": "细分方法与技术(其他)",
+      "evidence_text": "主导细分方法与技术(其他)相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.01",
+      "term_name": "六维力传感器",
+      "evidence_text": "在项目中使用六维力传感器解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.01.06",
+      "term_name": "人形机器人智能系统",
+      "evidence_text": "负责人形机器人智能系统模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

@@ -1,0 +1,36 @@
+{
+  "sample_id": "syn_resume_0079",
+  "file": "syn_resume_0079.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "具身智能数据工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "自动化"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.07.03",
+      "term_name": "知识图谱构建与更新",
+      "evidence_text": "在项目中使用知识图谱构建与更新解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.01.08",
+      "term_name": "移动操控一体化",
+      "evidence_text": "主导移动操控一体化相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.03",
+      "term_name": "模仿学习",
+      "evidence_text": "在项目中使用模仿学习解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

@@ -1,0 +1,42 @@
+{
+  "sample_id": "syn_resume_0054",
+  "file": "syn_resume_0054.docx",
+  "format": "docx",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "博士",
+      "major": "计算机科学与技术"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T2.01.01",
+      "term_name": "激光雷达",
+      "evidence_text": "主导激光雷达相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.04",
+      "term_name": "运动规划",
+      "evidence_text": "负责运动规划模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.06",
+      "term_name": "目标检测",
+      "evidence_text": "在项目中使用目标检测解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.02.03",
+      "term_name": "仿生机器人",
+      "evidence_text": "主导仿生机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

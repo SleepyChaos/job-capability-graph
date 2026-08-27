@@ -1,0 +1,28 @@
+dataset_id: jd_parsing_demo_v1
+name: 具身智能岗位JD解析合成演示集
+version: 1.0.0
+status: demo
+created_at: 2026-08-10
+frozen_at: null
+schema_version: jd_parsing_schema_v1
+taxonomy_version: technology_taxonomy_20260727
+sample_count: 1
+split: demo
+allowed_use:
+  - parser_integration
+  - documentation
+forbidden_use:
+  - final_accuracy_claim
+annotation:
+  guideline_version: jd_annotation_v1_draft
+  annotator_count: 1
+  adjudication_required: false
+  agreement_metric: ""
+  agreement_score: null
+privacy_level: public_synthetic
+source_policy: synthetic_only
+files:
+  - jd_parsing.example.json
+checksums_file: checksums.sha256
+notes: 该文件只演示清单结构，不是冻结评测集。
+

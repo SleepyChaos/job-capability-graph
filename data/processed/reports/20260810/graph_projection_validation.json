@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-08-11T19:25:03",
+  "summary": {
+    "data_version": "6912c763b0c5d85233285f90",
+    "target_date": "2026-08-10",
+    "projection_version": "graph_projection_p0_v1",
+    "active_cluster_count": 468,
+    "preview_role_node_count": 12,
+    "preview_capability_node_count": 10,
+    "preview_edge_count": 19,
+    "validated_cluster_code": "JC-bc0fd60a128f8054",
+    "validated_cluster_capability_count": 2,
+    "heatmap_global_row_count": 21,
+    "heatmap_detail_technology_count": 8,
+    "observed_date_count": 2,
+    "window_days": 45,
+    "invariants": {
+      "all_relation_edges_have_existing_endpoints": true,
+      "relation_projection_respects_p0_limits": true,
+      "every_relation_has_traceable_job_codes": true,
+      "cluster_metrics_keep_importance_and_recency_separate": true,
+      "global_heatmap_is_exactly_21_by_15": true,
+      "domain_heatmap_is_three_by_15_per_technology": true,
+      "heatmap_uses_fixed_45_day_window": true,
+      "partial_time_coverage_is_disclosed": true,
+      "all_views_share_one_frozen_snapshot": true,
+      "all_heat_cells_are_not_after_target_date": true
+    }
+  },
+  "timings_ms": {
+    "relations": 175.42,
+    "cluster_list": 93.33,
+    "cluster_detail": 91.56,
+    "heatmap_global": 63.37,
+    "heatmap_domain_detail": 92.94
+  },
+  "window": {
+    "start_date": "2026-06-27",
+    "end_date": "2026-08-10",
+    "days": 45,
+    "observed_date_count": 2,
+    "coverage_ratio": 0.0444,
+    "data_status": "partial",
+    "warning": "可靠源时间覆盖不足，零值可能表示未采集而非没有技术触发。"
+  },
+  "rendering": {
+    "relations": {
+      "artifact_family": "node_link",
+      "primary_route": "svg",
+      "fallback": "edge_table",
+      "layout_owner": "frontend_deterministic_radial"
+    },
+    "cluster": {
+      "distance": "inverse_normalized_long_term_importance",
+      "hue": "primary_T_domain",
+      "color_intensity": "recent_activity",
+      "recent_basis": "latest_10_jobs_by_reliable_time_then_sequence"
+    },
+    "heatmap": {
+      "artifact_family": "calendar_matrix",
+      "global_shape": "21x15",
+      "detail_shape": "3x15_per_technology",
+      "default_metric": "trigger_document_count",
+      "fallback": "daily_value_table"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+dataset_id: performance_demo_10k_v1
+version: 1.0.0
+generator_version: synthetic_generator_v1
+random_seed: 20260810
+is_synthetic: true
+scale:
+  jd_count: 10000
+  technology_term_count: 2000
+  job_cluster_count: 100
+  profile_count: 5000
+  graph_event_days: 45
+  graph_event_count: 250000
+distribution:
+  t_domains:
+    T1: 0.14
+    T2: 0.15
+    T3: 0.15
+    T4: 0.14
+    T5: 0.14
+    T6: 0.14
+    T7: 0.14
+  jd_length_chars:
+    min: 100
+    p50: 850
+    p95: 2400
+    max: 5000
+workloads:
+  - name: batch_jd_import
+    concurrency: 4
+  - name: global_graph_query
+    concurrency: 20
+  - name: profile_job_matching
+    concurrency: 10
+acceptance:
+  - metric: batch_jd_import_rows_per_minute
+    operator: greater_or_equal
+    value: 1000
+  - metric: global_graph_query_p95_ms
+    operator: less_or_equal
+    value: 2000
+  - metric: matching_query_p95_ms
+    operator: less_or_equal
+    value: 3000
+forbidden_metrics:
+  - accuracy
+  - precision
+  - recall
+notes: 性能数据为合成数据，不参与业务准确率计算。
+

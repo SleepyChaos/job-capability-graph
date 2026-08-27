@@ -1,0 +1,54 @@
+{
+  "sample_id": "syn_resume_0049",
+  "file": "syn_resume_0049.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人系统工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.02.06",
+      "term_name": "世界模型评测基准",
+      "evidence_text": "负责世界模型评测基准模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.03.03",
+      "term_name": "力控与柔顺控制",
+      "evidence_text": "负责力控与柔顺控制模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.02",
+      "term_name": "3D视觉感知",
+      "evidence_text": "负责3D视觉感知模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.05.03",
+      "term_name": "3D重建",
+      "evidence_text": "在项目中使用3D重建解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.06.05",
+      "term_name": "场景理解与环境感知",
+      "evidence_text": "负责场景理解与环境感知模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.03",
+      "term_name": "模仿学习",
+      "evidence_text": "负责模仿学习模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

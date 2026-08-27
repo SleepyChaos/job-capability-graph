@@ -1,0 +1,31 @@
+{
+  "sample_id": "",
+  "dataset_version": "",
+  "split": "test",
+  "input": {
+    "source_id": "",
+    "title_raw": "",
+    "company_alias": "",
+    "published_at": null,
+    "location_raw": "",
+    "raw_text": "",
+    "content_hash": "sha256:"
+  },
+  "gold": {
+    "job_title_normalized": "",
+    "job_cluster_id": "",
+    "seniority": "unknown",
+    "locations": [],
+    "responsibilities": [],
+    "required_skills": [],
+    "preferred_skills": [],
+    "application_scenarios": [],
+    "t_domains": [],
+    "annotation_status": "pending"
+  },
+  "quality": {
+    "difficulty": "normal",
+    "adjudication_notes": ""
+  }
+}
+

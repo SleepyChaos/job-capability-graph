@@ -1,0 +1,220 @@
+from typing import Annotated, Literal
+
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.modules.talent.resume_adapter import ResumeFileError, extract_resume_text, virus_scan
+from app.modules.talent.service import (
+    TalentWorkflowError,
+    answer_match_evidence_question,
+    answer_profile_question,
+    create_learning_path,
+    create_profile_draft,
+    create_profile_version,
+    delete_profile_family,
+    export_profiles_masked,
+    get_match_evidence_question,
+    get_profile,
+    list_profiles,
+    match_explanation,
+    publish_profile,
+    run_matching,
+    save_job_requirement_expression,
+)
+
+router = APIRouter(tags=["talent-matching"])
+
+
+class ProfileDraftCreate(BaseModel):
+    source_name: str = Field(min_length=1, max_length=500)
+    mime_type: str = Field(default="text/plain", max_length=150)
+    input_type_code: Literal["pasted_text", "txt", "docx_text", "pdf_text", "ocr_text"] = (
+        "pasted_text"
+    )
+    content_text: str = Field(min_length=30, max_length=200_000)
+
+
+class DialogueAnswer(BaseModel):
+    answer_text: str = Field(min_length=1, max_length=5000)
+
+
+class ProfileVersionCreate(BaseModel):
+    target_role_text: str | None = Field(default=None, max_length=500)
+    education_text: str | None = Field(default=None, max_length=500)
+    experience_summary: str | None = Field(default=None, max_length=5000)
+
+
+class RequirementExpressionCreate(BaseModel):
+    expression: dict
+
+
+def _call(action):
+    try:
+        return action()
+    except TalentWorkflowError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.post("/talent/profiles", response_model=dict, status_code=201)
+def create_profile(payload: ProfileDraftCreate, db: Annotated[Session, Depends(get_db)]):
+    return _call(
+        lambda: create_profile_draft(
+            db,
+            source_name=payload.source_name,
+            mime_type=payload.mime_type,
+            content_text=payload.content_text,
+            input_type_code=payload.input_type_code,
+        )
+    )
+
+
+@router.post("/talent/profiles/upload", response_model=dict, status_code=201)
+def upload_profile(
+    db: Annotated[Session, Depends(get_db)],
+    file: Annotated[UploadFile, File()],
+):
+    """上传简历并做 DeepSeek 证据抽取；无 Key/失败时自动走规则降级。"""
+    data = file.file.read()
+    scan = virus_scan(data)
+    if scan["status"] == "infected":
+        raise HTTPException(status_code=422, detail="文件未通过安全扫描，已拒绝")
+    try:
+        text, mime_type, input_type_code = extract_resume_text(file.filename or "resume.txt", data)
+    except ResumeFileError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    try:
+        return create_profile_draft(
+            db,
+            source_name=file.filename or "上传简历",
+            mime_type=mime_type,
+            content_text=text,
+            input_type_code=input_type_code,
+        )
+    except TalentWorkflowError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.get("/talent/profiles", response_model=list[dict])
+def get_profiles(db: Annotated[Session, Depends(get_db)]):
+    return list_profiles(db)
+
+
+@router.get("/talent/profiles/export", response_model=list[dict])
+def export_profiles(db: Annotated[Session, Depends(get_db)]):
+    """脱敏导出画像统计字段（设计 §17.2）。"""
+    return export_profiles_masked(db)
+
+
+@router.delete("/talent/profiles/{version_code}", response_model=dict)
+def delete_profile(version_code: str, db: Annotated[Session, Depends(get_db)]):
+    """隐私删除请求：软删整个画像族（设计 §17.2）。"""
+    return _call(lambda: delete_profile_family(db, version_code=version_code))
+
+
+@router.get("/talent/profiles/{version_code}", response_model=dict)
+def get_profile_detail(version_code: str, db: Annotated[Session, Depends(get_db)]):
+    return _call(lambda: get_profile(db, version_code=version_code))
+
+
+@router.post("/talent/profiles/{version_code}/answers", response_model=dict)
+def answer_question(
+    version_code: str,
+    payload: DialogueAnswer,
+    db: Annotated[Session, Depends(get_db)],
+):
+    return _call(
+        lambda: answer_profile_question(
+            db, version_code=version_code, answer_text=payload.answer_text
+        )
+    )
+
+
+@router.post("/talent/profiles/{version_code}/publish", response_model=dict)
+def confirm_profile(version_code: str, db: Annotated[Session, Depends(get_db)]):
+    return _call(lambda: publish_profile(db, version_code=version_code))
+
+
+@router.post("/talent/profiles/{version_code}/versions", response_model=dict, status_code=201)
+def make_profile_version(
+    version_code: str,
+    payload: ProfileVersionCreate,
+    db: Annotated[Session, Depends(get_db)],
+):
+    return _call(
+        lambda: create_profile_version(
+            db,
+            version_code=version_code,
+            target_role_text=payload.target_role_text,
+            education_text=payload.education_text,
+            experience_summary=payload.experience_summary,
+        )
+    )
+
+
+@router.post("/talent/profiles/{version_code}/matches", response_model=dict, status_code=201)
+def match_profile(
+    version_code: str,
+    db: Annotated[Session, Depends(get_db)],
+    limit: Annotated[int, Query(ge=1, le=10)] = 5,
+):
+    return _call(lambda: run_matching(db, version_code=version_code, limit=limit))
+
+
+@router.post(
+    "/talent/job-clusters/{job_cluster_version_id}/requirement-expressions",
+    response_model=dict,
+    status_code=201,
+)
+def create_requirement_expression(
+    job_cluster_version_id: int,
+    payload: RequirementExpressionCreate,
+    db: Annotated[Session, Depends(get_db)],
+):
+    """保存经人工确认的可执行岗位规则新版本；不会覆盖历史版本。"""
+    return _call(
+        lambda: save_job_requirement_expression(
+            db,
+            job_cluster_version_id=job_cluster_version_id,
+            expression_payload=payload.expression,
+        )
+    )
+
+
+@router.get("/talent/matches/{result_code}/evidence-question", response_model=dict)
+def get_evidence_question(
+    result_code: str,
+    db: Annotated[Session, Depends(get_db)],
+):
+    """返回机械规划器选择的岗位相关补证问题；LLM 不参与问题选择。"""
+    return _call(lambda: get_match_evidence_question(db, result_code=result_code))
+
+
+@router.post("/talent/matches/{result_code}/evidence-answer", response_model=dict)
+def answer_evidence_question(
+    result_code: str,
+    payload: DialogueAnswer,
+    db: Annotated[Session, Depends(get_db)],
+    limit: Annotated[int, Query(ge=1, le=10)] = 5,
+):
+    """将回答写入新的不可变画像版本，并重新执行纯机械匹配。"""
+    return _call(
+        lambda: answer_match_evidence_question(
+            db,
+            result_code=result_code,
+            answer_text=payload.answer_text,
+            limit=limit,
+        )
+    )
+
+
+@router.post("/talent/matches/{result_code}/learning-path", response_model=dict, status_code=201)
+def build_learning_path(result_code: str, db: Annotated[Session, Depends(get_db)]):
+    return _call(lambda: create_learning_path(db, result_code=result_code))
+
+
+@router.get("/talent/matches/{result_code}/explanation", response_model=dict)
+def explain_match(result_code: str, db: Annotated[Session, Depends(get_db)]):
+    """匹配解释：LLM 可用时生成，否则规则降级；不修改机械总分。"""
+    return _call(lambda: match_explanation(db, result_code=result_code))

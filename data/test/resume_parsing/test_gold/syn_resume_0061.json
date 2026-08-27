@@ -1,0 +1,48 @@
+{
+  "sample_id": "syn_resume_0061",
+  "file": "syn_resume_0061.txt",
+  "format": "txt",
+  "privacy_level": "public_synthetic",
+  "target_job_titles": [
+    "机器人感知算法工程师"
+  ],
+  "education": [
+    {
+      "degree": "硕士",
+      "major": "控制科学与工程"
+    }
+  ],
+  "skills": [
+    {
+      "term_code": "T1.07.03",
+      "term_name": "知识图谱构建与更新",
+      "evidence_text": "负责知识图谱构建与更新模块开发，完成功能验证与性能优化。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.05.03",
+      "term_name": "模仿学习",
+      "evidence_text": "在项目中使用模仿学习解决关键工程问题，并沉淀可复用组件。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T3.03.01",
+      "term_name": "协作机器人",
+      "evidence_text": "主导协作机器人相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T1.07.08",
+      "term_name": "图匹配算法",
+      "evidence_text": "主导图匹配算法相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    },
+    {
+      "term_code": "T2.02.11",
+      "term_name": "边缘传感器",
+      "evidence_text": "主导边缘传感器相关方案设计与真机联调，输出测试报告。",
+      "level": "applied"
+    }
+  ],
+  "unsupported_inferences": []
+}

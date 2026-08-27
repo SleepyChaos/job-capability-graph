@@ -1,0 +1,66 @@
+{
+  "sample_id": "jd_demo_0001",
+  "dataset_version": "jd_parsing_demo_v1",
+  "split": "demo",
+  "input": {
+    "source_id": "source_demo_0001",
+    "title_raw": "机器人感知算法工程师",
+    "company_alias": "DEMO-COMPANY-A",
+    "published_at": "2026-07-20",
+    "location_raw": "上海市浦东新区",
+    "raw_text": "职责：负责机器人多传感器感知算法开发。要求：熟悉ROS 2与C++，掌握点云处理。具备CUDA优化经验者优先。",
+    "content_hash": "sha256:synthetic-jd-demo-0001"
+  },
+  "gold": {
+    "job_title_normalized": "机器人感知算法工程师",
+    "job_cluster_id": "cluster_robot_perception",
+    "seniority": "mid",
+    "locations": ["上海"],
+    "responsibilities": [
+      {
+        "text": "负责机器人多传感器感知算法开发",
+        "evidence": {"start": 3, "end": 20}
+      }
+    ],
+    "required_skills": [
+      {
+        "term_id": "tech_ros2",
+        "surface": "ROS 2",
+        "t_domain": "T3",
+        "level": "L3",
+        "evidence": {"start": 26, "end": 31}
+      },
+      {
+        "term_id": "tech_cpp",
+        "surface": "C++",
+        "t_domain": "T1",
+        "level": "L3",
+        "evidence": {"start": 32, "end": 35}
+      },
+      {
+        "term_id": "tech_point_cloud",
+        "surface": "点云处理",
+        "t_domain": "T2",
+        "level": "L3",
+        "evidence": {"start": 38, "end": 42}
+      }
+    ],
+    "preferred_skills": [
+      {
+        "term_id": "tech_cuda",
+        "surface": "CUDA",
+        "t_domain": "T1",
+        "level": "L4",
+        "evidence": {"start": 45, "end": 49}
+      }
+    ],
+    "application_scenarios": ["移动机器人"],
+    "t_domains": ["T1", "T2", "T3"],
+    "annotation_status": "demo_adjudicated"
+  },
+  "quality": {
+    "difficulty": "normal",
+    "adjudication_notes": "合成样例，仅用于说明必备与加分技能的区分。"
+  }
+}
+
