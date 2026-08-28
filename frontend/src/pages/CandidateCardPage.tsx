@@ -16,6 +16,7 @@ import {
   CLASSIFICATION_BASELINE_NOTE,
   discoveryApi,
   emergenceWindow,
+  evidenceBadges,
   EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   maturityStageLabels,
   milestoneTypeLabels,
@@ -176,6 +177,7 @@ export function CandidateCardPage({
   */
   const isExternal = EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(classification)
   const isMilestone = classification === 'milestone_signal'
+  const gapBadge = evidenceBadges[String(card?.gap_grade ?? '')]
   const milestones = (card?.milestones ?? []) as MilestoneEvidence[]
   const evidencePairs = (card?.evidence_pairs ?? []) as UpstreamEvidencePair[]
   const jdMentions = (card?.jd_mentions ?? {}) as Record<string, number>
@@ -237,9 +239,14 @@ export function CandidateCardPage({
 
       {isExternal ? (
         <div className="card-metrics">
-          <div>
-            <ShieldAlert size={17} /><span>缺口等级</span>
-            <strong>{String(card?.gap_grade ?? '—')} 级</strong>
+          {/*
+            此处原来写「A 级 / B 级」。字母不说明任何事——读者既看不出 A 与 B 差在哪，
+            也看不出它和旁边那些数字什么关系。改用与候选卡、审核台一致的说法，
+            判据挂在 title 上。
+          */}
+          <div title={gapBadge?.hint}>
+            <ShieldAlert size={17} /><span>缺口判定</span>
+            <strong>{gapBadge?.label ?? '—'}</strong>
           </div>
           <div>
             <Database size={17} />
@@ -514,7 +521,10 @@ export function CandidateCardPage({
                       </strong>
                       <span>
                         上游共现 {item.upstream_cooccurrence} 次 · 站住脚于{' '}
-                        {item.established_month} · {item.grade} 级
+                        {item.established_month} ·{' '}
+                        <em title={evidenceBadges[item.grade]?.hint}>
+                          {evidenceBadges[item.grade]?.label ?? item.grade}
+                        </em>
                       </span>
                     </li>
                   ))}
