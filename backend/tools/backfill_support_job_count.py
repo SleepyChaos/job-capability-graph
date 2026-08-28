@@ -15,6 +15,7 @@ import argparse
 from sqlalchemy import select
 
 from app.db.session import SessionLocal
+
 # 候选表对 biz_job_role 有外键，映射器在 flush 时才解析它；
 # 不导入岗位模型，commit 会报 NoReferencedTableError。
 from app.modules.clustering.models import JobRole  # noqa: F401
