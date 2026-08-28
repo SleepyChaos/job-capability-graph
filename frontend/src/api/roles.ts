@@ -47,6 +47,8 @@ export interface RoleRequirementItem {
  */
 export interface RoleEvolutionChange {
   technology_code: string
+  /** 技术名。消失的能力项不在最新版清单里，只有编码就没法读。 */
+  technology_name: string | null
   change_type: string
   change_subtype: string | null
   magnitude: string

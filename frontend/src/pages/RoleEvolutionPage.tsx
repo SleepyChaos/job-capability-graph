@@ -280,8 +280,12 @@ export function RoleEvolutionPage({ notify }: { notify: (message: string) => voi
                     {detail.evolution_changes
                       .filter((c) => c.change_type === 'removed')
                       .map((c) => (
-                        <span key={c.technology_code} className="risk-tag">
-                          {c.technology_code}
+                        <span
+                          key={c.technology_code}
+                          className="risk-tag"
+                          title={c.technology_code}
+                        >
+                          {c.technology_name ?? c.technology_code}
                         </span>
                       ))}
                   </div>

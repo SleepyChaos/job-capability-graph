@@ -544,13 +544,21 @@ def role_detail(role_code: str, db: Annotated[Session, Depends(get_db)]):
         changes = [
             {
                 "technology_code": code,
+                # 技术名一并返回：前端「本版消失的能力」只有技术编码可用，
+                # 而消失的能力项不在最新版能力清单里，无处查它的名字，
+                # 于是界面上会出现一串 T1.03.02 这样读不懂的编码。
+                "technology_name": name,
                 "change_type": change.change_type_code,
                 "change_subtype": change.change_subtype_code,
                 "magnitude": str(change.change_magnitude or 0),
                 "reason": change.change_reason,
             }
-            for change, code in db.execute(
-                select(JobEvolutionChange, TechnologyNode.technology_code)
+            for change, code, name in db.execute(
+                select(
+                    JobEvolutionChange,
+                    TechnologyNode.technology_code,
+                    TechnologyNode.technology_name,
+                )
                 .join(
                     JobEvolutionEvent,
                     JobEvolutionEvent.job_evolution_event_id
