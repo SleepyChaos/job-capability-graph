@@ -1651,6 +1651,10 @@ def _persist_candidate(
         existing.task_community_id = community.task_community_id
         existing.maturity_stage_code = scored.maturity_stage
         existing.candidate_score = Decimal(str(scored.score))
+        # 支撑 JD 数也必须一并刷新。它与 mechanical_card 的 job_count 同源
+        # （都是 len(evidence.job_ids)），但列表页读前者、数据卡读后者：
+        # 漏掉这一行，同一个候选在两个页面上会显示两个不同的「支撑 JD」。
+        existing.support_job_count = len(evidence.job_ids)
         existing.nearest_job_role_id = nearest_role_id
         existing.overlap_score = Decimal(str(overlap))
         existing.classification_code = classification

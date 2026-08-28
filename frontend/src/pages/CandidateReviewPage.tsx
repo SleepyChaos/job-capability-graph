@@ -2,8 +2,8 @@ import {
   Building2,
   CheckCircle2,
   ExternalLink,
-  FileText,
   FlaskConical,
+  FileText,
   Layers,
   RefreshCw,
   ShieldAlert,
@@ -17,7 +17,9 @@ import {
   classificationTone,
   discoveryApi,
   emergenceWindow,
+  evidenceBadges,
   maturityStageLabels,
+  riskFlagText,
   milestoneTypeLabels,
   EXTERNAL_EVIDENCE_CLASSIFICATIONS,
   type CandidateDetail,
@@ -25,7 +27,6 @@ import {
   type MilestoneEvidence,
   type TransmissionLagPrior,
   type NearestRoleCard,
-  type UnverifiedTechnologyPage,
 } from '../api/discovery'
 import { Panel, StatusTag } from '../components/ui'
 import type { PageId } from '../types'
@@ -39,53 +40,86 @@ import type { PageId } from '../types'
  * 这里把处置面与资料面彻底分开，并按分类给出该做什么，而不是给两个通用按钮。
  *
  * 资料在岗位数据卡（独立路由），本页只负责决定。
- *
- * 第二个页签是 **C 级待核查技术清单**。它不是候选，处置对象是技术点而非岗位，
- * 但同属「系统判不了、需要人来判」这一类工作，因此并入审核台而不是另开一页。
- * 该清单当前只读——判定结果的落库口径尚未定义，先如实呈现待判事实，
- * 不做一个点了没有后续的假按钮。
  */
 
-/** 每个分类对应的推荐动作。四类候选的下一步完全不同，不能共用一组按钮。 */
+/**
+ * 每个分类对应的推荐动作。六类候选的下一步完全不同，不能共用一组按钮。
+ *
+ * **每个按钮显式声明它执行 approve 还是 reject**，不靠位置约定。
+ * 原实现把主按钮一律接 `approve`、次按钮一律接 `reject`，但对
+ * `existing_role` 与 `role_evolution` 两类，主按钮的语义恰恰是「不新建岗位」——
+ * 于是点「归档」会去发布正式岗位，被后端门禁拦下并弹出
+ * 「已有岗位或已有候选不能作为新岗位重复发布」，而点「仍要建为新岗位」
+ * 反倒把候选驳回了：两个按钮做的事都与它们写的相反。
+ *
+ * `secondary` 为 null 表示该分类只有一个可执行的动作。`existing_role` 属此列：
+ * 后端 `_publish_candidate` 对该分类硬性禁止发布，给出「仍要建为新岗位」
+ * 只会是一个点了必然报错的按钮。
+ */
 const ACTION_BY_CLASSIFICATION: Record<
   string,
-  { primary: string; primaryHint: string; secondary: string }
+  {
+    primary: string
+    primaryAction: 'approve' | 'reject'
+    primaryHint: string
+    primaryDone: string
+    secondary: string | null
+    secondaryDone?: string
+  }
 > = {
   existing_role: {
     primary: '归档（无需新增）',
+    primaryAction: 'reject',
     primaryHint: '该组合已被既有岗位覆盖且占其大半，归档后不再重复提出。',
-    secondary: '仍要建为新岗位',
+    primaryDone: '已归档：该组合不再作为新岗位候选提出',
+    // 后端禁止已被覆盖的候选发布为新岗位，因此这里不给第二个按钮。
+    secondary: null,
   },
   role_evolution: {
     primary: '并入最邻近岗位',
+    primaryAction: 'reject',
     primaryHint: '候选是该岗位的一个片段或部分重合，作为其能力变化并入。',
+    primaryDone: '已记录为并入最邻近岗位，不新增岗位定义',
     secondary: '仍要建为新岗位',
+    secondaryDone: '已入库：正式岗位首版本与标准 JD 已生成',
   },
   library_gap: {
     primary: '补录为正式岗位',
+    primaryAction: 'approve',
     primaryHint: '能力组合已成熟、市场在招，只是岗位库未收录。补录而非创新定义。',
+    primaryDone: '已补录：正式岗位首版本与标准 JD 已生成',
     secondary: '暂不补录',
+    secondaryDone: '已记录为暂不补录，候选保留观察记录',
   },
   potential_new_role: {
     primary: '新增岗位定义',
+    primaryAction: 'approve',
     primaryHint: '所依托技术方向尚未全部成熟，建库后需持续跟踪。',
+    primaryDone: '已入库：正式岗位首版本与标准 JD 已生成',
     secondary: '继续观察',
+    secondaryDone: '已记录为继续观察，不新增岗位定义',
   },
   // 上游信号没有任何招聘证据支撑，主按钮的措辞必须说明这一点：
   // 批准等于**在没有市场证据的情况下先建库**，与其它三类不是同一个决定。
   upstream_signal: {
     primary: '认定成立，先行建库',
+    primaryAction: 'approve',
     primaryHint:
       '零 JD 支撑。批准意味着仅凭上游语料证据先行建库，请先在数据卡核对共现次数与技术点。',
+    primaryDone: '已建库：正式岗位首版本与标准 JD 已生成',
     secondary: '判为语料域偏离',
+    secondaryDone: '已判为语料域偏离，该组合不再提出',
   },
   // 里程碑信号的驳回理由与上游不同：它不会有语料域偏离（事件是人工筛过的），
   // 真正要判的是「这个事件是否意味着一类工作」——很多发布只是产品动态。
   milestone_signal: {
     primary: '认定成立，先行建库',
+    primaryAction: 'approve',
     primaryHint:
       '零 JD 支撑。依据是下方列出的具体事件——请先判断这些事件是否真的意味着一类岗位，而不只是产品动态。',
+    primaryDone: '已建库：正式岗位首版本与标准 JD 已生成',
     secondary: '判为不构成岗位',
+    secondaryDone: '已判为不构成岗位，该组合不再提出',
   },
 }
 
@@ -106,9 +140,6 @@ export function CandidateReviewPage({
   const [loading, setLoading] = useState(true)
   const [acting, setActing] = useState(false)
   const [error, setError] = useState('')
-  const [tab, setTab] = useState<'candidates' | 'technologies'>('candidates')
-  const [unverified, setUnverified] = useState<UnverifiedTechnologyPage | null>(null)
-  const [unverifiedError, setUnverifiedError] = useState('')
   const reviewerCode = 'admin-demo'
 
   const load = useCallback(async () => {
@@ -120,8 +151,11 @@ export function CandidateReviewPage({
       setItems(page.items)
       const has = (code: string) => page.items.some((item) => item.candidate_code === code)
       setSelectedCode((current) => {
-        if (current && has(current)) return current
+        // 带编码进来（从岗位数据卡跳转）时以它为准。原实现先看当前选中，
+        // 于是第二次从另一张数据卡跳进来会停在上一条：那时 current 仍然有效，
+        // 新带来的编码被丢掉，看起来像是跳转没生效。
         if (initialCandidateCode && has(initialCandidateCode)) return initialCandidateCode
+        if (current && has(current)) return current
         return page.items[0]?.candidate_code ?? ''
       })
     } catch (reason) {
@@ -134,17 +168,6 @@ export function CandidateReviewPage({
   useEffect(() => {
     void load()
   }, [load])
-
-  useEffect(() => {
-    const controller = new AbortController()
-    discoveryApi
-      .unverifiedTechnologies(controller.signal)
-      .then(setUnverified)
-      .catch((reason: Error) => {
-        if (reason.name !== 'AbortError') setUnverifiedError(reason.message)
-      })
-    return () => controller.abort()
-  }, [])
 
   useEffect(() => {
     if (!selectedCode) {
@@ -198,6 +221,10 @@ export function CandidateReviewPage({
   const expression = (candidate?.expression ?? {}) as Record<string, unknown>
   // 两类外部证据候选的 JD 支撑恒为 0，事实位与基准说明都要另给。
   const isExternal = EXTERNAL_EVIDENCE_CLASSIFICATIONS.has(classification)
+  // 次按钮永远是主按钮的另一面：主按钮发布，次按钮就是驳回，反之亦然。
+  const gapBadge = evidenceBadges[String(card?.gap_grade ?? '')]
+  const secondaryAction: 'approve' | 'reject' =
+    actions?.primaryAction === 'approve' ? 'reject' : 'approve'
   const isMilestone = classification === 'milestone_signal'
   const milestones = (card?.milestones ?? []) as MilestoneEvidence[]
   const lag = (card?.expected_transmission_lag ?? null) as TransmissionLagPrior | null
@@ -205,25 +232,6 @@ export function CandidateReviewPage({
 
   return (
     <div className="page review-desk">
-      <div className="review-tab-bar">
-        <button
-          className={tab === 'candidates' ? 'active' : ''}
-          onClick={() => setTab('candidates')}
-        >
-          <ShieldCheck size={15} /> 候选处置 {items.length}
-        </button>
-        <button
-          className={tab === 'technologies' ? 'active' : ''}
-          onClick={() => setTab('technologies')}
-        >
-          <FlaskConical size={15} /> C 级待核查技术 {unverified?.items.length ?? 0}
-        </button>
-      </div>
-
-      {tab === 'technologies' ? (
-        <UnverifiedPanel data={unverified} error={unverifiedError} />
-      ) : (
-      <>
       <div className="review-queue-bar">
         <button
           className={filter === 'all' ? 'active' : ''}
@@ -300,9 +308,14 @@ export function CandidateReviewPage({
               */}
               {isExternal ? (
                 <div className="review-facts">
-                  <div>
-                    <ShieldAlert size={16} /><span>缺口等级</span>
-                    <strong>{String(card?.gap_grade ?? '—')} 级</strong>
+                  {/*
+                    此处原来写「A 级 / B 级」。字母本身不说明任何事——审阅者既看不出
+                    A 与 B 差在哪，也看不出它跟旁边那些数字是什么关系。改用与卡片上
+                    一致的自解释说法，并把判据挂在 title 上。
+                  */}
+                  <div title={gapBadge?.hint}>
+                    <ShieldAlert size={16} /><span>缺口判定</span>
+                    <strong>{gapBadge?.label ?? '—'}</strong>
                   </div>
                   <div>
                     <FlaskConical size={16} />
@@ -381,7 +394,14 @@ export function CandidateReviewPage({
                 <div className="review-risks">
                   <span>风险标签</span>
                   <div className="skill-tags">
-                    {candidate.risk_flags.map((flag) => <span key={flag} className="risk-tag">{flag}</span>)}
+                    {candidate.risk_flags.map((flag) => {
+                      const text = riskFlagText(flag)
+                      return (
+                        <span key={flag} className="risk-tag" title={text.hint}>
+                          {text.label}
+                        </span>
+                      )
+                    })}
                   </div>
                 </div>
               ) : null}
@@ -403,27 +423,38 @@ export function CandidateReviewPage({
                   <span>{actions?.primaryHint ?? classificationGuidance[classification] ?? ''}</span>
                 </div>
                 <div className="review-action-buttons">
-                  <button
-                    className="secondary-button"
-                    disabled={acting}
-                    onClick={() =>
-                      act('reject', '已记录为不新增，候选保留观察记录', '审核台处置：不新增岗位定义')
-                    }
-                  >
-                    {actions?.secondary ?? '驳回观察'}
-                  </button>
+                  {actions?.secondary ? (
+                    <button
+                      className="secondary-button"
+                      disabled={acting}
+                      onClick={() =>
+                        act(
+                          secondaryAction,
+                          actions.secondaryDone ?? '已处置',
+                          `审核台处置：${actions.secondary}`,
+                        )
+                      }
+                    >
+                      {actions.secondary}
+                    </button>
+                  ) : null}
                   <button
                     className="primary-button"
                     disabled={acting}
                     onClick={() =>
-                      act('approve', '已入库：正式岗位首版本与标准 JD 已生成')
+                      act(
+                        actions?.primaryAction ?? 'approve',
+                        actions?.primaryDone ?? '已入库：正式岗位首版本与标准 JD 已生成',
+                        actions ? `审核台处置：${actions.primary}` : undefined,
+                      )
                     }
                   >
                     {acting ? '提交中…' : actions?.primary ?? '批准入库'}
                   </button>
                 </div>
                 <p className="review-terminal-warning">
-                  两个动作都是<strong>终态</strong>：处置后该技术组合不会再被重复提出，
+                  {actions?.secondary ? '两个动作都是' : '该动作是'}
+                  <strong>终态</strong>：处置后该技术组合不会再被重复提出，
                   即使算法版本更新。拿不准就先看数据卡。
                 </p>
                 {/*
@@ -441,80 +472,6 @@ export function CandidateReviewPage({
           )}
         </Panel>
       </div>
-      </>
-      )}
     </div>
-  )
-}
-
-/**
- * C 级待核查技术清单。
- *
- * 每行是一个技术点，不是一个岗位候选。呈现三件事实：上游语料里它与别的技术最多
- * 共现过多少次、涉及多少对缺口、最早的锚点月份。审阅者要判的是它究竟属于
- * 「招聘市场还没出现的新技术」还是「上游语料谈的不是这个市场的事」。
- */
-function UnverifiedPanel({
-  data,
-  error,
-}: {
-  data: UnverifiedTechnologyPage | null
-  error: string
-}) {
-  if (error) {
-    return (
-      <div className="empty-state">
-        <ShieldAlert size={25} />
-        <strong>加载失败</strong>
-        <span>{error}</span>
-      </div>
-    )
-  }
-  if (!data) {
-    return (
-      <div className="empty-state">
-        <RefreshCw className="spin" size={22} />
-        <strong>加载中…</strong>
-      </div>
-    )
-  }
-  // 空状态照常显示，不隐藏该分区——「当前语料条件下无待核查项」本身是结论。
-  if (data.items.length === 0) {
-    return (
-      <div className="empty-state">
-        <CheckCircle2 size={24} />
-        <strong>无待核查技术点</strong>
-        <span>最近一次上游缺口分析没有产出 C 级条目，或该分析尚未运行。</span>
-      </div>
-    )
-  }
-  return (
-    <Panel
-      title="C 级待核查技术清单"
-      subtitle={`${data.items.length} 个技术点 · 来自运行 ${data.run_code ?? '—'}`}
-    >
-      <p className="review-baseline">{data.note}</p>
-      <div className="unverified-list">
-        {data.items.map((item) => (
-          <div key={item.technology_code} className="unverified-row">
-            <div className="unverified-head">
-              <strong>{item.technology_name}</strong>
-              <code>{item.technology_code}</code>
-              <StatusTag tone="warning">JD 零命中</StatusTag>
-            </div>
-            <div className="unverified-facts">
-              <span>上游最高共现 <strong>{item.max_upstream_cooccurrence}</strong> 次</span>
-              <span>涉及 <strong>{item.pair_count}</strong> 对缺口</span>
-              <span>最早锚点 <strong>{item.earliest_established ?? '—'}</strong></span>
-            </div>
-            <div className="skill-tags">
-              {item.partner_names.map((name) => (
-                <span key={name} className="skill-tag">{name}</span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </Panel>
   )
 }

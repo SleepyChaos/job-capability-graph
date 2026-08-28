@@ -59,7 +59,6 @@ const jobPages: PageId[] = [
   'discovery-library',
   'role-evolution',
   'candidate',
-  'job-directed',
   'job-records',
 ]
 const jobChildren: NavItem[] = [
@@ -72,9 +71,9 @@ const jobChildren: NavItem[] = [
   { id: 'discovery-library', label: '新岗位发现库', icon: Library },
   // 演变与发现同属一个模块：发现回答「有没有新岗位」，演变回答「既有岗位变了什么」。
   { id: 'role-evolution', label: '岗位能力演变', icon: GitCommitVertical },
-  // 技术词定向与岗位名称核验合成「定向推演」一页：两者都是按用户给定入口做定向
-  // 查询，与自动发现的批量推演不是一类；各占一个导航项会把主流程挤到一边。
-  { id: 'job-directed', label: '定向推演', icon: Tags },
+  // 「定向推演」暂不进导航：技术词定向与岗位名称核验都需要使用者先给出入口词，
+  // 与本模块「由数据自动发现」的主线不是一回事，放在这里会被当成主流程的一步。
+  // 路由仍保留，既有链接不会失效，只是不再从侧边栏进入。
   { id: 'job-records', label: '推演结果记录库', icon: FileClock },
 ]
 

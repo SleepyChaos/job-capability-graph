@@ -96,7 +96,7 @@ export function JobRecordsPage({ notify }: { notify: (message: string) => void }
                 </tr>
               ))}</tbody>
             </table>
-            {filteredRuns.length === 0 ? <div className="empty-state"><Archive size={24} /><strong>暂无推演记录</strong><span>在"新岗位发现"或"定向推演"页面发起运行后将自动记录。</span></div> : null}
+            {filteredRuns.length === 0 ? <div className="empty-state"><Archive size={24} /><strong>暂无推演记录</strong><span>在"新岗位发现"页面发起自动预测后将自动记录。</span></div> : null}
           </div>
         )}
       </Panel>

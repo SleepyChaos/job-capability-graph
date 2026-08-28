@@ -28,6 +28,7 @@ import {
   type NearestRoleCard,
   type TransmissionLagPrior,
   type UpstreamEvidencePair,
+  riskFlagText,
 } from '../api/discovery'
 import { Panel, StatusTag } from '../components/ui'
 
@@ -551,9 +552,14 @@ export function CandidateCardPage({
                 <div className="risk-block">
                   <span>风险标签</span>
                   <div className="skill-tags">
-                    {candidate.risk_flags.map((flag) => (
-                      <span key={flag} className="risk-tag">{flag}</span>
-                    ))}
+                    {candidate.risk_flags.map((flag) => {
+                      const text = riskFlagText(flag)
+                      return (
+                        <span key={flag} className="risk-tag" title={text.hint}>
+                          {text.label}
+                        </span>
+                      )
+                    })}
                   </div>
                 </div>
               ) : null}
@@ -598,9 +604,14 @@ export function CandidateCardPage({
               <div className="risk-block">
                 <span>风险标签</span>
                 <div className="skill-tags">
-                  {candidate.risk_flags.map((flag) => (
-                    <span key={flag} className="risk-tag">{flag}</span>
-                  ))}
+                  {candidate.risk_flags.map((flag) => {
+                    const text = riskFlagText(flag)
+                    return (
+                      <span key={flag} className="risk-tag" title={text.hint}>
+                        {text.label}
+                      </span>
+                    )
+                  })}
                 </div>
               </div>
             ) : null}

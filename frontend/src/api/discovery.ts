@@ -349,6 +349,37 @@ export const classificationLabels: Record<string, string> = {
 }
 
 /**
+ * 风险标签的中文名与释义。
+ *
+ * 这些码由发现流程写在候选上，此前界面直接把英文码原样贴出来，读者既不知道
+ * 它指什么，也不知道它是否影响判断。标签本身是**事实陈述而非扣分项**——
+ * 评分已经在各自维度里体现过这些情况，这里只是把「这条候选缺什么」摆明。
+ */
+export const riskFlagLabels: Record<string, { label: string; hint: string }> = {
+  missing_application_evidence: {
+    label: '缺落地应用证据',
+    hint: '技术侧证据齐备，但没有找到已验证的产业落地事件，成熟度只能停在潜在档。',
+  },
+  no_hiring_evidence: {
+    label: '零招聘证据',
+    hint: '该技术组合在全部招聘文本中从未同现——这正是外部证据类候选的立论前提，不是数据缺失。',
+  },
+  single_company_signal: {
+    label: '仅单一企业信号',
+    hint: '支撑证据集中在一家企业，可能是该企业的内部叫法而非行业性岗位。',
+  },
+  name_query_is_not_market_proof: {
+    label: '名称推演非市场证据',
+    hint: '结论来自用户给定的岗位名查询，不构成市场需求的证据。',
+  },
+}
+
+/** 取风险标签的展示文案；未登记的码原样返回，不假装认识它。 */
+export function riskFlagText(code: string): { label: string; hint: string } {
+  return riskFlagLabels[code] ?? { label: code, hint: '未登记的风险标签码。' }
+}
+
+/**
  * 本类候选与其余几类的**证据来源根本不同**，因此在界面上必须分区陈列。
  *
  * 其余分类的分母是本系统由 JD 聚类得到的岗位库，回答「这个能力组合在岗位库里有没有
