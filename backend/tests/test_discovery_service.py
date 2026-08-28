@@ -419,7 +419,7 @@ def test_discovery_is_replayable_and_publishes_separate_standard_jd() -> None:
                 ReviewTask.queue_code == "job_discovery",
             )
         )
-        with pytest.raises(DiscoveryError, match="缺少可追溯"):
+        with pytest.raises(DiscoveryError, match="没有关联技术词"):
             review_candidate(
                 session,
                 task_code=unsupported_task.task_code,
