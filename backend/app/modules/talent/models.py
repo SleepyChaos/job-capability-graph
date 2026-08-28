@@ -37,6 +37,36 @@ class ResumeDocument(Base):
     __table_args__ = (Index("idx_resume_hash", "content_hash"),)
 
 
+class JobRequirementExpression(Base):
+    """Immutable, human-confirmed executable requirement expression version."""
+
+    __tablename__ = "biz_job_requirement_expression"
+
+    job_requirement_expression_id: Mapped[int] = mapped_column(
+        primary_key_type, primary_key=True
+    )
+    job_cluster_version_id: Mapped[int] = mapped_column(
+        ForeignKey("biz_job_cluster_version.job_cluster_version_id")
+    )
+    expression_version_no: Mapped[int] = mapped_column(Integer)
+    expression_json: Mapped[dict] = mapped_column(JSON)
+    workflow_status_code: Mapped[str] = mapped_column(String(32), default="confirmed")
+    source_type_code: Mapped[str] = mapped_column(String(32), default="human_annotation")
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    __table_args__ = (
+        UniqueConstraint(
+            "job_cluster_version_id",
+            "expression_version_no",
+            name="uk_job_requirement_expression_version",
+        ),
+        Index(
+            "idx_job_requirement_expression_status",
+            "job_cluster_version_id",
+            "workflow_status_code",
+        ),
+    )
+
 class CandidateProfile(Base):
     __tablename__ = "biz_candidate_profile"
 
@@ -171,8 +201,8 @@ class CandidateMatchResult(Base):
         ForeignKey("biz_candidate_match_run.candidate_match_run_id")
     )
     result_code: Mapped[str] = mapped_column(String(64), unique=True)
-    job_cluster_version_id: Mapped[int] = mapped_column(
-        ForeignKey("biz_job_cluster_version.job_cluster_version_id")
+    job_cluster_version_id: Mapped[int | None] = mapped_column(
+        ForeignKey("biz_job_cluster_version.job_cluster_version_id"), nullable=True
     )
     representative_job_posting_id: Mapped[int | None] = mapped_column(
         ForeignKey("biz_job_posting.job_posting_id")
@@ -186,7 +216,9 @@ class CandidateMatchResult(Base):
 
     __table_args__ = (
         UniqueConstraint(
-            "candidate_match_run_id", "job_cluster_version_id", name="uk_match_cluster"
+            "candidate_match_run_id",
+            "representative_job_posting_id",
+            name="uk_match_posting",
         ),
         Index("idx_match_result_rank", "candidate_match_run_id", "rank_no"),
     )

@@ -6,6 +6,12 @@ export interface ProfileQuestion {
   question_text: string
 }
 
+export interface ProfileDialogueTurn extends ProfileQuestion {
+  answer_text: string | null
+  answer_source_code: string
+  created_at: string | null
+}
+
 export interface ProfileSkill {
   skill_evidence_id: number
   technology_node_id: number
@@ -44,6 +50,9 @@ export interface ProfileDetail extends ProfileSummary {
   insights: { status: string; statements: Array<{ text: string; source: string; evidence_ids: string[] }>; warning?: string }
   skills: ProfileSkill[]
   next_question: ProfileQuestion | null
+  dialogue_history: ProfileDialogueTurn[]
+  profile_dimension_coverage: Record<string, boolean>
+  missing_profile_dimensions: Array<{ code: string; label: string }>
   can_publish: boolean
   minimum_rounds: number
   maximum_rounds: number
@@ -60,6 +69,75 @@ export interface MatchGap {
   explanation: string
 }
 
+export interface RequiredCapabilityGraphNode {
+  technology_node_id: number
+  technology_code: string
+  technology_name: string
+  level_code: string
+}
+
+export interface RequiredCapabilityGraphItem {
+  technology_node_id: number
+  technology_code: string
+  technology_name: string
+  level_code: string
+  operator: string
+  hard: boolean
+  weight: number
+  coverage_status: 'covered' | 'partial_evidence' | 'evidence_insufficient' | 'depth_insufficient' | 'transferable' | 'confirmed_missing'
+  candidate_evidence: string[]
+  job_evidence: string[]
+  domain: { code: string; name: string; color: string | null } | null
+  path: RequiredCapabilityGraphNode[]
+}
+
+export interface RequiredCapabilityGraph {
+  requirement_source: string
+  expression_operator: string | null
+  total_count: number
+  covered_count: number
+  unresolved_count: number
+  confirmed_missing_count: number
+  items: RequiredCapabilityGraphItem[]
+}
+
+export interface JobGraphAssociation {
+  status: 'linked' | 'unlinked'
+  schema_version: string
+  source_job_id: string | null
+  job_code: string | null
+  job_title: string | null
+  company: string | null
+  standard_role: {
+    role_code: string
+    name: string
+    job_count: number
+    match_confidence: string | null
+    match_method: string | null
+  } | null
+  hierarchy: {
+    direction: string | null
+    category: string | null
+    cluster_code: string | null
+    cluster_name: string | null
+  } | null
+  portrait: {
+    responsibilities: string[]
+    skills: string[]
+    capabilities: string[]
+    scenarios: string[]
+    conditions: string[]
+  } | null
+  technology_paths: Array<{
+    path: Array<{ level: 'L1' | 'L2' | 'L3' | 'L4'; code: string; name: string }>
+    match_method: string | null
+    evidence_grade: boolean
+    hit_terms: string[]
+  }>
+  requirement_coverage: RequiredCapabilityGraph
+  message: string
+}
+
 export interface MatchResult {
   result_code: string
   rank_no: number
@@ -68,7 +146,37 @@ export interface MatchResult {
   cluster_code: string
   job_title: string
   representative_jd: { job_code: string | null; company: string | null; region: string | null; job_level: string | null }
-  dimensions: Array<{ code: string; label: string; score: number; weight: number }>
+  job_detail: {
+    job_code: string
+    source_job_id: string | null
+    title_raw: string
+    title_normalized: string
+    company: string | null
+    region: string | null
+    employment_type: string | null
+    job_level: string | null
+    salary_text: string | null
+    salary_min_monthly_cny: number | null
+    salary_max_monthly_cny: number | null
+    salary_months_per_year: number | null
+    education_code: string | null
+    education_text: string | null
+    experience_min_years: number | null
+    experience_max_years: number | null
+    experience_text: string | null
+    published_at: string | null
+    collected_at: string
+    expired_at: string | null
+    posting_status: string
+    jd_text: string
+    parse_confidence_score: number | null
+    publish_score: number | null
+    data_origin: string
+    data_source_id: number
+  } | null
+  dimensions: Array<{ code: string; label: string; score: number; lower_score: number; upper_score: number; weight: number; contribution: number; status: string }>
+  required_capability_graph: RequiredCapabilityGraph
+  job_graph_association: JobGraphAssociation
   recommendation: { reasons: string[]; warning: string }
   gaps: MatchGap[]
 }
@@ -78,14 +186,22 @@ export interface MatchRun {
   profile_version_code: string
   algorithm_version: string
   result_count: number
+  candidate_scope: 'all_active_job_postings'
+  candidate_count: number
+  pipeline: ['resume_parse', 'job_jd_parse', 'deterministic_match']
+  scoring_policy: {
+    llm_used: false
+    dimension_count: number
+    dimensions: Array<{ code: string; label: string; weight: number }>
+  }
   results: MatchResult[]
 }
 
 export interface LearningStep {
   step_no: number
-  technology_node_id: number
+  technology_node_id: number | null
   technology_name: string
-  gap_id: number
+  gap_id: number | null
   gap_type_code: string
   depends_on: number[]
   learning_focus: string

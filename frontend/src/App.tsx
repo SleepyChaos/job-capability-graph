@@ -193,7 +193,7 @@ export default function App() {
     case 'graph-heatmap': content = <GraphHeatmapPage notify={notify} />; break
     case 'graph-relations': content = <GraphRelationsPage notify={notify} />; break
     case 'graph-clusters': content = <GraphClusterPage notify={notify} />; break
-    case 'talent': content = <TalentMatchPage hasProfiles={profiles.length > 0} onProfileCreated={upsertProfile} onNavigate={setPage} notify={notify} />; break
+    case 'talent': content = <TalentMatchPage profiles={profiles} hasProfiles={profiles.length > 0} onProfileCreated={upsertProfile} onNavigate={setPage} notify={notify} />; break
     case 'resume': content = <ResumePage profiles={profiles} selectedVersionCode={selectedVersionCode} onSelectProfile={setSelectedVersionCode} onProfilesChanged={upsertProfile} onUseForMatch={useProfileForMatch} onNavigate={setPage} notify={notify} />; break
     case 'match': content = selectedProfile ? <MatchPage profile={selectedProfile} onPathGenerated={(result, path) => { setSelectedMatchResult(result); setLearningPath(path) }} onNavigate={setPage} notify={notify} /> : <ResumePage profiles={profiles} selectedVersionCode={selectedVersionCode} onSelectProfile={setSelectedVersionCode} onProfilesChanged={upsertProfile} onUseForMatch={useProfileForMatch} onNavigate={setPage} notify={notify} />; break
     case 'learning': content = selectedProfile ? <LearningPage profile={selectedProfile} result={selectedMatchResult} path={learningPath} onNavigate={setPage} notify={notify} /> : <OverviewPage onNavigate={setPage} />; break
