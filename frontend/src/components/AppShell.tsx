@@ -15,6 +15,7 @@ import {
   FileClock,
   FileUser,
   GitBranch,
+  GitCommitVertical,
   LayoutDashboard,
   Menu,
   Network,
@@ -56,6 +57,7 @@ const jobPages: PageId[] = [
   'jobs',
   'candidate-review',
   'discovery-library',
+  'role-evolution',
   'candidate',
   'job-directed',
   'job-records',
@@ -68,6 +70,8 @@ const jobChildren: NavItem[] = [
   // 是一回事，而这两者差着一次人工判断。
   { id: 'candidate-review', label: '新岗位审核台', icon: ClipboardCheck },
   { id: 'discovery-library', label: '新岗位发现库', icon: Library },
+  // 演变与发现同属一个模块：发现回答「有没有新岗位」，演变回答「既有岗位变了什么」。
+  { id: 'role-evolution', label: '岗位能力演变', icon: GitCommitVertical },
   // 技术词定向与岗位名称核验合成「定向推演」一页：两者都是按用户给定入口做定向
   // 查询，与自动发现的批量推演不是一类；各占一个导航项会把主流程挤到一边。
   { id: 'job-directed', label: '定向推演', icon: Tags },

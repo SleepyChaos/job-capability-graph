@@ -17,6 +17,7 @@ import { JobRecordsPage } from './pages/JobRecordsPage'
 import { CandidateCardPage } from './pages/CandidateCardPage'
 import { CandidateReviewPage } from './pages/CandidateReviewPage'
 import { DiscoveryLibraryPage } from './pages/DiscoveryLibraryPage'
+import { RoleEvolutionPage } from './pages/RoleEvolutionPage'
 import { DirectedDiscoveryPage } from './pages/DirectedDiscoveryPage'
 import { JobsPage } from './pages/JobsPage'
 import { LearningPage } from './pages/LearningPage'
@@ -39,6 +40,7 @@ const pageTitles: Record<PageId, string> = {
   candidate: '岗位数据卡',
   'candidate-review': '新岗位审核台',
   'discovery-library': '新岗位发现库',
+  'role-evolution': '岗位能力演变',
   'job-directed': '定向推演',
   'job-records': '推演结果记录库',
   graph: '动态岗位能力图谱',
@@ -181,6 +183,7 @@ export default function App() {
     case 'candidate': content = <CandidateCardPage candidateCode={param} onNavigate={setPage} notify={notify} />; break
     case 'candidate-review': content = <CandidateReviewPage initialCandidateCode={param} onNavigate={setPage} notify={notify} />; break
     case 'discovery-library': content = <DiscoveryLibraryPage onNavigate={setPage} />; break
+    case 'role-evolution': content = <RoleEvolutionPage notify={notify} />; break
     case 'job-directed': content = <DirectedDiscoveryPage notify={notify} />; break
     case 'job-records': content = <JobRecordsPage notify={notify} />; break
     case 'graph': content = <GraphPage onNavigate={setPage} />; break

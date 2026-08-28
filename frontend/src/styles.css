@@ -690,6 +690,28 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .review-tab-bar button.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
 .review-nearest.upstream { background: #fdf4ec; border-left-color: #d98026; }
 .review-nearest.upstream strong { color: #8a4c11; }
+/* ── 岗位能力演变 ─────────────────────────────────────── */
+.evolution-filter { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 9px; }
+.version-rail { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding: 11px 13px; margin-bottom: 12px; background: #f5f8fb; border-radius: 6px; }
+.version-rail > span { color: var(--ink); font-size: 12px; font-weight: 600; }
+.version-rail > span small { display: block; margin-top: 2px; color: var(--muted); font-size: 8.5px; font-weight: normal; }
+.version-rail > i { flex: 0 0 34px; height: 1px; background: var(--line); position: relative; }
+.version-rail > i::after { content: ''; position: absolute; right: 0; top: -3px; border-left: 6px solid var(--line); border-top: 3.5px solid transparent; border-bottom: 3.5px solid transparent; }
+.version-tally { display: flex; flex-wrap: wrap; gap: 5px; margin-left: auto; }
+.version-tally em { padding: 2px 7px; border-radius: 4px; font-size: 8.5px; font-style: normal; }
+.version-tally-none { color: var(--muted); background: #eef2f7; }
+.evolution-warning { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; margin-bottom: 12px; color: #6b5417; background: #fdf6e3; border-left: 3px solid #d9a441; border-radius: 4px; font-size: 9.5px; line-height: 1.7; }
+.evolution-warning svg { flex: 0 0 auto; margin-top: 1px; }
+.requirement-table-wrap { overflow-x: auto; margin-bottom: 12px; }
+.requirement-table strong { display: block; color: var(--ink); font-size: 11px; }
+.requirement-table code { color: var(--muted); font-size: 8.5px; }
+.requirement-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+.requirement-table tr.is-changed { background: #fbfdff; }
+.requirement-table em { padding: 2px 7px; border-radius: 4px; font-size: 8.5px; font-style: normal; white-space: nowrap; }
+.requirement-table .no-change { color: var(--line); }
+.removed-capabilities { padding: 10px 12px; margin-bottom: 12px; background: #fdeeec; border-radius: 6px; }
+.removed-capabilities > span { display: block; margin-bottom: 6px; color: #8a3b32; font-size: 9px; }
+
 .evidence-jd-list { display: flex; flex-direction: column; gap: 8px; padding: 10px 16px 4px; }
 .evidence-jd-row { padding: 10px 12px; background: #fafcfe; border: 1px solid var(--soft-line); border-radius: 6px; }
 .evidence-jd-row strong { display: block; color: var(--ink); font-size: 11px; line-height: 1.5; }

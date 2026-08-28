@@ -124,6 +124,11 @@ class RoleListItem(BaseModel):
     latest_version_no: int | None
     latest_approval_status: str | None
     requirement_count: int
+    # 演变侧的三个计数。列表页要能一眼看出哪些岗位有版本可比、本版动了几项、
+    # 是否带证据量警告——否则 546 个岗位里只有 168 个有演变，得逐个点开才知道。
+    version_count: int = 0
+    change_count: int = 0
+    has_comparison_warning: bool = False
 
 
 class RolePage(BaseModel):
@@ -424,10 +429,72 @@ def cluster_detail(
 def list_roles(
     db: Annotated[Session, Depends(get_db)],
     lifecycle_status: str | None = None,
+    evolved_only: bool = False,
+    limit: Annotated[int, Query(ge=1, le=500)] = 200,
+    offset: Annotated[int, Query(ge=0)] = 0,
 ):
+    """岗位列表。
+
+    `evolved_only` 只返回有两个及以上版本的岗位——只有它们才谈得上「能力演变」，
+    首版岗位没有可比对象。当前 546 个岗位中有 168 个满足该条件。
+    """
     filters = [JobRole.lifecycle_status_code == lifecycle_status] if lifecycle_status else []
-    roles = list(db.scalars(select(JobRole).where(*filters).order_by(JobRole.canonical_name)))
-    return RolePage(total=len(roles), items=[_role_item(db, role) for role in roles])
+
+    version_counts = dict(
+        db.execute(
+            select(JobRoleVersion.job_role_id, func.count())
+            .group_by(JobRoleVersion.job_role_id)
+        ).all()
+    )
+    if evolved_only:
+        evolved_ids = [rid for rid, count in version_counts.items() if count >= 2]
+        filters.append(JobRole.job_role_id.in_(evolved_ids or [-1]))
+
+    total = db.scalar(select(func.count()).select_from(JobRole).where(*filters)) or 0
+    roles = list(
+        db.scalars(
+            select(JobRole)
+            .where(*filters)
+            .order_by(JobRole.canonical_name)
+            .limit(limit)
+            .offset(offset)
+        )
+    )
+
+    # 最新版本上的变更项数与对比警告，一次取齐，避免逐个岗位查库。
+    role_ids = [role.job_role_id for role in roles]
+    change_counts: dict[int, int] = {}
+    warned: set[int] = set()
+    if role_ids:
+        for role_id, count, warning in db.execute(
+            select(
+                JobEvolutionEvent.job_role_id,
+                func.count(JobEvolutionChange.job_evolution_change_id),
+                func.max(JobEvolutionEvent.comparison_warning_text),
+            )
+            .outerjoin(
+                JobEvolutionChange,
+                JobEvolutionChange.job_evolution_event_id
+                == JobEvolutionEvent.job_evolution_event_id,
+            )
+            .where(
+                JobEvolutionEvent.job_role_id.in_(role_ids),
+                JobEvolutionEvent.event_type_code == "updated",
+            )
+            .group_by(JobEvolutionEvent.job_role_id)
+        ).all():
+            change_counts[role_id] = int(count or 0)
+            if warning:
+                warned.add(role_id)
+
+    items = []
+    for role in roles:
+        item = _role_item(db, role)
+        item.version_count = version_counts.get(role.job_role_id, 0)
+        item.change_count = change_counts.get(role.job_role_id, 0)
+        item.has_comparison_warning = role.job_role_id in warned
+        items.append(item)
+    return RolePage(total=total, items=items)
 
 
 @router.get("/job-roles/{role_code}", response_model=RoleDetail)

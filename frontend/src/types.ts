@@ -8,6 +8,7 @@ export type PageId =
   | 'candidate'
   | 'candidate-review'
   | 'discovery-library'
+  | 'role-evolution'
   | 'job-directed'
   | 'job-records'
   | 'graph'
