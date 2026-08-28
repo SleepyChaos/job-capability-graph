@@ -283,7 +283,9 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
       })
       .finally(() => { if (graphRequestRef.current === requestId) setGraphLoading(false) })
     return () => controller.abort()
-  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, graphReloadKey, industryStage, minSupportingJobCount, nodeBudget])
+    // includeCandidates 必须在依赖里：它是请求参数的一部分，漏掉会让「叠加岗位候选」
+    // 这个勾选框完全不生效——状态翻了，但不重新取数，图上永远看不到候选节点。
+  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, graphReloadKey, includeCandidates, industryStage, minSupportingJobCount, nodeBudget])
 
   const nodeMap = useMemo(
     () => new Map<string, RelationNode>(data ? [...data.role_nodes, ...data.domain_group_nodes, ...data.capability_nodes].map((node) => [node.id, node]) : []),
