@@ -10,6 +10,10 @@ COPY pyproject.toml README.md ./
 COPY app ./app
 COPY tools ./tools
 COPY migrations ./migrations
+# 人岗匹配的岗位图谱桥接表（job_graph_bridge.json）就在这里。漏拷不会报错——
+# load_job_graph_bridge() 找不到文件时静默返回空表，于是匹配详情里的「岗位图谱
+# 关联」对每个岗位都显示「尚未关联」，看起来像功能没做。
+COPY data ./data
 COPY alembic.ini ./
 
 ARG PIP_ALLOW_INSECURE_INDEX=0
