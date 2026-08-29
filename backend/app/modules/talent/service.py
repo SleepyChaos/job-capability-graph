@@ -2377,6 +2377,53 @@ def _personalized_question_text(
     return fallback
 
 
+def _deepening_question_text(version: CandidateProfileVersion, question_code: str) -> str | None:
+    """已有证据的维度改问"补充"，不问"缺失"。
+
+    题库里的问法一律是「简历中还没有识别出…」。当该维度其实已经抽到东西时，
+    照搬这套措辞等于对用户陈述一件不成立的事——追问可以问，但不能把
+    「有一点」说成「没有」。
+    """
+    context = _resume_question_context(version)
+    target = (version.target_role_text or "").strip()
+    skills = "、".join(context["skills"])
+    project = context["project_name"]
+    texts = {
+        "job_responsibilities": (
+            f"简历里{'的「' + project + '」' if project else '的经历'}已经写到职责，"
+            "但还看不出你个人承担的部分。请说明这段经历里哪些决定和产出是你做的。"
+        ),
+        "required_skills": (
+            f"简历中已识别出{skills or '若干技能'}。请挑其中最有把握的两三项，"
+            "说明各自解决过什么具体问题、达到什么程度。"
+        ),
+        "tools_platforms": (
+            "简历中已提到一些工具与平台。请说明你在其中承担的工作深度："
+            "是按现成流程使用，还是做过搭建、调优或二次开发。"
+        ),
+        "application_scenarios": (
+            f"简历中已能看出应用方向。你的{target or skills or '相关'}经历"
+            "主要面向哪些行业、产品形态或机器人场景？请举一个具体落地例子。"
+        ),
+        "work_experience": (
+            "简历中的经历已有时间线。请补充其中你认为最能代表能力的一段："
+            "背景、你的角色、遇到的主要困难与最终结果。"
+        ),
+        "education_major": (
+            "简历中已有教育背景。请补充与目标岗位最相关的课程、课题或毕设内容。"
+        ),
+        "generic_capabilities": (
+            "简历中已能看到一些协作与推进的痕迹。请结合一个实例说明："
+            "沟通协作、问题分析、项目推进或质量交付方面你具体做了什么。"
+        ),
+        "target_role": (
+            f"简历中提到了{skills or '相关能力'}。你最希望把这些能力用于"
+            "哪类岗位和工作内容？"
+        ),
+    }
+    return texts.get(question_code)
+
+
 def _ensure_next_question(
     db: Session, version: CandidateProfileVersion
 ) -> CandidateDialogueTurn | None:
@@ -2391,12 +2438,25 @@ def _ensure_next_question(
     turn_no = len(asked) + 1
     if turn_no > MAX_DIALOGUE_ROUNDS:
         return None
+    # **达到最少轮次之前，不因「该维度已有证据」就整轮跳过。**
+    #
+    # `_question_known` 判的是"有没有"，不是"够不够"：抽取只要在某个维度上
+    # 落下一条记录就算已知。模型把七个维度都填上一点时，所有问题都被跳过，
+    # 于是一份完整度只有 61 的画像一轮都不问——而页面承诺的是 2–8 轮追问。
+    # 已知维度改问补充型问题，措辞另给，见 _deepening_question_text。
+    allow_known = (version.conversation_round_count or 0) < MIN_DIALOGUE_ROUNDS
     best: tuple[float, str, str] | None = None
     for question_code, question_text in QUESTION_BANK:
-        if question_code in asked or _question_known(version, question_code):
+        if question_code in asked:
+            continue
+        known = _question_known(version, question_code)
+        if known and not allow_known:
             continue
         value = _question_value(version, question_code)
-        personalized_text = _personalized_question_text(version, question_code, question_text)
+        personalized_text = (
+            _deepening_question_text(version, question_code)
+            or _personalized_question_text(version, question_code, question_text)
+        ) if known else _personalized_question_text(version, question_code, question_text)
         if best is None or value > best[0]:
             best = (value, question_code, personalized_text)
     if best is None or best[0] < QUESTION_VALUE_THRESHOLD:
