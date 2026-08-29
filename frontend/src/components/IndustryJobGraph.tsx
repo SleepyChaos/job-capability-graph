@@ -5,6 +5,8 @@ import { loadIndustryGraph, type IndustryEnterprise, type IndustryGraphData } fr
 import type { JobEcosystemGraph, JobRecord, StandardRole } from '../api/jobGraph'
 import { Panel, StatusTag } from './ui'
 import './IndustryJobGraph.css'
+import { fetchDiscoveryOverlay, type DiscoveryCandidate, type DiscoveryOverlay } from '../api/newRoleDiscovery'
+import { DiscoveryOverlayPanel } from './DiscoveryOverlayPanel'
 
 type View = 'overview' | 'chain' | 'financing' | 'map'
 const STAGE_COLORS: Record<string, string> = { 上游: '#2474cb', 中游: '#0a958c', 下游: '#a173ce', 横向支撑: '#d79739' }
@@ -193,6 +195,11 @@ export function IndustryJobGraph({ graph, onRole, onOpenPortrait }: { graph: Job
   const [query, setQuery] = useState('')
   const [onlyUnmapped, setOnlyUnmapped] = useState(false)
   const [enterpriseId, setEnterpriseId] = useState('')
+  // 新岗位发现叠加：默认关闭，打开时才去取。候选是未入库的提议，与企业库里
+  // 已观测的岗位不同级，混在一起会把"提议"读成"既有事实"。
+  const [showDiscovery, setShowDiscovery] = useState(false)
+  const [discovery, setDiscovery] = useState<DiscoveryOverlay | null>(null)
+  const [discoveryError, setDiscoveryError] = useState('')
   const [page, setPage] = useState(0)
   useEffect(() => { const abort = new AbortController(); loadIndustryGraph(abort.signal).then(setData).catch(e => { if (e.name !== 'AbortError') setError(String(e.message)) }); return () => abort.abort() }, [])
   useEffect(() => { setPage(0); setEnterpriseId('') }, [view, stage, category, financing, region, city, query, onlyUnmapped])
@@ -207,6 +214,23 @@ export function IndustryJobGraph({ graph, onRole, onOpenPortrait }: { graph: Job
       return true
     }).sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'))
   }, [data, view, stage, category, financing, region, city, query, onlyUnmapped])
+  useEffect(() => {
+    if (!showDiscovery || discovery) return
+    const abort = new AbortController()
+    fetchDiscoveryOverlay(abort.signal)
+      .then(setDiscovery)
+      .catch(e => { if (e.name !== 'AbortError') setDiscoveryError(String(e.message)) })
+    return () => abort.abort()
+  }, [showDiscovery, discovery])
+  /** 按当前选中的企业或产业链层级筛出候选。 */
+  const industryCandidates = useMemo<DiscoveryCandidate[]>(() => {
+    if (!discovery || !showDiscovery) return []
+    const linked = discovery.candidates.filter(c => c.enterprises.length > 0)
+    const chosen = data?.enterprises.find(e => e.id === enterpriseId)
+    if (chosen) return linked.filter(c => c.enterprises.includes(chosen.name))
+    if (view === 'chain') return linked.filter(c => c.industryStages.some(s => s.stage === stage))
+    return linked
+  }, [discovery, showDiscovery, data, enterpriseId, view, stage])
   if (error) return <div className="empty-state"><strong>{error}</strong><span>请先生成企业库图谱数据。</span></div>
   if (!data) return <div className="empty-state"><strong>正在读取完整企业库与岗位增强映射…</strong></div>
   const selectedEnterprise = data.enterprises.find(e => e.id === enterpriseId) || null
@@ -217,7 +241,7 @@ export function IndustryJobGraph({ graph, onRole, onOpenPortrait }: { graph: Job
   const selectRegion = (r: string) => { setRegion(r); setCity(''); setQuery('') }
   return <div className="industry-job-module">
     <div className="industry-library-summary"><div><Building2 size={22} /><span>完整企业库<strong>{fmt(data.metadata.enterpriseCount)}<small> 个企业条目</small></strong></span></div><div><Layers3 size={22} /><span>实际产业类别<strong>{data.categories.length}<small> 类</small></strong></span></div><div><FileText size={22} /><span>企业增强岗位映射<strong>{fmt(data.metadata.mappedJobCount)}<small> 条 JD</small></strong></span></div><div><Globe2 size={22} /><span>有招聘入口的企业<strong>{data.metadata.enterprisesWithRecruitmentLinks}<small> 个</small></strong></span></div></div>
-    <nav className="industry-view-tabs" aria-label="产业图谱视图">{TAB_ITEMS.map(tab => { const Icon = tab.icon; return <button key={tab.id} className={view === tab.id ? 'active' : ''} onClick={() => { setView(tab.id); clear() }}><Icon size={17} />{tab.label}</button> })}</nav>
+    <nav className="industry-view-tabs" aria-label="产业图谱视图">{TAB_ITEMS.map(tab => { const Icon = tab.icon; return <button key={tab.id} className={view === tab.id ? 'active' : ''} onClick={() => { setView(tab.id); clear() }}><Icon size={17} />{tab.label}</button> })}<label className="discovery-overlay-toggle"><input type="checkbox" checked={showDiscovery} onChange={e => setShowDiscovery(e.target.checked)} />叠加新岗位发现{showDiscovery && discovery ? <em>{industryCandidates.length}</em> : null}</label></nav>
     {view === 'overview' ? <Overview data={data} onStage={value => { setStage(value); setCategory(''); setView('chain') }} /> : <>
       <div className="industry-browser-toolbar"><div className="industry-breadcrumb"><button onClick={clear}>完整企业库</button><ChevronRight size={14} /><span>{query ? '全库搜索' : view === 'chain' ? stage : view === 'map' ? locationLabel : financing || '全部融资阶段'}</span>{!query && view === 'chain' && category && <><ChevronRight size={14} /><span>{category}</span></>}</div><div><label className="industry-search"><Search size={15} /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索全库企业、别名、产品领域" aria-label="搜索完整企业库" />{query && <button aria-label="清空企业搜索" onClick={() => setQuery('')}><X size={14} /></button>}</label><label className="industry-unmapped"><input type="checkbox" checked={onlyUnmapped} onChange={event => setOnlyUnmapped(event.target.checked)} />仅看暂无 JD 映射</label></div></div>
       <div className="industry-workspace"><div className="industry-main">
@@ -236,6 +260,17 @@ export function IndustryJobGraph({ graph, onRole, onOpenPortrait }: { graph: Job
         </div>
       </div>
     </>}
+    {showDiscovery ? <DiscoveryOverlayPanel
+      title={selectedEnterprise ? `${selectedEnterprise.name} · 新岗位发现 ${industryCandidates.length}` : `新岗位发现 ${industryCandidates.length}`}
+      subtitle={selectedEnterprise ? '该企业的招聘文本支撑起的岗位提议' : '选中企业或产业链层级可收窄'}
+      footnote={discovery
+        ? `以支撑 JD 所属企业定位，覆盖 ${discovery.metadata.enterpriseLinkedCount} 条候选。其余 ${discovery.metadata.candidateCount - discovery.metadata.enterpriseLinkedCount} 条属研究侧领先信号与产业里程碑信号——这两类的立论前提就是招聘市场上从未出现过该技术组合，因而没有企业足迹，不在本图呈现。`
+        : undefined}
+      items={industryCandidates}
+      loading={!discovery}
+      error={discoveryError}
+      empty="该范围内暂无带企业足迹的岗位提议。"
+    /> : null}
     <details className="industry-method-note"><summary>数据来源与统计口径</summary><p>企业源：{data.metadata.libraryFile}；岗位连接源：{data.metadata.enhancementFile}。{data.metadata.countNote}</p><p>{data.metadata.libraryDataRows} 行源表中排除 {data.metadata.blankRowsExcluded.length} 行空白企业名；{data.metadata.enterpriseCount} 个非空企业条目全部保留。源表中的同名标点差异保留审计，不擅自合并。</p></details>
   </div>
 }

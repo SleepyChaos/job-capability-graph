@@ -17,12 +17,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 
 import openpyxl
-from sqlalchemy import select
+from sqlalchemy import select, text
 
 from app.db.session import SessionLocal
 from app.modules.clustering.models import JobRole  # noqa: F401  # 候选表外键需要
@@ -65,6 +65,22 @@ COLUMNS = [
 ]
 
 
+# 候选 → 支撑 JD 的企业与产业链层级。走的是发现流程自己写下的证据链
+# （task_ids → rel_industry_task_evidence → 招聘文本 → 企业），不做名称近似。
+ENTERPRISE_SQL = text("""
+SELECT c.candidate_code, o.canonical_name,
+       JSON_UNQUOTE(JSON_EXTRACT(p.source_metadata_json,'$.industry_chain_level'))
+FROM biz_emerging_role_candidate c
+JOIN rel_industry_task_evidence e
+  ON JSON_CONTAINS(JSON_EXTRACT(c.mechanical_card_json,'$.task_ids'),
+                   CAST(e.industry_task_id AS JSON))
+JOIN biz_job_posting p ON p.job_posting_id = e.job_posting_id
+JOIN md_organization o ON o.organization_id = p.organization_id
+GROUP BY c.candidate_code, o.canonical_name,
+         JSON_UNQUOTE(JSON_EXTRACT(p.source_metadata_json,'$.industry_chain_level'))
+""")
+
+
 def collect(db) -> list[dict]:
     codes_by_candidate: dict[int, list[tuple[str, str]]] = defaultdict(list)
     for cid, code, name in db.execute(
@@ -78,6 +94,13 @@ def collect(db) -> list[dict]:
         )
     ):
         codes_by_candidate[cid].append((code, name))
+
+    enterprises: dict[str, set[str]] = defaultdict(set)
+    stages: dict[str, Counter] = defaultdict(Counter)
+    for code, org, stage in db.execute(ENTERPRISE_SQL):
+        enterprises[code].add(org)
+        if stage:
+            stages[code][stage] += 1
 
     rows = []
     ordered = select(EmergingRoleCandidate).order_by(EmergingRoleCandidate.candidate_score.desc())
@@ -101,6 +124,11 @@ def collect(db) -> list[dict]:
                 "technologyCodes": [code for code, _ in pairs],
                 "technologyNames": [name for _, name in pairs],
                 "definition": expression.get("one_line_definition") or "",
+                "enterprises": sorted(enterprises.get(c.candidate_code, ())),
+                "industryStages": [
+                    {"stage": k, "jobCount": v}
+                    for k, v in stages.get(c.candidate_code, Counter()).most_common()
+                ],
             }
         )
     return rows
@@ -132,6 +160,75 @@ def write_sheet(rows: list[dict]) -> None:
     wb.save(SOURCE_XLSX)
 
 
+# 库里的产业链层级是自由文本（"中游-整机+算法（软硬全栈）"），图谱只用四档。
+# 按前缀归并，归不进去的记为空，不猜。
+GRAPH_STAGES = ("上游", "中游", "下游", "横向支撑")
+
+
+def normalize_stage(raw: str | None) -> str:
+    if not raw or raw == "null":
+        return ""
+    for stage in GRAPH_STAGES:
+        if raw.startswith(stage):
+            return stage
+    return ""
+
+
+def technology_descendants(graph: dict) -> dict[str, set[str]]:
+    children: dict[str, list[str]] = defaultdict(list)
+    for node in graph["technologyNodes"]:
+        children[node.get("parentId") or ""].append(node["id"])
+
+    def walk(root: str) -> set[str]:
+        out: set[str] = set()
+        stack = [root]
+        while stack:
+            current = stack.pop()
+            out.add(current)
+            stack.extend(children.get(current, []))
+        return out
+
+    return {node["id"]: walk(node["id"]) for node in graph["technologyNodes"]}
+
+
+def attach_portrait(rows: list[dict], graph: dict) -> None:
+    """按岗位簇给候选定位，供岗位画像图谱使用。
+
+    判据是**招聘文本必须同时命中候选的每一个技术点**，而不是命中任意一个。
+    放宽到任意一个会让结果失去意义：实测那样有 56 条候选被归到
+    「市场·销售与商务拓展」——这类 JD 泛泛提及大量技术词，会主导任何宽松匹配。
+    收紧后每条候选中位命中 22 条 JD，主导簇变为「机器人学习与强化学习」等
+    与其技术构成相符的簇。
+
+    定位不到的候选保留空值，不退回宽松口径。
+    """
+    descendants = technology_descendants(graph)
+    jobs_by_term: dict[str, list[dict]] = defaultdict(list)
+    for job in graph["jobs"]:
+        for term in job.get("technologyTermIds") or []:
+            jobs_by_term[term].append(job)
+
+    for row in rows:
+        groups = []
+        for node_id in row.get("technologyNodeIds", []):
+            reach = descendants.get(node_id, {node_id})
+            groups.append({j["id"] for term in reach for j in jobs_by_term.get(term, [])})
+        shared = set.intersection(*groups) if groups else set()
+        if not shared:
+            row["portraitClusterName"] = ""
+            row["portraitDirectionName"] = ""
+            row["portraitEvidenceJobCount"] = 0
+            continue
+        hit = [job for job in graph["jobs"] if job["id"] in shared]
+        cluster = Counter(j.get("clusterName") or "" for j in hit).most_common(1)[0][0]
+        direction = Counter(
+            j.get("directionName") or "" for j in hit if (j.get("clusterName") or "") == cluster
+        ).most_common(1)[0][0]
+        row["portraitClusterName"] = cluster
+        row["portraitDirectionName"] = direction
+        row["portraitEvidenceJobCount"] = len(shared)
+
+
 def write_json(rows: list[dict]) -> dict:
     graph = json.loads(GRAPH_JSON.read_text(encoding="utf-8"))
     # 图谱按 technologyNodes 的 code 建索引；候选的技术码挂到同码节点上。
@@ -152,7 +249,17 @@ def write_json(rows: list[dict]) -> dict:
             else:
                 unmatched.add(code)
         row["technologyNodeIds"] = sorted(set(ids))
+        merged: Counter = Counter()
+        for item in row.get("industryStages", []):
+            stage = normalize_stage(item["stage"])
+            if stage:
+                merged[stage] += item["jobCount"]
+        row["industryStages"] = [
+            {"stage": k, "jobCount": v} for k, v in merged.most_common()
+        ]
 
+    attach_portrait(rows, graph)
+    placed = sum(1 for row in rows if row.get("portraitClusterName"))
     payload = {
         "metadata": {
             "generatedAt": datetime.now(UTC).isoformat(timespec="seconds"),
@@ -160,6 +267,8 @@ def write_json(rows: list[dict]) -> dict:
             "matchedTechnologyCodeCount": len(matched),
             "unmatchedTechnologyCodes": sorted(unmatched),
             "joinKey": "technology_code",
+            "enterpriseLinkedCount": sum(1 for row in rows if row.get("enterprises")),
+            "portraitPlacedCount": placed,
             "note": "候选为未入库的提议，与图谱中已观测的标准岗位不同级。",
         },
         "candidates": rows,
@@ -191,6 +300,10 @@ def main() -> None:
     meta = write_json(rows)
     print(f"候选 {meta['candidateCount']} 条已写入 {SHEET_NAME} 工作表与 {PUBLIC_JSON.name}")
     print(f"技术编码对上 {meta['matchedTechnologyCodeCount']} 个")
+    print(
+        f"有企业足迹 {meta['enterpriseLinkedCount']} 条 · "
+        f"能定位到岗位簇 {meta['portraitPlacedCount']} 条"
+    )
     if meta["unmatchedTechnologyCodes"]:
         print(f"挂不上图谱的编码 {len(meta['unmatchedTechnologyCodes'])} 个："
               f"{'、'.join(meta['unmatchedTechnologyCodes'])}")

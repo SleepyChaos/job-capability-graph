@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { loadJobEcosystemGraph, type EnterpriseRecord, type JobCategory, type JobCluster, type JobDirection, type JobEcosystemGraph, type JobPortrait, type JobRecord, type JobTechnologyNode, type RepresentativeJob, type StandardProfilePoint, type StandardRole } from '../api/jobGraph'
 import { MetricStrip, Panel, StatusTag } from '../components/ui'
 import { IndustryJobGraph } from '../components/IndustryJobGraph'
-import { classificationColor } from '../api/discovery'
+import { DiscoveryOverlayPanel } from '../components/DiscoveryOverlayPanel'
 import { fetchDiscoveryOverlay, type DiscoveryCandidate, type DiscoveryOverlay } from '../api/newRoleDiscovery'
 
 type PositionedNode = {
@@ -1155,6 +1155,17 @@ export function JobEcosystemPage({ fixedView }: { fixedView?: ViewMode }) {
     return () => controller.abort()
   }, [showDiscovery, discovery])
 
+  /** 画像视图：按当前方向 / 岗位簇筛出候选。 */
+  const portraitCandidates = useMemo<DiscoveryCandidate[]>(() => {
+    if (!data || !discovery || !showDiscovery) return []
+    const placed = discovery.candidates.filter((item) => item.portraitClusterName)
+    const clusterName = data.clusters.find((item) => item.id === clusterId)?.name
+    if (clusterName) return placed.filter((item) => item.portraitClusterName === clusterName)
+    const directionName = data.directions.find((item) => item.id === directionId)?.name
+    if (directionName) return placed.filter((item) => item.portraitDirectionName === directionName)
+    return placed
+  }, [data, discovery, showDiscovery, clusterId, directionId])
+
   /** 当前技术节点（含其所有下级）名下的候选。 */
   const technologyCandidates = useMemo<DiscoveryCandidate[]>(() => {
     if (!data || !discovery || !showDiscovery) return []
@@ -1329,7 +1340,7 @@ export function JobEcosystemPage({ fixedView }: { fixedView?: ViewMode }) {
       <p className="portrait-overview-note">{data.metadata.releaseNote}</p>
     </div> : <div className="job-ecosystem-method"><div><strong>本图主链</strong>{methodChain.map((item, index) => <span key={item} className="job-method-step">{index ? <ChevronRight size={14} /> : null}<b>{item}</b></span>)}</div><p>{viewMode === 'industry' ? '企业属性只认企业库主数据，岗位需求只认v4岗位事实；两者通过治理后的企业实体关联。' : data.technologyAudit.mappingRule}</p></div>}
     <div className="job-ecosystem-toolbar">
-      {viewMode === 'industry' ? <><div className="job-ecosystem-breadcrumb"><button onClick={reset}>企业库</button><ChevronRight size={14} /><span>{dimensionConfig.label}</span>{enterpriseValue ? <><ChevronRight size={14} /><button onClick={() => { setEnterpriseValue(enterpriseValue); setEnterpriseId(null) }}>{enterpriseValue}</button></> : null}{enterprise ? <><ChevronRight size={14} /><span>{enterprise.name}</span></> : null}</div><div className="enterprise-dimension-tabs">{ENTERPRISE_DIMENSIONS.map((item) => { const Icon = item.icon; return <button key={item.key} className={enterpriseDimension === item.key ? 'active' : ''} onClick={() => { setEnterpriseDimension(item.key); setEnterpriseValue(null); setEnterpriseId(null); setEvidenceJobId(null) }}><Icon size={14} />{item.label}</button> })}</div></> : viewMode === 'technology' ? <><div className="job-ecosystem-breadcrumb"><button onClick={() => selectTechnology(null)}>技术主数据</button>{technologyPath(data.technologyNodes, selectedTechnology).map((item) => <span key={item.id} className="technology-crumb"><ChevronRight size={14} /><button onClick={() => selectTechnology(item.id)}>{item.name}</button></span>)}</div><div className="job-ecosystem-search"><Search size={15} /><input value={technologyQuery} onChange={(event) => setTechnologyQuery(event.target.value)} placeholder="搜索L1–L4技术词" aria-label="搜索L1到L4技术词" />{technologyQuery ? <button onClick={() => setTechnologyQuery('')}>清空</button> : null}</div><label className="discovery-overlay-toggle"><input type="checkbox" checked={showDiscovery} onChange={(event) => setShowDiscovery(event.target.checked)} />叠加新岗位发现{showDiscovery && discovery ? <em>{technologyCandidates.length}</em> : null}</label></> : <div className="graph-scope-selectors portrait-toolbar-tight"><label>方向<select value={direction?.id ?? ''} onChange={(e) => selectDirection(e.target.value || null)}><option value="">全部{data.directions.reduce((s, d) => s + d.jobCount, 0).toLocaleString()}</option>{data.directions.map((item) => <option key={item.id} value={item.id}>{item.name} · {item.jobCount}</option>)}</select></label><label>种类<select value={category?.id ?? ''} onChange={(e) => selectCategory(e.target.value || null)}><option value="">全部{(directionId ? data.categories.filter(c => c.directionId === directionId) : data.categories).reduce((s, c) => s + c.jobCount, 0).toLocaleString()}</option>{(directionId ? data.categories.filter(c => c.directionId === directionId) : data.categories).map((item) => <option key={item.id} value={item.id}>{item.name} · {item.jobCount}</option>)}</select></label><label>岗位簇<select value={cluster?.id ?? ''} onChange={(e) => selectCluster(e.target.value || null)}><option value="">全部{data.clusters.filter(c => (!directionId || c.directionId === directionId) && (!categoryId || c.categoryId === categoryId)).reduce((s, c) => s + c.jobCount, 0).toLocaleString()}</option>{data.clusters.filter(c => (!directionId || c.directionId === directionId) && (!categoryId || c.categoryId === categoryId)).map((item) => <option key={item.id} value={item.id}>{item.name} · {item.jobCount}</option>)}</select></label><label>标准岗位<select value={standardRole?.id ?? ''} onChange={(e) => selectStandardRole(e.target.value || null)}><option value="">全部{data.standardRoles.filter(r => (!directionId || r.directionId === directionId) && (!categoryId || r.categoryId === categoryId) && (!clusterId || r.clusterId === clusterId)).reduce((s, r) => s + r.jobCount, 0).toLocaleString()}</option>{data.standardRoles.filter(r => (!directionId || r.directionId === directionId) && (!categoryId || r.categoryId === categoryId) && (!clusterId || r.clusterId === clusterId)).map((item) => <option key={item.id} value={item.id}>{item.name} · {item.jobCount}条JD</option>)}</select></label></div>}
+      {viewMode === 'industry' ? <><div className="job-ecosystem-breadcrumb"><button onClick={reset}>企业库</button><ChevronRight size={14} /><span>{dimensionConfig.label}</span>{enterpriseValue ? <><ChevronRight size={14} /><button onClick={() => { setEnterpriseValue(enterpriseValue); setEnterpriseId(null) }}>{enterpriseValue}</button></> : null}{enterprise ? <><ChevronRight size={14} /><span>{enterprise.name}</span></> : null}</div><div className="enterprise-dimension-tabs">{ENTERPRISE_DIMENSIONS.map((item) => { const Icon = item.icon; return <button key={item.key} className={enterpriseDimension === item.key ? 'active' : ''} onClick={() => { setEnterpriseDimension(item.key); setEnterpriseValue(null); setEnterpriseId(null); setEvidenceJobId(null) }}><Icon size={14} />{item.label}</button> })}</div></> : viewMode === 'technology' ? <><div className="job-ecosystem-breadcrumb"><button onClick={() => selectTechnology(null)}>技术主数据</button>{technologyPath(data.technologyNodes, selectedTechnology).map((item) => <span key={item.id} className="technology-crumb"><ChevronRight size={14} /><button onClick={() => selectTechnology(item.id)}>{item.name}</button></span>)}</div><div className="job-ecosystem-search"><Search size={15} /><input value={technologyQuery} onChange={(event) => setTechnologyQuery(event.target.value)} placeholder="搜索L1–L4技术词" aria-label="搜索L1到L4技术词" />{technologyQuery ? <button onClick={() => setTechnologyQuery('')}>清空</button> : null}</div><label className="discovery-overlay-toggle"><input type="checkbox" checked={showDiscovery} onChange={(event) => setShowDiscovery(event.target.checked)} />叠加新岗位发现{showDiscovery && discovery ? <em>{technologyCandidates.length}</em> : null}</label></> : <div className="graph-scope-selectors portrait-toolbar-tight"><label>方向<select value={direction?.id ?? ''} onChange={(e) => selectDirection(e.target.value || null)}><option value="">全部{data.directions.reduce((s, d) => s + d.jobCount, 0).toLocaleString()}</option>{data.directions.map((item) => <option key={item.id} value={item.id}>{item.name} · {item.jobCount}</option>)}</select></label><label>种类<select value={category?.id ?? ''} onChange={(e) => selectCategory(e.target.value || null)}><option value="">全部{(directionId ? data.categories.filter(c => c.directionId === directionId) : data.categories).reduce((s, c) => s + c.jobCount, 0).toLocaleString()}</option>{(directionId ? data.categories.filter(c => c.directionId === directionId) : data.categories).map((item) => <option key={item.id} value={item.id}>{item.name} · {item.jobCount}</option>)}</select></label><label>岗位簇<select value={cluster?.id ?? ''} onChange={(e) => selectCluster(e.target.value || null)}><option value="">全部{data.clusters.filter(c => (!directionId || c.directionId === directionId) && (!categoryId || c.categoryId === categoryId)).reduce((s, c) => s + c.jobCount, 0).toLocaleString()}</option>{data.clusters.filter(c => (!directionId || c.directionId === directionId) && (!categoryId || c.categoryId === categoryId)).map((item) => <option key={item.id} value={item.id}>{item.name} · {item.jobCount}</option>)}</select></label><label>标准岗位<select value={standardRole?.id ?? ''} onChange={(e) => selectStandardRole(e.target.value || null)}><option value="">全部{data.standardRoles.filter(r => (!directionId || r.directionId === directionId) && (!categoryId || r.categoryId === categoryId) && (!clusterId || r.clusterId === clusterId)).reduce((s, r) => s + r.jobCount, 0).toLocaleString()}</option>{data.standardRoles.filter(r => (!directionId || r.directionId === directionId) && (!categoryId || r.categoryId === categoryId) && (!clusterId || r.clusterId === clusterId)).map((item) => <option key={item.id} value={item.id}>{item.name} · {item.jobCount}条JD</option>)}</select></label><label className="discovery-overlay-toggle"><input type="checkbox" checked={showDiscovery} onChange={(event) => setShowDiscovery(event.target.checked)} />叠加新岗位发现{showDiscovery && discovery ? <em>{portraitCandidates.length}</em> : null}</label></div>}
     </div>
     {viewMode === 'technology' && technologyQuery ? <Panel title={`技术词搜索结果 · ${technologyMatches.length}`} subtitle="只搜索技术主数据节点，点击后按L1–L4层级定位"><div className="job-ecosystem-search-results">{technologyMatches.length ? technologyMatches.map((item) => <button key={item.id} onClick={() => { selectTechnology(item.id); setTechnologyQuery('') }}><i style={{ background: item.level === 'L4' ? '#6b4fc2' : '#0e8f88' }} /><div><strong>{item.name}</strong><span>{item.code || item.level} · {item.level}</span></div><em>{item.jobCount} 岗位</em><ChevronRight size={15} /></button>) : <div className="empty-state"><span>没有找到匹配的L1–L4技术节点。</span></div>}</div></Panel> : null}
     {viewMode === 'industry' ? <div className="job-ecosystem-workspace">
@@ -1347,48 +1358,17 @@ export function JobEcosystemPage({ fixedView }: { fixedView?: ViewMode }) {
         <Panel title={selectedTechnology ? `${selectedTechnology.name} · ${selectedTechnology.level}技术节点` : 'L1–L4技术主数据全景'} subtitle={selectedTechnology?.level === 'L4' ? '技术词尾端落到标准岗位；具体招聘岗位与完整JD在右侧' : '中间图展示当前节点及其下一层，点击继续下钻'} className="job-ecosystem-graph-panel portrait-graph-panel technology-graph-panel"><TechnologyHierarchyGraph data={data} selected={selectedTechnology} jobs={technologyJobs} onTechnology={selectTechnology} onRole={(id) => { const role = data.standardRoles.find((item) => item.id === id); if (role) openRoleProfile(role) }} /></Panel>
         <Panel title={selectedTechnology ? '技术节点的岗位证据' : '技术图谱说明'} subtitle={selectedTechnology ? '标准岗位负责聚合，具体岗位与完整JD负责举证' : '技术层级来自主数据，不由页面临时造词'} className="portrait-detail-panel technology-detail-panel"><TechnologyDetail data={data} selected={selectedTechnology} jobs={technologyJobs} selectedJob={selectedEvidenceJob && technologyJobs.some((job) => job.id === selectedEvidenceJob.id) ? selectedEvidenceJob : null} onTechnology={(id) => selectTechnology(id)} onJob={openJobEvidence} onBackJob={() => setEvidenceJobId(null)} /></Panel>
         {showDiscovery ? (
-          <Panel
-            className="discovery-overlay-panel"
+          <DiscoveryOverlayPanel
             title={selectedTechnology ? `${selectedTechnology.name} · 新岗位发现 ${technologyCandidates.length}` : `新岗位发现 ${technologyCandidates.length}`}
             subtitle={selectedTechnology ? '该技术节点及其下级技术点上的岗位提议' : '选中左侧技术节点可只看该方向的提议'}
-          >
-            {discoveryError ? (
-              <div className="empty-state"><span>{discoveryError}</span></div>
-            ) : !discovery ? (
-              <div className="empty-state"><span>加载中…</span></div>
-            ) : technologyCandidates.length === 0 ? (
-              <div className="empty-state"><span>该技术方向下暂无岗位提议。</span></div>
-            ) : (
-              <div className="discovery-overlay-list">
-                {technologyCandidates.map((item) => (
-                  <button
-                    key={item.candidateCode}
-                    onClick={() => { window.location.hash = `/candidate/${encodeURIComponent(item.candidateCode)}` }}
-                  >
-                    <div className="discovery-overlay-head">
-                      <strong>{item.name}</strong>
-                      <span
-                        className="discovery-overlay-tag"
-                        style={{
-                          color: classificationColor[item.classificationCode]?.fg,
-                          background: classificationColor[item.classificationCode]?.bg,
-                        }}
-                      >
-                        {item.classification}
-                      </span>
-                    </div>
-                    {item.definition ? <p>{item.definition}</p> : null}
-                    <small>
-                      {item.technologyNames.slice(0, 3).join('、')}
-                      {item.technologyNames.length > 3 ? ` 等 ${item.technologyNames.length} 项` : ''}
-                      {' · '}成熟度{item.maturity}
-                      {item.supportJobCount > 0 ? ` · 支撑 ${item.supportJobCount} 份 JD` : ' · 无招聘证据'}
-                    </small>
-                  </button>
-                ))}
-              </div>
-            )}
-          </Panel>
+            footnote={discovery && discovery.metadata.unmatchedTechnologyCodes.length > 0
+              ? `另有 ${discovery.metadata.unmatchedTechnologyCodes.length} 个技术编码晚于本图谱的技术主数据快照，尚无对应节点：${discovery.metadata.unmatchedTechnologyCodes.join('、')}`
+              : undefined}
+            items={technologyCandidates}
+            loading={!discovery}
+            error={discoveryError}
+            empty="该技术方向下暂无岗位提议。"
+          />
         ) : null}
       </div> : viewMode === 'portrait' ? <div className="job-ecosystem-workspace portrait-three-column">
         <Panel title="岗位分层导航" subtitle="从6方向一层一层展开，最终落到标准岗位" className="portrait-hierarchy-tree-panel">
@@ -1536,6 +1516,19 @@ export function JobEcosystemPage({ fixedView }: { fixedView?: ViewMode }) {
             </div>
           </> : null}
         </Panel>
+        {showDiscovery ? (
+          <DiscoveryOverlayPanel
+            title={`新岗位发现 ${portraitCandidates.length}`}
+            subtitle="按招聘文本证据归入岗位簇；上方选择方向或岗位簇可收窄"
+            footnote={discovery
+              ? `岗位簇由招聘文本反推：只有同时命中候选全部技术点的 JD 才计入，据此定位到 ${discovery.metadata.portraitPlacedCount} 条候选。放宽到命中任意一个技术点会让结果失去意义——泛泛提及大量技术词的 JD 会主导匹配。其余 ${discovery.metadata.candidateCount - discovery.metadata.portraitPlacedCount} 条没有这样的 JD，不做归位。`
+              : undefined}
+            items={portraitCandidates}
+            loading={!discovery}
+            error={discoveryError}
+            empty="该范围内暂无可归位的岗位提议。"
+          />
+        ) : null}
       </div> : <div className="job-ecosystem-workspace">
         <Panel title={enterpriseValue ? `${enterpriseValue} · 重点企业` : `${dimensionConfig.label} · 企业岗位分布`} subtitle={enterpriseValue ? '图中展示该维度岗位量靠前的企业' : '点击属性值继续下钻'} className="job-ecosystem-graph-panel">
           {enterpriseValue ? <button className="job-ecosystem-back" onClick={() => { setEnterpriseValue(null); setEnterpriseId(null) }}><ArrowLeft size={14} />返回属性分布</button> : null}

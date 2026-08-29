@@ -22,6 +22,13 @@ export interface DiscoveryCandidate {
   technologyNames: string[]
   technologyNodeIds: string[]
   definition: string
+  /** 支撑 JD 所属企业。外部证据类恒为空——零招聘证据是这两类的定义前提。 */
+  enterprises: string[]
+  industryStages: { stage: string; jobCount: number }[]
+  /** 岗位簇定位：招聘文本需**同时**命中候选的全部技术点才计入，定位不到留空。 */
+  portraitClusterName: string
+  portraitDirectionName: string
+  portraitEvidenceJobCount: number
 }
 
 export interface DiscoveryOverlay {
@@ -32,6 +39,10 @@ export interface DiscoveryOverlay {
     /** 晚于图谱快照的技术词条，挂不上任何节点；不做近似匹配，如实留空。 */
     unmatchedTechnologyCodes: string[]
     joinKey: string
+    /** 有企业足迹的候选数；其余是外部证据类，按定义就没有。 */
+    enterpriseLinkedCount: number
+    /** 能定位到岗位簇的候选数。 */
+    portraitPlacedCount: number
     note: string
   }
   candidates: DiscoveryCandidate[]

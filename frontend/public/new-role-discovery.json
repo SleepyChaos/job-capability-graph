@@ -1,6 +1,6 @@
 {
  "metadata": {
-  "generatedAt": "2026-08-29T12:09:47+00:00",
+  "generatedAt": "2026-08-29T12:29:30+00:00",
   "candidateCount": 164,
   "matchedTechnologyCodeCount": 63,
   "unmatchedTechnologyCodes": [
@@ -16,6 +16,8 @@
    "T5.03.06"
   ],
   "joinKey": "technology_code",
+  "enterpriseLinkedCount": 100,
+  "portraitPlacedCount": 101,
   "note": "候选为未入库的提议，与图谱中已观测的标准岗位不同级。"
  },
  "candidates": [
@@ -38,10 +40,56 @@
     "仿真平台与工具链"
    ],
    "definition": "负责将强化学习算法在仿真平台验证后，部署到人形机器人真机，并完成交付落地与现场展示。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选",
+    "优必选机器人",
+    "具微科技",
+    "北京人形机器人创新中心",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "汇川技术（具身智能）",
+    "煤炭科学研究总院",
+    "矩阵超智",
+    "禾赛科技",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 18
+    },
+    {
+     "stage": "上游",
+     "jobCount": 5
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 67
   },
   {
    "candidateCode": "candidate_b6489481bc874ec09a42",
@@ -64,11 +112,39 @@
     "精密减速器"
    ],
    "definition": "负责一体化关节模组中精密传动及驱动零部件的选型、计算与定制化设计，确保模组性能与可靠性。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "吉翼具身智能",
+    "惠科股份",
+    "智元机器人",
+    "禾赛科技",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 5
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.05.01",
     "technology-t3.05.04",
     "technology-t3.06.02"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 45
   },
   {
    "candidateCode": "candidate_c9f2ad490c7e4766892e",
@@ -93,12 +169,54 @@
     "仿真平台与工具链"
    ],
    "definition": "负责基于强化学习和模仿学习等技术，研发并优化智能决策算法，结合仿真平台验证模型效果，支撑端到端决策系统的构建。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "卡奥斯",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "思谋科技",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "智平方",
+    "煤炭科学研究总院",
+    "矩阵超智",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 14
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 22
   },
   {
    "candidateCode": "candidate_3fbe75ffa60d4d638a76",
@@ -119,9 +237,44 @@
     "深度学习训练框架"
    ],
    "definition": "负责利用VLA端到端大模型与深度学习框架，在仿真环境中开发real2sim2real迁移算法，加速模型在真实机器人上的部署与迭代。",
+   "enterprises": [
+    "Figure AI",
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "光轮智能",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "自变量机器人",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 15
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11"
-   ]
+   ],
+   "portraitClusterName": "通用机器人算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1070
   },
   {
    "candidateCode": "candidate_cec29e5893ef4a83a6a7",
@@ -142,10 +295,46 @@
     "仿真平台与工具链"
    ],
    "definition": "负责构建仿真环境并开发real2sim2real迁移框架，将VLA端到端大模型高效部署到真实机器人平台上。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "惠科股份",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "禾赛科技",
+    "穹彻智能",
+    "自变量机器人",
+    "觅蜂科技",
+    "跨维智能"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 11
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 445
   },
   {
    "candidateCode": "candidate_29dff3f4dcf347eab7c9",
@@ -172,12 +361,52 @@
     "深度学习训练框架"
    ],
    "definition": "负责开发机器人仿真环境与 real2sim2real 迁移框架，利用 VLA 端到端大模型和强化学习技术，加速算法在真实机器人平台上的部署与泛化。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "卡奥斯",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 14
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 22
   },
   {
    "candidateCode": "candidate_4cb7d9986ee042c08562",
@@ -200,10 +429,43 @@
     "深度学习训练框架"
    ],
    "definition": "设计并开发从仿真到真实的迁移框架，将强化学习等算法高效部署到机器人平台。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "矩阵超智",
+    "自变量机器人",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 13
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 67
   },
   {
    "candidateCode": "candidate_cf09f746f33f4fe4bedd",
@@ -224,10 +486,41 @@
     "惯性测量单元(IMU)"
    ],
    "definition": "负责激光雷达与惯性测量单元（IMU）融合的3D感知算法研发，提升复杂环境下的感知鲁棒性。",
+   "enterprises": [
+    "Neura Robotics",
+    "万境千寻",
+    "云深处科技(DEEP Robotics)",
+    "优必选机器人",
+    "具微科技",
+    "北京星动纪元科技有限公司",
+    "华为云",
+    "南京天创电子",
+    "原力无限",
+    "吉翼具身智能",
+    "奥比中光",
+    "宇树科技",
+    "思谋科技",
+    "智元机器人",
+    "禾赛科技",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t2.04.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_651b024164c648b29d37",
@@ -252,12 +545,27 @@
     "电机与驱动"
    ],
    "definition": "负责四足机器人基于激光雷达的感知系统设计与开发，并推动产品标准化和可服务性提升。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "具微科技",
+    "宇树科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 4
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "软件系统与架构",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "candidate_f6ef4f962f8d4693a2c8",
@@ -278,7 +586,34 @@
     "推理引擎与端侧部署"
    ],
    "definition": "负责搭建仿真环境，开发real2sim2real迁移框架，将深度学习模型训练并部署至机器人端侧，加速算法在真实场景中的落地。",
-   "technologyNodeIds": []
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "奥比中光",
+    "宇树科技",
+    "智元机器人",
+    "智平方",
+    "清微智能",
+    "禾赛科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    }
+   ],
+   "technologyNodeIds": [],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_ede3808039d64983bb88",
@@ -303,11 +638,47 @@
     "深度学习训练框架"
    ],
    "definition": "负责基于端到端大模型的机器人操作与运动控制算法研发，运用模仿学习与强化学习实现灵巧操控与自主行走。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "卡奥斯",
+    "原力无限",
+    "宇树科技",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "智平方",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "觅蜂科技",
+    "跨维智能"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 11
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 50
   },
   {
    "candidateCode": "candidate_74357f9341574a7b825f",
@@ -334,13 +705,46 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责将强化学习等智能算法在真实人形机器人上进行调试、部署与交付，实现从仿真到物理世界的稳定迁移。",
+   "enterprises": [
+    "Figure AI",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京人形机器人创新中心",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "思谋科技",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 13
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_7a314d7d55c446ab8edb",
@@ -361,7 +765,31 @@
     "GPU并行计算与算子优化"
    ],
    "definition": "负责为推理引擎和训练框架开发并优化高性能算子库，实现端侧部署的GPU并行计算加速。",
-   "technologyNodeIds": []
+   "enterprises": [
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "吉翼具身智能",
+    "智元机器人",
+    "清微智能",
+    "禾赛科技",
+    "自变量机器人",
+    "蚂蚁集团"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 5
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    }
+   ],
+   "technologyNodeIds": [],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_f0948824e1f3440c8de4",
@@ -384,7 +812,34 @@
     "模型量化与压缩"
    ],
    "definition": "负责将AI模型进行轻量化处理并部署到端侧计算平台，实现高效推理性能与工程化落地。",
-   "technologyNodeIds": []
+   "enterprises": [
+    "Neura Robotics",
+    "万境千寻",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "具微科技",
+    "吉翼具身智能",
+    "宇树科技",
+    "智元机器人",
+    "智平方",
+    "清微智能",
+    "禾赛科技",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
+   "technologyNodeIds": [],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_58daf2dbdb0640c5ac18",
@@ -409,12 +864,45 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责研发仿真平台与虚实迁移技术，实现人形机器人算法从仿真环境到真机的高效部署与调试。",
+   "enterprises": [
+    "NVIDIA(英伟达)",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京人形机器人创新中心",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 13
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "candidate_694951c11cac45e08c32",
@@ -437,9 +925,38 @@
     "大模型推理服务与训练加速"
    ],
    "definition": "负责大模型训练与推理加速，构建可控合成数据生成策略，以极端场景数据优化端到端模型性能。",
+   "enterprises": [
+    "Figure AI",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "清微智能",
+    "自变量机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11"
-   ]
+   ],
+   "portraitClusterName": "通用机器人算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1070
   },
   {
    "candidateCode": "candidate_976fc728ee37448ba3fd",
@@ -460,10 +977,55 @@
     "ROS"
    ],
    "definition": "负责机器人产品从需求分析到量产导入的全过程管理，并基于ROS完成运动控制系统的设计与开发，保障产品高质量落地。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "傅利叶智能",
+    "具微科技",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "擎朗智能",
+    "智元机器人",
+    "江行智能",
+    "禾赛科技",
+    "美丽魔方机器人",
+    "聆动通用机器人",
+    "自变量机器人",
+    "蓝思科技",
+    "蚂蚁集团",
+    "迦智科技",
+    "领益智造"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 16
+    },
+    {
+     "stage": "上游",
+     "jobCount": 4
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "运动规划与控制算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 121
   },
   {
    "candidateCode": "candidate_7eef562a83b843feb657",
@@ -484,10 +1046,50 @@
     "ROS"
    ],
    "definition": "负责构建机器人仿真环境，开发 sim2real 迁移框架，加速算法在真实机器人平台上的部署与验证。",
+   "enterprises": [
+    "Apptronik",
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选",
+    "优必选机器人",
+    "具微科技",
+    "北京人形机器人创新中心",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "智元机器人",
+    "煤炭科学研究总院",
+    "禾赛科技",
+    "自变量机器人",
+    "蚂蚁集团",
+    "跨维智能"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 15
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "ROS与机器人中间件",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 68
   },
   {
    "candidateCode": "candidate_45bd9d9f7ee54b5ca5bc",
@@ -510,10 +1112,46 @@
     "深度学习训练框架"
    ],
    "definition": "负责开发仿真到真机的迁移框架，加速机器人算法在真实平台上的部署与验证。",
+   "enterprises": [
+    "Figure AI",
+    "NVIDIA(英伟达)",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "光轮智能",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "矩阵超智",
+    "自变量机器人",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 15
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 67
   },
   {
    "candidateCode": "candidate_89c2ae5db6104bb2b56b",
@@ -538,12 +1176,51 @@
     "ROS"
    ],
    "definition": "负责研发具身智能体的运动控制与交互作业算法，利用仿真平台进行训练验证，并借助强化学习等方法提升策略性能。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "禾赛科技",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 13
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t1.05.02",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 9
   },
   {
    "candidateCode": "candidate_940245edcff24035b77c",
@@ -562,9 +1239,35 @@
     "人形机器人(通用)"
    ],
    "definition": "负责人形机器人整体研发，致力于通过技术创新深刻改变人类时间分配方式。",
+   "enterprises": [
+    "1X Technologies",
+    "Figure AI",
+    "万境千寻",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "国华智能",
+    "开普勒机器人",
+    "智元机器人",
+    "蓝思科技",
+    "领益智造"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.01.08"
-   ]
+   ],
+   "portraitClusterName": "市场·销售与商务拓展",
+   "portraitDirectionName": "产业支撑与运营",
+   "portraitEvidenceJobCount": 408
   },
   {
    "candidateCode": "candidate_0a49ee1719514aba8643",
@@ -587,9 +1290,36 @@
     "推理引擎与端侧部署"
    ],
    "definition": "负责VLA端到端大模型在机器人端侧设备的推理部署，并构建仿真到真实环境的迁移框架，加速算法在真实机器人平台上的落地。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "具微科技",
+    "吉翼具身智能",
+    "宇树科技",
+    "智元机器人",
+    "智平方",
+    "禾赛科技",
+    "穹彻智能",
+    "蚂蚁集团"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11"
-   ]
+   ],
+   "portraitClusterName": "通用机器人算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1070
   },
   {
    "candidateCode": "candidate_96728a80df7a4fb9a11f",
@@ -612,10 +1342,44 @@
     "实时工业总线"
    ],
    "definition": "负责机器人域控制器硬件与软件系统的功能安全分析，运用FMEA/FTA等方法识别系统性及随机性故障，并制定可落地的风险缓解措施与故障诊断方案。",
+   "enterprises": [
+    "Figure AI",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "因时机器人",
+    "思谋科技",
+    "惠科股份",
+    "智元机器人",
+    "智澄英达（杭州）科技有限公司",
+    "禾赛科技",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.05.04",
     "technology-t3.08.03"
-   ]
+   ],
+   "portraitClusterName": "嵌入式与固件开发",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 45
   },
   {
    "candidateCode": "candidate_28309fcb81104d9ebc87",
@@ -642,13 +1406,29 @@
     "电机与驱动"
    ],
    "definition": "负责足式机器人及灵巧手等仿生执行部件的关节模组选型、设计与开发工作。",
+   "enterprises": [
+    "Neura Robotics",
+    "优必选机器人",
+    "吉翼具身智能",
+    "宇树科技",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 4
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.04.02",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_6a3e148b119644709181",
@@ -673,12 +1453,49 @@
     "仿真平台与工具链"
    ],
    "definition": "负责研发基于强化学习与世界模型的机器人运动控制算法，实现具身智能体的自主运动与闭环交互决策。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选",
+    "优必选机器人",
+    "具微科技",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "禾赛科技",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 12
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 31
   },
   {
    "candidateCode": "candidate_2cf92a6f24b44085883b",
@@ -699,10 +1516,43 @@
     "嵌入式计算"
    ],
    "definition": "负责电机驱动控制系统的嵌入式开发与电磁兼容性设计测试，确保系统的高性能与可靠性。",
+   "enterprises": [
+    "Neura Robotics",
+    "万境千寻",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "因时机器人",
+    "宇树科技",
+    "智元机器人",
+    "智平方",
+    "智澄英达（杭州）科技有限公司",
+    "禾赛科技",
+    "自变量机器人",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 12
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.05.04",
     "technology-t3.08.03"
-   ]
+   ],
+   "portraitClusterName": "嵌入式与固件开发",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 45
   },
   {
    "candidateCode": "candidate_c31f7e51950d4fcabbbc",
@@ -725,9 +1575,31 @@
     "大模型推理服务与训练加速"
    ],
    "definition": "负责VLA端到端大模型的训练加速与推理优化，并设计可控合成场景生成策略，产出定向数据以弥补真实路测数据的长尾分布缺陷。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11"
-   ]
+   ],
+   "portraitClusterName": "通用机器人算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1070
   },
   {
    "candidateCode": "candidate_b73976ffc8eb4351b8fd",
@@ -748,10 +1620,44 @@
     "精密减速器"
    ],
    "definition": "负责机器人关节模组中电机、精密减速器等核心零部件的选型、计算与定制化设计，实现高精度传动系统性能。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "禾赛科技",
+    "蓝思科技",
+    "西湖机器人",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.05.04",
     "technology-t3.06.02"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 215
   },
   {
    "candidateCode": "candidate_d24dfd368f9448318c1a",
@@ -776,11 +1682,46 @@
     "深度学习训练框架"
    ],
    "definition": "负责研发基于端到端大模型、强化学习与模仿学习的机器人操作与移动算法。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "卡奥斯",
+    "原力无限",
+    "宇树科技",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "智平方",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 50
   },
   {
    "candidateCode": "candidate_c8020e22c0064bdc9c84",
@@ -807,12 +1748,51 @@
     "深度学习训练框架"
    ],
    "definition": "负责设计、实现并落地人形机器人全身运动控制算法，融合模仿学习、仿真与强化学习等技术，解决步态规划、平衡控制等核心问题。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "帕西尼感知",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "智平方",
+    "煤炭科学研究总院",
+    "矩阵超智",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人",
+    "觅蜂科技",
+    "跨维智能"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 13
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 22
   },
   {
    "candidateCode": "candidate_2c34df2d1dd04475a182",
@@ -833,10 +1813,46 @@
     "ROS"
    ],
    "definition": "负责人形机器人基于外骨骼的上半身遥操作算法开发，并利用ROS框架实现系统集成与实时控制。",
+   "enterprises": [
+    "Apptronik",
+    "Figure AI",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "傅利叶智能",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "奥比中光",
+    "宇树科技",
+    "思谋科技",
+    "惠科股份",
+    "智元机器人",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.01.08",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "ROS与机器人中间件",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 55
   },
   {
    "candidateCode": "candidate_bd726b46112c4bf99160",
@@ -861,12 +1877,35 @@
     "电机与驱动"
    ],
    "definition": "负责四足机器人关键机电零部件（如电机、减速器、关节模组）的选型、计算与定制化设计，支撑整机动力与运动性能。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "具微科技",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 5
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "软件系统与架构",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "candidate_a3b203e86030459ebccb",
@@ -893,12 +1932,37 @@
     "实时工业总线"
    ],
    "definition": "负责机器人嵌入式运动控制系统的设计、开发与产品化全流程管理，涵盖需求分析、实现、集成测试到量产导入。",
+   "enterprises": [
+    "Neura Robotics",
+    "优必选机器人",
+    "傅利叶智能",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "惠科股份",
+    "智元机器人",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 4
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t3.05.04",
     "technology-t3.08.03",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "系统集成与联调",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 10
   },
   {
    "candidateCode": "candidate_926b9bb861634235ab13",
@@ -923,11 +1987,44 @@
     "ROS"
    ],
    "definition": "负责人形机器人全身运动控制算法的设计与工程落地，实现步态规划、平衡控制、多接触运动等核心功能。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "五八智能科技（杭州）有限公司",
+    "优必选",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "征和机器人（征和工业）",
+    "惠科股份",
+    "智元机器人",
+    "江行智能",
+    "自变量机器人",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.02",
     "technology-t1.03.12",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_f4778845db8a49e191b2",
@@ -954,13 +2051,44 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责基于强化学习和仿真平台的人形机器人算法开发，并通过Sim-to-Real技术完成真机调试与部署。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京人形机器人创新中心",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 12
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_3d0950b337854683bf46",
@@ -983,10 +2111,41 @@
     "仿真平台与工具链"
    ],
    "definition": "负责构建机器人仿真环境，开发real2sim2real迁移框架，利用运动学动力学建模与强化学习，加速算法在真实机器人平台上的部署。",
+   "enterprises": [
+    "Apptronik",
+    "Neura Robotics",
+    "众擎机器人(EngineAI)",
+    "优必选",
+    "优必选机器人",
+    "光轮智能",
+    "卡奥斯",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "智元机器人",
+    "智平方",
+    "禾赛科技",
+    "自变量机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 67
   },
   {
    "candidateCode": "candidate_b3c72d7dc07b4f3d94b9",
@@ -1015,13 +2174,51 @@
     "深度学习训练框架"
    ],
    "definition": "负责人形机器人全身运动控制算法的设计、仿真与工程落地，通过强化学习、模仿学习等方法实现步态规划、平衡控制等核心功能。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "帕西尼感知",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "智平方",
+    "煤炭科学研究总院",
+    "矩阵超智",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 12
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_4f50ca54ae6d4eb38c12",
@@ -1042,10 +2239,34 @@
     "算力硬件"
    ],
    "definition": "负责机器人嵌入式系统的性能优化与底层软件可靠性保障，支持算法功能在机器人平台上的集成联调。",
+   "enterprises": [
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "思谋科技",
+    "智元机器人",
+    "清微智能",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 3
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.08.03",
     "technology-t3.08.04"
-   ]
+   ],
+   "portraitClusterName": "运动规划与控制算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 7
   },
   {
    "candidateCode": "candidate_15542841d7e2431690c0",
@@ -1068,11 +2289,50 @@
     "ROS"
    ],
    "definition": "负责搭建仿真环境并开发real2sim2real迁移框架，将强化学习算法高效部署到真实机器人平台。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京人形机器人创新中心",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "智元机器人",
+    "智平方",
+    "煤炭科学研究总院",
+    "禾赛科技",
+    "自变量机器人",
+    "蚂蚁集团"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 13
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 12
   },
   {
    "candidateCode": "candidate_b6818c6574b44c838818",
@@ -1097,12 +2357,34 @@
     "电机与驱动"
    ],
    "definition": "负责机器人本体软件架构设计，确保软件在多产品与场景中具备高通用性和扩展灵活性，并集成激光雷达感知与电机驱动系统。",
+   "enterprises": [
+    "Apptronik",
+    "Neura Robotics",
+    "北京星动纪元科技有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "禾赛科技",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 5
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "软件系统与架构",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "candidate_1ef438b3f52d40deb034",
@@ -1123,10 +2405,41 @@
     "人形机器人(通用)"
    ],
    "definition": "负责人形机器人基于外骨骼的遥操作控制算法开发与运动控制实现。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "傅利叶智能",
+    "具微科技",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "自变量机器人",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t3.01.08"
-   ]
+   ],
+   "portraitClusterName": "市场·销售与商务拓展",
+   "portraitDirectionName": "产业支撑与运营",
+   "portraitEvidenceJobCount": 345
   },
   {
    "candidateCode": "candidate_552f0eefd17544b3a181",
@@ -1147,10 +2460,46 @@
     "电机与驱动"
    ],
    "definition": "负责运动控制相关产品的整体规划设计，向机械、电子等硬件团队输出设计指导。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "大族电机",
+    "宇树科技",
+    "征和机器人（征和工业）",
+    "惠科股份",
+    "智元机器人",
+    "禾赛科技",
+    "美丽魔方机器人",
+    "自变量机器人",
+    "蓝思科技",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 4
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 120
   },
   {
    "candidateCode": "candidate_81f4e5b9a00646238c6d",
@@ -1173,11 +2522,43 @@
     "精密减速器"
    ],
    "definition": "负责机器人关节模组、电机、减速器等关键零部件的调研、选型、计算与定制化设计，确保关节系统的性能与可靠性。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "思谋科技",
+    "惠科股份",
+    "智元机器人",
+    "禾赛科技",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 6
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.05.01",
     "technology-t3.05.04",
     "technology-t3.06.02"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 45
   },
   {
    "candidateCode": "candidate_5087fc1a1d1240d79114",
@@ -1200,11 +2581,37 @@
     "电机与驱动"
    ],
    "definition": "负责多指灵巧手及其关节模组的硬件方案设计、关键零部件选型与定制化开发。",
+   "enterprises": [
+    "Neura Robotics",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "征和机器人（征和工业）",
+    "智元机器人",
+    "禾赛科技",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 6
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.02.01",
     "technology-t3.04.02",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 14
   },
   {
    "candidateCode": "candidate_26718b2634ea4a3381c3",
@@ -1227,11 +2634,42 @@
     "仿真平台与工具链"
    ],
    "definition": "负责将人形机器人算法在真机上进行调试、部署与优化，确保其在交付场景和展示活动中稳定运行。",
+   "enterprises": [
+    "Agility Robotics",
+    "Apptronik",
+    "Figure AI",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "自变量机器人",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 12
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 33
   },
   {
    "candidateCode": "candidate_d0366799c5e64083ad16",
@@ -1252,10 +2690,47 @@
     "ROS"
    ],
    "definition": "负责机器人导航产品从需求分析到量产导入的全过程管理，并基于SLAM与ROS进行系统开发与集成。",
+   "enterprises": [
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选",
+    "优必选机器人",
+    "优艾智合",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "奥比中光",
+    "惠科股份",
+    "智元机器人",
+    "清微智能",
+    "美丽魔方机器人",
+    "蓝思科技",
+    "蚂蚁集团",
+    "迦智科技",
+    "领益智造"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 4
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.04.01",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "定位建图与SLAM",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 55
   },
   {
    "candidateCode": "candidate_c5c4778826f44156bba9",
@@ -1284,13 +2759,45 @@
     "深度学习训练框架"
    ],
    "definition": "负责构建仿真环境并开发real2sim2real迁移框架，使强化学习等算法在真实机器人平台上高效部署与验证。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "矩阵超智",
+    "自变量机器人",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 12
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "运动控制与轨迹优化",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "candidate_1576a122c2aa4ac0ae36",
@@ -1317,12 +2824,43 @@
     "深度学习训练框架"
    ],
    "definition": "负责足式/人形机器人行走与操作耦合的全身协调控制算法研究，通过模仿学习、强化学习等方法实现动态运动与操作智能。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "无界动力",
+    "智元机器人",
+    "智平方",
+    "矩阵超智",
+    "自变量机器人",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 11
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 22
   },
   {
    "candidateCode": "candidate_13aad6a54bfd4f09a87a",
@@ -1345,10 +2883,42 @@
     "实时工业总线"
    ],
    "definition": "负责机器人用无刷直流电机控制算法的设计、开发与调试，基于实时工业总线实现高性能驱动控制。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "因时机器人",
+    "征和机器人（征和工业）",
+    "思谋科技",
+    "智元机器人",
+    "智澄英达（杭州）科技有限公司",
+    "禾赛科技",
+    "自变量机器人",
+    "蓝思科技",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    },
+    {
+     "stage": "上游",
+     "jobCount": 4
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.05.04",
     "technology-t3.08.03"
-   ]
+   ],
+   "portraitClusterName": "嵌入式与固件开发",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 45
   },
   {
    "candidateCode": "candidate_559904a3f38b4c4387cb",
@@ -1379,6 +2949,36 @@
     "深度学习训练框架"
    ],
    "definition": "负责构建机器人仿真环境与 real2sim2real 迁移框架，融合强化学习与端到端大模型，实现算法在真实机器人平台的高效部署。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "惠科股份",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "穹彻智能",
+    "自变量机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
@@ -1386,7 +2986,10 @@
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_a7870ec9817a412ab5f7",
@@ -1411,12 +3014,40 @@
     "仿真平台与工具链"
    ],
    "definition": "负责基于强化学习的人形机器人运动控制算法开发、真机调试与部署，推动项目交付与现场展示落地的工程师。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "自变量机器人",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 33
   },
   {
    "candidateCode": "candidate_3dcf2b7def2e456d92f0",
@@ -1437,9 +3068,41 @@
     "通信中间件"
    ],
    "definition": "负责基于ROS的通信中间件开发，主导软件设计文档编写与需求分析，支撑机器人系统分布式通信能力。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选",
+    "优必选机器人",
+    "吉翼具身智能",
+    "奥比中光",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "ROS与机器人中间件",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 279
   },
   {
    "candidateCode": "candidate_fa99b884cdfc44929691",
@@ -1462,11 +3125,41 @@
     "人形机器人(通用)"
    ],
    "definition": "负责VLA端到端大模型在人形机器人上的仿真到真机迁移部署，通过real2sim2real框架加速算法迭代，并利用强化学习优化策略性能。",
+   "enterprises": [
+    "Figure AI",
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "万境千寻",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "傅利叶智能",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t3.01.08"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 46
   },
   {
    "candidateCode": "candidate_d0652ed5dde74fd1a258",
@@ -1493,13 +3186,48 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责具身智能体运动控制与强化学习算法的研发，基于仿真平台实现虚实迁移，并可能参与人形机器人作业任务。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选",
+    "优必选机器人",
+    "具微科技",
+    "吉翼具身智能",
+    "帕西尼感知",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "禾赛科技",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 11
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "candidate_279956a37001423ca417",
@@ -1524,11 +3252,39 @@
     "深度学习训练框架"
    ],
    "definition": "负责开发仿真到现实（Sim2Real）的迁移框架，将仿真环境中训练得到的机器人感知、决策或控制算法高效适配并部署到真实机器人平台上，缩短算法迭代周期。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "智元机器人",
+    "自变量机器人",
+    "蓝思科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 12
   },
   {
    "candidateCode": "candidate_d7352f8747694faa8b2f",
@@ -1551,11 +3307,35 @@
     "惯性测量单元(IMU)"
    ],
    "definition": "负责研发基于激光雷达、惯性测量单元等多传感器融合的SLAM定位算法，提升大规模场景下的建图与定位精度。",
+   "enterprises": [
+    "云深处科技(DEEP Robotics)",
+    "优必选机器人",
+    "具微科技",
+    "原力无限",
+    "吉翼具身智能",
+    "奥比中光",
+    "宇树科技",
+    "思谋科技",
+    "禾赛科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 4
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.04.01",
     "technology-t2.01.01",
     "technology-t2.04.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_12560ea6c4804fa18248",
@@ -1584,13 +3364,41 @@
     "深度学习训练框架"
    ],
    "definition": "负责研发基于VLA端到端大模型的人形机器人控制算法，利用强化学习和仿真平台实现高效训练与真实部署。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "星尘智能",
+    "智元机器人",
+    "自变量机器人",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 10
   },
   {
    "candidateCode": "candidate_5f978f0a924c4841ab8d",
@@ -1611,10 +3419,39 @@
     "ROS"
    ],
    "definition": "负责构建机器人仿真环境，开发real2sim2real迁移框架，加速端到端算法在真实机器人平台上的部署与验证。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "傅利叶智能",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "智平方",
+    "跨维智能"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "ROS与机器人中间件",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 106
   },
   {
    "candidateCode": "candidate_9aa1613b7e0944c79804",
@@ -1635,10 +3472,43 @@
     "电机与驱动"
    ],
    "definition": "负责人形机器人动力关节的电机驱动方案设计与基于工业总线的通信控制实现。",
+   "enterprises": [
+    "Apptronik",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "禾赛科技",
+    "自变量机器人",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.01.08",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 74
   },
   {
    "candidateCode": "candidate_88615591b71f4a388aa1",
@@ -1661,9 +3531,30 @@
     "大模型推理服务与训练加速"
    ],
    "definition": "负责VLA端到端大模型的训练加速、推理服务优化，并设计合成场景数据生成策略，以解决长尾分布问题。",
+   "enterprises": [
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11"
-   ]
+   ],
+   "portraitClusterName": "通用机器人算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1070
   },
   {
    "candidateCode": "candidate_ade177b5b7464f62a7cd",
@@ -1684,9 +3575,31 @@
     "推理引擎与端侧部署"
    ],
    "definition": "负责机器人算法从仿真环境到真实端侧平台的迁移部署，通过开发仿真迁移框架与推理引擎优化，加速算法在机器人上的落地。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "思谋科技",
+    "智元机器人",
+    "智平方",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    }
+   ],
    "technologyNodeIds": [
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "ROS与机器人中间件",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 279
   },
   {
    "candidateCode": "candidate_a59d4d0cd3f34c528cb7",
@@ -1711,12 +3624,46 @@
     "ROS"
    ],
    "definition": "负责机器人产品从需求分析到量产导入的全过程，包含嵌入式系统设计与ROS软件集成。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "傅利叶智能",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "思谋科技",
+    "惠科股份",
+    "智元机器人",
+    "智澄英达（杭州）科技有限公司",
+    "清微智能",
+    "跨维智能",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t3.05.04",
     "technology-t3.08.03",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "系统集成与联调",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 10
   },
   {
    "candidateCode": "candidate_63fb1d298ed8490f916b",
@@ -1743,12 +3690,42 @@
     "深度学习训练框架"
    ],
    "definition": "负责足式/人形机器人移动操作一体化控制算法的研发，通过强化学习、模仿学习等方法实现全身协调运动与灵巧操控。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "智元机器人",
+    "智平方",
+    "矩阵超智",
+    "自变量机器人",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 22
   },
   {
    "candidateCode": "candidate_817a7c8b6ac64516baac",
@@ -1771,11 +3748,40 @@
     "ROS"
    ],
    "definition": "负责四足机器人深度强化学习算法的开发、仿真调试与真机部署验证，并基于ROS实现控制软件集成。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "具微科技",
+    "北京人形机器人创新中心",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "江行智能",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 11
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.02.01",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "ROS与机器人中间件",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 42
   },
   {
    "candidateCode": "candidate_c63e2f35cc4949aab464",
@@ -1796,10 +3802,42 @@
     "ROS"
    ],
    "definition": "负责机器人自主导航中路径规划、轨迹生成与运动控制算法的研发与落地，基于ROS实现完整导航栈。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "奥比中光",
+    "惠科股份",
+    "擎朗智能",
+    "智元机器人",
+    "江行智能",
+    "清微智能",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.04.06",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "导航与路径规划",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 20
   },
   {
    "candidateCode": "candidate_ae1818db2f3d4796b2a7",
@@ -1822,11 +3860,40 @@
     "ROS"
    ],
    "definition": "负责基于IMU、激光雷达等多传感器融合的3D视觉感知算法研发与优化，利用ROS框架解决弱纹理、动态遮挡等复杂场景下的鲁棒性感知问题。",
+   "enterprises": [
+    "Neura Robotics",
+    "万境千寻",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "原力无限",
+    "吉翼具身智能",
+    "奥比中光",
+    "宇树科技",
+    "智元机器人",
+    "智澄英达（杭州）科技有限公司",
+    "清微智能",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t2.04.01",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_6b972d1677a247108d15",
@@ -1851,11 +3918,36 @@
     "深度学习训练框架"
    ],
    "definition": "负责研发足式/人形机器人运动与操作耦合的全身控制算法，通过端到端大模型、模仿学习等方法实现动态协调。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "原力无限",
+    "宇树科技",
+    "无界动力",
+    "智元机器人",
+    "自变量机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 50
   },
   {
    "candidateCode": "candidate_20be4bb9b36f4caa8eb2",
@@ -1882,12 +3974,39 @@
     "深度学习训练框架"
    ],
    "definition": "负责构建机器人仿真环境与算法，实现从仿真到真实世界的高效迁移，加速端到端模型在机器人平台上的部署。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "无界动力",
+    "星尘智能",
+    "智元机器人",
+    "智平方",
+    "自变量机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 33
   },
   {
    "candidateCode": "candidate_1675533f134e4231abc5",
@@ -1910,9 +4029,28 @@
     "推理引擎与端侧部署"
    ],
    "definition": "负责将VLA端到端大模型通过仿真迁移框架高效部署到真实机器人平台，打通算法从训练到落地的全链路。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "吉翼具身智能",
+    "宇树科技",
+    "智元机器人",
+    "智平方"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11"
-   ]
+   ],
+   "portraitClusterName": "通用机器人算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1070
   },
   {
    "candidateCode": "candidate_e339274df9614b37ab98",
@@ -1939,12 +4077,34 @@
     "深度学习训练框架"
    ],
    "definition": "负责人形机器人仿真到现实迁移框架的开发，加速算法在真实机器人平台上的部署与迭代。",
+   "enterprises": [
+    "Figure AI",
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "智元机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 33
   },
   {
    "candidateCode": "candidate_5a20866a586c49e39182",
@@ -1969,12 +4129,47 @@
     "ROS"
    ],
    "definition": "负责机器人产品或关键模块从需求分析、设计开发、集成测试到量产导入的全过程管理，重点整合电机驱动、ROS、运动控制与嵌入式计算等技术。",
+   "enterprises": [
+    "Apptronik",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "智澄英达（杭州）科技有限公司",
+    "美丽魔方机器人",
+    "自变量机器人",
+    "蓝思科技",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 11
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t3.05.04",
     "technology-t3.08.03",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "系统集成与联调",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 10
   },
   {
    "candidateCode": "candidate_6d52e5ce3619425a9eaf",
@@ -1999,11 +4194,47 @@
     "深度学习训练框架"
    ],
    "definition": "负责开发仿真到真实机器人系统的迁移框架，加速强化学习算法在实体平台上的部署与验证。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京人形机器人创新中心",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "智元机器人",
+    "煤炭科学研究总院",
+    "禾赛科技",
+    "自变量机器人",
+    "蚂蚁集团"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 11
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 12
   },
   {
    "candidateCode": "candidate_a095c35602da4802914b",
@@ -2030,13 +4261,39 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责人形机器人基于强化学习的控制算法开发、仿真训练与真机调试部署，推动算法产品化交付。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "惠科股份",
+    "智元机器人",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "candidate_310a4de56c094c45b18c",
@@ -2065,6 +4322,27 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责基于强化学习与模仿学习的人形机器人全身运动控制算法研发，实现从仿真训练到真机部署的完整闭环。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "原力无限",
+    "无界动力",
+    "穹彻智能",
+    "自变量机器人",
+    "蚂蚁集团",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 6
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.03.12",
@@ -2072,7 +4350,10 @@
     "technology-t1.05.03",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_c33bfca161814fa392cd",
@@ -2103,6 +4384,33 @@
     "深度学习训练框架"
    ],
    "definition": "负责研发人形机器人行走与操作耦合的全身协调控制算法，运用强化学习、模仿学习及视觉语言动作模型，实现稳定、智能的运动控制与虚实迁移。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "原力无限",
+    "惠科股份",
+    "无界动力",
+    "智元机器人",
+    "穹彻智能",
+    "自变量机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
@@ -2110,7 +4418,10 @@
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_b1d9362d617b47778561",
@@ -2133,11 +4444,39 @@
     "精密减速器"
    ],
    "definition": "负责一体化关节模组中电机、精密减速器等核心零部件的调研、选型、计算与定制化设计，确保模组整体性能满足要求。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "吉翼具身智能",
+    "惠科股份",
+    "智元机器人",
+    "禾赛科技",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 5
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.05.01",
     "technology-t3.05.04",
     "technology-t3.06.02"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 45
   },
   {
    "candidateCode": "candidate_2402a281333e45a7b03e",
@@ -2168,6 +4507,28 @@
     "深度学习训练框架"
    ],
    "definition": "负责构建机器人仿真环境与real2sim2real迁移框架，运用强化学习与端到端大模型算法，加速算法在真实机器人平台上的训练与部署。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "星尘智能",
+    "智元机器人",
+    "自变量机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 6
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
@@ -2175,7 +4536,10 @@
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_fdef9df3b9ba455089ac",
@@ -2202,12 +4566,40 @@
     "深度学习训练框架"
    ],
    "definition": "负责足式或人形机器人行走与操作一体化全身协调控制算法的研发，运用强化学习、模仿学习等方法实现动态稳定与灵巧操作。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "帕西尼感知",
+    "智元机器人",
+    "智平方",
+    "矩阵超智",
+    "自变量机器人",
+    "西湖机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 22
   },
   {
    "candidateCode": "candidate_3bc979fc80784b3c8d59",
@@ -2234,12 +4626,36 @@
     "深度学习训练框架"
    ],
    "definition": "负责足式/人形机器人全身协调运动与操作耦合的算法研发，以强化学习、模仿学习及端到端模型驱动复杂行为生成。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "原力无限",
+    "宇树科技",
+    "智元机器人",
+    "自变量机器人",
+    "觅蜂科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 6
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 22
   },
   {
    "candidateCode": "candidate_71ad7a7c326049109a80",
@@ -2264,12 +4680,45 @@
     "ROS"
    ],
    "definition": "运用强化学习和模仿学习技术，研发机器人操作与运动控制算法，并完成其在机器人系统上的集成与验证。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "智元机器人",
+    "智平方",
+    "煤炭科学研究总院",
+    "自变量机器人",
+    "蚂蚁集团"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "运动控制与轨迹优化",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "candidate_296e897968d44f1a8d78",
@@ -2298,13 +4747,38 @@
     "深度学习训练框架"
    ],
    "definition": "负责人形机器人学习算法的研发与部署，通过端到端大模型、强化学习及仿真迁移技术，赋予机器人在真实环境中自主执行复杂任务的能力。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 6
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t1.05.03",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 10
   },
   {
    "candidateCode": "candidate_cb38eeea33fe466ebc75",
@@ -2329,11 +4803,38 @@
     "实时工业总线"
    ],
    "definition": "负责机器人运动控制软件的研发、维护与优化，通过轨迹规划、插补运算、运动学解算等核心算法，保障机器人运动平稳、精准、稳定运行。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京星动纪元科技有限公司",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "因时机器人",
+    "智元机器人",
+    "智澄英达（杭州）科技有限公司",
+    "禾赛科技",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 6
+    },
+    {
+     "stage": "上游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t3.05.04",
     "technology-t3.08.03"
-   ]
+   ],
+   "portraitClusterName": "嵌入式与固件开发",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 33
   },
   {
    "candidateCode": "candidate_3be7f9ebf58a4392a32b",
@@ -2358,11 +4859,38 @@
     "深度学习训练框架"
    ],
    "definition": "负责构建仿真到真实机器人的迁移框架，将强化学习策略高效部署到实体机器人平台。",
+   "enterprises": [
+    "Neura Robotics",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "智元机器人",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 12
   },
   {
    "candidateCode": "candidate_c207d375d30e4856a7ad",
@@ -2387,11 +4915,37 @@
     "深度学习训练框架"
    ],
    "definition": "负责开发从仿真环境到真实机器人系统的迁移学习框架，加速算法部署。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "智元机器人",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 12
   },
   {
    "candidateCode": "candidate_99ee846d681b42d88886",
@@ -2414,11 +4968,38 @@
     "ROS"
    ],
    "definition": "负责人形机器人仿真环境搭建、仿真到真实机器人平台的迁移框架开发，加速算法在真实机器人上的部署与验证。",
+   "enterprises": [
+    "Apptronik",
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "惠科股份",
+    "智元机器人",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 9
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "ROS与机器人中间件",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 34
   },
   {
    "candidateCode": "candidate_ff52b4a7695c487f9f5b",
@@ -2445,13 +5026,34 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责将人形机器人算法从仿真环境迁移至真实硬件，并完成真机调试与交付部署，确保算法在实物上的稳定运行。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "智元机器人",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "candidate_897fa03e8e43474aab05",
@@ -2478,12 +5080,29 @@
     "实时工业总线"
    ],
    "definition": "负责机器人运动控制系统的嵌入式软硬件开发、电机驱动调试及产品从需求到量产的全生命周期管理。",
+   "enterprises": [
+    "Neura Robotics",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 3
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t3.05.04",
     "technology-t3.08.03",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "系统集成与联调",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 10
   },
   {
    "candidateCode": "candidate_ff11e66405954ca98a23",
@@ -2506,11 +5125,45 @@
     "ROS"
    ],
    "definition": "负责研发与优化面向具身智能的机器人仿真平台，涵盖传感器仿真、物理交互、运动学动力学模型及仿真场景构建，为算法与系统团队提供仿真工具支持。",
+   "enterprises": [
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "云深处科技(DEEP Robotics)",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "惠科股份",
+    "智元机器人",
+    "禾赛科技",
+    "自变量机器人",
+    "蚂蚁集团"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 10
+    },
+    {
+     "stage": "上游",
+     "jobCount": 3
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "ROS与机器人中间件",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 47
   },
   {
    "candidateCode": "candidate_925346288cd34728af5a",
@@ -2537,12 +5190,33 @@
     "深度学习训练框架"
    ],
    "definition": "负责人形机器人端到端大模型（VLA）的开发与仿真迁移，使机器人能够自主完成复杂任务。",
+   "enterprises": [
+    "Figure AI",
+    "Neura Robotics",
+    "RoboScience机器科学",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "宇树科技",
+    "智元机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 33
   },
   {
    "candidateCode": "candidate_babfb0143abd4533ae38",
@@ -2567,12 +5241,37 @@
     "仿真平台与工具链"
    ],
    "definition": "负责人形机器人基于强化学习的运动控制算法研发，通过仿真与世界模型实现动作生成与决策优化。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "具微科技",
+    "原力无限",
+    "吉翼具身智能",
+    "惠科股份",
+    "智元机器人",
+    "自变量机器人",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 7
+    },
+    {
+     "stage": "下游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 31
   },
   {
    "candidateCode": "candidate_76ebddcdb69749b7bb98",
@@ -2599,13 +5298,33 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责人形机器人仿真训练策略向真实硬件迁移，完成真机调试与部署，实现运动能力的工程落地。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "智元机器人",
+    "西湖机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 6
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t1.05.02",
     "technology-t3.01.08",
     "technology-t4.03.05",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "candidate_69dfd3e9c1ef4c18a52b",
@@ -2630,11 +5349,34 @@
     "实时工业总线"
    ],
    "definition": "负责基于实时工业总线（如CAN、EtherCAT）的电机运动控制方案开发与通信层实现。",
+   "enterprises": [
+    "Neura Robotics",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "禾赛科技",
+    "自变量机器人",
+    "迦智科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 4
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.03.12",
     "technology-t3.05.04",
     "technology-t3.08.03"
-   ]
+   ],
+   "portraitClusterName": "嵌入式与固件开发",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 33
   },
   {
    "candidateCode": "candidate_49019cc1947f4d258ce5",
@@ -2659,11 +5401,37 @@
     "深度学习训练框架"
    ],
    "definition": "负责搭建仿真环境并开发real2sim2real迁移框架，利用强化学习与深度学习训练，加速算法在真实机器人平台上的部署与验证。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "众擎机器人(EngineAI)",
+    "优必选机器人",
+    "具微科技",
+    "北京银河通用机器人有限公司",
+    "吉翼具身智能",
+    "宇树科技",
+    "帕西尼感知",
+    "智元机器人",
+    "自变量机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 8
+    },
+    {
+     "stage": "上游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.03.05",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 12
   },
   {
    "candidateCode": "candidate_93137d449e0c4417b798",
@@ -2694,6 +5462,21 @@
     "人机交互(通用)"
    ],
    "definition": "负责人形机器人端到端VLA大模型与强化学习算法的仿真训练、虚实迁移框架开发，加速智能策略在真实机器人上的部署。",
+   "enterprises": [
+    "Neura Robotics",
+    "五八智能科技（杭州）有限公司",
+    "优必选机器人",
+    "北京银河通用机器人有限公司",
+    "原力无限",
+    "吉翼具身智能",
+    "智元机器人"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 4
+    }
+   ],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.05.02",
@@ -2701,7 +5484,10 @@
     "technology-t4.03.05",
     "technology-t4.04.12",
     "technology-t6.01.06"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "candidate_3d946ce0b9a34fcab34a",
@@ -2726,12 +5512,25 @@
     "电机与驱动"
    ],
    "definition": "负责仿生机器人机电系统的设计、集成与产品化，重点提升电机驱动性能、整机标准化程度与可服务性。",
+   "enterprises": [
+    "优必选机器人",
+    "宇树科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "软件系统与架构",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "candidate_488abe0bd4ba4d08b19a",
@@ -2758,13 +5557,27 @@
     "电机与驱动"
    ],
    "definition": "负责仿生机器人（如四足机器人、灵巧手）的高性能关节模组与驱动系统的选型、计算和定制化设计。",
+   "enterprises": [
+    "优必选机器人",
+    "吉翼具身智能",
+    "宇树科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.04.02",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_738439bacdd541aa9ae7",
@@ -2789,12 +5602,25 @@
     "电机与驱动"
    ],
    "definition": "负责四足机器人硬件系统的产品标准化设计与可服务性优化，整合激光雷达、电机驱动等关键部件，提升产品成熟度。",
+   "enterprises": [
+    "Neura Robotics",
+    "宇树科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 2
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "软件系统与架构",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "candidate_ce20c124a323428aa94b",
@@ -2821,13 +5647,30 @@
     "电机与驱动"
    ],
    "definition": "负责机器人样机的全流程测试管理，包括功能摸底、监控搭建、异常分析与故障定位，确保整机系统达到设计指标。",
+   "enterprises": [
+    "宇树科技",
+    "禾赛科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "上游",
+     "jobCount": 1
+    },
+    {
+     "stage": "中游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.04.02",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_d3f9b20b5eaf468597fa",
@@ -2854,13 +5697,25 @@
     "电机与驱动"
    ],
    "definition": "负责仿生机器人（含四足及灵巧手）的机电系统设计、集成与调试，实现运动控制与感知功能。",
+   "enterprises": [
+    "宇树科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.04.02",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "candidate_41c3d3f7d69a4e52a378",
@@ -2887,13 +5742,25 @@
     "电机与驱动"
    ],
    "definition": "基于 52 条真实 JD、1 家独立企业的任务缺口证据形成的新岗位候选。",
+   "enterprises": [
+    "宇树科技"
+   ],
+   "industryStages": [
+    {
+     "stage": "中游",
+     "jobCount": 1
+    }
+   ],
    "technologyNodeIds": [
     "technology-t2.01.01",
     "technology-t3.02.01",
     "technology-t3.02.03",
     "technology-t3.04.02",
     "technology-t3.05.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_0576ac2ed00345c0b6d6",
@@ -2914,10 +5781,15 @@
     "双臂协同操作"
    ],
    "definition": "负责研发基于VLA端到端大模型的双臂协同操作算法与系统，实现机器人双臂灵巧任务。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t1.09.01"
-   ]
+   ],
+   "portraitClusterName": "运动规划与控制算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "upstream_889d5675cc354507aadb",
@@ -2938,10 +5810,15 @@
     "夹爪"
    ],
    "definition": "基于VLA端到端大模型，设计并实现夹爪的感知‑决策‑控制一体化算法，使机器人能够根据视觉与语言指令直接输出抓取动作。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t3.04.04"
-   ]
+   ],
+   "portraitClusterName": "通用机器人算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "upstream_cd3d930de0b34043955f",
@@ -2962,10 +5839,15 @@
     "Sim-to-Real虚实迁移"
    ],
    "definition": "负责研发触觉感知算法，并利用Sim-to-Real虚实迁移技术将仿真训练的触觉模型可靠部署到真实机器人上。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.02.06",
     "technology-t4.04.12"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_e44e34f3dd474ebe9126",
@@ -2986,10 +5868,15 @@
     "触觉感知算法"
    ],
    "definition": "探索将强化学习应用于触觉感知算法，推动触觉信号驱动的自适应决策与策略学习的前沿研究。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t2.02.06"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_f72d6408a7044a51a679",
@@ -3010,9 +5897,14 @@
     "末端执行器"
    ],
    "definition": "负责末端执行器在作业过程中的碰撞检测与避障策略的设计与实现，确保执行器本体及操作对象的安全。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t3.04.03"
-   ]
+   ],
+   "portraitClusterName": "机械结构与整机设计",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 15
   },
   {
    "candidateCode": "upstream_3174b253df3548788bb4",
@@ -3033,10 +5925,15 @@
     "无人机"
    ],
    "definition": "负责无人机搭载末端执行器的整体方案设计、集成与测试，确保空中作业时的末端执行器可靠性与性能。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t3.04.03",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_c71a99a4e0054f2cb4c8",
@@ -3057,10 +5954,15 @@
     "具身感知与交互"
    ],
    "definition": "负责基于VLA端到端大模型的具身感知与交互算法研发，实现感知与动作的端到端学习与部署。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t2.02.08"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_0812cb0c3e2f4954a482",
@@ -3081,10 +5983,15 @@
     "夹爪"
    ],
    "definition": "负责人形机器人通用平台与夹爪执行器的协同开发、集成与优化，确保末端操作能力与整机系统的匹配。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t3.01.08",
     "technology-t3.04.04"
-   ]
+   ],
+   "portraitClusterName": "生产制造与工艺工程",
+   "portraitDirectionName": "产业支撑与运营",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "upstream_682bd9895c494f0697fd",
@@ -3107,11 +6014,16 @@
     "无人机"
    ],
    "definition": "负责无人机搭载末端执行器的深度感知与操作功能开发，实现空中精准作业能力。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.01.02",
     "technology-t3.04.03",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_aecf94d1415541188bb2",
@@ -3132,10 +6044,15 @@
     "分割与实例感知"
    ],
    "definition": "负责将多模态感知融合与分割、实例感知能力结合，研发面向复杂场景的感知算法与系统工程化方案。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.06.03",
     "technology-t2.05.05"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_8ef89659bfd14f2d9853",
@@ -3156,10 +6073,15 @@
     "数字训练场"
    ],
    "definition": "在虚拟数字训练场中为通用人形机器人设计、搭建并管理自动化训练环境，将仿真训练成果迁移至真实机器人。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t3.01.08",
     "technology-t4.01.02"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_75d0985644a54b4496a8",
@@ -3180,10 +6102,15 @@
     "空间智能与空间机器人"
    ],
    "definition": "负责构建空间机器人的数字孪生系统，结合空间智能实现自主感知、仿真与闭环优化。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t4.03.03",
     "technology-t7.06.05"
-   ]
+   ],
+   "portraitClusterName": "通用机器人算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "upstream_2bc18113d00b4197b92e",
@@ -3204,10 +6131,15 @@
     "复合机器人"
    ],
    "definition": "负责复合机器人本体与操作臂的联合运动规划算法设计与实现，支撑其自主移动与操作协调。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.03.04",
     "technology-t3.03.02"
-   ]
+   ],
+   "portraitClusterName": "运动规划与控制算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 2
   },
   {
    "candidateCode": "milestone_0845b8a7d2b247d4a6f",
@@ -3228,10 +6160,15 @@
     "灵巧手(多指)"
    ],
    "definition": "负责设计面向灵巧手操作的世界模型架构，驱动多指手交互预测与自主操控能力突破。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.02.10",
     "technology-t3.04.02"
-   ]
+   ],
+   "portraitClusterName": "机器人学习与强化学习",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 12
   },
   {
    "candidateCode": "milestone_5b063c8bbe6b441b986",
@@ -3252,10 +6189,15 @@
     "算力硬件"
    ],
    "definition": "负责将世界模型架构高效适配并部署到边缘算力硬件，实现端侧实时推理与自治决策。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.02.10",
     "technology-t3.08.04"
-   ]
+   ],
+   "portraitClusterName": "2D视觉与图像算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 3
   },
   {
    "candidateCode": "upstream_4d88bd8561ee41148d67",
@@ -3276,10 +6218,15 @@
     "数据管线"
    ],
    "definition": "面向强化学习训练与部署需求，构建高可靠、可复用的数据管线以支撑智能体持续学习与决策优化。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.01.06"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_9b26b148123f4cf2b8ca",
@@ -3300,10 +6247,15 @@
     "深度学习"
    ],
    "definition": "利用深度学习技术研发多源融合定位算法，从多模态传感器数据中实现高精度、高鲁棒性的位置解算。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.04.04",
     "technology-t1.05.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_33759cb654f746edbc0b",
@@ -3324,10 +6276,15 @@
     "灵巧手(多指)"
    ],
    "definition": "负责多指灵巧手的触觉感知算法研发与系统集成，实现机器人精细操作中的触觉反馈与智能控制。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.02.06",
     "technology-t3.04.02"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_3fbe542eb43f4296b303",
@@ -3348,9 +6305,14 @@
     "场景理解与环境感知"
    ],
    "definition": "负责环境感知与避障功能的整体设计及集成，确保自主系统在复杂场景下的安全运行。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.06.05"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_ead3b6197a1d438083de",
@@ -3371,10 +6333,15 @@
     "场景理解与环境感知"
    ],
    "definition": "负责环境感知与路径运动规划算法的研发与优化，实现智能系统对场景的理解与轨迹决策。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.04.06",
     "technology-t1.06.05"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_ad92409418a041c1a2fb",
@@ -3395,10 +6362,15 @@
     "场景理解与环境感知"
    ],
    "definition": "该组合在学术研究与专利中已反复出现，但在招聘市场上尚未被独立为专门岗位，本描述仅为研究侧已成形组合的职责推演。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t1.06.05"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_13e931103f614c109683",
@@ -3419,10 +6391,15 @@
     "一体化关节模组"
    ],
    "definition": "负责将一体化关节模组集成于轮足机器人平台，并对其驱动、控制与性能进行系统设计与优化。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t3.02.02",
     "technology-t3.05.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_5f1417ba38da4aa2a95b",
@@ -3443,10 +6420,15 @@
     "轮足机器人"
    ],
    "definition": "该岗位聚焦于双足人形机器人与轮足机器人的协同研发，二者在学术论文与专利中已形成高频交叉组合，但尚未在产业招聘中形成独立职位。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t3.01.01",
     "technology-t3.02.02"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_fe702aa3f5df41bab5ff",
@@ -3467,10 +6449,15 @@
     "人机交互(通用)"
    ],
    "definition": "负责将人机交互机制融入运动规划算法，设计并优化人机协作场景下的运动生成与决策系统。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.03.04",
     "technology-t6.01.06"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 11
   },
   {
    "candidateCode": "upstream_bc522e0269644a5a843e",
@@ -3491,10 +6478,15 @@
     "工业机械臂"
    ],
    "definition": "负责工业机械臂运动规划算法的研发与落地，将学术研究中反复出现的运动规划能力从综合机器人岗位中剥离为独立职责。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.03.04",
     "technology-t3.03.09"
-   ]
+   ],
+   "portraitClusterName": "运动规划与控制算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 61
   },
   {
    "candidateCode": "milestone_447d637de8ea42eda4d",
@@ -3515,10 +6507,15 @@
     "具身感知与交互"
    ],
    "definition": "基于VLA端到端大模型，负责具身感知与交互能力的模型研发与系统集成，推动机器人在真实环境中的端到端感知-动作闭环。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.01.11",
     "technology-t2.02.08"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_d78eacb2d7f44570a2b",
@@ -3539,10 +6536,15 @@
     "AI芯片"
    ],
    "definition": "负责将世界模型架构高效部署到AI芯片上，实现实时交互性能的优化与落地。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.02.10",
     "technology-t3.08.01"
-   ]
+   ],
+   "portraitClusterName": "产品管理与体验设计",
+   "portraitDirectionName": "产业支撑与运营",
+   "portraitEvidenceJobCount": 2
   },
   {
    "candidateCode": "milestone_d54211df276147c0894",
@@ -3563,10 +6565,15 @@
     "数字孪生"
    ],
    "definition": "负责利用3D重建技术构建和维护高保真数字孪生模型，支撑虚实映射与仿真分析。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.05.03",
     "technology-t4.03.03"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_03c01076b55a4222a70",
@@ -3587,10 +6594,15 @@
     "ROS"
    ],
    "definition": "负责在ROS环境下构建与维护面向世界模型训练的数据集处理管线。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.02.08",
     "technology-t5.01.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_3cc3fd3bf1774b16be6",
@@ -3611,10 +6623,15 @@
     "谐波减速器"
    ],
    "definition": "利用机器视觉方法对谐波减速器等精密传动部件进行缺陷识别与质量判定，确保运动执行部件的装配品质与可靠性。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.02.07",
     "technology-t3.06.01"
-   ]
+   ],
+   "portraitClusterName": "嵌入式与固件开发",
+   "portraitDirectionName": "软件硬件与系统架构",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "milestone_3921d0d7e87841ad8a4",
@@ -3635,10 +6652,15 @@
     "具身推理与ECoT"
    ],
    "definition": "负责具身智能体中推理机制与具身链式思维（ECoT）的设计、实现与优化，推动复杂任务下的自主决策能力。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.01.05",
     "technology-t1.07.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_e0cfce76da014a2dbb02",
@@ -3661,11 +6683,16 @@
     "无人机"
    ],
    "definition": "基于强化学习与合成数据技术，研发无人机在复杂环境中的自主决策与行为规划能力。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t4.02.01",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_9cd9822edc8242e0b2b",
@@ -3686,10 +6713,15 @@
     "合成数据"
    ],
    "definition": "负责为多指灵巧手操作任务构建合成数据生成流水线，支撑机器人操作技能的学习与泛化。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t3.04.02",
     "technology-t4.02.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_a7facd23f8ae4863a05d",
@@ -3714,12 +6746,17 @@
     "无人机"
    ],
    "definition": "利用合成数据训练强化学习模型，实现无人机端的目标检测与自主决策。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t1.06.06",
     "technology-t4.02.01",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_bca2975a00004cb58321",
@@ -3742,11 +6779,16 @@
     "无人机"
    ],
    "definition": "负责无人机航拍视角下目标检测模型的合成数据生成、训练优化与落地评估。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.06.06",
     "technology-t4.02.01",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_00efc1ab616c40ac9755",
@@ -3769,11 +6811,16 @@
     "夹爪"
    ],
    "definition": "负责结合深度学习与实例分割技术，研发面向夹爪操作的视觉感知与抓取策略算法。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.04",
     "technology-t2.05.05",
     "technology-t3.04.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_07c3d45b23744c498b03",
@@ -3794,10 +6841,15 @@
     "仿真平台与工具链"
    ],
    "definition": "负责在仿真平台中实现、集成与优化目标检测算法，构建感知仿真工具链，支撑感知系统的闭环验证与评估。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.06.06",
     "technology-t4.03.05"
-   ]
+   ],
+   "portraitClusterName": "2D视觉与图像算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 2
   },
   {
    "candidateCode": "upstream_1dcf73a3dc794eddb775",
@@ -3818,10 +6870,15 @@
     "夹爪"
    ],
    "definition": "将图像分割与实例感知能力融入夹爪系统，使末端执行器能够理解并精准操作杂乱场景中的目标物体。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.05.05",
     "technology-t3.04.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_3fd620ded1ac4a21a8ce",
@@ -3842,10 +6899,15 @@
     "人机交互(通用)"
    ],
    "definition": "研发触觉感知算法，并将其融入人机交互系统，以提升交互的沉浸感与操作直觉。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.02.06",
     "technology-t6.01.06"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_eeb47073348340118c57",
@@ -3866,10 +6928,15 @@
     "无人机"
    ],
    "definition": "负责设计并生成用于无人机算法训练与验证的合成数据集。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t4.02.01",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_9146f028db3543058bd",
@@ -3890,10 +6957,15 @@
     "焊接机器人"
    ],
    "definition": "主导焊接机器人基于世界模型的空间感知、运动规划与工艺自适应架构的设计与实现。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.02.10",
     "technology-t7.01.03"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_326ee79495bc4a9c9967",
@@ -3914,10 +6986,15 @@
     "工业机械臂"
    ],
    "definition": "负责将深度相机采集的三维环境信息与工业机械臂控制进行融合，实现视觉引导的自动化作业。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.01.02",
     "technology-t3.03.09"
-   ]
+   ],
+   "portraitClusterName": "导航与路径规划",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 4
   },
   {
    "candidateCode": "upstream_15e084ae7ff04c7baedf",
@@ -3942,12 +7019,17 @@
     "夹爪"
    ],
    "definition": "基于深度视觉与实例感知的智能夹爪控制方案研发，实现高适应性物体抓取。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.04",
     "technology-t2.01.02",
     "technology-t2.05.05",
     "technology-t3.04.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_fb898403171644e89a28",
@@ -3970,11 +7052,16 @@
     "夹爪"
    ],
    "definition": "利用深度相机采集的点云或深度图，结合实例级分割感知算法，驱动夹爪完成精准抓取与操作的工程设计岗位。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.01.02",
     "technology-t2.05.05",
     "technology-t3.04.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_ff22e33810964c82a875",
@@ -3997,11 +7084,16 @@
     "无人机"
    ],
    "definition": "负责将深度学习与深度相机数据结合，实现无人机在复杂环境下的三维感知与理解算法研发。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.04",
     "technology-t2.01.02",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_cabe8f5838af4eaeb1b4",
@@ -4024,11 +7116,16 @@
     "夹爪"
    ],
    "definition": "运用深度相机与深度学习技术，设计并优化夹爪的感知与抓取算法。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.04",
     "technology-t2.01.02",
     "technology-t3.04.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_002bd01513c84bba88f2",
@@ -4051,11 +7148,16 @@
     "分割与实例感知"
    ],
    "definition": "基于深度相机数据与深度学习技术，负责分割与实例感知算法的研发与落地。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.04",
     "technology-t2.01.02",
     "technology-t2.05.05"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_769be88de47e40aba26e",
@@ -4076,9 +7178,14 @@
     "目标检测"
    ],
    "definition": "负责融合目标检测与碰撞检测技术，实现自主系统在复杂环境中的实时避障算法研发与部署。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.06.06"
-   ]
+   ],
+   "portraitClusterName": "2D视觉与图像算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 2
   },
   {
    "candidateCode": "upstream_3a8eaae534154717b154",
@@ -4099,10 +7206,15 @@
     "分割与实例感知"
    ],
    "definition": "负责基于深度相机数据的图像分割与实例感知算法研发，提升三维场景理解能力。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.01.02",
     "technology-t2.05.05"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_6cb9da2a4af14c45b712",
@@ -4123,10 +7235,15 @@
     "合成数据"
    ],
    "definition": "基于合成数据手段，提升运动规划算法在多样化场景下的泛化与鲁棒性。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.03.04",
     "technology-t4.02.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_5e5c803cad7c4014bdcc",
@@ -4147,10 +7264,15 @@
     "分割与实例感知"
    ],
    "definition": "负责3D视觉感知中分割与实例感知算法的研发与落地，通过融合分割与实例级感知能力提升三维场景理解精度。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.06.02",
     "technology-t2.05.05"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_3436db9d5e3c4b36ad18",
@@ -4171,10 +7293,15 @@
     "无人机"
    ],
    "definition": "负责无人机平台与深度相机融合的感知方案设计、算法开发与系统集成，使无人机具备三维环境理解能力。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.01.02",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_694b1f08ddf84bfd8c98",
@@ -4195,10 +7322,15 @@
     "夹爪"
    ],
    "definition": "负责深度相机与夹爪协同作业的调试、维护与流程优化，确保视觉引导下的精确抓取执行。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t2.01.02",
     "technology-t3.04.04"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_97d1ad0df2c8414e949",
@@ -4219,10 +7351,15 @@
     "域随机化"
    ],
    "definition": "负责基于3DGS高保真仿真环境，设计并实施域随机化策略，以提升具身智能模型在真实场景中的泛化能力。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t4.03.01",
     "technology-t4.04.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_b4650f2eec4042af965",
@@ -4243,9 +7380,14 @@
     "多目标跟踪"
    ],
    "definition": "融合多目标跟踪与全身控制技术，实现机器人在动态多目标环境中的实时运动规划与安全交互。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.03.01"
-   ]
+   ],
+   "portraitClusterName": "运动规划与控制算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 145
   },
   {
    "candidateCode": "milestone_4dde1c2d27f44a8eb6c",
@@ -4266,10 +7408,15 @@
     "数字孪生"
    ],
    "definition": "负责构建高保真数字孪生环境，并将运动规划算法集成于其中，实现闭环验证与迭代优化。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.03.04",
     "technology-t4.03.03"
-   ]
+   ],
+   "portraitClusterName": "产品管理与体验设计",
+   "portraitDirectionName": "产业支撑与运营",
+   "portraitEvidenceJobCount": 27
   },
   {
    "candidateCode": "milestone_2bcc97fba6ca4d9ea5f",
@@ -4290,10 +7437,15 @@
     "高保真仿真(3DGS)"
    ],
    "definition": "基于3DGS高保真数字孪生环境，开发和验证机器人闭环运动规划算法，提升仿真到现实的一致性。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.03.04",
     "technology-t4.03.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_66c09b9bf2754ad49dcd",
@@ -4314,10 +7466,15 @@
     "工业机械臂"
    ],
    "definition": "在工业机械臂系统中研究并实现模仿学习算法，使机械臂通过专家示教快速获得复杂操作技能。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.03",
     "technology-t3.03.09"
-   ]
+   ],
+   "portraitClusterName": "具身基础模型与VLA",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 29
   },
   {
    "candidateCode": "upstream_5103d411d5884eafba12",
@@ -4338,10 +7495,15 @@
     "移动机器人(AMR/AGV)"
    ],
    "definition": "负责基于深度学习方法开发移动机器人(AMR/AGV)的感知、决策与控制算法，将前沿研究成果转化为稳定的车载系统。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.04",
     "technology-t3.03.08"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_d3fcc60fe6264c12983",
@@ -4362,10 +7524,15 @@
     "灵巧操作"
    ],
    "definition": "负责将扩散策略应用于灵巧操作任务，实现从感知到动作生成的端到端算法研发与优化。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.01",
     "technology-t1.09.05"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "upstream_6f2396ca38664181b845",
@@ -4386,10 +7553,15 @@
     "无人机"
    ],
    "definition": "专注于利用强化学习方法解决无人机自主决策与运动规划问题的研究型岗位。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.05.02",
     "technology-t7.08.01"
-   ]
+   ],
+   "portraitClusterName": "运动规划与控制算法",
+   "portraitDirectionName": "感知决策与控制算法",
+   "portraitEvidenceJobCount": 1
   },
   {
    "candidateCode": "milestone_eb8c82855892480ab67",
@@ -4410,10 +7582,15 @@
     "策略蒸馏"
    ],
    "definition": "负责四足机器人运动控制策略的蒸馏优化，将复杂教师策略压缩为高效学生策略，并部署至真实机器人平台。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t3.02.01",
     "technology-t4.04.03"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_efa68bb0c26a4aa082d",
@@ -4434,10 +7611,15 @@
     "域随机化"
    ],
    "definition": "负责基于域随机化技术，在仿真环境中训练灵巧操作策略并实现向真实机器人的零样本或小样本迁移，攻克高自由度手部操作任务。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t1.09.05",
     "technology-t4.04.01"
-   ]
+   ],
+   "portraitClusterName": "",
+   "portraitDirectionName": "",
+   "portraitEvidenceJobCount": 0
   },
   {
    "candidateCode": "milestone_e3be6574c9dc436db6e",
@@ -4458,10 +7640,15 @@
     "检测认证"
    ],
    "definition": "利用域随机化构建高覆盖度仿真测试环境，对具身智能系统进行检测与认证，确保其真实世界部署的鲁棒性。",
+   "enterprises": [],
+   "industryStages": [],
    "technologyNodeIds": [
     "technology-t4.04.01",
     "technology-t6.03.04"
-   ]
+   ],
+   "portraitClusterName": "机器人仿真与Sim2Real",
+   "portraitDirectionName": "仿真测试与数据工程",
+   "portraitEvidenceJobCount": 1
   }
  ]
 }
