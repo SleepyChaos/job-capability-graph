@@ -1,5 +1,6 @@
 import {
   ArrowLeft,
+  Network,
   Building2,
   CalendarClock,
   Database,
@@ -709,6 +710,17 @@ export function CandidateCardPage({
 
       <div className="card-footer-actions">
         <button className="secondary-button" onClick={() => onNavigate('jobs')}>返回列表</button>
+        {/*
+          图谱里的候选节点编号是 `candidate:` + 候选编码。跳过去会自动勾上
+          「叠加新岗位候选」并放开候选名额——图谱默认只取分数最高的 80 条，
+          不放开的话大多数候选跳过去都定位不到自己。
+        */}
+        <button
+          className="secondary-button"
+          onClick={() => onNavigate('graph-relations', `candidate:${candidate.candidate_code}`)}
+        >
+          <Network size={15} /> 在关联图谱中查看
+        </button>
         {detail.review_task_code && candidate.workflow_status_code === 'pending' ? (
           <button
             className="primary-button"

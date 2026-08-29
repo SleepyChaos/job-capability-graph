@@ -10,6 +10,7 @@ import { RelationGraphFilters, type RelationGraphFilterState } from '../componen
 import { RelationForceGraph } from '../components/RelationForceGraph'
 import { Modal, StatusTag } from '../components/ui'
 import { domainColors } from '../data/graphData'
+import type { PageId } from '../types'
 
 type TabId = 'global' | 'capability_to_cluster' | 'org_tech' | 'enterprise_cards' | 'skill_tree' | 'cross_validation' | 'triple_audit'
 type LayoutMode = 'force' | 'dagre_lr'
@@ -18,6 +19,11 @@ const densityOptions = [80, 240, 400, 720, 1000]
 const supportOptions = [1, 2, 3, 5]
 const topNOptions = [20, 50, 100, 0]
 const MAX_RENDERED_NODES = 1000
+const CANDIDATE_NODE_PREFIX = 'candidate:'
+/** 与后端 `candidate_limit` 的默认值一致：按分数取前 80，外部证据与库内各半。 */
+const DEFAULT_CANDIDATE_LIMIT = 80
+/** 放开到后端上限，覆盖全部候选——仅在需要定位某一条时使用。 */
+const FULL_CANDIDATE_LIMIT = 300
 const FULL_CLUSTER_LIMIT = 1000
 const DEFAULT_NODE_BUDGET = 240
 const DEFAULT_RELATION_FILTERS: RelationGraphFilterState = { clusterDomain: '', capabilityDomain: '', capabilityLevel: 'L2' }
@@ -132,8 +138,18 @@ function SkillTreeRenderer({ nodes, collapsed, toggle, onDrill, depth = 0 }: {
   )
 }
 
-export function GraphRelationsPage({ notify }: { notify: (message: string) => void }) {
+export function GraphRelationsPage({
+  notify,
+  initialNodeId,
+  onNavigate,
+}: {
+  notify: (message: string) => void
+  /** 从岗位数据卡跳进来时带的节点编号，形如 `candidate:xxx`，直接定位到该节点。 */
+  initialNodeId?: string | null
+  onNavigate: (page: PageId, param?: string | null) => void
+}) {
   const initialRoute = graphRouteParams()
+  const targetIsCandidate = Boolean(initialNodeId?.startsWith(CANDIDATE_NODE_PREFIX))
   const [activeTab, setActiveTab] = useState<TabId>((initialRoute.get('view') as TabId) || 'global')
   const [industryStage, setIndustryStage] = useState(initialRoute.get('stage') ?? '')
   const [industrySummary, setIndustrySummary] = useState<IndustryChainSummary | null>(null)
@@ -143,7 +159,14 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
   const [focusNodeId, setFocusNodeId] = useState<string | null>(null)
   // 候选默认不进图：它们是未入库的提议，与观测到的聚类混排会让读者分不清
   // 哪些是既有事实。由用户显式打开。
-  const [includeCandidates, setIncludeCandidates] = useState(false)
+  const [includeCandidates, setIncludeCandidates] = useState(targetIsCandidate)
+  // 候选名额与节点预算分开：默认 80 够看格局，但从数据卡定位某一条时必须放开，
+  // 否则目标候选大概率不在按分数取的前 80 里，跳过来会落到一张没有它的图上。
+  const [candidateLimit, setCandidateLimit] = useState(
+    targetIsCandidate ? FULL_CANDIDATE_LIMIT : DEFAULT_CANDIDATE_LIMIT,
+  )
+  // 待定位的节点：数据到位后再选中它，选中后清空，避免用户之后手动选别的又被拉回来。
+  const [pendingNodeId, setPendingNodeId] = useState<string | null>(initialNodeId ?? null)
   const [data, setData] = useState<RelationGraphResponse | null>(null)
   const [graphLoading, setGraphLoading] = useState(false)
   const [graphReloadKey, setGraphReloadKey] = useState(0)
@@ -265,6 +288,7 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
       mode: focusNodeId ? 'focus' : 'overview',
       focusNodeId,
       includeCandidates,
+      candidateLimit,
       industryStage: industryStage || null,
     }, controller.signal)
       .then((response) => {
@@ -273,10 +297,25 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
           setLastSuccessfulSnapshot(requestSnapshot)
         }
         setExpandedNodeIds(new Set())
-        setSelected((current) => {
-          const ids = new Set([...response.role_nodes, ...response.domain_group_nodes, ...response.capability_nodes].map((node) => node.id))
-          return current && ids.has(current) ? current : response.role_nodes[0]?.id ?? response.capability_nodes[0]?.id ?? null
-        })
+        const ids = new Set([...response.role_nodes, ...response.domain_group_nodes, ...response.capability_nodes].map((node) => node.id))
+        /*
+          带着目标节点进来时优先定位它。定位不到要说清原因而不是默默落到第一个
+          节点上——候选能否进图受名额与筛选两重约束，读者需要知道自己看的不是
+          刚才那一条。
+        */
+        if (pendingNodeId) {
+          if (ids.has(pendingNodeId)) {
+            setSelected(pendingNodeId)
+            notify('已在关联图谱中定位该候选（放开了候选名额，默认只取分数最高的 80 条）')
+          } else {
+            notify('该候选未出现在当前图谱视图中——它可能没有落在所选技术域内，或核心技术点不在当前能力层级上')
+          }
+          setPendingNodeId(null)
+          return
+        }
+        setSelected((current) => (
+          current && ids.has(current) ? current : response.role_nodes[0]?.id ?? response.capability_nodes[0]?.id ?? null
+        ))
       })
       .catch((reason: Error) => {
         if (reason.name !== 'AbortError') setError(reason.message)
@@ -285,7 +324,7 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
     return () => controller.abort()
     // includeCandidates 必须在依赖里：它是请求参数的一部分，漏掉会让「叠加岗位候选」
     // 这个勾选框完全不生效——状态翻了，但不重新取数，图上永远看不到候选节点。
-  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, graphReloadKey, includeCandidates, industryStage, minSupportingJobCount, nodeBudget])
+  }, [filters.clusterDomain, filters.capabilityDomain, filters.capabilityLevel, focusNodeId, graphReloadKey, candidateLimit, includeCandidates, industryStage, notify, pendingNodeId, minSupportingJobCount, nodeBudget])
 
   const nodeMap = useMemo(
     () => new Map<string, RelationNode>(data ? [...data.role_nodes, ...data.domain_group_nodes, ...data.capability_nodes].map((node) => [node.id, node]) : []),
@@ -656,7 +695,7 @@ export function GraphRelationsPage({ notify }: { notify: (message: string) => vo
             <aside className="evidence-inspector relation-job-inspector">{selectedNode ? <>
               <div className="inspector-title"><div><span>{selectedNode.type === 'job_cluster' ? '岗位聚类详情' : selectedNode.type === 'technology_domain' ? '技术领域导航' : '标准技术能力'}</span><h3>{selectedNode.label}</h3></div><StatusTag tone={selectedNode.type === 'job_cluster' ? 'info' : 'success'}>{selectedNode.domain_code}</StatusTag></div>
               <div className="inspector-metric-grid"><div><span>证据 JD</span><strong>{selectedNode.evidence_count}</strong></div><div><span>关联节点</span><strong>{connectedNodes.length}</strong></div><div><span>可查看 JD</span><strong>{evidenceJobCodes.length}</strong></div></div>
-              <div className="inspector-actions">{selectedNode.type === 'job_cluster' ? <button className="secondary-button" onClick={() => openClusterStar(selectedNode.id)}>技能星图</button> : selectedNode.type === 'technology' ? <button className="secondary-button" onClick={() => changeTab('capability_to_cluster')}>相关岗位簇</button> : <button className="secondary-button" onClick={() => changeFilters({ ...filters, capabilityDomain: selectedNode.domain_code })}>筛选本领域</button>}{selectedNode.type === 'job_cluster' && !focusNodeId ? <button className="secondary-button" onClick={() => setFocusNodeId(selectedNode.id)}>局部聚焦</button> : selectedNode.type !== 'technology_domain' ? <button className="secondary-button" onClick={() => expandNode(selectedNode.id)} disabled={Boolean(expandingNodeId) || expandedNodeIds.has(selectedNode.id)}>{expandingNodeId === selectedNode.id ? '展开中…' : expandedNodeIds.has(selectedNode.id) ? '已展开' : '展开邻居'}</button> : <button className="secondary-button" onClick={restoreDefaultGraph}>查看全部领域</button>}</div>
+              <div className="inspector-actions">{selectedNode.type === 'emerging_candidate' ? <button className="secondary-button" onClick={() => onNavigate('candidate', selectedNode.id.slice(CANDIDATE_NODE_PREFIX.length))}>查看岗位数据卡</button> : selectedNode.type === 'job_cluster' ? <button className="secondary-button" onClick={() => openClusterStar(selectedNode.id)}>技能星图</button> : selectedNode.type === 'technology' ? <button className="secondary-button" onClick={() => changeTab('capability_to_cluster')}>相关岗位簇</button> : <button className="secondary-button" onClick={() => changeFilters({ ...filters, capabilityDomain: selectedNode.domain_code })}>筛选本领域</button>}{selectedNode.type === 'job_cluster' && !focusNodeId ? <button className="secondary-button" onClick={() => setFocusNodeId(selectedNode.id)}>局部聚焦</button> : selectedNode.type !== 'technology_domain' ? <button className="secondary-button" onClick={() => expandNode(selectedNode.id)} disabled={Boolean(expandingNodeId) || expandedNodeIds.has(selectedNode.id)}>{expandingNodeId === selectedNode.id ? '展开中…' : expandedNodeIds.has(selectedNode.id) ? '已展开' : '展开邻居'}</button> : <button className="secondary-button" onClick={restoreDefaultGraph}>查看全部领域</button>}</div>
               {evidenceJobCodes.length ? <section className="job-evidence-section"><div className="section-heading"><h4>真实岗位与完整 JD</h4><span>{evidenceJobCodes.length} 条证据</span></div><select value={selectedJobCode ?? ''} onChange={(event) => setSelectedJobCode(event.target.value)}>{evidenceJobCodes.map((code, index) => <option key={code} value={code}>证据 {index + 1} · {code}</option>)}</select>{jobDetailLoading ? <div className="job-detail-loading">正在加载岗位详情…</div> : selectedJob ? <div className="job-detail-card"><h4>{selectedJob.title}</h4><p className="job-company">{selectedJob.company ?? '企业未标注'} · {selectedJob.region ?? selectedJob.company_region ?? '地区未标注'}</p><dl className="job-field-grid"><div><dt>岗位编号</dt><dd>{selectedJob.source_job_id ?? selectedJob.job_code}</dd></div><div><dt>薪资</dt><dd>{selectedJob.salary ?? '—'}</dd></div><div><dt>经验</dt><dd>{selectedJob.experience ?? '—'}</dd></div><div><dt>学历</dt><dd>{selectedJob.education ?? '—'}</dd></div><div><dt>能力等级</dt><dd>{selectedJob.level ?? '—'}</dd></div><div><dt>职业方向</dt><dd>{selectedJob.career_direction ?? '—'}</dd></div><div><dt>职业种类</dt><dd>{selectedJob.career_type ?? '—'}</dd></div><div><dt>产业链层级</dt><dd>{selectedJob.industry_chain_level ?? '—'}</dd></div><div><dt>公司细分领域</dt><dd>{selectedJob.company_subfield ?? '—'}</dd></div><div><dt>融资轮次</dt><dd>{selectedJob.funding_round ?? '—'}</dd></div><div><dt>公司所属地区</dt><dd>{selectedJob.company_region ?? '—'}</dd></div><div><dt>公司总部城市</dt><dd>{selectedJob.company_headquarters_city ?? '—'}</dd></div><div><dt>收录/发布时间</dt><dd>{selectedJob.published_at_date ?? selectedJob.source_collected_at_date ?? '—'}</dd></div><div><dt>来源列表</dt><dd>{selectedJob.source_codes.join('、') || '—'}</dd></div></dl>{selectedJob.source_url ? <a className="job-source-link" href={selectedJob.source_url} target="_blank" rel="noreferrer">打开原始招聘链接</a> : null}{selectedJob.source_skill_tags ? <><h5>原表技能标签</h5><div className="job-tag-list">{selectedJob.source_skill_tags.split(';').map((item) => item.trim()).filter(Boolean).map((item) => <span key={item}>{item}</span>)}</div></> : null}{selectedJob.scenarios.length ? <><h5>工作场景</h5><div className="job-tag-list">{selectedJob.scenarios.map((item) => <span key={item}>{item}</span>)}</div></> : null}<h5>清洗 JD 描述（全文）</h5><div className="job-jd-full">{selectedJob.jd_text || '暂无 JD 正文'}</div>{selectedJob.technologies.length ? <><h5>系统识别的重点能力</h5><div className="job-tag-list">{selectedJob.technologies.map((item) => <span key={`${item.requirement_no}-${item.technology_code}`}>{item.technology_name}</span>)}</div></> : null}</div> : null}</section> : null}
               <details className="connected-node-details"><summary>{selectedNode.type === 'job_cluster' ? '重要能力' : selectedNode.type === 'technology_domain' ? '领域内能力' : '关联岗位聚类'}（{connectedNodes.length}）</summary><div className="connected-node-list">{connections.map((edge) => { const node = nodeMap.get(edge.source === selectedNode.id ? edge.target : edge.source); return node ? <button key={edge.id} onClick={() => selectNode(node.id)}><i style={{ background: domainColors[node.domain_code] }} /><span>{node.label}<small>{edge.supporting_job_count ? `${edge.supporting_job_count} 条 JD · 覆盖 ${Math.round((edge.coverage_rate ?? 0) * 100)}%` : '分类关系'}</small></span><strong>{Math.round(edge.importance)}</strong></button> : null })}</div></details>
             </> : <div className="empty-state"><strong>当前筛选没有关系</strong><span>该岗位领域与能力领域可能没有交集；可降低“最小支持 JD”或重置筛选。</span><button className="secondary-button" onClick={() => changeFilters({ clusterDomain: '', capabilityDomain: '', capabilityLevel: 'L2' })}>恢复默认图谱</button></div>}</aside>

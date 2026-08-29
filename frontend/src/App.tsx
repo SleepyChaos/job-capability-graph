@@ -194,7 +194,7 @@ export default function App() {
     case 'job-discovery': content = <JobDiscoveryPage />; break
     case 'tech-to-role': content = <TechToRolePage />; break
     case 'graph-heatmap': content = <GraphHeatmapPage notify={notify} />; break
-    case 'graph-relations': content = <GraphRelationsPage notify={notify} />; break
+    case 'graph-relations': content = <GraphRelationsPage notify={notify} initialNodeId={param} onNavigate={setPage} />; break
     case 'graph-clusters': content = <GraphClusterPage notify={notify} />; break
     case 'talent': content = <TalentMatchPage profiles={profiles} hasProfiles={profiles.length > 0} onProfileCreated={upsertProfile} onNavigate={setPage} notify={notify} />; break
     case 'resume': content = <ResumePage profiles={profiles} selectedVersionCode={selectedVersionCode} onSelectProfile={setSelectedVersionCode} onProfilesChanged={upsertProfile} onUseForMatch={useProfileForMatch} onNavigate={setPage} notify={notify} />; break

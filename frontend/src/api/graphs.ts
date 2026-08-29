@@ -95,6 +95,12 @@ export interface RelationGraphQuery {
    * 供前端画成虚线。
    */
   includeCandidates?: boolean
+  /**
+   * 候选取数名额，默认由后端定为 80（按分数取前 80，外部证据与库内各半）。
+   * 从岗位数据卡定位某一条候选时必须放开——否则目标候选很可能不在这 80 条里，
+   * 跳过去会落到一张没有它的图上。
+   */
+  candidateLimit?: number
   industryStage?: string | null
 }
 
@@ -359,6 +365,9 @@ export const graphApi = {
     if (filters.mode) query.set('mode', filters.mode)
     if (filters.focusNodeId) query.set('focus_node_id', filters.focusNodeId)
     if (filters.includeCandidates) query.set('include_candidates', 'true')
+    // 候选名额与节点预算分开控制：默认只取分数最高的 80 条，够看格局；
+    // 从数据卡定位某一条候选时需要放开，否则目标节点可能根本不在这一批里。
+    if (filters.candidateLimit) query.set('candidate_limit', String(filters.candidateLimit))
     if (filters.industryStage) query.set('industry_stage', filters.industryStage)
     return getGraphOrEmpty<RelationGraphResponse>(`/graphs/relations?${query}`, {
       ...emptyMetadata(),
