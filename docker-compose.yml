@@ -32,7 +32,7 @@ services:
           "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='job_capability_graph'")"
         if [ "$$RESTORE_RUNTIME_SNAPSHOT" = "1" ] && [ "$$table_count" = "0" ]; then
           echo 'Restoring audited runtime snapshot...'
-          gunzip -c /srv/data/runtime/job-capability-graph-mysql-20260812.sql.gz | \
+          gunzip -c /srv/data/runtime/job-capability-graph-mysql-20260901.sql.gz | \
             mysql -hmysql -uroot job_capability_graph
         else
           echo "Runtime restore skipped (enabled=$$RESTORE_RUNTIME_SNAPSHOT, tables=$$table_count)."
