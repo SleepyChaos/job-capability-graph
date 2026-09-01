@@ -4,6 +4,7 @@ import {
   Library,
   Activity,
   Bell,
+  BookOpen,
   BookOpenCheck,
   BriefcaseBusiness,
   ChevronDown,
@@ -38,10 +39,11 @@ const navItems: NavItem[] = [
   { id: 'overview', label: '系统总览', icon: LayoutDashboard },
 ]
 
-const dataPages: PageId[] = ['data', 'sources', 'management', 'taxonomy', 'review']
+const dataPages: PageId[] = ['data', 'sources', 'management', 'literature', 'taxonomy', 'review']
 const dataChildren: NavItem[] = [
   { id: 'sources', label: '数据采集中枢', icon: DatabaseZap },
   { id: 'management', label: '数据管理中心', icon: Database },
+  { id: 'literature', label: '论文文献检索', icon: BookOpen },
   { id: 'taxonomy', label: '技术词标准管理', icon: GitBranch },
   { id: 'review', label: '数据审核中心', icon: ShieldCheck },
 ]

@@ -3,6 +3,7 @@ export type PageId =
   | 'data'
   | 'sources'
   | 'management'
+  | 'literature'
   | 'taxonomy'
   | 'jobs'
   | 'candidate'

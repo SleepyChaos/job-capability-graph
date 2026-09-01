@@ -1,0 +1,5 @@
+# 快照分卷是 gzip 的字节切片，单卷本身不是合法 gzip，git 的文本探测会把尾卷
+# 误判为文本。一旦按文本处理，带 autocrlf 的环境会改写换行并损坏重组结果。
+data/runtime/*.sql.gz binary
+data/runtime/*.sql.gz.part-* binary
+data/runtime/*.db binary

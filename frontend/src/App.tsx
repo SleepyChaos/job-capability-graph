@@ -4,6 +4,7 @@ import { talentApi, type LearningPath, type MatchResult, type ProfileDetail, typ
 import { AppShell } from './components/AppShell'
 import { DataHubPage } from './pages/DataHubPage'
 import { DataManagementPage } from './pages/DataManagementPage'
+import { LiteraturePage } from './pages/LiteraturePage'
 import { GraphPage } from './pages/GraphPage'
 import { GraphClusterPage } from './pages/GraphClusterPage'
 import { GraphHeatmapPage } from './pages/GraphHeatmapPage'
@@ -35,6 +36,7 @@ const pageTitles: Record<PageId, string> = {
   data: '数据中心',
   sources: '数据采集中枢',
   management: '数据管理中心',
+  literature: '论文文献检索',
   taxonomy: '技术词标准管理',
   jobs: '新岗位发现',
   candidate: '岗位数据卡',
@@ -178,6 +180,7 @@ export default function App() {
     case 'data': content = <DataHubPage onNavigate={setPage} />; break
     case 'sources': content = <SourcesPage notify={notify} />; break
     case 'management': content = <DataManagementPage notify={notify} initialQuery={managementQuery} />; break
+    case 'literature': content = <LiteraturePage notify={notify} />; break
     case 'taxonomy': content = <TaxonomyPage notify={notify} />; break
     case 'jobs': content = <JobsPage notify={notify} onOpenCandidate={(code) => setPage('candidate', code)} />; break
     case 'candidate': content = <CandidateCardPage candidateCode={param} onNavigate={setPage} notify={notify} />; break

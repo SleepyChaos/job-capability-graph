@@ -4,7 +4,7 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic import BaseModel, Field
-from sqlalchemy import func, select
+from sqlalchemy import extract, func, select
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
@@ -25,7 +25,7 @@ from app.modules.data_center.service import (
     submit_milestone_candidate,
 )
 from app.modules.ingestion.web_crawler import run_web_collection
-from app.modules.job.models import DataSource
+from app.modules.job.models import DataSource, SourceDocument, SourceDocumentVersion
 
 router = APIRouter(tags=["data-center"])
 
@@ -414,10 +414,18 @@ def create_milestone_candidate(
 def list_milestones(
     db: Annotated[Session, Depends(get_db)],
     status: str | None = None,
+    search: str | None = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
 ):
     filters = [MilestoneEvent.verification_status_code == status] if status else []
+    if search:
+        # 数据管理中心的搜索框对里程碑同样可用，此前后端无对应过滤，输入后没有任何反应。
+        pattern = f"%{search}%"
+        filters.append(
+            MilestoneEvent.milestone_name.like(pattern)
+            | MilestoneEvent.description_text.like(pattern)
+        )
     total = db.scalar(select(func.count()).select_from(MilestoneEvent).where(*filters)) or 0
     milestones = list(
         db.scalars(
@@ -499,3 +507,203 @@ def act_on_data_review(
         raise _error(exc) from exc
     db.commit()
     return _milestone_response(db, milestone)
+
+
+# 原始文档检索。JD 与论文共用 raw_source_document，差别只在 document_type_code，
+# 因此检索接口只有一套；数据管理中心的「原始文档」标签页与文献检索页读的是同一个端点。
+class DocumentItem(BaseModel):
+    document_code: str
+    document_type_code: str
+    title: str | None
+    source_code: str
+    source_name: str
+    canonical_url: str | None
+    source_record_key: str | None
+    published_at: date | None
+    excerpt: str
+    categories: list[str]
+
+
+class DocumentPage(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    items: list[DocumentItem]
+
+
+class DocumentDetail(DocumentItem):
+    content_text: str
+    content_hash: str | None
+    collected_at: datetime | None
+    version_no: int
+
+
+class DocumentFacetEntry(BaseModel):
+    code: str
+    label: str
+    count: int
+
+
+class DocumentFacets(BaseModel):
+    total: int
+    types: list[DocumentFacetEntry]
+    sources: list[DocumentFacetEntry]
+    years: list[DocumentFacetEntry]
+
+
+DOCUMENT_TYPE_LABELS = {
+    "job": "岗位 JD",
+    "paper": "论文文献",
+    "milestone_material": "里程碑材料",
+}
+EXCERPT_LENGTH = 240
+
+
+def _document_filters(
+    doc_type: str | None,
+    source_code: str | None,
+    year_from: int | None,
+    year_to: int | None,
+    search: str | None,
+):
+    filters = []
+    if doc_type:
+        filters.append(SourceDocument.document_type_code == doc_type)
+    if source_code:
+        filters.append(DataSource.source_code == source_code)
+    if year_from is not None:
+        filters.append(extract("year", SourceDocumentVersion.published_at) >= year_from)
+    if year_to is not None:
+        filters.append(extract("year", SourceDocumentVersion.published_at) <= year_to)
+    if search:
+        # 题名与正文都要能命中：论文按标题找，按摘要里的技术词找同样常见。
+        pattern = f"%{search}%"
+        filters.append(
+            SourceDocument.title.like(pattern) | SourceDocumentVersion.content_text.like(pattern)
+        )
+    return filters
+
+
+def _document_base():
+    return (
+        select(SourceDocument, SourceDocumentVersion, DataSource)
+        .join(
+            SourceDocumentVersion,
+            (SourceDocumentVersion.source_document_id == SourceDocument.source_document_id)
+            & (SourceDocumentVersion.is_current.is_(True)),
+        )
+        .join(DataSource, DataSource.data_source_id == SourceDocument.data_source_id)
+    )
+
+
+def _document_item(
+    document: SourceDocument, version: SourceDocumentVersion, source: DataSource
+) -> DocumentItem:
+    payload = version.content_json if isinstance(version.content_json, dict) else {}
+    text = version.content_text or ""
+    return DocumentItem(
+        document_code=document.document_code,
+        document_type_code=document.document_type_code,
+        title=document.title,
+        source_code=source.source_code,
+        source_name=source.source_name,
+        canonical_url=document.canonical_url,
+        source_record_key=document.source_record_key,
+        published_at=version.published_at.date() if version.published_at else None,
+        excerpt=text[:EXCERPT_LENGTH] + ("…" if len(text) > EXCERPT_LENGTH else ""),
+        categories=[str(item) for item in (payload.get("categories") or [])],
+    )
+
+
+@router.get("/documents/facets", response_model=DocumentFacets)
+def document_facets(db: Annotated[Session, Depends(get_db)]):
+    base = _document_base().subquery()
+    total = db.scalar(select(func.count()).select_from(base)) or 0
+    types = [
+        DocumentFacetEntry(
+            code=code, label=DOCUMENT_TYPE_LABELS.get(code, code), count=int(count)
+        )
+        for code, count in db.execute(
+            select(base.c.document_type_code, func.count())
+            .group_by(base.c.document_type_code)
+            .order_by(func.count().desc())
+        ).all()
+    ]
+    sources = [
+        DocumentFacetEntry(code=code, label=name, count=int(count))
+        for code, name, count in db.execute(
+            select(base.c.source_code, base.c.source_name, func.count())
+            .group_by(base.c.source_code, base.c.source_name)
+            .order_by(func.count().desc())
+        ).all()
+    ]
+    years = [
+        DocumentFacetEntry(code=str(int(year)), label=f"{int(year)} 年", count=int(count))
+        for year, count in db.execute(
+            select(extract("year", base.c.published_at), func.count())
+            .where(base.c.published_at.is_not(None))
+            .group_by(extract("year", base.c.published_at))
+            .order_by(extract("year", base.c.published_at).desc())
+        ).all()
+    ]
+    return DocumentFacets(total=total, types=types, sources=sources, years=years)
+
+
+@router.get("/documents", response_model=DocumentPage)
+def list_documents(
+    db: Annotated[Session, Depends(get_db)],
+    search: str | None = None,
+    doc_type: str | None = None,
+    source_code: str | None = None,
+    year_from: int | None = None,
+    year_to: int | None = None,
+    limit: Annotated[int, Query(ge=1, le=200)] = 50,
+    offset: Annotated[int, Query(ge=0)] = 0,
+):
+    filters = _document_filters(doc_type, source_code, year_from, year_to, search)
+    total = db.scalar(
+        select(func.count())
+        .select_from(SourceDocument)
+        .join(
+            SourceDocumentVersion,
+            (SourceDocumentVersion.source_document_id == SourceDocument.source_document_id)
+            & (SourceDocumentVersion.is_current.is_(True)),
+        )
+        .join(DataSource, DataSource.data_source_id == SourceDocument.data_source_id)
+        .where(*filters)
+    ) or 0
+    rows = db.execute(
+        _document_base()
+        .where(*filters)
+        # 有发表日期的排前面：论文有干净的时间轴，JD 侧大量为空，按空值排在后面更可读。
+        .order_by(
+            SourceDocumentVersion.published_at.is_(None),
+            SourceDocumentVersion.published_at.desc(),
+            SourceDocument.source_document_id,
+        )
+        .offset(offset)
+        .limit(limit)
+    ).all()
+    return DocumentPage(
+        total=total,
+        limit=limit,
+        offset=offset,
+        items=[_document_item(document, version, source) for document, version, source in rows],
+    )
+
+
+@router.get("/documents/{document_code}", response_model=DocumentDetail)
+def document_detail(document_code: str, db: Annotated[Session, Depends(get_db)]):
+    row = db.execute(
+        _document_base().where(SourceDocument.document_code == document_code)
+    ).first()
+    if row is None:
+        raise HTTPException(status_code=404, detail="原始文档不存在")
+    document, version, source = row
+    return DocumentDetail(
+        **_document_item(document, version, source).model_dump(),
+        content_text=version.content_text or "",
+        content_hash=version.content_hash,
+        collected_at=version.collected_at,
+        version_no=version.version_no,
+    )

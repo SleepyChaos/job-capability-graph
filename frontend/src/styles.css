@@ -96,12 +96,12 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .status-tag--danger { color: #a53b37; background: #fceceb; }
 .status-tag--neutral { color: #596a7e; background: #eef2f6; }
 
-.workflow-rail { display: grid; grid-template-columns: repeat(5, 1fr); min-height: 84px; padding: 12px 16px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
-.workflow-step { position: relative; display: flex; align-items: center; gap: 11px; padding: 0 20px 0 8px; }
+.workflow-rail { display: grid; grid-template-columns: repeat(6, 1fr); min-height: 84px; padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+.workflow-step { position: relative; display: flex; align-items: center; gap: 9px; padding: 0 16px 0 6px; min-width: 0; }
 .workflow-icon { width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid #67c9c5; border-radius: 50%; color: var(--teal); background: #f5fffe; }
 .workflow-step strong, .workflow-step span { display: block; }
-.workflow-step strong { font-size: 13px; }
-.workflow-step span { margin-top: 4px; color: var(--muted); font-size: 10px; }
+.workflow-step strong { font-size: 12px; white-space: nowrap; }
+.workflow-step span { margin-top: 4px; color: var(--muted); font-size: 9px; line-height: 1.4; }
 .workflow-arrow { position: absolute; right: 2px; color: #93a4b6; }
 .metric-strip { display: grid; grid-template-columns: repeat(4, 1fr); min-height: 78px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
 .metric-item { display: flex; flex-direction: column; justify-content: center; padding: 10px 24px; border-right: 1px solid var(--line); }
@@ -387,6 +387,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   .search-box { width: 220px; }
   .overview-grid { grid-template-columns: 1fr 1fr; }.overview-grid > .panel:last-child { grid-column: 1 / 3; }
   .overview-lower { grid-template-columns: 1fr 1fr; }.overview-lower > .panel:last-child { grid-column: 1 / 3; }
+  .workflow-rail { grid-template-columns: repeat(3, 1fr); }.workflow-step { padding: 10px 16px 10px 6px; }
   .domain-rail { grid-template-columns: repeat(4, 1fr); }
   .data-hub-grid { grid-template-columns: 1fr 1fr; }.data-hub-grid > .panel:last-child { grid-column: 1 / 3; }
   .match-layout { grid-template-columns: 230px 1fr; }.gap-panel { grid-column: 1 / 3; }.gap-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }.gap-list > button { margin: 0; }
@@ -1545,3 +1546,15 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .required-tree-skill strong { font-size: 11px; }
 .required-tree-skill span { margin-top: 4px; color: var(--muted); font-size: 8px; }
 .required-tree-empty { margin-top: 9px; padding: 14px; color: var(--muted); background: #fff; border: 1px dashed #c4d3e0; border-radius: 6px; font-size: 9px; text-align: center; }
+/* 论文文献检索 */
+.literature-range { display: flex; gap: 14px; padding: 12px 14px 0; }
+.literature-range label { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 9px; }
+.literature-range input { width: 82px; height: 28px; padding: 0 8px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: 10px; }
+.literature-list { display: flex; flex-direction: column; }
+.literature-card { display: block; width: 100%; padding: 13px 15px; border: 0; border-bottom: 1px solid var(--soft-line); background: #fff; text-align: left; cursor: pointer; }
+.literature-card:hover { background: #f7fafc; }
+.literature-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+.literature-head strong { flex: 1; min-width: 0; font-size: 11px; line-height: 1.5; }
+.literature-head time { flex: none; color: var(--muted); font-size: 9px; }
+.literature-card p { margin: 6px 0 0; color: var(--muted); font-size: 9px; line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.literature-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }

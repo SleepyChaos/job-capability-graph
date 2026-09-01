@@ -97,6 +97,56 @@ export interface MilestonePage {
   items: MilestoneItem[]
 }
 
+export interface DocumentItem {
+  document_code: string
+  document_type_code: string
+  title: string | null
+  source_code: string
+  source_name: string
+  canonical_url: string | null
+  source_record_key: string | null
+  published_at: string | null
+  excerpt: string
+  categories: string[]
+}
+
+export interface DocumentDetail extends DocumentItem {
+  content_text: string
+  content_hash: string | null
+  collected_at: string | null
+  version_no: number
+}
+
+export interface DocumentPage {
+  total: number
+  limit: number
+  offset: number
+  items: DocumentItem[]
+}
+
+export interface DocumentFacetEntry {
+  code: string
+  label: string
+  count: number
+}
+
+export interface DocumentFacets {
+  total: number
+  types: DocumentFacetEntry[]
+  sources: DocumentFacetEntry[]
+  years: DocumentFacetEntry[]
+}
+
+export interface DocumentQuery {
+  search?: string
+  doc_type?: string
+  source_code?: string
+  year_from?: number
+  year_to?: number
+  limit?: number
+  offset?: number
+}
+
 export interface ReviewTask {
   task_code: string
   queue_code: string
@@ -133,12 +183,33 @@ export const dataCenterApi = {
   executeRun(runCode: string) {
     return postJson<CollectionRun>(`/collection-runs/${encodeURIComponent(runCode)}/execute`, {})
   },
-  milestones(params: { status?: string; limit?: number; offset?: number } = {}, signal?: AbortSignal) {
+  milestones(
+    params: { status?: string; search?: string; limit?: number; offset?: number } = {},
+    signal?: AbortSignal,
+  ) {
     const query = new URLSearchParams()
     if (params.status) query.set('status', params.status)
+    if (params.search) query.set('search', params.search)
     query.set('limit', String(params.limit ?? 50))
     query.set('offset', String(params.offset ?? 0))
     return getJson<MilestonePage>(`/milestones?${query}`, signal)
+  },
+  documents(params: DocumentQuery = {}, signal?: AbortSignal) {
+    const query = new URLSearchParams()
+    if (params.search) query.set('search', params.search)
+    if (params.doc_type) query.set('doc_type', params.doc_type)
+    if (params.source_code) query.set('source_code', params.source_code)
+    if (params.year_from !== undefined) query.set('year_from', String(params.year_from))
+    if (params.year_to !== undefined) query.set('year_to', String(params.year_to))
+    query.set('limit', String(params.limit ?? 50))
+    query.set('offset', String(params.offset ?? 0))
+    return getJson<DocumentPage>(`/documents?${query}`, signal)
+  },
+  documentFacets(signal?: AbortSignal) {
+    return getJson<DocumentFacets>('/documents/facets', signal)
+  },
+  document(documentCode: string, signal?: AbortSignal) {
+    return getJson<DocumentDetail>(`/documents/${encodeURIComponent(documentCode)}`, signal)
   },
   reviews(status: string | null, signal?: AbortSignal) {
     const query = new URLSearchParams()

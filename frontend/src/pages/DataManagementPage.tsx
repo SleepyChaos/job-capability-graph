@@ -1,12 +1,18 @@
 import { Download, Eye, Plus, RefreshCw, Search, ShieldAlert, TableProperties } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { dataCenterApi, type MilestoneItem } from '../api/dataCenter'
+import { dataCenterApi, type DocumentItem, type MilestoneItem } from '../api/dataCenter'
 import { jobsApi, type JobDetail, type JobListItem, type JobSummary } from '../api/jobs'
 import { taxonomyApi, type TechnologyNode } from '../api/taxonomy'
 import { MetricStrip, Modal, Panel, StatusTag } from '../components/ui'
 
 type DatasetId = 'jd' | 'terms' | 'milestones' | 'documents'
 const PAGE_SIZE = 50
+
+const documentTypeLabels: Record<string, string> = {
+  job: '岗位 JD',
+  paper: '论文文献',
+  milestone_material: '里程碑材料',
+}
 
 const milestoneStatusLabels: Record<string, string> = {
   candidate: '候选',
@@ -20,18 +26,19 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
   const [dataset, setDataset] = useState<DatasetId>('jd')
   const [query, setQuery] = useState(initialQuery)
   const [summary, setSummary] = useState<JobSummary | null>(null)
-  const [termTotal, setTermTotal] = useState(0)
-  const [milestoneTotal, setMilestoneTotal] = useState(0)
+
+  // 标签页上的计数是各数据集的全量规模，不能被当次搜索结果覆盖——否则搜过一次
+  // 「技术词库」再切回来，标签上显示的就是上次的命中数而不是库里的总量。
+  const [totals, setTotals] = useState<Record<DatasetId, number>>({ jd: 0, terms: 0, milestones: 0, documents: 0 })
+  // 当前数据集在当前筛选条件下的命中数，只用于分页。
+  const [filteredTotal, setFilteredTotal] = useState(0)
+  const [offset, setOffset] = useState(0)
 
   const [jobs, setJobs] = useState<JobListItem[]>([])
-  const [jobTotal, setJobTotal] = useState(0)
-  const [jobOffset, setJobOffset] = useState(0)
   const [jobDetail, setJobDetail] = useState<JobDetail | null>(null)
-
   const [terms, setTerms] = useState<TechnologyNode[]>([])
-  const [termOffset, setTermOffset] = useState(0)
-
   const [milestones, setMilestones] = useState<MilestoneItem[]>([])
+  const [documents, setDocuments] = useState<DocumentItem[]>([])
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -46,11 +53,16 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
       jobsApi.summary(controller.signal),
       taxonomyApi.nodes({ limit: 1 }, controller.signal),
       dataCenterApi.milestones({ limit: 1 }, controller.signal),
+      dataCenterApi.documentFacets(controller.signal),
     ])
-      .then(([jobSummary, termPage, milestonePage]) => {
+      .then(([jobSummary, termPage, milestonePage, facets]) => {
         setSummary(jobSummary)
-        setTermTotal(termPage.total)
-        setMilestoneTotal(milestonePage.total)
+        setTotals({
+          jd: jobSummary.total_jobs,
+          terms: termPage.total,
+          milestones: milestonePage.total,
+          documents: facets.total,
+        })
       })
       .catch((reason: Error) => { if (reason.name !== 'AbortError') setError(reason.message) })
     return () => controller.abort()
@@ -59,17 +71,18 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
   const loadDataset = useCallback((signal?: AbortSignal) => {
     setLoading(true)
     setError('')
+    const search = query || undefined
     const task = dataset === 'jd'
-      ? jobsApi.list({ search: query || undefined, limit: PAGE_SIZE, offset: jobOffset }, signal).then((page) => { setJobs(page.items); setJobTotal(page.total) })
+      ? jobsApi.list({ search, limit: PAGE_SIZE, offset }, signal).then((page) => { setJobs(page.items); setFilteredTotal(page.total) })
       : dataset === 'terms'
-        ? taxonomyApi.nodes({ search: query || undefined, limit: PAGE_SIZE, offset: termOffset }, signal).then((page) => { setTerms(page.items); setTermTotal(page.total) })
+        ? taxonomyApi.nodes({ search, limit: PAGE_SIZE, offset }, signal).then((page) => { setTerms(page.items); setFilteredTotal(page.total) })
         : dataset === 'milestones'
-          ? dataCenterApi.milestones({ limit: PAGE_SIZE }, signal).then((page) => { setMilestones(page.items); setMilestoneTotal(page.total) })
-          : Promise.resolve()
+          ? dataCenterApi.milestones({ search, limit: PAGE_SIZE, offset }, signal).then((page) => { setMilestones(page.items); setFilteredTotal(page.total) })
+          : dataCenterApi.documents({ search, limit: PAGE_SIZE, offset }, signal).then((page) => { setDocuments(page.items); setFilteredTotal(page.total) })
     task
       .catch((reason: Error) => { if (reason.name !== 'AbortError') setError(reason.message) })
       .finally(() => setLoading(false))
-  }, [dataset, query, jobOffset, termOffset])
+  }, [dataset, query, offset])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -85,13 +98,23 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
     }
   }
 
-  const switchDataset = (next: DatasetId) => { setDataset(next); setQuery(''); setJobOffset(0); setTermOffset(0) }
+  const switchDataset = (next: DatasetId) => { setDataset(next); setQuery(''); setOffset(0) }
+  // 改关键词必须回到第一页：停在第 5 页时输入搜索，命中只有 3 条的话页面会整屏空白。
+  const updateQuery = (value: string) => { setQuery(value); setOffset(0) }
+
+  const Pagination = () => (
+    <div className="pagination-row">
+      <button className="secondary-button" disabled={offset === 0} onClick={() => setOffset((value) => Math.max(0, value - PAGE_SIZE))}>上一页</button>
+      <span>{filteredTotal === 0 ? 0 : offset + 1}–{Math.min(offset + PAGE_SIZE, filteredTotal)} / {filteredTotal.toLocaleString()}</span>
+      <button className="secondary-button" disabled={offset + PAGE_SIZE >= filteredTotal} onClick={() => setOffset((value) => value + PAGE_SIZE)}>下一页</button>
+    </div>
+  )
 
   const datasetTabs: { id: DatasetId; label: string; count: string }[] = [
-    { id: 'jd', label: 'JD 库', count: (summary?.total_jobs ?? 0).toLocaleString() },
-    { id: 'terms', label: '技术词库', count: termTotal.toLocaleString() },
-    { id: 'milestones', label: '里程碑事件', count: milestoneTotal.toLocaleString() },
-    { id: 'documents', label: '原始文档', count: '待接入' },
+    { id: 'jd', label: 'JD 库', count: totals.jd.toLocaleString() },
+    { id: 'terms', label: '技术词库', count: totals.terms.toLocaleString() },
+    { id: 'milestones', label: '里程碑事件', count: totals.milestones.toLocaleString() },
+    { id: 'documents', label: '原始文档', count: totals.documents.toLocaleString() },
   ]
 
   return (
@@ -106,12 +129,12 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
 
       <MetricStrip items={[
         { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家机构` },
-        { label: '技术词记录', value: termTotal.toLocaleString(), delta: 'L1–L4' },
-        { label: '里程碑事件', value: milestoneTotal.toLocaleString(), delta: '待真实采集补入' },
-        { label: '技术证据条目', value: (summary?.requirement_count ?? 0).toLocaleString(), delta: `${summary?.duplicate_group_count ?? 0} 个重复簇` },
+        { label: '技术词记录', value: totals.terms.toLocaleString(), delta: 'L1–L4' },
+        { label: '里程碑事件', value: totals.milestones.toLocaleString(), delta: '人工整理集' },
+        { label: '原始文档', value: totals.documents.toLocaleString(), delta: 'JD / 论文 / 里程碑材料' },
       ]} />
 
-      <Panel title="数据库内容" subtitle="全部数据来自后端查询接口" action={<label className="inline-search"><Search size={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={dataset === 'documents' ? '暂不支持搜索' : '搜索名称、编码或机构'} disabled={dataset === 'documents'} /></label>}>
+      <Panel title="数据库内容" subtitle="全部数据来自后端查询接口" action={<label className="inline-search"><Search size={15} /><input value={query} onChange={(event) => updateQuery(event.target.value)} placeholder={dataset === 'documents' ? '搜索标题或正文' : '搜索名称、编码或机构'} /></label>}>
         <div className="dataset-tabs">
           {datasetTabs.map((tab) => <button className={dataset === tab.id ? 'active' : ''} onClick={() => switchDataset(tab.id)} key={tab.id}><span>{tab.label}</span><em>{tab.count}</em></button>)}
         </div>
@@ -134,11 +157,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
                     </tr>
                   ))}</tbody>
                 </table>
-                <div className="pagination-row">
-                  <button className="secondary-button" disabled={jobOffset === 0} onClick={() => setJobOffset((value) => Math.max(0, value - PAGE_SIZE))}>上一页</button>
-                  <span>{jobOffset + 1}–{Math.min(jobOffset + PAGE_SIZE, jobTotal)} / {jobTotal.toLocaleString()}</span>
-                  <button className="secondary-button" disabled={jobOffset + PAGE_SIZE >= jobTotal} onClick={() => setJobOffset((value) => value + PAGE_SIZE)}>下一页</button>
-                </div>
+                <Pagination />
               </>
             ) : null}
 
@@ -157,18 +176,15 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
                     </tr>
                   ))}</tbody>
                 </table>
-                <div className="pagination-row">
-                  <button className="secondary-button" disabled={termOffset === 0} onClick={() => setTermOffset((value) => Math.max(0, value - PAGE_SIZE))}>上一页</button>
-                  <span>{termOffset + 1}–{Math.min(termOffset + PAGE_SIZE, termTotal)} / {termTotal.toLocaleString()}</span>
-                  <button className="secondary-button" disabled={termOffset + PAGE_SIZE >= termTotal} onClick={() => setTermOffset((value) => value + PAGE_SIZE)}>下一页</button>
-                </div>
+                <Pagination />
               </>
             ) : null}
 
             {dataset === 'milestones' ? (
               milestones.length === 0 ? (
-                <div className="empty-state"><TableProperties size={25} /><strong>暂无已登记里程碑</strong><span>数据包不含可验证里程碑；真实采集接入后（阶段 D）通过数据审核中心提交候选。</span></div>
+                <div className="empty-state"><TableProperties size={25} /><strong>没有匹配的里程碑</strong><span>尝试修改搜索条件；新的候选可在数据审核中心提交。</span></div>
               ) : (
+                <>
                 <table className="data-table management-table">
                   <thead><tr><th>编号 / 名称</th><th>类型</th><th>年份 / 日期</th><th>技术编码</th><th>状态</th></tr></thead>
                   <tbody>{milestones.map((milestone) => (
@@ -181,11 +197,32 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
                     </tr>
                   ))}</tbody>
                 </table>
+                <Pagination />
+                </>
               )
             ) : null}
 
             {dataset === 'documents' ? (
-              <div className="empty-state"><TableProperties size={25} /><strong>原始文档查询待接入</strong><span>阶段 D 真实采集适配器上线后，将在此提供网页快照、内容哈希与版本查询。</span></div>
+              documents.length === 0 ? (
+                <div className="empty-state"><TableProperties size={25} /><strong>没有匹配的原始文档</strong><span>尝试修改搜索条件。</span></div>
+              ) : (
+                <>
+                <table className="data-table management-table">
+                  <thead><tr><th>标题</th><th>类型</th><th>来源</th><th>记录键</th><th>发表日期</th><th>操作</th></tr></thead>
+                  <tbody>{documents.map((document) => (
+                    <tr key={document.document_code}>
+                      <td><strong>{document.title ?? '（无标题）'}</strong><small>{document.document_code}</small></td>
+                      <td><StatusTag tone={document.document_type_code === 'paper' ? 'info' : 'neutral'}>{documentTypeLabels[document.document_type_code] ?? document.document_type_code}</StatusTag></td>
+                      <td>{document.source_name}</td>
+                      <td>{document.source_record_key ?? '—'}</td>
+                      <td>{document.published_at ?? '—'}</td>
+                      <td>{document.canonical_url ? <a href={document.canonical_url} target="_blank" rel="noreferrer noopener">原文</a> : '—'}</td>
+                    </tr>
+                  ))}</tbody>
+                </table>
+                <Pagination />
+                </>
+              )
             ) : null}
 
             {(dataset === 'jd' && jobs.length === 0) || (dataset === 'terms' && terms.length === 0) ? (
