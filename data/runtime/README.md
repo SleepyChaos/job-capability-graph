@@ -1,7 +1,7 @@
 # 运行数据库快照
 
 本目录包含项目自己的开发基线快照。Docker Compose 默认恢复
-`job-capability-graph-mysql-20260901.sql.gz`。
+`job-capability-graph-mysql-20260901.sql.gz.part-*`。
 
 本目录只保留最新两代 MySQL 快照：当前基线和上一代，供回退与差异比对。更早的快照
 从工作区移除，需要时从 Git 历史取回。全量语义复核前的 SQLite 离线参考
@@ -9,7 +9,8 @@
 
 ## 当前 MySQL 快照
 
-- 文件：`job-capability-graph-mysql-20260901.sql.gz`（75 MB，84 张表）
+- 文件：`job-capability-graph-mysql-20260901.sql.gz.part-aa` 与 `.part-ab`
+  （合计 74.6 MB，84 张表）
 - 数据库结构：Alembic `20260827_0022`
 - 技术体系：v1.1–v1.5 五个版本均为 active，最新 v1.5 共 3,167 个节点
   （v1.1 为 2,151 个）；技术别名 12,222 条
@@ -19,7 +20,19 @@
 - 正式岗位：624 个；岗位版本 792 个（791 approved、1 rejected），待审批 0
 - 岗位演变：168 个岗位具备两个及以上版本，787 个演变事件、2,552 个变更项
 - 新岗位发现：164 个候选，来自 60 次角色发现运行
-- SHA-256：`e11a0ced6ba336a0d874089cd92a485774231ac54ab0c60dda0187f2622e2e18`
+- SHA-256（两卷重组后）：
+  `e11a0ced6ba336a0d874089cd92a485774231ac54ab0c60dda0187f2622e2e18`
+
+快照按 40 MB 分卷存放。GitHub 对**单个文件**超过 50 MB 会发出大文件警告，整份
+74.6 MB 的 gzip 会触发它；拆成两卷后每卷都在阈值以下。恢复时先用 `cat` 按后缀顺序
+重组再解压，`split`/`cat` 是逐字节还原，重组结果的 SHA-256 与下方记录一致：
+
+```
+cat job-capability-graph-mysql-20260901.sql.gz.part-* | gunzip -c | mysql ...
+```
+
+分卷只是绕开单文件阈值，并不减少仓库体积。若要真正抑制 `.git` 增长，需要改用
+Git LFS 存放本目录的快照。
 
 快照由当前 Docker MySQL 使用 `mysqldump --single-transaction` 导出并 gzip 压缩。
 它不包含 `.env` 或 DeepSeek API Key，也不包含候选人画像与简历原文——人才模块的
