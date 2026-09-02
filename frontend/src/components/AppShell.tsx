@@ -79,10 +79,11 @@ const jobChildren: NavItem[] = [
   { id: 'job-records', label: '推演结果记录库', icon: FileClock },
 ]
 
-// 图谱对外保留产业、技术与岗位—能力关联三个入口。
-// 岗位画像图谱暂不进入导航，但路由继续保留，既有深链接不会失效。
-// 「岗位—能力关联图」是新岗位候选叠加所在的页面，必须留在导航里，
-// 否则候选节点只能靠直接改 hash 才能看到。
+// 图谱对外保留产业、技术与岗位画像三个入口。
+//
+// 「岗位—能力关联图」不再进导航：它是新岗位候选叠加所在的页面，但候选的入口已经
+// 收敛到数据卡上的「在关联图谱中查看」，从那里跳转仍会带上候选编码并自动聚焦，
+// 因此下线导航入口不会让候选变得不可达。路由保留，既有深链接不失效。
 //
 // 「能力热力图」与「聚类岗位能力图谱」不再进导航：前者是关联图的一种聚合读法，
 // 后者与关联图看的是同一批聚类，三张并列只会让人反复确认它们的差别。
@@ -99,7 +100,7 @@ const graphPages: PageId[] = [
 const graphChildren: NavItem[] = [
   { id: 'industry-job-graph', label: '产业—岗位图谱', icon: BriefcaseBusiness },
   { id: 'technology-job-graph', label: '技术—岗位图谱', icon: Tags },
-  { id: 'graph-relations', label: '岗位—能力关联图', icon: Network },
+  { id: 'job-portrait-graph', label: '岗位画像图谱', icon: FileUser },
 ]
 
 interface AppShellProps {
