@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { dataCenterApi, type CollectionRun } from '../api/dataCenter'
+import { clusteringApi } from '../api/clustering'
 import { jobsApi, type JobSummary } from '../api/jobs'
 import { taxonomyApi } from '../api/taxonomy'
 import { MetricStrip, Panel, StatusTag } from '../components/ui'
@@ -22,6 +23,7 @@ interface HubStats {
   nodeTotal: number
   queuedReviewCount: number
   milestoneTotal: number
+  clusterTotal: number
   runs: CollectionRun[]
 }
 
@@ -39,8 +41,9 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
       dataCenterApi.reviews('queued', controller.signal),
       dataCenterApi.milestones({ limit: 1 }, controller.signal),
       dataCenterApi.runs(controller.signal),
+      clusteringApi.clusters({ limit: 1 }, controller.signal),
     ])
-      .then(([jobSummary, sources, l3Page, nodePage, queuedReviews, milestonePage, runs]) => {
+      .then(([jobSummary, sources, l3Page, nodePage, queuedReviews, milestonePage, runs, clusters]) => {
         setStats({
           jobSummary,
           sourceCount: sources.length,
@@ -48,6 +51,7 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
           nodeTotal: nodePage.total,
           queuedReviewCount: queuedReviews.length,
           milestoneTotal: milestonePage.total,
+          clusterTotal: clusters.total,
           runs,
         })
       })
@@ -90,8 +94,8 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
     },
     {
       id: 'review' as const,
-      title: '数据审核中心',
-      description: '审核低置信度抽取结果、岗位版本建议与 T/L 分类。',
+      title: '数据标注审核中心',
+      description: '审核岗位标准化定义、证据标注、低置信度抽取结果与 T/L 分类。',
       icon: ShieldCheck,
       metric: `${stats?.queuedReviewCount ?? '—'} 项待审核`,
       detail: '审核动作保留审计快照',
@@ -110,7 +114,7 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
 
       <MetricStrip items={[
         { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家机构` },
-        { label: '唯一内容版本', value: (summary?.unique_content_count ?? 0).toLocaleString(), delta: `${summary?.duplicate_group_count ?? 0} 个重复簇` },
+        { label: '岗位聚类', value: (stats?.clusterTotal ?? 0).toLocaleString(), delta: '最新成功聚类快照' },
         { label: '标准技术点', value: (stats?.l3Count ?? 0).toLocaleString(), delta: `体系 ${stats?.nodeTotal ?? 0} 节点` },
         { label: '待审核事项', value: String(stats?.queuedReviewCount ?? 0), delta: `里程碑 ${stats?.milestoneTotal ?? 0}` },
       ]} />
@@ -132,6 +136,7 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
               ['唯一内容版本', summary?.unique_content_count ?? 0, summary?.unique_content_count ?? 0],
               ['正式 JD', summary?.total_jobs ?? 0, summary?.unique_content_count ?? 0],
               ['技术体系节点', stats?.nodeTotal ?? 0, summary?.unique_content_count ?? 0],
+              ['岗位聚类', stats?.clusterTotal ?? 0, summary?.unique_content_count ?? 0],
               ['技术里程碑', stats?.milestoneTotal ?? 0, summary?.unique_content_count ?? 0],
             ] as [string, number, number][]).map(([label, value, max]) => {
               const width = max > 0 ? Math.max(Math.round((value / max) * 100), 2) : 0

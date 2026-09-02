@@ -1,11 +1,12 @@
 import { Download, Eye, Plus, RefreshCw, Search, ShieldAlert, TableProperties } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
+import { clusteringApi, type ClusterListItem } from '../api/clustering'
 import { dataCenterApi, type DocumentItem, type MilestoneItem } from '../api/dataCenter'
 import { jobsApi, type JobDetail, type JobListItem, type JobSummary } from '../api/jobs'
 import { taxonomyApi, type TechnologyNode } from '../api/taxonomy'
 import { MetricStrip, Modal, Panel, StatusTag } from '../components/ui'
 
-type DatasetId = 'jd' | 'terms' | 'milestones' | 'documents'
+type DatasetId = 'jd' | 'terms' | 'clusters' | 'milestones' | 'documents'
 const PAGE_SIZE = 50
 
 const documentTypeLabels: Record<string, string> = {
@@ -29,7 +30,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
 
   // 标签页上的计数是各数据集的全量规模，不能被当次搜索结果覆盖——否则搜过一次
   // 「技术词库」再切回来，标签上显示的就是上次的命中数而不是库里的总量。
-  const [totals, setTotals] = useState<Record<DatasetId, number>>({ jd: 0, terms: 0, milestones: 0, documents: 0 })
+  const [totals, setTotals] = useState<Record<DatasetId, number>>({ jd: 0, terms: 0, clusters: 0, milestones: 0, documents: 0 })
   // 当前数据集在当前筛选条件下的命中数，只用于分页。
   const [filteredTotal, setFilteredTotal] = useState(0)
   const [offset, setOffset] = useState(0)
@@ -37,6 +38,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
   const [jobs, setJobs] = useState<JobListItem[]>([])
   const [jobDetail, setJobDetail] = useState<JobDetail | null>(null)
   const [terms, setTerms] = useState<TechnologyNode[]>([])
+  const [clusters, setClusters] = useState<ClusterListItem[]>([])
   const [milestones, setMilestones] = useState<MilestoneItem[]>([])
   const [documents, setDocuments] = useState<DocumentItem[]>([])
 
@@ -54,12 +56,14 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
       taxonomyApi.nodes({ limit: 1 }, controller.signal),
       dataCenterApi.milestones({ limit: 1 }, controller.signal),
       dataCenterApi.documentFacets(controller.signal),
+      clusteringApi.clusters({ limit: 1 }, controller.signal),
     ])
-      .then(([jobSummary, termPage, milestonePage, facets]) => {
+      .then(([jobSummary, termPage, milestonePage, facets, clusterPage]) => {
         setSummary(jobSummary)
         setTotals({
           jd: jobSummary.total_jobs,
           terms: termPage.total,
+          clusters: clusterPage.total,
           milestones: milestonePage.total,
           documents: facets.total,
         })
@@ -76,6 +80,8 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
       ? jobsApi.list({ search, limit: PAGE_SIZE, offset }, signal).then((page) => { setJobs(page.items); setFilteredTotal(page.total) })
       : dataset === 'terms'
         ? taxonomyApi.nodes({ search, limit: PAGE_SIZE, offset }, signal).then((page) => { setTerms(page.items); setFilteredTotal(page.total) })
+        : dataset === 'clusters'
+          ? clusteringApi.clusters({ limit: PAGE_SIZE, offset }, signal).then((page) => { setClusters(page.items); setFilteredTotal(page.total) })
         : dataset === 'milestones'
           ? dataCenterApi.milestones({ search, limit: PAGE_SIZE, offset }, signal).then((page) => { setMilestones(page.items); setFilteredTotal(page.total) })
           : dataCenterApi.documents({ search, limit: PAGE_SIZE, offset }, signal).then((page) => { setDocuments(page.items); setFilteredTotal(page.total) })
@@ -113,6 +119,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
   const datasetTabs: { id: DatasetId; label: string; count: string }[] = [
     { id: 'jd', label: 'JD 库', count: totals.jd.toLocaleString() },
     { id: 'terms', label: '技术词库', count: totals.terms.toLocaleString() },
+    { id: 'clusters', label: '岗位聚类', count: totals.clusters.toLocaleString() },
     { id: 'milestones', label: '里程碑事件', count: totals.milestones.toLocaleString() },
     { id: 'documents', label: '原始文档', count: totals.documents.toLocaleString() },
   ]
@@ -123,18 +130,18 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
         <div><h2>数据管理中心</h2><p>统一查询与查看结构化数据；编辑能力随版本化审核流程逐步开放。</p></div>
         <div className="intro-actions">
           <button className="secondary-button" onClick={() => notify('导出功能待接入（阶段 D 隐私脱敏导出完成后开放）')}><Download size={15} />导出当前数据集</button>
-          <button className="primary-button" onClick={() => notify('新建记录入口待接入：JD 来自采集入库，技术词来自主数据导入，里程碑来自数据审核中心')}><Plus size={15} />新建记录</button>
+          <button className="primary-button" onClick={() => notify('新建记录入口待接入：JD 来自采集入库，技术词来自主数据导入，里程碑来自数据标注审核中心')}><Plus size={15} />新建记录</button>
         </div>
       </div>
 
       <MetricStrip items={[
         { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家机构` },
-        { label: '技术词记录', value: totals.terms.toLocaleString(), delta: 'L1–L4' },
-        { label: '里程碑事件', value: totals.milestones.toLocaleString(), delta: '人工整理集' },
+        { label: '成果技术标注', value: (summary?.requirement_count ?? 0).toLocaleString(), delta: '岗位技术证据' },
+        { label: '岗位聚类', value: totals.clusters.toLocaleString(), delta: '最新成功聚类快照' },
         { label: '原始文档', value: totals.documents.toLocaleString(), delta: 'JD / 论文 / 里程碑材料' },
       ]} />
 
-      <Panel title="数据库内容" subtitle="全部数据来自后端查询接口" action={<label className="inline-search"><Search size={15} /><input value={query} onChange={(event) => updateQuery(event.target.value)} placeholder={dataset === 'documents' ? '搜索标题或正文' : '搜索名称、编码或机构'} /></label>}>
+      <Panel title="数据库内容" subtitle="全部数据来自后端查询接口" action={<label className="inline-search"><Search size={15} /><input value={query} disabled={dataset === 'clusters'} onChange={(event) => updateQuery(event.target.value)} placeholder={dataset === 'clusters' ? '岗位聚类按成员规模展示' : dataset === 'documents' ? '搜索标题或正文' : '搜索名称、编码或机构'} /></label>}>
         <div className="dataset-tabs">
           {datasetTabs.map((tab) => <button className={dataset === tab.id ? 'active' : ''} onClick={() => switchDataset(tab.id)} key={tab.id}><span>{tab.label}</span><em>{tab.count}</em></button>)}
         </div>
@@ -180,9 +187,33 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
               </>
             ) : null}
 
+            {dataset === 'clusters' ? (
+              clusters.length === 0 ? (
+                <div className="empty-state"><TableProperties size={25} /><strong>暂无岗位聚类数据</strong><span>完成 JD 解析与岗位聚类后，这里会展示最新成功运行的聚类结果。</span></div>
+              ) : (
+                <>
+                  <table className="data-table management-table">
+                    <thead><tr><th>聚类编码 / 名称</th><th>成员 JD</th><th>机构</th><th>主技术领域</th><th>一致性</th><th>关联标准岗位</th><th>状态</th></tr></thead>
+                    <tbody>{clusters.map((cluster) => (
+                      <tr key={cluster.stable_cluster_code}>
+                        <td><strong>{cluster.label}</strong><small>{cluster.stable_cluster_code}</small></td>
+                        <td>{cluster.member_count.toLocaleString()}</td>
+                        <td>{cluster.organization_count.toLocaleString()}</td>
+                        <td>{cluster.primary_domain_code ?? '—'}</td>
+                        <td>{cluster.coherence_score ? Number(cluster.coherence_score).toFixed(2) : '—'}</td>
+                        <td>{cluster.candidate_role_code ?? '—'}</td>
+                        <td><StatusTag tone={cluster.status === 'active' ? 'success' : 'neutral'}>{cluster.status}</StatusTag></td>
+                      </tr>
+                    ))}</tbody>
+                  </table>
+                  <Pagination />
+                </>
+              )
+            ) : null}
+
             {dataset === 'milestones' ? (
               milestones.length === 0 ? (
-                <div className="empty-state"><TableProperties size={25} /><strong>没有匹配的里程碑</strong><span>尝试修改搜索条件；新的候选可在数据审核中心提交。</span></div>
+                <div className="empty-state"><TableProperties size={25} /><strong>没有匹配的里程碑</strong><span>尝试修改搜索条件；新的候选可在数据标注审核中心提交。</span></div>
               ) : (
                 <>
                 <table className="data-table management-table">
@@ -233,7 +264,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
       </Panel>
 
       <Panel title="数据管理原则" subtitle="正式数据采用追加版本，不直接覆盖历史">
-        <div className="management-rules"><div><strong>证据锁定</strong><span>来源、原文片段和内容哈希不可由普通编辑直接修改。</span></div><div><strong>版本递增</strong><span>保存修改后生成新版本，旧版本继续用于历史结果复现。</span></div><div><strong>高影响审核</strong><span>标准技术点、岗位定义和领域归属修改需要进入数据审核中心。</span></div></div>
+        <div className="management-rules"><div><strong>证据锁定</strong><span>来源、原文片段和内容哈希不可由普通编辑直接修改。</span></div><div><strong>版本递增</strong><span>保存修改后生成新版本，旧版本继续用于历史结果复现。</span></div><div><strong>高影响审核</strong><span>标准技术点、岗位定义和领域归属修改需要进入数据标注审核中心。</span></div></div>
       </Panel>
 
       {jobDetail ? (

@@ -45,7 +45,7 @@ const dataChildren: NavItem[] = [
   { id: 'management', label: '数据管理中心', icon: Database },
   { id: 'literature', label: '论文文献检索', icon: BookOpen },
   { id: 'taxonomy', label: '技术词标准管理', icon: GitBranch },
-  { id: 'review', label: '数据审核中心', icon: ShieldCheck },
+  { id: 'review', label: '数据标注审核中心', icon: ShieldCheck },
 ]
 
 const talentPages: PageId[] = ['talent', 'resume', 'match', 'learning']
@@ -315,7 +315,7 @@ export function AppShell({
             </label>
             <button className="filter-button" disabled title="全局时间筛选待接入（阶段 C 后开放）"><span>近 90 天</span><ChevronDown size={15} /></button>
             <button className="filter-button" disabled title="全局 T 领域筛选待接入（阶段 C 后开放）"><span>全部 T 领域</span><ChevronDown size={15} /></button>
-            <button className="icon-button notification" aria-label="待审核任务" title="进入数据审核中心" onClick={() => onNavigate('review')}><Bell size={18} />{notificationCount > 0 ? <i>{notificationCount > 99 ? '99+' : notificationCount}</i> : null}</button>
+            <button className="icon-button notification" aria-label="待审核任务" title="进入数据标注审核中心" onClick={() => onNavigate('review')}><Bell size={18} />{notificationCount > 0 ? <i>{notificationCount > 99 ? '99+' : notificationCount}</i> : null}</button>
           </div>
         </header>
         <div className="page-content">{children}</div>

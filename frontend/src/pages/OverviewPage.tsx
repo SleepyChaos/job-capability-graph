@@ -1,4 +1,4 @@
-import { ArrowRight, Bot, BookOpen, Database, FileUser, GitCommitVertical, RefreshCw, ScanSearch, ShieldAlert } from 'lucide-react'
+import { ArrowRight, BookOpen, ClipboardCheck, Database, Network, RefreshCw, ShieldAlert, Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { clusteringApi } from '../api/clustering'
 import { dataCenterApi, type DataSourceItem, type DocumentFacets, type ReviewTask } from '../api/dataCenter'
@@ -76,13 +76,31 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
   }
 
   const paperCount = stats.facets.types.find((item) => item.code === 'paper')?.count ?? 0
-  const workflow = [
-    { label: '多源采集', detail: `${stats.sources.length} 个数据源`, icon: Database, page: 'sources' as PageId },
-    { label: '文献语料', detail: `${paperCount.toLocaleString()} 篇论文`, icon: BookOpen, page: 'literature' as PageId },
-    { label: '岗位发现', detail: `${stats.candidateTotal} 个候选`, icon: ScanSearch, page: 'discovery-library' as PageId },
-    { label: '能力演变', detail: `${stats.evolvedRoleTotal} 个岗位有演变`, icon: GitCommitVertical, page: 'role-evolution' as PageId },
-    { label: '简历画像', detail: `${stats.profileCount} 份画像`, icon: FileUser, page: 'resume' as PageId },
-    { label: '精准匹配', detail: '差距驱动路径', icon: Bot, page: 'match' as PageId },
+  const layerCards = [
+    {
+      label: '数据层',
+      description: `汇聚 ${stats.jobSummary.total_jobs.toLocaleString()} 条岗位 JD、${stats.jobSummary.organization_count.toLocaleString()} 家机构与 ${stats.jobSummary.requirement_count.toLocaleString()} 条成果技术标注。`,
+      destination: '进入数据管理中心',
+      icon: Database,
+      page: 'management' as PageId,
+      tone: 'data',
+    },
+    {
+      label: '图谱层',
+      description: '构建岗位全景图谱，将企业、技术、标准岗位与人才画像统一关联。',
+      destination: '进入岗位图谱',
+      icon: Network,
+      page: 'job-graph' as PageId,
+      tone: 'graph',
+    },
+    {
+      label: '标注层',
+      description: '对岗位进行标准化定义与证据标注，事实与结果分层保存，确保每条结论可回溯。',
+      destination: '进入数据标注审核中心',
+      icon: ClipboardCheck,
+      page: 'review' as PageId,
+      tone: 'review',
+    },
   ]
 
   const totalNodes = stats.domains.reduce((sum, item) => sum + item.node_count, 0)
@@ -95,14 +113,29 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
 
   return (
     <div className="page-stack">
-      <section className="workflow-rail" aria-label="系统闭环">
-        {workflow.map(({ label, detail, icon: Icon, page }, index) => (
-          <button className="workflow-step" key={label} onClick={() => onNavigate(page)} style={{ background: 'none', border: 0, cursor: 'pointer' }}>
-            <div className="workflow-icon"><Icon size={19} /></div>
-            <div><strong>{label}</strong><span>{detail}</span></div>
-            {index < workflow.length - 1 ? <ArrowRight className="workflow-arrow" size={18} /> : null}
+      <section className="layer-rail" aria-label="平台四层能力架构">
+        {layerCards.map(({ label, description, destination, icon: Icon, page, tone }) => (
+          <button className={`layer-card layer-card--${tone}`} key={label} onClick={() => onNavigate(page)}>
+            <div className="layer-card-icon"><Icon size={21} /></div>
+            <div className="layer-card-copy">
+              <strong>{label}</strong>
+              <p>{description}</p>
+              <span>{destination}<ArrowRight size={14} /></span>
+            </div>
           </button>
         ))}
+        <article className="layer-card layer-card--ability">
+          <div className="layer-card-icon"><Sparkles size={21} /></div>
+          <div className="layer-card-copy">
+            <strong>能力层</strong>
+            <p>贯通岗位能力演变、新岗位发现与人岗匹配，让图谱洞察进入持续推演和人才应用。</p>
+            <div className="layer-card-links" aria-label="能力层页面入口">
+              <button onClick={() => onNavigate('role-evolution')}>岗位能力演变</button>
+              <button onClick={() => onNavigate('jobs')}>新岗位发现</button>
+              <button onClick={() => onNavigate('talent')}>人岗匹配</button>
+            </div>
+          </div>
+        </article>
       </section>
 
       <MetricStrip items={[

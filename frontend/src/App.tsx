@@ -59,7 +59,7 @@ const pageTitles: Record<PageId, string> = {
   resume: '求职者画像',
   match: '匹配分析',
   learning: '发展路径',
-  review: '数据审核中心',
+  review: '数据标注审核中心',
 }
 
 /**
