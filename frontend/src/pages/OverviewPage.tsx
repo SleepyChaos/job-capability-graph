@@ -8,7 +8,7 @@ import { rolesApi } from '../api/roles'
 import { talentApi } from '../api/talent'
 import { taxonomyApi, type TechnologyDomain } from '../api/taxonomy'
 import { LinkButton, MetricStrip, Panel, StatusTag } from '../components/ui'
-import { jobPostingBaseline, organizationBaseline, roleStructureBaseline, techAssetBaseline } from '../data/dataBaseline'
+import { jobPostingBaseline, organizationBaseline, roleStructureBaseline, techAnnotationDisplayCount } from '../data/dataBaseline'
 import { domainColors } from '../data/graphData'
 import type { PageId } from '../types'
 
@@ -86,7 +86,7 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
       // 机构数取第三章口径：运行库只导入了带招聘证据的企业（84 家），高校、科研院所
       // 与政府主体尚未建表，用实数会把「尚未入库」显示成「项目没有这些数据」。
       // JD 则两级都给：原始量说明采集规模，有效量说明进入分析的部分。
-      description: `汇聚 ${jobPostingBaseline.raw.toLocaleString()} 条原始岗位 JD（有效 ${jobPostingBaseline.valid.toLocaleString()} 条）、${organizationBaseline.total.toLocaleString()} 家机构与 ${techAssetBaseline.papers.toLocaleString()} 篇研究文献。`,
+      description: `汇聚 ${jobPostingBaseline.raw.toLocaleString()} 条原始岗位 JD（有效 ${jobPostingBaseline.valid.toLocaleString()} 条）、${organizationBaseline.total.toLocaleString()} 家机构与 ${techAnnotationDisplayCount.toLocaleString()} 条成果技术标注。`,
       destination: '进入数据管理中心',
       icon: Database,
       page: 'management' as PageId,

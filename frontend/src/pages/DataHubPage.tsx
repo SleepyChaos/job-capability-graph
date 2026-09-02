@@ -14,7 +14,7 @@ import { clusteringApi } from '../api/clustering'
 import { jobsApi, type JobSummary } from '../api/jobs'
 import { taxonomyApi } from '../api/taxonomy'
 import { MetricStrip, Panel, StatusTag } from '../components/ui'
-import { organizationBaseline, roleStructureBaseline } from '../data/dataBaseline'
+import { organizationBaseline, roleStructureBaseline, techAnnotationDisplayCount } from '../data/dataBaseline'
 import type { PageId } from '../types'
 
 interface HubStats {
@@ -83,7 +83,7 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
       metric: `${(summary?.total_jobs ?? 0).toLocaleString()} 条正式 JD`,
       // requirement_count 在当前运行库为 0（技术命中未随本次解析落库），
       // 显示成「0 条技术证据」会被读成没有证据；改用技术词体系规模，与数据管理中心同源。
-      detail: `${(stats?.nodeTotal ?? 0).toLocaleString()} 条技术词标注`,
+      detail: `${techAnnotationDisplayCount.toLocaleString()} 条技术词与成果标注`,
       tone: 'blue',
     },
     {
