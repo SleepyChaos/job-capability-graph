@@ -1,0 +1,55 @@
+{
+  "说明": "重建样例：按人工给定的检索词在库内 13,282 篇论文全文上重新匹配，非当次运行的抽取输出文件。",
+  "语料规模": [
+    {
+      "paper_count": 13282
+    }
+  ],
+  "检索词": {
+    "T1.01.11": [
+      "vision-language-action",
+      "VLA "
+    ],
+    "T1.09.01": [
+      "dual-arm",
+      "bimanual"
+    ]
+  },
+  "同时命中两个技术的论文": [
+    {
+      "document_code": "doc_5a88816578f275d493d45e35",
+      "title": "Robust Bimanual Vision-Language-Action Models via Embarrassingly Simple Modality Masking",
+      "canonical_url": "https://arxiv.org/abs/2608.22419v1",
+      "published_at": "2026-08-23T00:00:00",
+      "abstract_excerpt": "Query-based Vision-Language-Action (VLA) models offer low-latency inference that is attractive for bimanual robotic manipulation, but we observe that they can still exhibit discontinuous actions and execution failures in complex dual-arm tasks. We hypothesize that unstable multi-view and language fusion is one contributing factor in these failures, often coinciding with attention spreading to distracting regions. To improve robustness, we introduce the Modality Masking Mechanism (M3), an embarrassingly simple, training-only strategy that requires no architectural changes or large-scale robot p"
+    },
+    {
+      "document_code": "doc_57d26b88307f52e4d9012699",
+      "title": "HAF: Adapting Generalist VLAs to Humanoid Whole-Body Loco-manipulation via Hierarchical Action Flow and Spectral Latent RL",
+      "canonical_url": "https://arxiv.org/abs/2608.16837v1",
+      "published_at": "2026-08-17T00:00:00",
+      "abstract_excerpt": "Humanoid robots hold great promise as general-purpose agents in human-centered environments, yet generalist vision-language-action (VLA) foundation models are not readily applicable to humanoid whole-body loco-manipulation. The high dimensionality and interdependence of humanoid motions make it challenging for conventional single-stage VLA architectures to coordinate locomotion, waist posture, and dual-arm manipulation effectively. Moreover, policies trained through offline behavior cloning can remain suboptimal during real-world deployment. Although online reinforcement learning can refine po"
+    },
+    {
+      "document_code": "doc_05694ac7b7f5248b0623719a",
+      "title": "Policy-Induced Hand Priors in Humanoid Dual-Arm Manipulation: Diagnosing and Mitigating Initial-Pose Dependence",
+      "canonical_url": "https://arxiv.org/abs/2608.11769v1",
+      "published_at": "2026-08-12T00:00:00",
+      "abstract_excerpt": "Vision-language-action (VLA) policies are expected to operate robustly across variations in the robot's initial configuration, yet aggregate task success can conceal pose-specific failures and inappropriate hand selection. This work investigates initial-pose dependence in VLA-based humanoid dual-arm manipulation. We characterize the initial-condition-dependent early hand preference as a policy-induced hand prior and quantify it using HandPriorScore, residual hand bias, and target responsiveness. Evaluations across multiple policies and 17 initial configurations reveal strong initial-pose--poli"
+    },
+    {
+      "document_code": "doc_085ee24581df78a23e4936be",
+      "title": "Adaptation of Generalist Robot Policies with Minimal Data",
+      "canonical_url": "https://arxiv.org/abs/2608.11363v1",
+      "published_at": "2026-08-11T00:00:00",
+      "abstract_excerpt": "A central goal in robot learning is to move beyond task-specific human data collection toward robots that improve through autonomous interaction. Yet fully autonomous learning remains difficult with current policies: sparse rewards and weak zero-shot exploration make it unlikely that a robot will discover successful behavior from scratch. We study minimal-data adaptation, a regime in which a pre-trained robot policy must learn a new task from as little as one demonstration followed by autonomous online interaction. This setting serves as the closest tractable proxy for fully autonomous improve"
+    },
+    {
+      "document_code": "doc_4b81d764b625795385d08a77",
+      "title": "TCAM for Autonomous Deformable Manipulation: The RMC2 Champion System for WBCD 2026 Track 4",
+      "canonical_url": "https://arxiv.org/abs/2608.10718v1",
+      "published_at": "2026-08-11T00:00:00",
+      "abstract_excerpt": "This technical report describes the RMC2 Team's champion solution for the WBCD 2026 Track 4: Deformable Manipulation Challenge. The task requires a robot to pick a single T-shirt from a stack, load it onto a printing pallet, align the collar with a target area, and smooth the printing region, a sequence that involves single-layer separation, deformable transport, precise placement, and contact-rich surface adjustment. The competition strongly incentivizes fully autonomous execution, motivating the development of an autonomous solution. We built a fully autonomous system around the TCAM (TermiB"
+    }
+  ]
+}

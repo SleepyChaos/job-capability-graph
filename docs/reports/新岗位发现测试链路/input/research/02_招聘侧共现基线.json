@@ -1,0 +1,142 @@
+{
+  "说明": "招聘侧基线口径与 find_upstream_only_pairs.load_jd 一致：聚类运行 cluster_8c34456a914d4e53bac8afa3 所属解析运行中复核状态 accepted 的技术命中，按 technology_code 比较，不限词表版本。",
+  "各技术命中 JD 数": [
+    {
+      "technology_code": "T1.01.11",
+      "technology_name": "VLA端到端大模型",
+      "jd_count": 321
+    },
+    {
+      "technology_code": "T1.09.01",
+      "technology_name": "双臂协同操作",
+      "jd_count": 2
+    }
+  ],
+  "同现 JD 数（缺口成立的前提，应为 0）": [
+    {
+      "jd_with_both": 0
+    }
+  ],
+  "命中 JD 样例": [
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_f8a43577097cd310b64bc6ba",
+      "job_title_raw": "未说明岗位名称",
+      "company_name_raw": "波士顿动力",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "d process design. Cross-Functional Alignment Act as the key interface between Prototype Opera"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_f8a43577097cd310b64bc6ba",
+      "job_title_raw": "未说明岗位名称",
+      "company_name_raw": "波士顿动力",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "d process design. Cross-Functional Alignment Act as the key interface between Prototype Opera"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_b886cb99606633e8c1fad561",
+      "job_title_raw": "Manufacturing Test Engineer, PCBA",
+      "company_name_raw": "Figure AI",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "r failures, and recommend corrective actions Act as the first line of defense when boards or "
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_7521f0adefe3b6bdb5c1d9fd",
+      "job_title_raw": "硬件资深工程师（座舱/智驾/机器人大小脑）",
+      "company_name_raw": "吉翼具身智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "翼具身智能主营业务涵盖制造、智能算法开发、人工智能硬件销售及机器人操作系统研发，并通过整合多模态大模型、运动规划等技术，布局工业制造、智能物流及智慧医疗领域。吉翼具身智能致力于成为全球优秀的以"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scali"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scali"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scali"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scali"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scali"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scali"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scali"
+    },
+    {
+      "technology_code": "T1.01.11",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scali"
+    }
+  ]
+}

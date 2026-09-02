@@ -30,8 +30,26 @@ export interface RelationNode {
   classification_code?: string
   maturity_stage_code?: string
   workflow_status_code?: string
+  /**
+   * 仅候选节点携带的事实卡摘要。侧栏默认的三个指标（证据 JD / 关联节点 / 可查看 JD）
+   * 对外部证据类候选有两个恒为 0——那是「招聘市场上从未出现过该组合」这一立论前提，
+   * 不是取数失败。有了这组字段，侧栏可以换成该候选自己的证据口径来陈述。
+   */
+  candidate_facts?: CandidateFacts
   layer?: number
   parent_ids?: string[]
+}
+
+export interface CandidateFacts {
+  gap_grade?: string | null
+  /** 证据口径随路径变化：上游共现 / 依据事件 / 支撑 JD，由后端给定，前端不再判断。 */
+  evidence_label: string
+  evidence_value: string
+  established_month?: string | null
+  technology_names: string[]
+  jd_cooccurrence?: number | null
+  jd_mentions: Record<string, number>
+  milestones: { name: string | null; event_date: string | null; type_code: string | null }[]
 }
 
 export interface RelationEdge {

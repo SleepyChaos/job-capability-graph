@@ -124,6 +124,103 @@ class ProjectionContext:
     data_version: str
 
 
+def _candidate_facts(card: dict) -> dict:
+    """侧栏要用的候选事实，取自事实卡，不做任何推断。
+
+    三条路径的证据形态不同，因此 `evidence_label` / `evidence_value` 是一对随路径
+    变化的槽位：研究侧给「上游共现」次数，产业侧给「依据事件」条数，主路径给
+    「支撑 JD」份数。前端照原样显示，不再自己判断该显示哪一个。
+    """
+    milestones = card.get("milestones") or []
+    if card.get("min_upstream_cooccurrence") is not None:
+        evidence_label, evidence_value = "上游共现", f"{card['min_upstream_cooccurrence']} 次"
+    elif milestones:
+        evidence_label, evidence_value = "依据事件", f"{len(milestones)} 条"
+    else:
+        evidence_label, evidence_value = "支撑 JD", f"{int(card.get('job_count', 0) or 0)} 份"
+    return {
+        "gap_grade": card.get("gap_grade"),
+        "evidence_label": evidence_label,
+        "evidence_value": evidence_value,
+        "established_month": card.get("established_month"),
+        "technology_names": [str(name) for name in (card.get("technology_names") or [])],
+        # 招聘侧同现数是缺口类候选的立论前提，缺省 None 表示该路径不适用此口径。
+        "jd_cooccurrence": card.get("jd_cooccurrence"),
+        "jd_mentions": card.get("jd_mentions") or {},
+        "milestones": [
+            {
+                "name": item.get("milestone_name"),
+                "event_date": item.get("event_date"),
+                "type_code": item.get("milestone_type_code"),
+            }
+            for item in milestones
+        ],
+    }
+
+
+def _candidate_core_codes(
+    db: Session, candidates: list[EmergingRoleCandidate]
+) -> dict[int, list[str]]:
+    """候选的核心技术编码，以事实卡为准、`rel_candidate_technology` 为兜底。
+
+    **为什么不再只读关联表。** 该表在运行库中一行都没有（164 条候选全部为空），
+    于是每条候选的目标能力集为空、被整体跳过，`candidate_node_count` 恒为 0——
+    「叠加新岗位候选」只渲染出图例，图上一个候选节点都没有。事实卡才是三条路径
+    都会写、且数据卡与审核台已经在用的口径，因此改以它为准。
+
+    **三条路径把技术写在事实卡的不同字段里。** 缺口分析两条（研究侧 / 产业侧）给
+    `technology_codes`，主路径给 `technology_node_ids`。节点 id 属于当次推演所用的
+    词表版本，与图谱所用版本可能不同代，直接拿去比会得到空交集，因此一律先翻成
+    技术编码——编码跨版本稳定，是两侧唯一可比的口径（同 `_candidate_projection`）。
+    """
+    codes_by_candidate: dict[int, list[str]] = defaultdict(list)
+    node_ids_by_candidate: dict[int, list[int]] = {}
+    for candidate in candidates:
+        card = candidate.mechanical_card_json or {}
+        codes = [str(code) for code in (card.get("technology_codes") or [])]
+        if codes:
+            codes_by_candidate[candidate.emerging_role_candidate_id] = codes
+            continue
+        node_ids = [int(item) for item in (card.get("technology_node_ids") or [])]
+        if node_ids:
+            node_ids_by_candidate[candidate.emerging_role_candidate_id] = node_ids
+
+    if node_ids_by_candidate:
+        wanted = {item for ids in node_ids_by_candidate.values() for item in ids}
+        code_by_node_id = dict(
+            db.execute(
+                select(TechnologyNode.technology_node_id, TechnologyNode.technology_code).where(
+                    TechnologyNode.technology_node_id.in_(wanted)
+                )
+            ).all()
+        )
+        for candidate_id, node_ids in node_ids_by_candidate.items():
+            resolved = [code_by_node_id[item] for item in node_ids if item in code_by_node_id]
+            if resolved:
+                codes_by_candidate[candidate_id] = resolved
+
+    # 事实卡没写技术的候选（历史数据或异常写入）仍走关联表，不因新口径而丢失。
+    missing = [
+        item.emerging_role_candidate_id
+        for item in candidates
+        if item.emerging_role_candidate_id not in codes_by_candidate
+    ]
+    if missing:
+        for candidate_id, code in db.execute(
+            select(CandidateTechnology.emerging_role_candidate_id, TechnologyNode.technology_code)
+            .join(
+                TechnologyNode,
+                TechnologyNode.technology_node_id == CandidateTechnology.technology_node_id,
+            )
+            .where(
+                CandidateTechnology.emerging_role_candidate_id.in_(missing),
+                CandidateTechnology.membership_code == "core",
+            )
+        ):
+            codes_by_candidate[candidate_id].append(code)
+    return codes_by_candidate
+
+
 def _candidate_projection(
     db: Session,
     context: ProjectionContext,
@@ -198,21 +295,7 @@ def _candidate_projection(
         return [], []
 
     node_by_code = {item.technology_code: item for item in context.nodes.values()}
-    codes_by_candidate: dict[int, list[str]] = defaultdict(list)
-    for candidate_id, code in db.execute(
-        select(CandidateTechnology.emerging_role_candidate_id, TechnologyNode.technology_code)
-        .join(
-            TechnologyNode,
-            TechnologyNode.technology_node_id == CandidateTechnology.technology_node_id,
-        )
-        .where(
-            CandidateTechnology.emerging_role_candidate_id.in_(
-                [item.emerging_role_candidate_id for item in candidates]
-            ),
-            CandidateTechnology.membership_code == "core",
-        )
-    ):
-        codes_by_candidate[candidate_id].append(code)
+    codes_by_candidate = _candidate_core_codes(db, candidates)
 
     role_nodes: list[dict] = []
     edges: list[dict] = []
@@ -254,6 +337,11 @@ def _candidate_projection(
                 "maturity_stage_code": candidate.maturity_stage_code,
                 "workflow_status_code": candidate.workflow_status_code,
                 "evidence_count": support,
+                # 外部证据类候选（研究侧 / 产业里程碑）在招聘侧的支撑恒为 0，
+                # 侧栏若只显示「证据 JD / 可查看 JD」会是两格空数——那是它们的定义，
+                # 不是取数失败。这里把事实卡里真正承载证据的几项一并带出，让侧栏能
+                # 换成该类候选自己的口径（缺口分级、上游共现次数或依据事件、锚点月份）。
+                "candidate_facts": _candidate_facts(card),
             }
         )
         for technology_id, technology in targets.items():

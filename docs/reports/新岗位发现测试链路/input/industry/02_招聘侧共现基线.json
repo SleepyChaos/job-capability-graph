@@ -1,0 +1,142 @@
+{
+  "说明": "招聘侧基线口径与 find_upstream_only_pairs.load_jd 一致：聚类运行 cluster_8c34456a914d4e53bac8afa3 所属解析运行中复核状态 accepted 的技术命中，按 technology_code 比较，不限词表版本。",
+  "各技术命中 JD 数": [
+    {
+      "technology_code": "T1.02.10",
+      "technology_name": "世界模型架构",
+      "jd_count": 44
+    },
+    {
+      "technology_code": "T3.08.04",
+      "technology_name": "算力硬件",
+      "jd_count": 108
+    }
+  ],
+  "同现 JD 数（缺口成立的前提，应为 0）": [
+    {
+      "jd_with_both": 0
+    }
+  ],
+  "命中 JD 样例": [
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scaling；2. 负责后"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scaling；2. 负责后"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scaling；2. 负责后"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scaling；2. 负责后"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_6b4b9ecfe5f6ca9ce1455c6e",
+      "job_title_raw": "大模型算法工程师（后训练）",
+      "company_name_raw": "星尘智能",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "职位描述一、岗位职责：1. 负责具身大模型（VLA/世界模型）后训练中的分布式系统架构设计、吞吐量和效率优化、多机多卡多核scaling；2. 负责后"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_0203ead5e936dd06b3cabc1a",
+      "job_title_raw": "上海 机器人全身运动控制工程师",
+      "company_name_raw": "智元机器人",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "型与数据的持续迭代 5、前沿技术调研与落地 跟踪并评估前沿工作（VLA、VLM、全身控制、世界模型等） 将合适的方法转化为工程可落地的系统方案 参与团队长期技术路线规划 职位要求： 基本要"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_0203ead5e936dd06b3cabc1a",
+      "job_title_raw": "上海 机器人全身运动控制工程师",
+      "company_name_raw": "智元机器人",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "型与数据的持续迭代 5、前沿技术调研与落地 跟踪并评估前沿工作（VLA、VLM、全身控制、世界模型等） 将合适的方法转化为工程可落地的系统方案 参与团队长期技术路线规划 职位要求： 基本要"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_29bec6d8d1c8aa437356e116",
+      "job_title_raw": "仿真与3D重建算法工程师",
+      "company_name_raw": "优必选机器人",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "on Model 与 3D 表征，实现从稀疏视角或文本/图像到高保真 3D 资产的生成。 世界模型构建： 参与构建 闭环世界模型，利用语义重建技术搭建具备物理属性和语义理解的仿真环境，支持"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_29bec6d8d1c8aa437356e116",
+      "job_title_raw": "仿真与3D重建算法工程师",
+      "company_name_raw": "优必选机器人",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "on Model 与 3D 表征，实现从稀疏视角或文本/图像到高保真 3D 资产的生成。 世界模型构建： 参与构建 闭环世界模型，利用语义重建技术搭建具备物理属性和语义理解的仿真环境，支持"
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_29bec6d8d1c8aa437356e116",
+      "job_title_raw": "仿真与3D重建算法工程师",
+      "company_name_raw": "优必选机器人",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "验（WorldSplat）。 熟悉 Latent Diffusion Model 原理。 世界模型与仿真（加分项）： 有 闭环世界模型 (Closed-loop World Model) "
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_29bec6d8d1c8aa437356e116",
+      "job_title_raw": "仿真与3D重建算法工程师",
+      "company_name_raw": "优必选机器人",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "验（WorldSplat）。 熟悉 Latent Diffusion Model 原理。 世界模型与仿真（加分项）： 有 闭环世界模型 (Closed-loop World Model) "
+    },
+    {
+      "technology_code": "T1.02.10",
+      "job_code": "job_4305f125fce8c663ee4b8b37",
+      "job_title_raw": "3D/4D重建算法工程师（生成式/语义编辑）",
+      "company_name_raw": "优必选机器人",
+      "published_at": null,
+      "collected_at": "2026-08-10T00:00:00",
+      "time_quality_code": "synthetic_window_spread",
+      "requirement_excerpt": "）。熟悉 Latent Diffusion Model 原理。 （加分项）： 1.有 闭环世界模型 (Closed-loop World Model) 经验，理解如何利用语义信息构建可交互"
+    }
+  ]
+}

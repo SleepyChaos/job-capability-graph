@@ -1,0 +1,35 @@
+{
+  "词表版本": {
+    "taxonomy_version_id": 3,
+    "version_code": "v1.3",
+    "version_name": "具身智能技术词主数据v1.3(英文别名)",
+    "effective_date": "2026-08-26"
+  },
+  "技术节点": [
+    {
+      "technology_node_id": 4577,
+      "technology_code": "T1.01.11",
+      "technology_name": "VLA端到端大模型",
+      "level_code": "L3",
+      "semantic_role_code": null,
+      "definition_text": null,
+      "governance_status_code": "active",
+      "version_code": "v1.3",
+      "domain_code": "T1",
+      "domain_name": "智能算法与模型"
+    },
+    {
+      "technology_node_id": 4644,
+      "technology_code": "T1.09.01",
+      "technology_name": "双臂协同操作",
+      "level_code": "L3",
+      "semantic_role_code": null,
+      "definition_text": null,
+      "governance_status_code": "active",
+      "version_code": "v1.3",
+      "domain_code": "T1",
+      "domain_name": "智能算法与模型"
+    }
+  ],
+  "别名": []
+}

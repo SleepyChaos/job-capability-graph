@@ -1,0 +1,35 @@
+{
+  "词表版本": {
+    "taxonomy_version_id": 3,
+    "version_code": "v1.3",
+    "version_name": "具身智能技术词主数据v1.3(英文别名)",
+    "effective_date": "2026-08-26"
+  },
+  "技术节点": [
+    {
+      "technology_node_id": 4588,
+      "technology_code": "T1.02.10",
+      "technology_name": "世界模型架构",
+      "level_code": "L3",
+      "semantic_role_code": null,
+      "definition_text": null,
+      "governance_status_code": "active",
+      "version_code": "v1.3",
+      "domain_code": "T1",
+      "domain_name": "智能算法与模型"
+    },
+    {
+      "technology_node_id": 4713,
+      "technology_code": "T3.08.04",
+      "technology_name": "算力硬件",
+      "level_code": "L3",
+      "semantic_role_code": null,
+      "definition_text": null,
+      "governance_status_code": "active",
+      "version_code": "v1.3",
+      "domain_code": "T3",
+      "domain_name": "本体与核心零部件"
+    }
+  ],
+  "别名": []
+}

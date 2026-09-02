@@ -1,0 +1,35 @@
+{
+  "说明": "产业侧证据源：里程碑事件本体、其技术链接与原文证据片段。",
+  "里程碑事件": [
+    {
+      "milestone_code": "MS-917aad10d0da45789999",
+      "milestone_name": "NVIDIA Cosmos 3 Edge发布",
+      "milestone_type_code": "product_release",
+      "event_date": "2026-07-15",
+      "event_year": 2026,
+      "description_text": "4B参数端侧世界模型，Jetson T2000/T3000部署，~1天适配新机器人",
+      "verification_status_code": "verified",
+      "data_origin_code": "source_fact",
+      "maturity_delta_score": null
+    }
+  ],
+  "事件技术链接": [
+    {
+      "milestone_code": "MS-917aad10d0da45789999",
+      "technology_code": "T1.02",
+      "technology_name": "世界模型与预测推理",
+      "relation_type_code": "advances",
+      "relevance_score": 100.0,
+      "is_human_confirmed": 1
+    }
+  ],
+  "原文证据片段": [
+    {
+      "milestone_code": "MS-917aad10d0da45789999",
+      "evidence_text": "4B参数端侧世界模型，Jetson T2000/T3000部署，~1天适配新机器人",
+      "span_type_code": "milestone_claim",
+      "document_code": "DOC-96cb1f9d702c4ce9a3e7",
+      "title": "NVIDIA Cosmos 3 Edge发布"
+    }
+  ]
+}
