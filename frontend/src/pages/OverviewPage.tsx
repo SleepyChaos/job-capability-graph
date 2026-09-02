@@ -8,6 +8,7 @@ import { rolesApi } from '../api/roles'
 import { talentApi } from '../api/talent'
 import { taxonomyApi, type TechnologyDomain } from '../api/taxonomy'
 import { LinkButton, MetricStrip, Panel, StatusTag } from '../components/ui'
+import { jobPostingBaseline, organizationBaseline, roleStructureBaseline, techAssetBaseline } from '../data/dataBaseline'
 import { domainColors } from '../data/graphData'
 import type { PageId } from '../types'
 
@@ -82,7 +83,10 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
   const layerCards = [
     {
       label: '数据层',
-      description: `汇聚 ${stats.jobSummary.total_jobs.toLocaleString()} 条岗位 JD、${stats.jobSummary.organization_count.toLocaleString()} 家机构与 ${stats.termTotal.toLocaleString()} 条成果技术标注。`,
+      // 机构数取第三章口径：运行库只导入了带招聘证据的企业（84 家），高校、科研院所
+      // 与政府主体尚未建表，用实数会把「尚未入库」显示成「项目没有这些数据」。
+      // JD 则两级都给：原始量说明采集规模，有效量说明进入分析的部分。
+      description: `汇聚 ${jobPostingBaseline.raw.toLocaleString()} 条原始岗位 JD（有效 ${jobPostingBaseline.valid.toLocaleString()} 条）、${organizationBaseline.total.toLocaleString()} 家机构与 ${techAssetBaseline.papers.toLocaleString()} 篇研究文献。`,
       destination: '进入数据管理中心',
       icon: Database,
       page: 'management' as PageId,
@@ -142,8 +146,12 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
       </section>
 
       <MetricStrip items={[
-        { label: '正式 JD', value: stats.jobSummary.total_jobs.toLocaleString(), delta: `${stats.jobSummary.organization_count} 家机构` },
-        { label: '正式岗位', value: stats.roleTotal.toLocaleString(), delta: `${stats.evolvedRoleTotal} 个已产生演变` },
+        // 3,718 是运行库实数，也正是第三章的「有效 JD」，两边一致，保留实数；
+        // 副标题补上它在 4,655 条原始采集量中的位置，避免被读成总采集量。
+        { label: '正式 JD', value: stats.jobSummary.total_jobs.toLocaleString(), delta: `${jobPostingBaseline.raw.toLocaleString()} 条原始采集的有效部分` },
+        // 624 是聚类直出的岗位版本数，第三章记的 107 是人工归并后的标准岗位。
+        // 两者粒度不同、不是同一个量，因此保留实数并在副标题里点明另一口径。
+        { label: '正式岗位', value: stats.roleTotal.toLocaleString(), delta: `归并为 ${roleStructureBaseline.standardRoles} 个标准岗位` },
         { label: '新岗位候选', value: String(stats.candidateTotal), delta: '推演候选库' },
         { label: '标准技术点', value: stats.levelCounts.L3.toLocaleString(), delta: `体系 ${Object.values(stats.levelCounts).reduce((sum, count) => sum + count, 0).toLocaleString()} 节点` },
       ]} />

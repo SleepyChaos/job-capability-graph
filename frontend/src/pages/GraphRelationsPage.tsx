@@ -9,6 +9,7 @@ import { DomainLegend } from '../components/DomainLegend'
 import { RelationGraphFilters, type RelationGraphFilterState } from '../components/GraphFilters'
 import { RelationForceGraph } from '../components/RelationForceGraph'
 import { Modal, StatusTag } from '../components/ui'
+import { organizationBaseline } from '../data/dataBaseline'
 import { domainColors } from '../data/graphData'
 import type { PageId } from '../types'
 
@@ -647,6 +648,9 @@ export function GraphRelationsPage({
         <div className="industry-chain-heading"><div><span>统一图谱入口</span><h3>按产业链探索岗位、企业与技能</h3></div><button className={!industryStage ? 'selected' : ''} onClick={() => changeIndustryStage('')}>全部产业链</button></div>
         <div className="industry-stage-grid">{industryStageOrder.map((code) => industrySummary.stages.find((stage) => stage.code === code)).filter((stage): stage is NonNullable<typeof stage> => Boolean(stage)).map((stage) => <button key={stage.code} className={industryStage === stage.code ? 'selected' : ''} style={{ '--stage-color': stage.color } as React.CSSProperties} onClick={() => { changeIndustryStage(stage.code); changeTab('global') }}><i /><div><strong>{stage.name}</strong><span>{stage.categories.slice(0, 3).map((item) => item.name).join(' · ') || '等待分类'}</span></div><dl><div><dt>岗位</dt><dd>{stage.job_count}</dd></div><div><dt>企业</dt><dd>{stage.organization_count}</dd></div><div><dt>岗位簇</dt><dd>{stage.cluster_count}</dd></div><div><dt>技能</dt><dd>{stage.technology_count}</dd></div></dl></button>)}</div>
         {industryStage ? <div className="industry-category-strip"><strong>{industrySummary.stages.find((stage) => stage.code === industryStage)?.name}细分</strong>{industrySummary.stages.find((stage) => stage.code === industryStage)?.categories.slice(0, 12).map((category) => <span key={category.name}>{category.name}<b>{category.job_count}</b></span>)}</div> : null}
+        {/* 卡片里的企业数是图上真的连着 JD 的那部分，不是机构库总量。两个数差着一个
+            数量级（84 vs 632），不写清楚会被当成产业链标注只做了这么点。 */}
+        <p className="industry-chain-note">卡片统计的是当前图谱中带招聘证据的企业；机构库已完成产业链标注的企业共 {organizationBaseline.industryChain.midstream + organizationBaseline.industryChain.upstream + organizationBaseline.industryChain.downstream + organizationBaseline.industryChain.support} 家（中游 {organizationBaseline.industryChain.midstream} · 上游 {organizationBaseline.industryChain.upstream} · 下游 {organizationBaseline.industryChain.downstream} · 横向支撑 {organizationBaseline.industryChain.support}）。</p>
       </section> : null}
 
       {activeTab === 'global' && (

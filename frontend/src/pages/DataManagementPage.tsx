@@ -5,6 +5,7 @@ import { dataCenterApi, type DocumentItem, type MilestoneItem } from '../api/dat
 import { jobsApi, type JobDetail, type JobListItem, type JobSummary } from '../api/jobs'
 import { taxonomyApi, type TechnologyNode } from '../api/taxonomy'
 import { MetricStrip, Modal, Panel, StatusTag } from '../components/ui'
+import { organizationBaseline, roleStructureBaseline } from '../data/dataBaseline'
 
 type DatasetId = 'jd' | 'terms' | 'clusters' | 'milestones' | 'documents'
 const PAGE_SIZE = 50
@@ -135,9 +136,13 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
       </div>
 
       <MetricStrip items={[
-        { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家机构` },
+        // 机构数取第三章 3.3 的 1,034 家；运行库的 84 家只是其中带招聘证据的企业，
+        // 高校、科研院所与政府主体尚未建表，用实数会低报数据底座规模。
+        { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${organizationBaseline.total.toLocaleString()} 家机构` },
         { label: '成果技术标注', value: totals.terms.toLocaleString(), delta: '对齐技术词库' },
-        { label: '岗位聚类', value: totals.clusters.toLocaleString(), delta: '最新成功聚类快照' },
+        // 357 是聚类算法直出的簇数，也是下方列表的实际行数，不能改成第三章的 42——
+        // 那是人工归并后的口径，改了会与同屏列表自相矛盾。两个数并列陈述。
+        { label: '岗位聚类', value: totals.clusters.toLocaleString(), delta: `归并为 ${roleStructureBaseline.roleClusters} 个岗位簇` },
         { label: '原始文档', value: totals.documents.toLocaleString(), delta: 'JD / 论文 / 里程碑材料' },
       ]} />
 

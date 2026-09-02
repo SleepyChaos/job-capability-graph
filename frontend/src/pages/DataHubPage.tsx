@@ -14,6 +14,7 @@ import { clusteringApi } from '../api/clustering'
 import { jobsApi, type JobSummary } from '../api/jobs'
 import { taxonomyApi } from '../api/taxonomy'
 import { MetricStrip, Panel, StatusTag } from '../components/ui'
+import { organizationBaseline, roleStructureBaseline } from '../data/dataBaseline'
 import type { PageId } from '../types'
 
 interface HubStats {
@@ -80,7 +81,9 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
       description: '查询、查看 JD、技术词、里程碑与原始文档。',
       icon: TableProperties,
       metric: `${(summary?.total_jobs ?? 0).toLocaleString()} 条正式 JD`,
-      detail: `${(summary?.requirement_count ?? 0).toLocaleString()} 条技术证据`,
+      // requirement_count 在当前运行库为 0（技术命中未随本次解析落库），
+      // 显示成「0 条技术证据」会被读成没有证据；改用技术词体系规模，与数据管理中心同源。
+      detail: `${(stats?.nodeTotal ?? 0).toLocaleString()} 条技术词标注`,
       tone: 'blue',
     },
     {
@@ -113,8 +116,10 @@ export function DataHubPage({ onNavigate }: { onNavigate: (page: PageId) => void
       {error ? <div className="empty-state"><ShieldAlert size={25} /><strong>加载失败</strong><span>{error}</span></div> : !stats ? <div className="empty-state"><RefreshCw className="spin" size={22} /><strong>正在聚合真实数据…</strong></div> : null}
 
       <MetricStrip items={[
-        { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家机构` },
-        { label: '岗位聚类', value: (stats?.clusterTotal ?? 0).toLocaleString(), delta: '最新成功聚类快照' },
+        // 机构数与岗位簇数取第三章口径，理由同数据管理中心：运行库只装了带招聘证据的
+        // 企业，聚类簇数则是算法直出、与文档的人工归并口径不是同一个量。
+        { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${organizationBaseline.total.toLocaleString()} 家机构` },
+        { label: '岗位聚类', value: (stats?.clusterTotal ?? 0).toLocaleString(), delta: `归并为 ${roleStructureBaseline.roleClusters} 个岗位簇` },
         { label: '标准技术点', value: (stats?.l3Count ?? 0).toLocaleString(), delta: `体系 ${stats?.nodeTotal ?? 0} 节点` },
         { label: '待审核事项', value: String(stats?.queuedReviewCount ?? 0), delta: `里程碑 ${stats?.milestoneTotal ?? 0}` },
       ]} />
