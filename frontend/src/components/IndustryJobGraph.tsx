@@ -254,11 +254,11 @@ export function IndustryJobGraph({ graph, onRole, onOpenPortrait }: { graph: Job
           <Panel title={query ? `搜索结果 · ${filtered.length} 家企业` : view === 'chain' ? category ? `${category} · 企业卡片（${fmt(filtered.length)}）` : '企业卡片列表' : view === 'map' ? `${locationLabel}（${fmt(filtered.length)}）` : `${financing || '全部融资阶段'} · 企业卡片（${fmt(filtered.length)}）`} subtitle="点击卡片行查看岗位详情与招聘入口" className="industry-right-list-panel">
             <EnterpriseDirectory items={filtered} selected={enterpriseId} page={page} onPage={setPage} onSelect={e => setEnterpriseId(e.id)} emptyMessage={view === 'chain' && !category && !query ? '请先在左侧选择产业链层级与产业类别' : undefined} />
           </Panel>
-          <Panel title={selectedEnterprise ? '企业与岗位详情' : '企业 → 岗位 / 招聘入口'} subtitle="企业属性来自完整企业库，JD 连接来自企业增强表" className="industry-evidence-panel">
-            <EnterpriseDetail enterprise={selectedEnterprise} graph={graph} onRole={onRole} onOpenPortrait={onOpenPortrait} />
-          </Panel>
         </div>
       </div>
+      <Panel title={selectedEnterprise ? '企业与岗位详情' : '企业 → 岗位 / 招聘入口'} subtitle="企业属性来自完整企业库，JD 连接来自企业增强表" className="industry-evidence-panel">
+        <EnterpriseDetail enterprise={selectedEnterprise} graph={graph} onRole={onRole} onOpenPortrait={onOpenPortrait} />
+      </Panel>
     </>}
     {showDiscovery ? <DiscoveryOverlayPanel
       title={selectedEnterprise ? `${selectedEnterprise.name} · 新岗位发现 ${industryCandidates.length}` : `新岗位发现 ${industryCandidates.length}`}

@@ -888,6 +888,10 @@ button.layer-card:hover { border-color: #91b8e5; box-shadow: 0 9px 24px rgba(27,
 .job-ecosystem-workspace { min-height: 690px; display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 12px; align-items: stretch; }
 .job-ecosystem-workspace > .panel { min-width: 0; margin: 0; }
 .job-ecosystem-graph-panel { position: relative; overflow: hidden; }
+.industry-main-panel { overflow: visible; }
+.industry-main-panel .job-ecosystem-canvas { height: 520px; }
+.industry-jd-panel .panel-body { max-height: 820px; overflow-y: auto; }
+.industry-jd-panel .empty-state { padding: 60px 20px; text-align: center; }
 .job-ecosystem-back { position: absolute; z-index: 3; top: 57px; left: 13px; min-height: 29px; display: inline-flex; align-items: center; gap: 5px; padding: 0 9px; color: #245d8e; background: rgba(255,255,255,.94); border: 1px solid #bfd3e7; border-radius: 6px; box-shadow: 0 3px 10px rgba(32,65,96,.08); font-size: 9px; }
 .job-ecosystem-canvas { position: relative; height: 635px; overflow: hidden; background-color: #fafdff; background-image: linear-gradient(rgba(19, 92, 151, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(19, 92, 151, .035) 1px, transparent 1px), radial-gradient(circle at center, rgba(30, 131, 190, .07), transparent 55%); background-size: 28px 28px, 28px 28px, auto; }
 .job-ecosystem-canvas > svg { width: 100%; height: 100%; display: block; }
