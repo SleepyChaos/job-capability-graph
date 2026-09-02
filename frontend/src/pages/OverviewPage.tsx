@@ -16,6 +16,7 @@ interface OverviewStats {
   sources: DataSourceItem[]
   domains: TechnologyDomain[]
   levelCounts: Record<string, number>
+  termTotal: number
   clusterTotal: number
   candidateTotal: number
   topCandidates: CandidateListItem[]
@@ -40,6 +41,7 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
       taxonomyApi.nodes({ level: 'L2', limit: 1 }, controller.signal),
       taxonomyApi.nodes({ level: 'L3', limit: 1 }, controller.signal),
       taxonomyApi.nodes({ level: 'L4', limit: 1 }, controller.signal),
+      taxonomyApi.nodes({ limit: 1 }, controller.signal),
       clusteringApi.clusters({ limit: 1 }, controller.signal),
       discoveryApi.candidates({ limit: 4 }, controller.signal),
       dataCenterApi.reviews('queued', controller.signal),
@@ -48,12 +50,13 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
       rolesApi.list({ evolvedOnly: true, limit: 1 }, controller.signal),
       dataCenterApi.documentFacets(controller.signal),
     ])
-      .then(([jobSummary, sources, domains, l1, l2, l3, l4, clusters, candidates, queuedReviews, profiles, roles, evolvedRoles, facets]) => {
+      .then(([jobSummary, sources, domains, l1, l2, l3, l4, allTerms, clusters, candidates, queuedReviews, profiles, roles, evolvedRoles, facets]) => {
         setStats({
           jobSummary,
           sources,
           domains,
           levelCounts: { L1: l1.total, L2: l2.total, L3: l3.total, L4: l4.total },
+          termTotal: allTerms.total,
           clusterTotal: clusters.total,
           candidateTotal: candidates.total,
           topCandidates: candidates.items,
@@ -79,7 +82,7 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
   const layerCards = [
     {
       label: '数据层',
-      description: `汇聚 ${stats.jobSummary.total_jobs.toLocaleString()} 条岗位 JD、${stats.jobSummary.organization_count.toLocaleString()} 家机构与 ${stats.jobSummary.requirement_count.toLocaleString()} 条成果技术标注。`,
+      description: `汇聚 ${stats.jobSummary.total_jobs.toLocaleString()} 条岗位 JD、${stats.jobSummary.organization_count.toLocaleString()} 家机构与 ${stats.termTotal.toLocaleString()} 条成果技术标注。`,
       destination: '进入数据管理中心',
       icon: Database,
       page: 'management' as PageId,
@@ -127,9 +130,9 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
         <article className="layer-card layer-card--ability">
           <div className="layer-card-icon"><Sparkles size={21} /></div>
           <div className="layer-card-copy">
-            <strong>能力层</strong>
+            <strong>应用层</strong>
             <p>贯通岗位能力演变、新岗位发现与人岗匹配，让图谱洞察进入持续推演和人才应用。</p>
-            <div className="layer-card-links" aria-label="能力层页面入口">
+            <div className="layer-card-links" aria-label="应用层页面入口">
               <button onClick={() => onNavigate('role-evolution')}>岗位能力演变</button>
               <button onClick={() => onNavigate('jobs')}>新岗位发现</button>
               <button onClick={() => onNavigate('talent')}>人岗匹配</button>

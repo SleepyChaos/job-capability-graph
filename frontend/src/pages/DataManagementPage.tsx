@@ -136,7 +136,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
 
       <MetricStrip items={[
         { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家机构` },
-        { label: '成果技术标注', value: (summary?.requirement_count ?? 0).toLocaleString(), delta: '岗位技术证据' },
+        { label: '成果技术标注', value: totals.terms.toLocaleString(), delta: '对齐技术词库' },
         { label: '岗位聚类', value: totals.clusters.toLocaleString(), delta: '最新成功聚类快照' },
         { label: '原始文档', value: totals.documents.toLocaleString(), delta: 'JD / 论文 / 里程碑材料' },
       ]} />
