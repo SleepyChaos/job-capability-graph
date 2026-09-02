@@ -79,7 +79,8 @@ const jobChildren: NavItem[] = [
   { id: 'job-records', label: '推演结果记录库', icon: FileClock },
 ]
 
-// 图谱收敛到四个视角：产业、技术、画像三张对外图谱，加一张岗位—能力关联图。
+// 图谱对外保留产业、技术与岗位—能力关联三个入口。
+// 岗位画像图谱暂不进入导航，但路由继续保留，既有深链接不会失效。
 // 「岗位—能力关联图」是新岗位候选叠加所在的页面，必须留在导航里，
 // 否则候选节点只能靠直接改 hash 才能看到。
 //
@@ -98,7 +99,6 @@ const graphPages: PageId[] = [
 const graphChildren: NavItem[] = [
   { id: 'industry-job-graph', label: '产业—岗位图谱', icon: BriefcaseBusiness },
   { id: 'technology-job-graph', label: '技术—岗位图谱', icon: Tags },
-  { id: 'job-portrait-graph', label: '岗位画像图谱', icon: FileUser },
   { id: 'graph-relations', label: '岗位—能力关联图', icon: Network },
 ]
 

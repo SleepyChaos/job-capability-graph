@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, BriefcaseBusiness, FileUser, GitBranch, Network, RefreshCw, Tags } from 'lucide-react'
+import { Activity, ArrowRight, BriefcaseBusiness, GitBranch, Network, RefreshCw, Tags } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { graphApi, type ClusterListResponse, type HeatmapResponse, type RelationGraphResponse } from '../api/graphs'
 import { MetricStrip, Panel, StatusTag } from '../components/ui'
@@ -7,7 +7,6 @@ import type { PageId } from '../types'
 const viewEntries: { id: PageId; title: string; description: string; icon: typeof Activity; meta: string }[] = [
   { id: 'industry-job-graph', title: '产业—岗位图谱', description: '从产业属性和企业逐层下钻到标准岗位与真实招聘岗位。', icon: BriefcaseBusiness, meta: '企业库 → 产业类别 → 企业 → 岗位' },
   { id: 'technology-job-graph', title: '技术—岗位图谱', description: '沿L1—L4技术主数据定位相关标准岗位与真实JD证据。', icon: Tags, meta: '技术域 → 技术类 → 技术点 → 技术词 → 岗位' },
-  { id: 'job-portrait-graph', title: '岗位画像图谱', description: '从职业方向、种类和岗位簇进入标准岗位五维画像与完整JD。', icon: FileUser, meta: '方向 → 种类 → 岗位簇 → 标准岗位 → JD' },
   { id: 'graph-relations', title: '产业链全局图谱', description: '从上游、中游、下游和横向支撑进入企业、岗位簇与技能关系，并继续下钻真实 JD。', icon: Network, meta: '统一入口 · 跨图跳转 · URL 可分享' },
   { id: 'graph-clusters', title: '岗位簇技能星图', description: '从产业链或全局关系图进入单个岗位簇，查看核心能力、企业覆盖和真实岗位证据。', icon: GitBranch, meta: '岗位簇局部视角 · 返回全局' },
   { id: 'graph-heatmap', title: '能力时间热力图', description: '以 21×15 日格汇总七个技术域过去 45 天的材料触发次数，并下钻标准技术层级。', icon: Activity, meta: '时间视角 · 45 天固定窗口' },
