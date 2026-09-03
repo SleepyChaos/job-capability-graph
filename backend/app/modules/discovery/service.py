@@ -8,10 +8,13 @@ from datetime import UTC, date, datetime
 from decimal import Decimal
 from uuid import uuid4
 
-from sqlalchemy import func, or_, select
+from sqlalchemy import desc, distinct, func, or_, select
 from sqlalchemy.orm import Session, aliased
 
 from app.modules.clustering.models import (
+    JobClusterMember,
+    JobClusterRole,
+    JobClusterVersion,
     JobClusteringRun,
     JobRole,
     JobRoleAlias,
@@ -1997,6 +2000,89 @@ def _publish_candidate(db: Session, candidate: EmergingRoleCandidate, actor_user
         )
     )
     candidate.approved_job_role_id = role.job_role_id
+    _attach_nearest_cluster(db, role, version, card)
+
+
+def _attach_nearest_cluster(
+    db: Session, role: JobRole, version: JobRoleVersion, card: dict
+) -> None:
+    """给刚入库的推演岗位挂一条聚类归属，否则它在所有图谱上都无处安放。
+
+    **为什么审批流程里必须做这件事。** 聚类由真实 JD 归并而来，而推演岗位没有 JD，
+    流程里没有天然的归属来源；不补这一条，岗位在库里齐全却在图上看不见——查得到、
+    定位不到。此前入库的候选全都缺这条链接。
+
+    **关系码不能用 `represents`。** 那个码声明「该岗位代表这个簇」，而推演岗位并不代表
+    任何已观测的岗位群——它的立论前提恰恰是这组技术在招聘市场上从未同现。这里只声明
+    「现有聚类里它离这个簇最近」。消费方按 `is_primary` 取数、不筛关系码，定位照常生效。
+
+    **最近簇的判据**：按岗位能力项的技术编码，统计各簇成员 JD 要求这些技术的情况，
+    取覆盖技术种类最多、其次命中次数最多的簇。一个都命中不上就不挂——宁可继续看不见，
+    也不要把它安到一个毫无关系的簇上。判据与 tools/attach_discovery_role_cluster.py 一致，
+    该工具用于回填存量岗位。
+    """
+    # 三条路径把技术写在不同地方：缺口分析两路的事实卡给技术编码，主路径给节点 id，
+    # 而节点 id 属于推演当次的词表版本，与聚类侧不一定同代——统一先落到技术编码再比。
+    codes = [str(code) for code in (card.get("technology_codes") or [])]
+    if not codes:
+        node_ids = [int(item) for item in (card.get("technology_node_ids") or [])] or list(
+            db.scalars(
+                select(JobRoleVersionRequirement.technology_node_id).where(
+                    JobRoleVersionRequirement.job_role_version_id == version.job_role_version_id
+                )
+            )
+        )
+        codes = list(
+            db.scalars(
+                select(TechnologyNode.technology_code).where(
+                    TechnologyNode.technology_node_id.in_(node_ids)
+                )
+            )
+        ) if node_ids else []
+    if not codes:
+        return
+    clustering_run = db.scalar(
+        select(JobClusteringRun)
+        .where(JobClusteringRun.run_status_code == "success")
+        .order_by(JobClusteringRun.clustering_run_id.desc())
+    )
+    if clustering_run is None:
+        return
+    best = db.execute(
+        select(
+            JobClusterVersion.job_cluster_version_id,
+            func.count(distinct(TechnologyNode.technology_code)).label("matched_codes"),
+            func.count().label("hits"),
+        )
+        .select_from(JobClusterMember)
+        .join(
+            JobClusterVersion,
+            JobClusterVersion.job_cluster_version_id == JobClusterMember.job_cluster_version_id,
+        )
+        .join(JobRequirement, JobRequirement.job_posting_id == JobClusterMember.job_posting_id)
+        .join(
+            TechnologyNode,
+            TechnologyNode.technology_node_id == JobRequirement.technology_node_id,
+        )
+        .where(
+            JobClusterVersion.clustering_run_id == clustering_run.clustering_run_id,
+            TechnologyNode.technology_code.in_(codes),
+        )
+        .group_by(JobClusterVersion.job_cluster_version_id)
+        .order_by(desc("matched_codes"), desc("hits"))
+        .limit(1)
+    ).first()
+    if best is None:
+        return
+    db.add(
+        JobClusterRole(
+            job_cluster_version_id=best[0],
+            job_role_id=role.job_role_id,
+            relation_type_code="discovery_nearest",
+            confidence_score=None,
+            is_primary=True,
+        )
+    )
 
 
 def _build_input_snapshot(
