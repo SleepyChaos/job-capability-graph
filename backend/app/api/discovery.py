@@ -21,6 +21,7 @@ from app.modules.discovery.service import (
     DiscoveryError,
     apply_candidate_expression,
     auto_candidate_expression,
+    auto_candidate_portrait,
     candidate_snapshot,
     review_candidate,
     run_discovery,
@@ -482,3 +483,59 @@ def auto_expression(
     except DiscoveryError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     return candidate_snapshot(db, candidate)
+
+
+@router.post("/role-discovery/candidates/{candidate_code}/portrait/auto", response_model=dict)
+def auto_portrait(
+    candidate_code: str,
+    db: Annotated[Session, Depends(get_db)],
+    _reviewer: Annotated[AppUser, Depends(get_reviewer)],
+):
+    """为已入库的推演岗位生成五维能力画像，写进标准 JD。
+
+    这类岗位的招聘侧支撑恒为 0，走不了「多条 JD 归纳画像」那条路，只能依事实卡扩写；
+    LLM 不可用时降级为规则陈列，两种来源都记在 portrait.provenance 里。
+    """
+    try:
+        return auto_candidate_portrait(db, candidate_code=candidate_code)
+    except DiscoveryError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.get("/role-discovery/role-portraits", response_model=dict)
+def list_role_portraits(db: Annotated[Session, Depends(get_db)]):
+    """已入库推演岗位的画像清单，供岗位画像图谱叠加。
+
+    只回已生成画像的那些：没有画像的岗位在圆图上是空的，与其给个空壳让前端判断，
+    不如不回。
+    """
+    rows = db.execute(
+        select(EmergingRoleCandidate, StandardJobDescription, JobRole)
+        .join(
+            StandardJobDescription,
+            StandardJobDescription.emerging_role_candidate_id
+            == EmergingRoleCandidate.emerging_role_candidate_id,
+        )
+        .join(JobRole, JobRole.job_role_id == EmergingRoleCandidate.approved_job_role_id)
+        .where(EmergingRoleCandidate.workflow_status_code == "approved")
+    ).all()
+    items = []
+    for candidate, standard_jd, role in rows:
+        content = standard_jd.content_json or {}
+        portrait = content.get("portrait")
+        if not portrait:
+            continue
+        card = candidate.mechanical_card_json or {}
+        items.append(
+            {
+                "candidate_code": candidate.candidate_code,
+                "role_code": role.role_code,
+                "name": candidate.proposed_name,
+                "definition": content.get("definition"),
+                "classification_code": candidate.classification_code,
+                "gap_grade": card.get("gap_grade"),
+                "candidate_score": float(candidate.candidate_score or 0),
+                "portrait": portrait,
+            }
+        )
+    return {"total": len(items), "items": items}

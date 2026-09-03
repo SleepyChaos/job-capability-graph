@@ -487,6 +487,135 @@ def auto_candidate_expression(db: Session, *, candidate_code: str) -> EmergingRo
     )
 
 
+PORTRAIT_PROMPT_VERSION = "discovery_role_portrait_v1"
+#: 由 LLM 补写的四维。职责维不在其列——它直接取标准 JD 的核心职责，属事实不重写。
+PORTRAIT_GENERATED_DIMENSIONS = ("skills", "abilities", "scenarios", "conditions")
+PORTRAIT_CONDITION_SUFFIX = "（推演条件）"
+
+
+def auto_candidate_portrait(db: Session, *, candidate_code: str) -> dict:
+    """为推演派生岗位补五维能力画像，写进标准 JD 的 content_json。
+
+    **为什么这类岗位需要单独生成。** 常规标准岗位的画像由同一岗位下多条 JD 归纳而来
+    （每个画像点至少 2 条 JD 支撑），而缺口类候选的招聘侧支撑恒为 0——按那套方法一个
+    画像点都产不出来。这里改由 LLM 依候选事实卡与标准 JD 扩写，并全程标注来源。
+
+    **职责维不生成。** 它直接取标准 JD 的核心职责：那是审批时已固化的事实，重写一遍
+    只会引入偏移。LLM 只补技能、能力、场景、任职条件四维。
+
+    **画像点不带证据计数。** count / coverage / evidenceOccIds 一律为空，因为确实没有
+    JD 证据；给它们填数就是把生成的文字伪装成观测事实。
+    """
+    candidate = db.scalar(
+        select(EmergingRoleCandidate).where(EmergingRoleCandidate.candidate_code == candidate_code)
+    )
+    if candidate is None:
+        raise DiscoveryError("新岗位候选不存在")
+    standard_jd = db.scalar(
+        select(StandardJobDescription)
+        .where(
+            StandardJobDescription.emerging_role_candidate_id
+            == candidate.emerging_role_candidate_id
+        )
+        .order_by(StandardJobDescription.version_no.desc())
+    )
+    if standard_jd is None:
+        raise DiscoveryError("该候选尚未生成标准 JD，先完成审批入库再生成画像")
+
+    content = dict(standard_jd.content_json or {})
+    card = candidate.mechanical_card_json or {}
+    responsibilities = [str(item) for item in (content.get("responsibilities") or [])]
+    generated = _llm_portrait(candidate, card, content) or _rule_portrait(card, responsibilities)
+
+    content["portrait"] = {
+        "responsibilities": responsibilities,
+        **{key: generated[key] for key in PORTRAIT_GENERATED_DIMENSIONS},
+        "provenance": {
+            "generated_by": generated["generated_by"],
+            "prompt_version": PORTRAIT_PROMPT_VERSION,
+            "generated_at": datetime.now(UTC).replace(tzinfo=None).isoformat(),
+            "evidence_note": "招聘侧支撑为 0 是该候选的立论前提；画像点无 JD 证据，不计入市场热度与岗位证据。",
+        },
+    }
+    standard_jd.content_json = content
+    standard_jd.model_version = f"{generated['generated_by']}:{PORTRAIT_PROMPT_VERSION}"
+    db.commit()
+    return content["portrait"]
+
+
+def _llm_portrait(candidate, card: dict, content: dict) -> dict | None:
+    """LLM 补四维。不可用或产出不合规时返回 None，由规则兜底。"""
+    from app.infrastructure.llm import generate
+
+    facts = {
+        "role_name": candidate.proposed_name,
+        "one_line_definition": content.get("definition"),
+        "core_responsibilities": content.get("responsibilities"),
+        "technologies": card.get("technology_names"),
+        "technology_codes": card.get("technology_codes"),
+        "gap_grade": card.get("gap_grade"),
+        "jd_mentions": card.get("jd_mentions"),
+        "jd_cooccurrence": card.get("jd_cooccurrence"),
+        "milestones": card.get("milestones"),
+        "min_upstream_cooccurrence": card.get("min_upstream_cooccurrence"),
+        "formation_reason": (candidate.expression_json or {}).get("formation_reason"),
+    }
+    system_prompt = "\n".join(
+        [
+            "你是岗位研究助手，为一个尚未在招聘市场出现的推演岗位补写能力画像。",
+            "硬约束：",
+            "1. 只能依据给定事实展开，不得新增给定技术之外的技术名、数字、企业名或产品名。",
+            "2. jd_cooccurrence 为 0 表示招聘市场上从未有岗位同时要求这些技术，这是该岗位"
+            "作为缺口信号的前提。不得声称市场上已有此类招聘需求，也不得编造招聘数量。",
+            f"3. conditions 写的是从技术组合推断的任职条件，每条必须以「{PORTRAIT_CONDITION_SUFFIX}」"
+            "结尾，不得写成已核实的招聘要求。",
+            "4. 每条不超过 24 字，是短语不是句子；不要编号、不要解释你的推理过程。",
+            "输出 JSON，四个键，每键 3–6 条字符串数组：",
+            "- skills：完成该岗位职责所需的具体技术能力。",
+            "- abilities：跨技术的综合能力，回答「这个人要能做什么判断」。",
+            "- scenarios：该岗位的典型工作场景。",
+            "- conditions：任职条件（推演）。",
+        ]
+    )
+    result = generate(
+        system_prompt=system_prompt,
+        user_prompt=f"岗位事实：{json.dumps(facts, ensure_ascii=False)}",
+        prompt_version=PORTRAIT_PROMPT_VERSION,
+        json_mode=True,
+    )
+    if result is None or result.parsed_json is None:
+        return None
+    data = result.parsed_json
+    portrait: dict = {"generated_by": f"llm:{result.model}"}
+    for key in PORTRAIT_GENERATED_DIMENSIONS:
+        items = [str(item).strip() for item in (data.get(key) or []) if str(item).strip()]
+        if not items:
+            # 少一维就整体判不合规：半张画像画到圆图上会缺一个方向，读者看不出是缺数据
+            # 还是这个岗位真没有这一维。
+            return None
+        if key == "conditions":
+            # 模型偶尔漏掉后缀；补齐而不是丢弃——这条约束是给读者的标注，不是内容本身。
+            items = [
+                item if item.endswith(PORTRAIT_CONDITION_SUFFIX) else item + PORTRAIT_CONDITION_SUFFIX
+                for item in items
+            ]
+        portrait[key] = items[:6]
+    return portrait
+
+
+def _rule_portrait(card: dict, responsibilities: list[str]) -> dict:
+    """LLM 不可用时的降级画像：只把已有事实换个维度陈列，不做任何推断。"""
+    technologies = [str(name) for name in (card.get("technology_names") or [])]
+    return {
+        "generated_by": "rule_fallback",
+        "skills": technologies or ["证据不足，未能提取技能项"],
+        "abilities": [f"{'、'.join(technologies)}的协同应用能力"] if technologies else ["证据不足"],
+        "scenarios": responsibilities[:3] or ["证据不足，未能提取工作场景"],
+        "conditions": [f"掌握{name}{PORTRAIT_CONDITION_SUFFIX}" for name in technologies]
+        or [f"证据不足{PORTRAIT_CONDITION_SUFFIX}"],
+    }
+
+
 def _card_fact_references(card: dict) -> list[str]:
     references = [f"task:{item}" for item in card.get("task_ids", [])]
     references += [f"technology:{item}" for item in card.get("technology_node_ids", [])][:10]
