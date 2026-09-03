@@ -1470,11 +1470,11 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
           <div className="portrait-discovery-nav">
             <div className="portrait-discovery-nav-heading">
               <strong>新岗位发现</strong>
-              <span>{discovery ? `${discoveryNavItems.length} 条 · 点击查看岗位数据卡` : '正在加载推演结果…'}</span>
+              <span>{discovery ? `${discoveryNavItems.length} 条 · 点击在关联图谱中定位` : '正在加载推演结果…'}</span>
             </div>
             {discovery && discoveryNavItems.length ? <div className="portrait-discovery-nav-list">
               {discoveryNavItems.map((item) => (
-                <button key={item.candidateCode} onClick={() => onNavigate?.('candidate', item.candidateCode)} title={item.definition || item.name}>
+                <button key={item.candidateCode} onClick={() => onNavigate?.('graph-relations', `candidate:${item.candidateCode}`)} title={item.definition || item.name}>
                   <i style={{ background: classificationColor[item.classificationCode]?.dot ?? '#94a3b8' }} />
                   <span>{item.name}<small>{item.classification}{item.gapGrade ? ` · ${item.gapGrade === 'A' ? '缺口显著' : '缺口存疑'}` : ''}</small></span>
                   <em>{item.score.toFixed(2)}</em>
