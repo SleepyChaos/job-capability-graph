@@ -19,7 +19,9 @@
       "directionId": "direction-03",
       "directionName": "感知决策与控制算法",
       "color": "#0b9c93",
-      "seedVariants": ["双臂协同VLA大模型研究员"],
+      "seedVariants": [
+        "双臂协同VLA大模型研究员"
+      ],
       "observedVariants": [],
       "taxonomyMethod": "新岗位发现 · 研究侧领先信号（upstream_gap）",
       "jobCount": 0,
@@ -36,35 +38,140 @@
       "definition": "负责研发基于VLA端到端大模型的双臂协同操作算法与系统，实现机器人双臂灵巧任务。",
       "standardProfile": {
         "responsibilities": [
-          { "name": "设计并训练用于双臂协同操作的VLA端到端大模型，整合视觉、语言与动作模态", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "优化双臂协同策略，使模型在真实或仿真环境中完成抓取、传递、装配等协同任务", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "构建数据闭环，利用双臂操作数据持续迭代模型性能", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "与硬件团队协作，将模型部署到双臂机器人平台并进行真机验证", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "设计并训练用于双臂协同操作的VLA端到端大模型，整合视觉、语言与动作模态",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "优化双臂协同策略，使模型在真实或仿真环境中完成抓取、传递、装配等协同任务",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "构建数据闭环，利用双臂操作数据持续迭代模型性能",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "与硬件团队协作，将模型部署到双臂机器人平台并进行真机验证",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ],
         "skills": [
-          { "name": "VLA端到端大模型（T1.01.11）", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "双臂协同操作（T1.09.01）", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "视觉—语言—动作多模态对齐", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "模仿学习与策略微调", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "仿真到真机迁移", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "双臂运动规划与碰撞规避", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "VLA端到端大模型（T1.01.11）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "双臂协同操作（T1.09.01）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "视觉—语言—动作多模态对齐",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "模仿学习与策略微调",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "仿真到真机迁移",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "双臂运动规划与碰撞规避",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ],
         "abilities": [
-          { "name": "跨模态建模与表征设计", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "双臂时序协调与任务分解", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "数据闭环设计与迭代评估", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "真机验证与失败归因", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "跨模态建模与表征设计",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "双臂时序协调与任务分解",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "数据闭环设计与迭代评估",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "真机验证与失败归因",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ],
         "scenarios": [
-          { "name": "双臂装配与零件传递", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "仿真环境中的协同策略训练", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "双臂机器人平台真机部署验证", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "灵巧操作数据采集与回流", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "双臂装配与零件传递",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "仿真环境中的协同策略训练",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "双臂机器人平台真机部署验证",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "灵巧操作数据采集与回流",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ],
         "conditions": [
-          { "name": "机器人学或机器学习相关研究背景（推演条件）", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "具备多模态大模型训练经验（推演条件）", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "熟悉双臂平台与仿真工具链（推演条件）", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "机器人学或机器学习相关研究背景（推演条件）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "具备多模态大模型训练经验（推演条件）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "熟悉双臂平台与仿真工具链（推演条件）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ]
       }
     },
@@ -72,14 +179,16 @@
       "id": "role-discovery-milestone-5b063c8b",
       "code": "ROLE-N-EE73E9917A6A",
       "name": "边缘世界模型部署工程师",
-      "clusterId": "cluster-21",
-      "clusterName": "2D视觉与图像算法",
-      "categoryId": "category-06",
-      "categoryName": "视觉与多模态",
+      "clusterId": "cluster-19",
+      "clusterName": "模型训练优化与部署",
+      "categoryId": "category-05",
+      "categoryName": "算法工程",
       "directionId": "direction-03",
       "directionName": "感知决策与控制算法",
       "color": "#0b9c93",
-      "seedVariants": ["边缘世界模型部署工程师"],
+      "seedVariants": [
+        "边缘世界模型部署工程师"
+      ],
       "observedVariants": [],
       "taxonomyMethod": "新岗位发现 · 产业里程碑信号（milestone_gap）",
       "jobCount": 0,
@@ -96,37 +205,143 @@
       "definition": "负责将世界模型架构高效适配并部署到边缘算力硬件，实现端侧实时推理与自治决策。",
       "standardProfile": {
         "responsibilities": [
-          { "name": "分析边缘算力硬件的并行计算、存储与带宽特性，制定世界模型在端侧部署的算力分配方案", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "根据边缘硬件约束，剪裁、量化或重构世界模型架构，平衡模型精度与推理延迟", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "实现世界模型在边缘设备上的高性能推理，优化算子调度与内存管理", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "搭建硬件在环测试环境，验证世界模型在真实边缘场景下的实时性与可靠性", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "分析边缘算力硬件的并行计算、存储与带宽特性，制定世界模型在端侧部署的算力分配方案",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "根据边缘硬件约束，剪裁、量化或重构世界模型架构，平衡模型精度与推理延迟",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "实现世界模型在边缘设备上的高性能推理，优化算子调度与内存管理",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "搭建硬件在环测试环境，验证世界模型在真实边缘场景下的实时性与可靠性",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ],
         "skills": [
-          { "name": "世界模型架构（T1.02.10）", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "算力硬件（T3.08.04）", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "模型量化、剪枝与重构", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "算子调度与内存管理", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "端侧推理引擎与异构计算", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "硬件在环测试", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "世界模型架构（T1.02.10）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "算力硬件（T3.08.04）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "模型量化、剪枝与重构",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "算子调度与内存管理",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "端侧推理引擎与异构计算",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "硬件在环测试",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ],
         "abilities": [
-          { "name": "算力与精度的权衡分析", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "模型侧与硬件侧的跨层协同优化", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "端侧实时性诊断与瓶颈定位", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "部署方案设计与可靠性验证", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "算力与精度的权衡分析",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "模型侧与硬件侧的跨层协同优化",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "端侧实时性诊断与瓶颈定位",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "部署方案设计与可靠性验证",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ],
         "scenarios": [
-          { "name": "端侧实时推理与自治决策", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "云端世界模型下沉到边缘设备", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "机器人本体的边缘算力平台适配", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "硬件在环的实时性与可靠性验证", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "端侧实时推理与自治决策",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "云端世界模型下沉到边缘设备",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "机器人本体的边缘算力平台适配",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "硬件在环的实时性与可靠性验证",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ],
         "conditions": [
-          { "name": "嵌入式或异构计算相关背景（推演条件）", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "具备模型压缩与端侧部署经验（推演条件）", "count": 0, "coverage": 0, "evidenceOccIds": [] },
-          { "name": "熟悉边缘算力平台与推理引擎（推演条件）", "count": 0, "coverage": 0, "evidenceOccIds": [] }
+          {
+            "name": "嵌入式或异构计算相关背景（推演条件）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "具备模型压缩与端侧部署经验（推演条件）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          },
+          {
+            "name": "熟悉边缘算力平台与推理引擎（推演条件）",
+            "count": 0,
+            "coverage": 0,
+            "evidenceOccIds": []
+          }
         ]
-      }
+      },
+      "placementNote": "落位由 tools/attach_discovery_role_cluster.py 的最近簇分析确定：运行库中「具身智能算法工程师」簇的成员 JD 同时覆盖 T1.02.10 与 T3.08.04（命中 17 次），是唯一两个技术都命中的最强簇；画像图谱按同一判断落到「模型训练优化与部署」。此前由发现管线按 JD 反推得到的「2D视觉与图像算法」与该岗位的技术组合不符，已弃用。"
     }
   ]
 }
