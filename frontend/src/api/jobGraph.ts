@@ -98,7 +98,21 @@ export interface StandardProfilePoint {
   evidenceOccIds: string[]
 }
 
-export interface StandardRole {
+/**
+ * 推演派生岗位的附加标记。只有来自新岗位发现、由 LLM 依候选数据卡生成画像的岗位
+ * 带这几个字段——它们的招聘侧支撑恒为 0，界面必须能把它们与 JD 归纳出的岗位区分开。
+ */
+export interface InferredRoleMarks {
+  origin?: 'inference_derived'
+  candidateCode?: string
+  classification?: string
+  classificationCode?: string
+  gapGrade?: string
+  evidenceSummary?: string
+  definition?: string
+}
+
+export interface StandardRole extends InferredRoleMarks {
   id: string
   code: string
   name: string
@@ -126,7 +140,8 @@ export interface StandardRoleAudit {
   mappedJobCount: number
   pendingJobCount: number
   mappingRate: number
-  rolesWithEvidence: number
+  /** 图谱产物里并不产出这一项，声明为可选，避免界面拿到 undefined 还当数字用。 */
+  rolesWithEvidence?: number
   mappingMethodDistribution: Record<string, number>
 }
 
@@ -270,4 +285,23 @@ export async function loadJobEcosystemGraph(signal?: AbortSignal): Promise<JobEc
   const response = await fetch('/job-ecosystem-graph.json', { signal })
   if (!response.ok) throw new Error(`岗位图谱加载失败（${response.status}）`)
   return response.json() as Promise<JobEcosystemGraph>
+}
+
+/**
+ * 推演派生岗位的五维画像。
+ *
+ * 与 `job-ecosystem-graph.json` 分开存放，而不是并进那份 39MB 的产物里：后者由 Excel
+ * 管线整体重生成，手工塞两条进去下次重跑就没了；分开放才能各自演进。加载失败时按空
+ * 处理——画像图谱缺两条推演岗位仍可用，不该因此整页报错。
+ */
+export async function loadDiscoveryRolePortraits(signal?: AbortSignal): Promise<StandardRole[]> {
+  try {
+    const response = await fetch('/discovery-role-portraits.json', { signal })
+    if (!response.ok) return []
+    const payload = (await response.json()) as { roles?: StandardRole[] }
+    return payload.roles ?? []
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') throw error
+    return []
+  }
 }

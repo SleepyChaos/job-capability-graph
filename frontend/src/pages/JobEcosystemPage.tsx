@@ -1,6 +1,6 @@
 import { AlertTriangle, ArrowLeft, BarChart3, BrainCircuit, BriefcaseBusiness, Building2, CheckCircle2, ChevronDown, ChevronRight, FileText, GitBranch, Landmark, Layers3, ListChecks, MapPinned, Network, RotateCcw, Search, ShieldCheck, Sparkles, Tags, UserRound, WalletCards, Workflow, Wrench } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import { loadJobEcosystemGraph, type EnterpriseRecord, type JobCategory, type JobCluster, type JobDirection, type JobEcosystemGraph, type JobPortrait, type JobRecord, type JobTechnologyNode, type RepresentativeJob, type StandardProfilePoint, type StandardRole } from '../api/jobGraph'
+import { loadDiscoveryRolePortraits, loadJobEcosystemGraph, type EnterpriseRecord, type JobCategory, type JobCluster, type JobDirection, type JobEcosystemGraph, type JobPortrait, type JobRecord, type JobTechnologyNode, type RepresentativeJob, type StandardProfilePoint, type StandardRole } from '../api/jobGraph'
 import { MetricStrip, Panel, StatusTag } from '../components/ui'
 import { IndustryJobGraph } from '../components/IndustryJobGraph'
 import { DiscoveryOverlayPanel } from '../components/DiscoveryOverlayPanel'
@@ -1095,7 +1095,13 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
 
   useEffect(() => {
     const controller = new AbortController()
-    loadJobEcosystemGraph(controller.signal).then(setData).catch((reason: Error) => { if (reason.name !== 'AbortError') setError(reason.message) })
+    // 推演派生岗位在装配阶段就并进 standardRoles，下游的分层树、岗位列表与五维圆图
+    // 因此无需各自判断来源；它们的 jobCount / jdCount 都是 0，不会影响任何计数口径。
+    Promise.all([loadJobEcosystemGraph(controller.signal), loadDiscoveryRolePortraits(controller.signal)])
+      .then(([graph, inferredRoles]) => setData(
+        inferredRoles.length ? { ...graph, standardRoles: [...graph.standardRoles, ...inferredRoles] } : graph,
+      ))
+      .catch((reason: Error) => { if (reason.name !== 'AbortError') setError(reason.message) })
     return () => controller.abort()
   }, [])
 
@@ -1372,7 +1378,9 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
       { label: '岗位事实', value: data.metadata.jobCount.toLocaleString(), delta: 'v4统一底座' },
       { label: '企业映射覆盖', value: `${Math.round(data.enterpriseAnalysis.matchedJobRate * 1000) / 10}%`, delta: `${data.enterpriseAnalysis.pendingJobCount}条待补` },
       { label: '技术映射覆盖', value: `${(data.technologyAudit.mappedJobRate * 100).toFixed(1)}%`, delta: `${data.technologyAudit.pendingJobCount}条待补` },
-      { label: '标准岗位', value: String(data.standardRoleAudit.seedRoleCount), delta: `${data.standardRoleAudit.rolesWithEvidence}个已有JD证据` },
+      // rolesWithEvidence 在图谱产物里根本不存在，此处一直显示成「undefined个已有JD证据」。
+      // 改用产物里确有的归属量：4,655 条 JD 已落到标准岗位上，这也正是这一格该说明的事。
+      { label: '标准岗位', value: String(data.standardRoleAudit.seedRoleCount), delta: `${data.standardRoleAudit.mappedJobCount.toLocaleString()}条JD已归属` },
     ]} />
     {viewMode === 'portrait' ? <div className="portrait-overview-strip" aria-label="岗位分层总览">
       <div className="portrait-overview-item"><i style={{background: data.directions[0]?.color ?? '#1769e0'}} /><strong>{data.directions.length}</strong><span>职业方向</span></div>
@@ -1543,6 +1551,12 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
           }
           className="job-ecosystem-graph-panel portrait-graph-panel"
         >
+          {activeRole?.origin === 'inference_derived' ? <div className="inferred-role-banner">
+            <strong>{activeRole.classification} · 推演派生岗位</strong>
+            <p>本岗位来自新岗位发现，画像由 LLM 依候选数据卡生成，<b>没有 JD 证据支撑</b>——招聘市场上从未出现该技术组合，这正是它作为缺口信号的前提，不是数据缺失。画像点不计入市场热度与岗位证据。</p>
+            <span>{activeRole.evidenceSummary}</span>
+            <button className="secondary-button" onClick={() => activeRole.candidateCode && onNavigate?.('candidate', activeRole.candidateCode)}>查看候选数据卡</button>
+          </div> : null}
           {portraitMiddleGraph}
         </Panel>
         <Panel title={`${standardRoleId ? '多JD证据下钻' : `当前层级 ${portraitScopedRoles.length} 个标准岗位导航`} & 具体岗位列表`} subtitle={standardRoleId ? '点击画像点筛选支持它的岗位，再打开完整JD' : '点击上方岗位可切换中心圆形画像；下方显示当前展示岗位的证据与具体JD（若无画像则只展示导航）'} className="portrait-detail-panel">
@@ -1554,7 +1568,7 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
                   <button key={role.id} className={`role-job-item ${activeRole?.id === role.id ? 'active' : ''}`} onClick={() => selectStandardRole(role.id)}>
                     <span className="role-job-title">{role.name}</span>
                     <span className="role-job-company">{role.directionName} · {role.categoryName}</span>
-                    <span className="role-job-count">{hasValidProfile(role) ? `${role.jobCount} JD · 有画像` : `${role.jobCount} JD`}</span>
+                    <span className="role-job-count">{role.origin === 'inference_derived' ? '推演派生 · 无 JD 支撑' : hasValidProfile(role) ? `${role.jobCount} JD · 有画像` : `${role.jobCount} JD`}</span>
                   </button>
                 ))}
                 {portraitScopedRoles.length > 60 ? <div className="role-jobs-more">剩余 {portraitScopedRoles.length - 60} 个请用左侧分层树或顶部筛选定位。</div> : null}
