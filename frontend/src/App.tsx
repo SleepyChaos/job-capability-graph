@@ -193,7 +193,7 @@ export default function App() {
     case 'job-graph': content = <JobEcosystemPage key="industry" fixedView="industry" />; break
     case 'industry-job-graph': content = <JobEcosystemPage key="industry" fixedView="industry" />; break
     case 'technology-job-graph': content = <JobEcosystemPage key="technology" fixedView="technology" />; break
-    case 'job-portrait-graph': content = <JobEcosystemPage key="portrait" fixedView="portrait" />; break
+    case 'job-portrait-graph': content = <JobEcosystemPage key="portrait" fixedView="portrait" onNavigate={setPage} />; break
     case 'job-discovery': content = <JobDiscoveryPage />; break
     case 'tech-to-role': content = <TechToRolePage />; break
     case 'graph-heatmap': content = <GraphHeatmapPage notify={notify} />; break

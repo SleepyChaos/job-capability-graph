@@ -5,6 +5,8 @@ import { MetricStrip, Panel, StatusTag } from '../components/ui'
 import { IndustryJobGraph } from '../components/IndustryJobGraph'
 import { DiscoveryOverlayPanel } from '../components/DiscoveryOverlayPanel'
 import { fetchDiscoveryOverlay, type DiscoveryCandidate, type DiscoveryOverlay } from '../api/newRoleDiscovery'
+import { classificationColor } from '../api/discovery'
+import type { PageId } from '../types'
 
 type PositionedNode = {
   id: string
@@ -1024,7 +1026,7 @@ function PortraitDetail({ job, cluster, dimension }: { job: RepresentativeJob; c
   </div>
 }
 
-export function JobEcosystemPage({ fixedView }: { fixedView?: ViewMode }) {
+export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMode; onNavigate?: (page: PageId, param?: string | null) => void }) {
   const routeParams = jobGraphRouteParams()
   const routeView = routeParams.get('view')
   const routeRoleId = routeParams.get('role')
@@ -1142,13 +1144,15 @@ export function JobEcosystemPage({ fixedView }: { fixedView?: ViewMode }) {
   const [discovery, setDiscovery] = useState<DiscoveryOverlay | null>(null)
   const [discoveryError, setDiscoveryError] = useState('')
   useEffect(() => {
-    if (!showDiscovery || discovery) return
+    // 画像视图的分层导航下常驻一份新岗位发现清单，因此进入该视图就要取数，
+    // 不能只在勾选叠加时才取——否则那份清单会一直停在「正在加载推演结果…」。
+    if ((!showDiscovery && viewMode !== 'portrait') || discovery) return
     const controller = new AbortController()
     fetchDiscoveryOverlay(controller.signal)
       .then(setDiscovery)
       .catch((reason: Error) => { if (reason.name !== 'AbortError') setDiscoveryError(reason.message) })
     return () => controller.abort()
-  }, [showDiscovery, discovery])
+  }, [showDiscovery, discovery, viewMode])
 
   /** 画像视图：按当前方向 / 岗位簇筛出候选。 */
   const portraitCandidates = useMemo<DiscoveryCandidate[]>(() => {
@@ -1160,6 +1164,30 @@ export function JobEcosystemPage({ fixedView }: { fixedView?: ViewMode }) {
     if (directionName) return placed.filter((item) => item.portraitDirectionName === directionName)
     return placed
   }, [data, discovery, showDiscovery, clusterId, directionId])
+
+  /**
+   * 分层导航下方那份新岗位发现清单。
+   *
+   * **不跟随「叠加新岗位发现」开关。** 那个开关控制的是图上要不要画候选，而这里是
+   * 一个跳转入口——开关关着时列表也该在，否则用户得先想起去勾一个图层开关才能找到
+   * 新岗位。选中方向或岗位簇时按同一套落位规则收窄，未选则给全量。
+   *
+   * 排序把外部证据类（研究侧 / 产业里程碑）放前面：它们才是「招聘市场上还没有」的
+   * 提议，也是这个入口要让人一眼看到的东西；库内四类同分时按证据分降序。
+   */
+  const discoveryNavItems = useMemo<DiscoveryCandidate[]>(() => {
+    if (!data || !discovery) return []
+    const clusterName = data.clusters.find((item) => item.id === clusterId)?.name
+    const directionName = data.directions.find((item) => item.id === directionId)?.name
+    const scoped = clusterName
+      ? discovery.candidates.filter((item) => item.portraitClusterName === clusterName)
+      : directionName
+        ? discovery.candidates.filter((item) => item.portraitDirectionName === directionName)
+        : discovery.candidates
+    const externalFirst = (item: DiscoveryCandidate) =>
+      item.classificationCode === 'upstream_signal' || item.classificationCode === 'milestone_signal' ? 0 : 1
+    return [...scoped].sort((a, b) => externalFirst(a) - externalFirst(b) || b.score - a.score)
+  }, [data, discovery, clusterId, directionId])
 
   /** 当前技术节点（含其所有下级）名下的候选。 */
   const technologyCandidates = useMemo<DiscoveryCandidate[]>(() => {
@@ -1436,6 +1464,23 @@ export function JobEcosystemPage({ fixedView }: { fixedView?: ViewMode }) {
                 </div> : null}
               </div>
             })}
+          </div>
+          {/* 新岗位发现清单与上方分层导航同列但明确隔开：分层导航是已观测到的岗位事实，
+              这里是尚未入库的推演提议，两者不能混进同一棵树，否则读者分不清哪个是事实。 */}
+          <div className="portrait-discovery-nav">
+            <div className="portrait-discovery-nav-heading">
+              <strong>新岗位发现</strong>
+              <span>{discovery ? `${discoveryNavItems.length} 条 · 点击查看岗位数据卡` : '正在加载推演结果…'}</span>
+            </div>
+            {discovery && discoveryNavItems.length ? <div className="portrait-discovery-nav-list">
+              {discoveryNavItems.map((item) => (
+                <button key={item.candidateCode} onClick={() => onNavigate?.('candidate', item.candidateCode)} title={item.definition || item.name}>
+                  <i style={{ background: classificationColor[item.classificationCode]?.dot ?? '#94a3b8' }} />
+                  <span>{item.name}<small>{item.classification}{item.gapGrade ? ` · ${item.gapGrade === 'A' ? '缺口显著' : '缺口存疑'}` : ''}</small></span>
+                  <em>{item.score.toFixed(2)}</em>
+                </button>
+              ))}
+            </div> : discovery ? <div className="tree-empty">当前方向或岗位簇下没有推演候选</div> : null}
           </div>
         </Panel>
         <Panel
