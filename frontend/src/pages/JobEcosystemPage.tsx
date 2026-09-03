@@ -1143,6 +1143,8 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
   const [showDiscovery, setShowDiscovery] = useState(false)
   const [discovery, setDiscovery] = useState<DiscoveryOverlay | null>(null)
   const [discoveryError, setDiscoveryError] = useState('')
+  /** 清单点选后要在叠加面板里定位到的候选。 */
+  const [highlightedCandidate, setHighlightedCandidate] = useState<string | null>(null)
   useEffect(() => {
     // 画像视图的分层导航下常驻一份新岗位发现清单，因此进入该视图就要取数，
     // 不能只在勾选叠加时才取——否则那份清单会一直停在「正在加载推演结果…」。
@@ -1217,6 +1219,28 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
     if (next) { setDirectionId(next.directionId); setCategoryId(next.categoryId) }
     setClusterId(id); setStandardRoleId(null); setSelectedProfilePoint(null); setEvidenceJobId(null); setClusterJobPage(0); setClusterJobQuery('')
   }
+  /**
+   * 从分层导航下的清单点进某条候选：留在本图定位，而不是跳去别的页面。
+   *
+   * 三步——打开叠加（否则候选在图上和面板里都不出现）、按落位名把图钻到对应
+   * 岗位簇或方向、把该条标为高亮供叠加面板滚动定位。未落位的候选（招聘市场上
+   * 没有同时命中其全部技术点的 JD）没有对应簇，此时清空层级筛选回到全量，
+   * 由叠加面板说明它为什么不在图上，而不是静默什么都不发生。
+   */
+  const locateCandidateInPortrait = (item: DiscoveryCandidate) => {
+    setShowDiscovery(true)
+    setHighlightedCandidate(item.candidateCode)
+    const cluster = item.portraitClusterName
+      ? data?.clusters.find((entry) => entry.name === item.portraitClusterName)
+      : undefined
+    if (cluster) { selectCluster(cluster.id); return }
+    const direction = item.portraitDirectionName
+      ? data?.directions.find((entry) => entry.name === item.portraitDirectionName)
+      : undefined
+    if (direction) { selectDirection(direction.id); return }
+    selectDirection(null)
+  }
+
   const selectStandardRole = (id: string | null) => {
     const next = data?.standardRoles.find((item) => item.id === id)
     if (next) {
@@ -1470,11 +1494,16 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
           <div className="portrait-discovery-nav">
             <div className="portrait-discovery-nav-heading">
               <strong>新岗位发现</strong>
-              <span>{discovery ? `${discoveryNavItems.length} 条 · 点击在关联图谱中定位` : '正在加载推演结果…'}</span>
+              <span>{discovery ? `${discoveryNavItems.length} 条 · 点击在本图定位` : '正在加载推演结果…'}</span>
             </div>
             {discovery && discoveryNavItems.length ? <div className="portrait-discovery-nav-list">
               {discoveryNavItems.map((item) => (
-                <button key={item.candidateCode} onClick={() => onNavigate?.('graph-relations', `candidate:${item.candidateCode}`)} title={item.definition || item.name}>
+                <button
+                  key={item.candidateCode}
+                  className={`${highlightedCandidate === item.candidateCode ? 'active' : ''}${item.portraitClusterName ? '' : ' unplaced'}`}
+                  onClick={() => locateCandidateInPortrait(item)}
+                  title={item.portraitClusterName ? item.definition || item.name : `${item.name}（未归位：招聘市场中没有同时命中其全部技术点的 JD）`}
+                >
                   <i style={{ background: classificationColor[item.classificationCode]?.dot ?? '#94a3b8' }} />
                   <span>{item.name}<small>{item.classification}{item.gapGrade ? ` · ${item.gapGrade === 'A' ? '缺口显著' : '缺口存疑'}` : ''}</small></span>
                   <em>{item.score.toFixed(2)}</em>
@@ -1565,6 +1594,8 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
               ? `岗位簇由招聘文本反推：只有同时命中候选全部技术点的 JD 才计入，据此定位到 ${discovery.metadata.portraitPlacedCount} 条候选。放宽到命中任意一个技术点会让结果失去意义——泛泛提及大量技术词的 JD 会主导匹配。其余 ${discovery.metadata.candidateCount - discovery.metadata.portraitPlacedCount} 条没有这样的 JD，不做归位。`
               : undefined}
             items={portraitCandidates}
+            highlightCode={highlightedCandidate}
+            unplacedNote="该候选没有归位到任何岗位簇：招聘市场中没有同时命中其全部技术点的 JD——这正是它作为缺口信号的前提。"
             loading={!discovery}
             error={discoveryError}
             empty="该范围内暂无可归位的岗位提议。"

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { classificationColor } from '../api/discovery'
 import type { DiscoveryCandidate } from '../api/newRoleDiscovery'
 import { Panel } from './ui'
@@ -17,6 +18,8 @@ export function DiscoveryOverlayPanel({
   loading,
   error,
   empty,
+  highlightCode,
+  unplacedNote,
 }: {
   title: string
   subtitle: string
@@ -25,7 +28,17 @@ export function DiscoveryOverlayPanel({
   loading: boolean
   error: string
   empty: string
+  /** 由外部清单点选的候选，滚动定位并高亮。 */
+  highlightCode?: string | null
+  /** 点选的候选不在 `items` 里时的说明——它没有归位，不是面板漏了。 */
+  unplacedNote?: string
 }) {
+  const highlightRef = useRef<HTMLButtonElement | null>(null)
+  useEffect(() => {
+    // 面板可能有几十条，命中项常常在滚动区外；不滚过去的话点了像是没反应。
+    highlightRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  }, [highlightCode, items])
+  const highlightMissing = Boolean(highlightCode) && !items.some((item) => item.candidateCode === highlightCode)
   return (
     <Panel className="discovery-overlay-panel" title={title} subtitle={subtitle}>
       {error ? (
@@ -33,13 +46,16 @@ export function DiscoveryOverlayPanel({
       ) : loading ? (
         <div className="empty-state"><span>加载中…</span></div>
       ) : items.length === 0 ? (
-        <div className="empty-state"><span>{empty}</span></div>
+        <div className="empty-state"><span>{highlightMissing && unplacedNote ? unplacedNote : empty}</span></div>
       ) : (
         <>
+          {highlightMissing && unplacedNote ? <p className="discovery-overlay-unplaced">{unplacedNote}</p> : null}
           <div className="discovery-overlay-list">
             {items.map((item) => (
               <button
                 key={item.candidateCode}
+                ref={item.candidateCode === highlightCode ? highlightRef : undefined}
+                className={item.candidateCode === highlightCode ? 'highlighted' : undefined}
                 onClick={() => { window.location.hash = `/candidate/${encodeURIComponent(item.candidateCode)}` }}
               >
                 <div className="discovery-overlay-head">
