@@ -5,8 +5,21 @@ import { MetricStrip, Panel, StatusTag } from '../components/ui'
 import { IndustryJobGraph } from '../components/IndustryJobGraph'
 import { DiscoveryOverlayPanel } from '../components/DiscoveryOverlayPanel'
 import { fetchDiscoveryOverlay, type DiscoveryCandidate, type DiscoveryOverlay } from '../api/newRoleDiscovery'
-import { classificationColor } from '../api/discovery'
+import { classificationColor, discoveryApi } from '../api/discovery'
 import type { PageId } from '../types'
+
+/**
+ * 把一条画像文本包成画像点。
+ *
+ * `count` / `coverage` / `evidenceOccIds` 一律留空：推演岗位的画像没有 JD 证据支撑，
+ * 给它们填数就是把生成的文字伪装成观测事实。
+ */
+const toProfilePoint = (name: string): StandardProfilePoint => ({
+  name,
+  count: 0,
+  coverage: 0,
+  evidenceOccIds: [],
+})
 
 type PositionedNode = {
   id: string
@@ -1097,10 +1110,33 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
     const controller = new AbortController()
     // 推演派生岗位在装配阶段就并进 standardRoles，下游的分层树、岗位列表与五维圆图
     // 因此无需各自判断来源；它们的 jobCount / jdCount 都是 0，不会影响任何计数口径。
-    Promise.all([loadJobEcosystemGraph(controller.signal), loadDiscoveryRolePortraits(controller.signal)])
-      .then(([graph, inferredRoles]) => setData(
-        inferredRoles.length ? { ...graph, standardRoles: [...graph.standardRoles, ...inferredRoles] } : graph,
-      ))
+    // 画像内容以后端为准、静态文件为兜底：画像由 LLM 生成后写在标准 JD 里，重跑一次
+    // 就该在图上更新，不应再要求手工改前端文件。而落位（方向/种类/簇）仍取自静态文件——
+    // 那是 Excel 图谱的命名空间，后端的聚类不是同一套 id，换不过来。
+    Promise.all([
+      loadJobEcosystemGraph(controller.signal),
+      loadDiscoveryRolePortraits(controller.signal),
+      discoveryApi.rolePortraits(controller.signal).catch(() => ({ total: 0, items: [] })),
+    ])
+      .then(([graph, inferredRoles, served]) => {
+        const byCandidate = new Map(served.items.map((item) => [item.candidate_code, item.portrait]))
+        const merged = inferredRoles.map((role) => {
+          const portrait = role.candidateCode ? byCandidate.get(role.candidateCode) : undefined
+          if (!portrait) return role
+          return {
+            ...role,
+            profileMethod: `${portrait.provenance.generated_by} · ${portrait.provenance.prompt_version} · 无 JD 证据支撑`,
+            standardProfile: {
+              responsibilities: portrait.responsibilities.map(toProfilePoint),
+              skills: portrait.skills.map(toProfilePoint),
+              abilities: portrait.abilities.map(toProfilePoint),
+              scenarios: portrait.scenarios.map(toProfilePoint),
+              conditions: portrait.conditions.map(toProfilePoint),
+            },
+          }
+        })
+        setData(merged.length ? { ...graph, standardRoles: [...graph.standardRoles, ...merged] } : graph)
+      })
       .catch((reason: Error) => { if (reason.name !== 'AbortError') setError(reason.message) })
     return () => controller.abort()
   }, [])

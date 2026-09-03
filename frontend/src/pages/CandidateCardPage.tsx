@@ -8,6 +8,7 @@ import {
   Layers,
   RefreshCw,
   ShieldAlert,
+  Sparkles,
 } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import {
@@ -69,6 +70,7 @@ export function CandidateCardPage({
   const [showEvidence, setShowEvidence] = useState(false)
   const [evidence, setEvidence] = useState<CandidateEvidencePage | null>(null)
   const [evidenceLoading, setEvidenceLoading] = useState(false)
+  const [portraitRunning, setPortraitRunning] = useState(false)
 
   const load = useCallback(
     (signal?: AbortSignal) => {
@@ -721,6 +723,30 @@ export function CandidateCardPage({
         >
           <Network size={15} /> 在关联图谱中查看
         </button>
+        {/* 画像写在标准 JD 上，未入库的候选没有这个载体，按钮也就无处落脚。 */}
+        {candidate.workflow_status_code === 'approved' ? (
+          <button
+            className="secondary-button"
+            disabled={portraitRunning}
+            onClick={async () => {
+              setPortraitRunning(true)
+              try {
+                const portrait = await discoveryApi.autoPortrait(candidate.candidate_code, 'admin-demo')
+                notify(
+                  `五维画像已生成（${portrait.provenance.generated_by}）：技能 ${portrait.skills.length} · ` +
+                  `能力 ${portrait.abilities.length} · 场景 ${portrait.scenarios.length} · 条件 ${portrait.conditions.length}，` +
+                  '可在岗位画像图谱查看',
+                )
+              } catch (reason) {
+                notify(`画像生成失败：${(reason as Error).message}`)
+              } finally {
+                setPortraitRunning(false)
+              }
+            }}
+          >
+            <Sparkles size={15} /> {portraitRunning ? '生成中…' : '生成五维画像'}
+          </button>
+        ) : null}
         {detail.review_task_code && candidate.workflow_status_code === 'pending' ? (
           <button
             className="primary-button"

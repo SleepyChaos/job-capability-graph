@@ -318,6 +318,48 @@ export const discoveryApi = {
       { 'X-Reviewer-Code': reviewerCode },
     )
   },
+  /** 生成五维画像。只对已入库、已有标准 JD 的候选可用。 */
+  autoPortrait(candidateCode: string, reviewerCode: string) {
+    return sendJson<RolePortrait>(
+      'POST',
+      `/role-discovery/candidates/${encodeURIComponent(candidateCode)}/portrait/auto`,
+      {},
+      { 'X-Reviewer-Code': reviewerCode },
+    )
+  },
+  /** 已入库推演岗位的画像清单，供岗位画像图谱叠加。 */
+  rolePortraits(signal?: AbortSignal) {
+    return getJson<RolePortraitPage>('/role-discovery/role-portraits', signal)
+  },
+}
+
+/**
+ * 推演派生岗位的五维画像。
+ *
+ * 职责维取标准 JD 的核心职责（事实），其余四维由 LLM 依事实卡扩写；`provenance`
+ * 记录是哪个模型、哪版提示词写的，以及「无 JD 证据」这条必须随画像一起呈现的说明。
+ */
+export interface RolePortrait {
+  responsibilities: string[]
+  skills: string[]
+  abilities: string[]
+  scenarios: string[]
+  conditions: string[]
+  provenance: { generated_by: string; prompt_version: string; generated_at: string; evidence_note: string }
+}
+
+export interface RolePortraitPage {
+  total: number
+  items: {
+    candidate_code: string
+    role_code: string
+    name: string
+    definition: string | null
+    classification_code: string
+    gap_grade: string | null
+    candidate_score: number
+    portrait: RolePortrait
+  }[]
 }
 
 export const maturityStageLabels: Record<string, string> = {
