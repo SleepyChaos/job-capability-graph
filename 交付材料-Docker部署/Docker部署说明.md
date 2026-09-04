@@ -134,7 +134,7 @@ Required test coverage of 60.0% reached. Total coverage: 78.79%
 ```
 
 只挂 `backend` 时为 4 failed + 6 errors、覆盖率 72.48%；补齐三个挂载后全部转绿、升至 78.79%。
-交付材料与 HTML 报告见根目录 `交付材料-软件模块/`。
+测试材料与 HTML 报告见根目录 `交付材料-测试/`。
 
 ## 6. 停止与清理
 
