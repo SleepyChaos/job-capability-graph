@@ -1,0 +1,66 @@
+........................................................................ [ 44%]
+........................................................................ [ 89%]
+.................                                                        [100%]
+=============================== warnings summary ===============================
+../../usr/local/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../../usr/local/lib/python3.11/site-packages/starlette/testclient.py:53
+  /usr/local/lib/python3.11/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.11.16-final-0 _______________
+
+Name                                          Stmts   Miss  Cover   Missing
+---------------------------------------------------------------------------
+app/api/auth.py                                  38     14    63%   30-38, 52-56, 68-71
+app/api/clustering.py                           267    127    52%   180-199, 204, 224-257, 271-403, 441-497, 502-583, 614-629, 633-643, 647, 663, 678, 692, 705-721
+app/api/data_center.py                          339     46    86%   203-205, 214, 221, 230, 240, 242, 263-268, 301, 306-307, 314-323, 353, 356-357, 373-391, 449-454, 496, 505-507, 573
+app/api/discovery.py                            179     90    50%   104-117, 135-139, 155-158, 171-177, 203-243, 272-295, 333-380, 411-422, 437-447, 457-471, 481-485, 499-502, 512-541
+app/api/graphs.py                               104     47    55%   28, 55-76, 89-100, 108-111, 122-131, 140-143, 157-168, 179-188, 233-302
+app/api/job_parsing.py                          145      4    97%   142, 165, 247, 289
+app/api/jobs.py                                 157     21    87%   201-202, 210, 212, 214, 218, 306, 327, 347-361, 365-372, 390-394, 427-428
+app/api/organizations.py                        150     90    40%   83-149, 162-241, 252-315, 335-361
+app/api/talent.py                                82     30    63%   54-57, 62, 79-96, 101, 107, 113, 118, 127, 136, 145, 162, 176, 191, 202, 214, 220
+app/api/taxonomy.py                             175     71    59%   88, 95, 177, 179-180, 271-397, 412-506
+app/core/logging.py                              17      2    88%   17, 19
+app/db/session.py                                21      4    81%   14-17
+app/modules/clustering/algorithm.py             289     16    94%   104, 115, 323-328, 354-358, 379-380, 436, 463
+app/modules/clustering/service.py               473     58    88%   113, 127, 139-146, 287, 289, 292, 295, 298, 313-315, 330-341, 422, 490, 498-499, 513-514, 593, 652, 838, 870, 872, 981-986, 1023-1037, 1042, 1111, 1119, 1281, 1306, 1316
+app/modules/data_center/service.py              185     22    88%   81, 104, 113, 135, 141, 143, 146, 158, 170, 310, 312, 315, 318, 336-342, 434-435
+app/modules/discovery/algorithm.py              123      3    98%   235, 245, 247
+app/modules/discovery/foresight.py               91     10    89%   118, 156, 180-181, 207, 222, 225-227, 232
+app/modules/discovery/itemsets.py                74      5    93%   74, 76, 104-106
+app/modules/discovery/service.py                696    161    77%   164, 167, 169, 180, 190, 272-280, 293, 296, 304, 308, 311-312, 318, 413, 415, 426, 449-476, 509-543, 548-603, 608-609, 620-623, 646-649, 653-750, 754-768, 819, 936, 939, 986, 1067, 1174-1184, 1243, 1268, 1270, 1274, 1287-1290, 1328-1331, 1368, 1409-1410, 1473-1477, 1498-1501, 1519-1521, 1556-1559, 1571, 1906, 1914, 2010, 2012, 2034-2035, 2039, 2043, 2172, 2179, 2205, 2337, 2463
+app/modules/extraction/job_structure.py         147      5    97%   153, 166, 173, 208, 248
+app/modules/extraction/near_duplicate.py         78      2    97%   43, 46
+app/modules/graph/inference.py                  137     16    88%   43, 70-71, 95, 97, 103, 106, 137, 140, 142, 177-178, 180-183, 187, 202
+app/modules/graph/role_inference.py             189     25    87%   45-50, 56, 61-63, 81-91, 106, 120-124, 241, 243, 245, 320
+app/modules/graph/service.py                    763    293    62%   82, 84, 86, 88, 96-98, 134-141, 176-221, 246-374, 392-396, 529, 531, 533, 535, 537, 547, 557-566, 595, 653, 722, 740-749, 769-773, 828-829, 887, 889, 891, 980, 983, 989-990, 995, 1014, 1101, 1145, 1197, 1263, 1266, 1399, 1424-1431, 1468, 1470, 1496, 1499, 1502, 1507, 1592-1599, 1630, 1632, 1647-1649, 1657-1675, 1692-1946, 1988-2045
+app/modules/ingestion/service.py                106      6    94%   29, 32, 94, 104, 113-114
+app/modules/ingestion/web_crawler.py            169     22    87%   46, 53-57, 64-65, 88, 97, 117-119, 136-139, 167, 184-188, 236
+app/modules/job/extraction_service.py            52      1    98%   145
+app/modules/job/llm_reassessment_service.py     254     39    85%   91, 93, 98, 102, 104, 130-134, 159-168, 269-270, 272, 277, 352-355, 407, 412, 415-416, 418, 441, 531-553, 615
+app/modules/job/parsing_service.py              282     12    96%   167, 187, 208, 359, 382-390, 405, 740
+app/modules/job/service.py                      288     20    93%   123-124, 148, 164, 185, 382, 389-390, 394, 396, 400, 402, 404, 406, 409, 411-413, 575, 687
+app/modules/organization/ingest.py              486    486     0%   22-904
+app/modules/organization/service.py              98     98     0%   11-330
+app/modules/talent/acquisition.py               150      4    97%   249, 271, 368, 371
+app/modules/talent/evaluation.py                 97      4    96%   82, 85-86, 119
+app/modules/talent/evidence_state.py             56      8    86%   95, 101, 107, 115, 149, 162-163, 165
+app/modules/talent/job_graph_bridge.py          107      8    93%   15, 19, 107, 111, 135, 209, 223, 227
+app/modules/talent/requirement_dsl.py           203     24    88%   55, 60, 62, 65, 68, 71, 74, 77, 79, 84, 88-89, 92, 95, 145, 162, 207-209, 273, 291, 299, 304, 373
+app/modules/talent/resume_adapter.py             70     15    79%   51, 64, 76-82, 90-91, 94-97, 100, 110
+app/modules/talent/resume_extraction.py         122     13    89%   41, 284, 306, 309-310, 317, 326, 332, 340, 345, 355, 357, 364
+app/modules/talent/service.py                  1350    294    78%   373, 375, 441, 452, 455, 466, 478, 480, 565-578, 586-603, 607-613, 618-645, 649, 680, 683, 687, 756, 814, 961, 1093-1106, 1119, 1122-1123, 1134, 1165, 1173, 1202, 1238-1313, 1394, 1428, 1513-1514, 1532-1533, 1543, 1602, 1636, 1662, 1667, 1957-1972, 1981-1983, 1987-2016, 2020-2033, 2065-2089, 2101, 2137, 2140, 2150, 2154, 2213, 2269, 2286-2288, 2327, 2356, 2373, 2440, 2454, 2463, 2515, 2529, 2533, 2543, 2546-2558, 2565, 2570-2578, 2622, 2640, 2737-2738, 2870-2883, 2938-2940, 2945, 2962-2964, 3029, 3063, 3092-3093, 3124-3127, 3255, 3308, 3329, 3391-3392, 3423, 3458-3498, 3533, 3538, 3554, 3562, 3598, 3638, 3649, 3651, 3665, 3673, 3679, 3683, 3697-3702, 3726, 3730, 3784, 3795-3797, 3908-3909, 3969, 3987, 3996, 4003
+app/modules/taxonomy/service.py                 196     16    92%   111, 118-120, 275, 277, 281, 287, 298, 308, 310, 321, 326, 336, 410, 416
+---------------------------------------------------------------------------
+TOTAL                                         10522   2232    79%
+
+31 files skipped due to complete coverage.
+Coverage HTML written to dir /tmp/htmlcov
+Required test coverage of 60.0% reached. Total coverage: 78.79%
+161 passed, 2 warnings in 205.55s (0:03:25)
