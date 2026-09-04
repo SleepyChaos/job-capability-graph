@@ -1,0 +1,10 @@
+{
+  "mapping_code": "institution_20260810_v1",
+  "mapping_version": "1.0.0",
+  "source_workbook": "科技人才库与机构库_20260731.xlsx",
+  "source_sheet": "机构库",
+  "external_key": "机构ID",
+  "target": "md_organization",
+  "merge_strategy": "representative_name_and_alias",
+  "personal_data_excluded": true
+}

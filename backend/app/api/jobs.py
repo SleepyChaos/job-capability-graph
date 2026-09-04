@@ -101,7 +101,12 @@ def duplicate_group_subquery():
 def job_summary(db: Annotated[Session, Depends(get_db)]) -> JobSummaryResponse:
     return JobSummaryResponse(
         total_jobs=db.scalar(select(func.count()).select_from(JobPosting)) or 0,
-        organization_count=db.scalar(select(func.count()).select_from(Organization)) or 0,
+        organization_count=db.scalar(
+            select(func.count(func.distinct(JobPosting.organization_id))).where(
+                JobPosting.organization_id.is_not(None)
+            )
+        )
+        or 0,
         source_count=db.scalar(select(func.count()).select_from(DataSource)) or 0,
         unique_content_count=db.scalar(
             select(func.count(func.distinct(SourceDocumentVersion.content_hash)))

@@ -2,10 +2,11 @@ import { Download, Eye, Plus, RefreshCw, Search, ShieldAlert, TableProperties } 
 import { useCallback, useEffect, useState } from 'react'
 import { dataCenterApi, type MilestoneItem } from '../api/dataCenter'
 import { jobsApi, type JobDetail, type JobListItem, type JobSummary } from '../api/jobs'
+import { organizationsApi, type OrganizationListItem, type OrganizationSummary } from '../api/organizations'
 import { taxonomyApi, type TechnologyNode } from '../api/taxonomy'
 import { MetricStrip, Modal, Panel, StatusTag } from '../components/ui'
 
-type DatasetId = 'jd' | 'terms' | 'milestones' | 'documents'
+type DatasetId = 'jd' | 'organizations' | 'terms' | 'milestones' | 'documents'
 const PAGE_SIZE = 50
 
 const milestoneStatusLabels: Record<string, string> = {
@@ -20,6 +21,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
   const [dataset, setDataset] = useState<DatasetId>('jd')
   const [query, setQuery] = useState(initialQuery)
   const [summary, setSummary] = useState<JobSummary | null>(null)
+  const [organizationSummary, setOrganizationSummary] = useState<OrganizationSummary | null>(null)
   const [termTotal, setTermTotal] = useState(0)
   const [milestoneTotal, setMilestoneTotal] = useState(0)
 
@@ -27,6 +29,10 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
   const [jobTotal, setJobTotal] = useState(0)
   const [jobOffset, setJobOffset] = useState(0)
   const [jobDetail, setJobDetail] = useState<JobDetail | null>(null)
+
+  const [organizations, setOrganizations] = useState<OrganizationListItem[]>([])
+  const [organizationTotal, setOrganizationTotal] = useState(0)
+  const [organizationOffset, setOrganizationOffset] = useState(0)
 
   const [terms, setTerms] = useState<TechnologyNode[]>([])
   const [termOffset, setTermOffset] = useState(0)
@@ -44,11 +50,13 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
     const controller = new AbortController()
     Promise.all([
       jobsApi.summary(controller.signal),
+      organizationsApi.summary(controller.signal),
       taxonomyApi.nodes({ limit: 1 }, controller.signal),
       dataCenterApi.milestones({ limit: 1 }, controller.signal),
     ])
-      .then(([jobSummary, termPage, milestonePage]) => {
+      .then(([jobSummary, orgSummary, termPage, milestonePage]) => {
         setSummary(jobSummary)
+        setOrganizationSummary(orgSummary)
         setTermTotal(termPage.total)
         setMilestoneTotal(milestonePage.total)
       })
@@ -61,6 +69,8 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
     setError('')
     const task = dataset === 'jd'
       ? jobsApi.list({ search: query || undefined, limit: PAGE_SIZE, offset: jobOffset }, signal).then((page) => { setJobs(page.items); setJobTotal(page.total) })
+      : dataset === 'organizations'
+        ? organizationsApi.list({ search: query || undefined, limit: PAGE_SIZE, offset: organizationOffset }, signal).then((page) => { setOrganizations(page.items); setOrganizationTotal(page.total) })
       : dataset === 'terms'
         ? taxonomyApi.nodes({ search: query || undefined, limit: PAGE_SIZE, offset: termOffset }, signal).then((page) => { setTerms(page.items); setTermTotal(page.total) })
         : dataset === 'milestones'
@@ -69,7 +79,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
     task
       .catch((reason: Error) => { if (reason.name !== 'AbortError') setError(reason.message) })
       .finally(() => setLoading(false))
-  }, [dataset, query, jobOffset, termOffset])
+  }, [dataset, query, jobOffset, organizationOffset, termOffset])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -85,10 +95,11 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
     }
   }
 
-  const switchDataset = (next: DatasetId) => { setDataset(next); setQuery(''); setJobOffset(0); setTermOffset(0) }
+  const switchDataset = (next: DatasetId) => { setDataset(next); setQuery(''); setJobOffset(0); setOrganizationOffset(0); setTermOffset(0) }
 
   const datasetTabs: { id: DatasetId; label: string; count: string }[] = [
     { id: 'jd', label: 'JD 库', count: (summary?.total_jobs ?? 0).toLocaleString() },
+    { id: 'organizations', label: '机构库', count: (organizationSummary?.total ?? 0).toLocaleString() },
     { id: 'terms', label: '技术词库', count: termTotal.toLocaleString() },
     { id: 'milestones', label: '里程碑事件', count: milestoneTotal.toLocaleString() },
     { id: 'documents', label: '原始文档', count: '待接入' },
@@ -105,9 +116,9 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
       </div>
 
       <MetricStrip items={[
-        { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家机构` },
+        { label: '正式 JD', value: (summary?.total_jobs ?? 0).toLocaleString(), delta: `${summary?.organization_count ?? 0} 家招聘企业` },
+        { label: '机构主数据', value: (organizationSummary?.total ?? 0).toLocaleString(), delta: `${organizationSummary?.enterprise_count ?? 0} 家企业` },
         { label: '技术词记录', value: termTotal.toLocaleString(), delta: 'L1–L4' },
-        { label: '里程碑事件', value: milestoneTotal.toLocaleString(), delta: '待真实采集补入' },
         { label: '技术证据条目', value: (summary?.requirement_count ?? 0).toLocaleString(), delta: `${summary?.duplicate_group_count ?? 0} 个重复簇` },
       ]} />
 
@@ -138,6 +149,30 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
                   <button className="secondary-button" disabled={jobOffset === 0} onClick={() => setJobOffset((value) => Math.max(0, value - PAGE_SIZE))}>上一页</button>
                   <span>{jobOffset + 1}–{Math.min(jobOffset + PAGE_SIZE, jobTotal)} / {jobTotal.toLocaleString()}</span>
                   <button className="secondary-button" disabled={jobOffset + PAGE_SIZE >= jobTotal} onClick={() => setJobOffset((value) => value + PAGE_SIZE)}>下一页</button>
+                </div>
+              </>
+            ) : null}
+
+            {dataset === 'organizations' ? (
+              <>
+                <table className="data-table management-table">
+                  <thead><tr><th>机构ID / 名称</th><th>类型</th><th>地区</th><th>产业领域</th><th>数据来源</th><th>关联 JD</th><th>链接</th></tr></thead>
+                  <tbody>{organizations.map((organization) => (
+                    <tr key={organization.organization_code}>
+                      <td><strong>{organization.name}</strong><small>{organization.institution_ids.join('、') || organization.organization_code}</small></td>
+                      <td><StatusTag tone={organization.organization_type === 'enterprise' ? 'info' : 'neutral'}>{({ enterprise: '企业', university: '高校', research_institute: '科研院所', government_public: '政府/事业', other: '其他' } as Record<string, string>)[organization.organization_type] ?? organization.organization_type}</StatusTag></td>
+                      <td>{[organization.country === 'CN' ? '中国' : organization.country, organization.province, organization.city].filter(Boolean).join(' · ') || '—'}</td>
+                      <td>{organization.industry ?? '—'}</td>
+                      <td>{organization.source ?? '—'}</td>
+                      <td>{organization.job_count} 条</td>
+                      <td>{organization.website_url ? <a href={organization.website_url} target="_blank" rel="noreferrer">官网</a> : '—'}{organization.recruitment_url ? <><span> · </span><a href={organization.recruitment_url} target="_blank" rel="noreferrer">招聘</a></> : null}</td>
+                    </tr>
+                  ))}</tbody>
+                </table>
+                <div className="pagination-row">
+                  <button className="secondary-button" disabled={organizationOffset === 0} onClick={() => setOrganizationOffset((value) => Math.max(0, value - PAGE_SIZE))}>上一页</button>
+                  <span>{organizationOffset + 1}–{Math.min(organizationOffset + PAGE_SIZE, organizationTotal)} / {organizationTotal.toLocaleString()}</span>
+                  <button className="secondary-button" disabled={organizationOffset + PAGE_SIZE >= organizationTotal} onClick={() => setOrganizationOffset((value) => value + PAGE_SIZE)}>下一页</button>
                 </div>
               </>
             ) : null}
@@ -188,7 +223,7 @@ export function DataManagementPage({ notify, initialQuery = '' }: { notify: (mes
               <div className="empty-state"><TableProperties size={25} /><strong>原始文档查询待接入</strong><span>阶段 D 真实采集适配器上线后，将在此提供网页快照、内容哈希与版本查询。</span></div>
             ) : null}
 
-            {(dataset === 'jd' && jobs.length === 0) || (dataset === 'terms' && terms.length === 0) ? (
+            {(dataset === 'jd' && jobs.length === 0) || (dataset === 'organizations' && organizations.length === 0) || (dataset === 'terms' && terms.length === 0) ? (
               <div className="empty-state"><TableProperties size={25} /><strong>没有匹配的数据记录</strong><span>尝试修改搜索条件。</span></div>
             ) : null}
           </div>
