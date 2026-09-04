@@ -135,10 +135,10 @@ export function OverviewPage({ onNavigate }: { onNavigate: (page: PageId) => voi
           <div className="layer-card-icon"><Sparkles size={21} /></div>
           <div className="layer-card-copy">
             <strong>应用层</strong>
-            <p>贯通岗位能力演变、新岗位发现与人岗匹配，让图谱洞察进入持续推演和人才应用。</p>
+            <p>贯通岗位发现与演变、岗位图谱与人岗匹配，让图谱洞察进入持续推演和人才应用。</p>
             <div className="layer-card-links" aria-label="应用层页面入口">
-              <button onClick={() => onNavigate('role-evolution')}>岗位能力演变</button>
-              <button onClick={() => onNavigate('jobs')}>新岗位发现</button>
+              <button onClick={() => onNavigate('jobs')}>岗位发现和演变</button>
+              <button onClick={() => onNavigate('job-graph')}>岗位图谱</button>
               <button onClick={() => onNavigate('talent')}>人岗匹配</button>
             </div>
           </div>
