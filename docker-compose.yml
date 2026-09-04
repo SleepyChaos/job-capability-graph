@@ -121,7 +121,7 @@ services:
       # 数据导入与评测需要访问仓库数据目录
       - ./data:/srv/data:ro
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       mysql:
         condition: service_healthy

@@ -24,6 +24,14 @@ __pycache__/
 
 # 本地验证截图与构建输出
 output/
+outputs/
+tmp/
+
+# WorkBuddy 工作区数据与 AI 会话记忆（本地私有，不入库）
+.workbuddy/
+
+# Office/WPS 临时锁文件
+~$*
 
 # 环境变量与密钥：仅 .env.example 可入库
 .env
@@ -32,3 +40,4 @@ output/
 backend/.env
 frontend/.env
 !backend/.env.example
+!.env.example

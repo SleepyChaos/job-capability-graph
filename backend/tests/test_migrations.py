@@ -83,6 +83,7 @@ def test_initial_migration_upgrades_and_downgrades(tmp_path: Path) -> None:
         "rel_candidate_technology",
         "biz_standard_job_description",
         "raw_resume_document",
+        "biz_job_requirement_expression",
         "biz_candidate_profile",
         "biz_candidate_profile_version",
         "rel_candidate_skill_evidence",

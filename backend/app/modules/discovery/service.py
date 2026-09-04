@@ -450,6 +450,7 @@ def _llm_expression(card: dict, candidate, technologies: list[dict]) -> dict | N
         user_prompt=f"机械事实：{json.dumps(facts, ensure_ascii=False)}",
         prompt_version=EXPRESSION_PROMPT_VERSION,
         json_mode=True,
+        timeout_seconds=120,
     )
     if result is None or result.parsed_json is None:
         return None

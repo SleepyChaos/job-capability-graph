@@ -1,0 +1,1 @@
+{"sample_id":"R001","source_text":"姓名：候选人甲。项目中使用 Python 完成模型训练。","entities":[{"type":"name","value":"候选人甲","evidence_quote":"姓名：候选人甲"},{"type":"project","value":"模型训练","evidence_quote":"项目中使用 Python 完成模型训练"},{"type":"skill","value":"Python","evidence_quote":"使用 Python"}]}
