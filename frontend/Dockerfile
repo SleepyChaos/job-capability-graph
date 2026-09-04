@@ -10,6 +10,12 @@ RUN npm config set registry https://registry.npmmirror.com && \
 COPY . .
 RUN pnpm build
 
+# 预压静态产物，供 nginx 的 gzip_static 直接发送（见 nginx.conf 里的说明）。
+# 保留未压缩原件：不支持 gzip 的客户端仍走原文件。-9 是构建期一次性开销，换取
+# 运行期零 CPU；1024 字节以下压了反而更大，跳过。
+RUN find dist -type f \( -name '*.js' -o -name '*.css' -o -name '*.json' -o -name '*.html' -o -name '*.svg' \) \
+      -size +1k -exec sh -c 'gzip -9 -c "$1" > "$1.gz"' _ {} \;
+
 FROM nginx:1.27-alpine
 
 COPY --from=build /srv/frontend/dist /usr/share/nginx/html

@@ -281,10 +281,54 @@ export interface JobEcosystemGraph {
   edges: JobGraphEdge[]
 }
 
+let graphCache: JobEcosystemGraph | null = null
+let graphInflight: Promise<JobEcosystemGraph> | null = null
+
+/**
+ * 让调用方的 signal 只中断「这次等待」，不中断底层那次共享请求。
+ *
+ * 三个页面共用同一份图谱，谁先进谁发起请求。若把调用方的 signal 直接挂到 fetch 上，
+ * 用户在加载途中切走一次就会把请求打掉，另一个页面还在等的 Promise 跟着一起失败。
+ * 这里改成只在本次等待上做竞速：页面卸载时它拿到 AbortError（三处调用方都按名字
+ * 忽略这个错误），而请求继续跑完并填进缓存，下次进页面直接命中。
+ */
+function raceAbort<T>(promise: Promise<T>, signal?: AbortSignal): Promise<T> {
+  if (!signal) return promise
+  if (signal.aborted) return Promise.reject(new DOMException('图谱加载已取消', 'AbortError'))
+  return new Promise<T>((resolve, reject) => {
+    const onAbort = () => reject(new DOMException('图谱加载已取消', 'AbortError'))
+    signal.addEventListener('abort', onAbort, { once: true })
+    promise.then(resolve, reject).finally(() => signal.removeEventListener('abort', onAbort))
+  })
+}
+
+/**
+ * 岗位生态图谱产物，进程内只取一次。
+ *
+ * JobEcosystemPage / JobDiscoveryPage / TechToRolePage 各自独立调用本函数，原先每次
+ * 切页都要重新 fetch 并重新 JSON.parse 这 39MB（HTTP 层能命中磁盘缓存，省下的只是
+ * 下载，解析开销每切一次付一遍）。缓存解析结果后，一个会话内只付一次。
+ *
+ * 缓存的是解析后的对象、只在成功时写入；失败会清掉在途 Promise，下次进页面能重试。
+ */
 export async function loadJobEcosystemGraph(signal?: AbortSignal): Promise<JobEcosystemGraph> {
-  const response = await fetch('/job-ecosystem-graph.json', { signal })
-  if (!response.ok) throw new Error(`岗位图谱加载失败（${response.status}）`)
-  return response.json() as Promise<JobEcosystemGraph>
+  if (graphCache) return graphCache
+  if (!graphInflight) {
+    graphInflight = fetch('/job-ecosystem-graph.json')
+      .then((response) => {
+        if (!response.ok) throw new Error(`岗位图谱加载失败（${response.status}）`)
+        return response.json() as Promise<JobEcosystemGraph>
+      })
+      .then((graph) => {
+        graphCache = graph
+        return graph
+      })
+      .catch((error: unknown) => {
+        graphInflight = null
+        throw error
+      })
+  }
+  return raceAbort(graphInflight, signal)
 }
 
 /**
