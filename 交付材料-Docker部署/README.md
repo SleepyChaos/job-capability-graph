@@ -1,54 +1,64 @@
 # 交付材料 · Docker 部署
 
-本目录只放**怎么把系统跑起来**所需的材料。测试相关材料在同级的 `交付材料-单元测试/`，
-源码在 `交付材料-源代码/`（裁剪版，仅供审阅、不能运行）。
+本目录放**容器化部署说明**，对应赛题「部署（Dockerfile / 容器化部署）说明」一项。
+测试材料在同级 `交付材料-单元测试/`，源码与可运行系统在 `交付材料-源代码/`。
 
 ## 内容
 
 | 文件 | 说明 |
 | --- | --- |
-| [`images/`](images/) | **镜像包（推荐入口）**：三个预构建镜像 + 镜像版 compose + 载入说明 |
-| [`Docker部署说明.md`](Docker部署说明.md) | 主文档：环境要求、一键启动、compose 编排、两个已知坑、停止清理、排障表 |
+| [`Docker部署说明.md`](Docker部署说明.md) | 主文档：环境要求、启动方式、compose 编排、两个已知坑、停止清理、排障表 |
 | [`源代码说明.md`](源代码说明.md) | 仓库地址、分支、代码规模、目录职责与技术栈 |
-| [`deploy/`](deploy/) | 源码构建版部署文件副本：`docker-compose.yml`、两个 Dockerfile、nginx 配置 |
+| [`deploy/`](deploy/) | 部署文件副本：`docker-compose.yml`、后端与前端 Dockerfile、nginx 配置 |
 
-`deploy/` 下是仓库同名文件的副本，便于脱离仓库单独审阅；以仓库内的
-`docker-compose.yml`、`backend/Dockerfile`、`frontend/Dockerfile`、`frontend/nginx.conf` 为准。
+`deploy/` 下是仓库同名文件的副本，便于脱离仓库单独审阅其编排与构建逻辑。
 
-## 两种启动方式
+## 系统怎么跑起来
 
-### 一、镜像包（推荐，无需源码）
+有两个入口，**都不需要完整仓库**：
+
+### 一、在线部署（最快，零安装）
+
+**<http://122.51.220.41:8080/>**
+
+运行的是**完整代码**，全部功能可用——包括新岗位发现的运行预测、五维画像生成、岗位聚类，
+这些在裁剪版源码包中不可用。评审要看完整功能请走这条。
+
+### 二、从裁剪版源码包本地构建
 
 ```bash
-docker load -i images/jcg-images.tar.gz
+cd 交付材料-源代码/src
 ```
 
 ```bash
-docker compose -f images/docker-compose.yml up -d
+docker compose up -d --build
 ```
 
-完整运行库已烘进 MySQL 镜像，**首次启动约 4 分钟**完成导入，之后重启即时可用。不需要
-源代码、不联网拉镜像、不挂载宿主目录。详见 [`images/载入说明.md`](images/载入说明.md)。
+随包附带已审计的运行库快照，**首次启动约 6 分钟**（MySQL 导入约 4 分钟 + 前后端构建约
+2 分钟），之后重启即时可用。
 
-### 二、源码构建
+启动后：平台 <http://localhost:8080> · 接口文档 <http://localhost:8000/docs> ·
+健康检查 <http://localhost:8000/api/v1/health>
 
-```bash
-git clone https://github.com/SleepyChaos/job-capability-graph.git
-cd job-capability-graph
-docker compose up -d backend frontend
-```
+> **功能边界**：源码包是裁剪版，核心算法模块的实现已移除。数据浏览、图谱、画像查看等
+> 读取链路完整可用；运行预测、生成画像、重跑聚类等调用到被裁实现的操作返回 **HTTP 501**
+> 并指向在线部署——这是有意声明，不是故障。详见根目录《源码裁剪说明.md》。
 
-一次 `up` 会依次完成：起 MySQL → 恢复已审计快照 → Alembic 迁移 → 从核心 XLSX 装载并跑解析/聚类 → 起后端与前端。
+## 容器编排
 
-> 注意：这条路径需要**完整仓库**。提交的 `交付材料-源代码/` 是裁剪版，用它构建会因核心
-> 模块缺失而失败——那是刻意为之，见根目录《源码裁剪说明.md》。
+三个服务，`deploy/docker-compose.yml` 是仓库完整版的编排（含 restore / migrate /
+bootstrap 建库链路），`交付材料-源代码/src/docker-compose.yml` 是裁剪包专用版：
 
-两种方式跑起来的系统一致。启动后：平台 <http://localhost:8080> · 接口文档
-<http://localhost:8000/docs> · 健康检查 <http://localhost:8000/api/v1/health>
+| 服务 | 完整版 | 裁剪包版 |
+| --- | --- | --- |
+| `mysql` | 空库 + 快照恢复 + 迁移 + 从 XLSX 装载 | 直接导入随包快照 |
+| `restore` / `migrate` / `bootstrap` | 有 | 无（快照已是 head 结构；bootstrap 依赖 `tools/`，裁剪包中为桩） |
+| `backend` | `build: ./backend` | 同 |
+| `frontend` | `build: ./frontend` | 同 |
 
 ## 两个必看的坑
 
 1. **Windows 保留端口**：Docker Desktop 重启后 `8043–8242`（含 8080）可能被系统划走，容器绑不上端口。查 `netsh int ipv4 show excludedportrange protocol=tcp`，避开该段改映射。
-2. **LLM 网关默认不开**：候选表达层与五维画像生成需要 LLM，未配置时降级为规则输出——功能不报错，但文案质量明显下降。密钥只从未入库的 `.env` 注入。
+2. **LLM 网关默认不开**：候选表达层与五维画像生成需要 LLM，未配置时降级为规则输出——功能不报错，但文案质量明显下降。密钥只从未入库的 `.env` 注入。（裁剪包中这两个功能本就返回 501，此坑只对完整代码适用。）
 
-两者的细节与处理办法都在 [`Docker部署说明.md`](Docker部署说明.md)。
+细节与处理办法见 [`Docker部署说明.md`](Docker部署说明.md)。

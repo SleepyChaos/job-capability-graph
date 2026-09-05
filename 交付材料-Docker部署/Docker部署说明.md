@@ -8,38 +8,50 @@
 | 赛题要求 | 本项目对应物 |
 | --- | --- |
 | 源代码（可提供开源链接 / 私有仓库开放评审权限） | `交付材料-源代码/`（**裁剪版**，见根目录《源码裁剪说明.md》）；完整实现在私有仓库 `https://github.com/SleepyChaos/job-capability-graph`，可按赛事要求开放评审权限 |
-| 可执行程序 | [`images/jcg-images.tar.gz`](images/)：`jcg-mysql` / `jcg-backend` / `jcg-frontend` 三个预构建镜像，`docker load` + `docker compose up` 即可运行，**不依赖源代码** |
-| 部署说明（Dockerfile / 容器化部署） | 本文；`deploy/` 下有 `backend/Dockerfile`、`frontend/Dockerfile`、`docker-compose.yml` 副本，镜像版编排见 `images/docker-compose.yml` |
+| 可执行程序 | **在线部署 <http://122.51.220.41:8080/>**（完整代码，全功能）；以及 `交付材料-源代码/src` 内 `docker compose up -d --build` 本地起的裁剪版系统 |
+| 部署说明（Dockerfile / 容器化部署） | 本文；`deploy/` 下有 `backend/Dockerfile`、`frontend/Dockerfile`、`docker-compose.yml` 副本 |
 | 单元测试用例（覆盖率 ≥ 60%） | `backend/tests/` 共 38 个测试文件；`pyproject.toml` 中 `fail_under = 60`，低于该线直接判失败。结果见 `交付材料-单元测试/` |
 
-> **评审运行请走镜像包**（第 3 节之一）。第 3 节之二的源码构建路径需要完整仓库，用提交的
-> 裁剪版源码包构建会因核心模块缺失而失败。
+> **要看完整功能请访问在线部署**（第 3.1 节）。本地构建（第 3.2 节）用的是裁剪版源码包，
+> 能起来、数据完整、读取链路可用，但调用到被裁核心算法的操作返回 HTTP 501 并指向在线部署。
+> 两者的差别与原因见根目录《源码裁剪说明.md》。
 
 ## 2. 环境要求
 
 - Docker Desktop（Windows / macOS）或 Docker Engine + Compose v2（Linux）
-- 磁盘 ≥ 10 GB：MySQL 数据卷、镜像与 39 MB 的图谱产物
+- 磁盘 ≥ 10 GB：MySQL 数据卷、镜像与 131 MB 的裁剪包（含 84 MB 库快照与 41 MB 图谱产物）
 - 内存 ≥ 4 GB
 - 首次构建需要拉取 `python:3.11-slim`、`node:22-alpine`、`nginx:1.27-alpine`、`mysql:8.0`；镜像内的 pip / npm 已指向国内源（清华 PyPI、npmmirror）
 
 ## 3. 一键启动
 
-### 3.1 镜像包（推荐，无需源码、无需联网）
+### 3.1 在线部署（零安装，完整功能）
+
+**<http://122.51.220.41:8080/>**
+
+运行完整代码，新岗位发现的运行预测、五维画像生成、岗位聚类等全部可用。
+
+### 3.2 从裁剪版源码包本地构建
 
 ```bash
-docker load -i images/jcg-images.tar.gz
+cd 交付材料-源代码/src
 ```
 
 ```bash
-docker compose -f images/docker-compose.yml up -d
+docker compose up -d --build
 ```
 
-完整运行库烘在 `jcg-mysql:delivery` 里，**首次启动约 4 分钟**（实测 3 分 52 秒）完成
-660 MB SQL 的导入，之后重启即时可用。这条路径不构建、不拉镜像、不挂载宿主目录。
+**首次启动约 6 分钟**：MySQL 导入随包的运行库快照（约 4 分钟，实测 3 分 52 秒）+ 前后端
+镜像构建（约 2 分钟）。之后重启即时可用。
 
-细节、校验和、LLM 可选配置与排障见 [`images/载入说明.md`](images/载入说明.md)。
+实测（干净卷）：三个容器全部 healthy，健康检查 `{"status":"ok","database":"ok"}`，
+37 个无参 GET 端点中 36 个返回 200，前端与 `/api` 代理均 200。
 
-### 3.2 源码构建（需要完整仓库）
+裁剪包的编排去掉了 `restore` / `migrate` / `bootstrap`——快照已是 Alembic head 结构，
+而 `bootstrap` 依赖 `backend/tools/`，那些在裁剪包中是桩。详见
+[`交付材料-源代码/README.md`](../交付材料-源代码/README.md)。
+
+### 3.3 完整仓库构建（需私有仓库权限）
 
 ```bash
 git clone https://github.com/SleepyChaos/job-capability-graph.git
