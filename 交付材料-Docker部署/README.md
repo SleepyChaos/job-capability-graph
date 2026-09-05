@@ -1,19 +1,36 @@
 # 交付材料 · Docker 部署
 
-本目录只放**怎么把系统跑起来**所需的材料。测试相关材料在同级的 `交付材料-单元测试/`。
+本目录只放**怎么把系统跑起来**所需的材料。测试相关材料在同级的 `交付材料-单元测试/`，
+源码在 `交付材料-源代码/`（裁剪版，仅供审阅、不能运行）。
 
 ## 内容
 
 | 文件 | 说明 |
 | --- | --- |
+| [`images/`](images/) | **镜像包（推荐入口）**：三个预构建镜像 + 镜像版 compose + 载入说明 |
 | [`Docker部署说明.md`](Docker部署说明.md) | 主文档：环境要求、一键启动、compose 编排、两个已知坑、停止清理、排障表 |
-| [`源代码说明.md`](源代码说明.md) | 仓库地址、分支、代码规模、目录职责与技术栈——评审拿到代码后先看这份 |
-| [`deploy/`](deploy/) | 部署文件副本：`docker-compose.yml`、后端与前端 Dockerfile、nginx 配置 |
+| [`源代码说明.md`](源代码说明.md) | 仓库地址、分支、代码规模、目录职责与技术栈 |
+| [`deploy/`](deploy/) | 源码构建版部署文件副本：`docker-compose.yml`、两个 Dockerfile、nginx 配置 |
 
 `deploy/` 下是仓库同名文件的副本，便于脱离仓库单独审阅；以仓库内的
 `docker-compose.yml`、`backend/Dockerfile`、`frontend/Dockerfile`、`frontend/nginx.conf` 为准。
 
-## 最短路径
+## 两种启动方式
+
+### 一、镜像包（推荐，无需源码）
+
+```bash
+docker load -i images/jcg-images.tar.gz
+```
+
+```bash
+docker compose -f images/docker-compose.yml up -d
+```
+
+完整运行库已烘进 MySQL 镜像，**首次启动约 4 分钟**完成导入，之后重启即时可用。不需要
+源代码、不联网拉镜像、不挂载宿主目录。详见 [`images/载入说明.md`](images/载入说明.md)。
+
+### 二、源码构建
 
 ```bash
 git clone https://github.com/SleepyChaos/job-capability-graph.git
@@ -23,7 +40,11 @@ docker compose up -d backend frontend
 
 一次 `up` 会依次完成：起 MySQL → 恢复已审计快照 → Alembic 迁移 → 从核心 XLSX 装载并跑解析/聚类 → 起后端与前端。
 
-启动后：平台 <http://localhost:8080> · 接口文档 <http://localhost:8000/docs> · 健康检查 <http://localhost:8000/api/v1/health>
+> 注意：这条路径需要**完整仓库**。提交的 `交付材料-源代码/` 是裁剪版，用它构建会因核心
+> 模块缺失而失败——那是刻意为之，见根目录《源码裁剪说明.md》。
+
+两种方式跑起来的系统一致。启动后：平台 <http://localhost:8080> · 接口文档
+<http://localhost:8000/docs> · 健康检查 <http://localhost:8000/api/v1/health>
 
 ## 两个必看的坑
 

@@ -7,10 +7,13 @@
 
 | 赛题要求 | 本项目对应物 |
 | --- | --- |
-| 源代码（可提供开源链接 / 私有仓库开放评审权限） | `https://github.com/SleepyChaos/job-capability-graph` |
-| 可执行程序 | 容器镜像三件套：`backend`（FastAPI）、`frontend`（Nginx 静态站）、`mysql`；`docker compose up` 即为可执行形态 |
-| 部署说明（Dockerfile / 容器化部署） | `backend/Dockerfile`、`frontend/Dockerfile`、`docker-compose.yml`，步骤见下文第 3 节 |
-| 单元测试用例（覆盖率 ≥ 60%） | `backend/tests/` 共 38 个测试文件；`pyproject.toml` 中 `fail_under = 60`，低于该线直接判失败。跑法见第 5 节 |
+| 源代码（可提供开源链接 / 私有仓库开放评审权限） | `交付材料-源代码/`（**裁剪版**，见根目录《源码裁剪说明.md》）；完整实现在私有仓库 `https://github.com/SleepyChaos/job-capability-graph`，可按赛事要求开放评审权限 |
+| 可执行程序 | [`images/jcg-images.tar.gz`](images/)：`jcg-mysql` / `jcg-backend` / `jcg-frontend` 三个预构建镜像，`docker load` + `docker compose up` 即可运行，**不依赖源代码** |
+| 部署说明（Dockerfile / 容器化部署） | 本文；`deploy/` 下有 `backend/Dockerfile`、`frontend/Dockerfile`、`docker-compose.yml` 副本，镜像版编排见 `images/docker-compose.yml` |
+| 单元测试用例（覆盖率 ≥ 60%） | `backend/tests/` 共 38 个测试文件；`pyproject.toml` 中 `fail_under = 60`，低于该线直接判失败。结果见 `交付材料-单元测试/` |
+
+> **评审运行请走镜像包**（第 3 节之一）。第 3 节之二的源码构建路径需要完整仓库，用提交的
+> 裁剪版源码包构建会因核心模块缺失而失败。
 
 ## 2. 环境要求
 
@@ -20,6 +23,23 @@
 - 首次构建需要拉取 `python:3.11-slim`、`node:22-alpine`、`nginx:1.27-alpine`、`mysql:8.0`；镜像内的 pip / npm 已指向国内源（清华 PyPI、npmmirror）
 
 ## 3. 一键启动
+
+### 3.1 镜像包（推荐，无需源码、无需联网）
+
+```bash
+docker load -i images/jcg-images.tar.gz
+```
+
+```bash
+docker compose -f images/docker-compose.yml up -d
+```
+
+完整运行库烘在 `jcg-mysql:delivery` 里，**首次启动约 4 分钟**（实测 3 分 52 秒）完成
+660 MB SQL 的导入，之后重启即时可用。这条路径不构建、不拉镜像、不挂载宿主目录。
+
+细节、校验和、LLM 可选配置与排障见 [`images/载入说明.md`](images/载入说明.md)。
+
+### 3.2 源码构建（需要完整仓库）
 
 ```bash
 git clone https://github.com/SleepyChaos/job-capability-graph.git

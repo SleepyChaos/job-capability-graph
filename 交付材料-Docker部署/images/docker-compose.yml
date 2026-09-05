@@ -1,0 +1,55 @@
+# 镜像版编排：三个服务全部使用预构建镜像，不构建、不依赖源码目录。
+#
+# 与仓库根目录那份 docker-compose.yml 的区别：
+#   - 没有 build:，只有 image:，`docker load` 之后即可启动
+#   - 去掉了 restore / migrate / bootstrap 三个建库服务。它们要挂源码树里的
+#     ./data（已审计快照与核心 XLSX），镜像包不带源码；完整运行库已经烘进
+#     jcg-mysql:delivery，首次启动自动导入
+#   - 不挂载任何宿主目录，整包自足
+services:
+  mysql:
+    image: jcg-mysql:delivery
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_change_me
+      MYSQL_DATABASE: job_capability_graph
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app_password_change_me
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      # 首次启动要导入约 660MB 的 SQL，比常规启动慢得多；retries 放宽到 60，
+      # 按 10s 间隔算最多等 10 分钟，避免导入没完就被判不健康。
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_password_change_me"]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+
+  backend:
+    image: jcg-backend:delivery
+    environment:
+      APP_DATABASE_URL: mysql+pymysql://app:app_password_change_me@mysql:3306/job_capability_graph?charset=utf8mb4
+      # LLM 网关（可选）：不配 Key 时候选表达层与五维画像降级为规则输出，功能不报错。
+      APP_LLM_API_KEY: ${APP_LLM_API_KEY:-}
+      APP_LLM_BASE_URL: ${APP_LLM_BASE_URL:-https://api.deepseek.com/v1}
+      APP_LLM_MODEL: ${APP_LLM_MODEL:-deepseek-chat}
+      APP_LLM_TIMEOUT_SECONDS: ${APP_LLM_TIMEOUT_SECONDS:-30}
+      APP_AUTH_SECRET: ${APP_AUTH_SECRET:-change-me-in-production}
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    image: jcg-frontend:delivery
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mysql-data:

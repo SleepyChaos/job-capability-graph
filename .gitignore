@@ -49,3 +49,7 @@ data/upstream/
 
 # 裁剪版源码包由 scripts/build_redacted_source_package.py 生成，随代码变化即失效，不入库
 交付材料-源代码/src/
+
+# 交付镜像包由 scripts/build_delivery_images.sh 生成（405MB），不入库
+交付材料-Docker部署/images/jcg-images.tar.gz
+交付材料-Docker部署/images/jcg-images.tar.gz.sha256
