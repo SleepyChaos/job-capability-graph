@@ -21,10 +21,10 @@
 
 **<http://122.51.220.41:8080/>**
 
-运行的是**完整代码**，全部功能可用——包括新岗位发现的运行预测、五维画像生成、岗位聚类，
-这些在裁剪版源码包中不可用。评审要看完整功能请走这条。
+运行完整代码，全部功能可用——包括新岗位发现的运行预测、五维画像生成与岗位聚类。
+查看完整功能请走这条。
 
-### 二、从裁剪版源码包本地构建
+### 二、从源码包本地构建
 
 ```bash
 cd 交付材料-源代码/src
@@ -40,25 +40,25 @@ docker compose up -d --build
 启动后：平台 <http://localhost:8080> · 接口文档 <http://localhost:8000/docs> ·
 健康检查 <http://localhost:8000/api/v1/health>
 
-> **功能边界**：源码包是裁剪版，核心算法模块的实现已移除。数据浏览、图谱、画像查看等
-> 读取链路完整可用；运行预测、生成画像、重跑聚类等调用到被裁实现的操作返回 **HTTP 501**
-> 并指向在线部署——这是有意声明，不是故障。详见根目录《源码裁剪说明.md》。
+> 源码包中新岗位发现推演、岗位聚类与结构化抽取仅保留接口签名，未包含实现；数据浏览、
+> 图谱与画像查看正常可用，运行预测、生成画像等操作返回 HTTP 501 并提示访问在线部署。
+> 详见 [`交付材料-源代码/README.md`](../交付材料-源代码/README.md)。
 
 ## 容器编排
 
-三个服务，`deploy/docker-compose.yml` 是仓库完整版的编排（含 restore / migrate /
-bootstrap 建库链路），`交付材料-源代码/src/docker-compose.yml` 是裁剪包专用版：
+三个服务，`deploy/docker-compose.yml` 是完整仓库的编排（含 restore / migrate / bootstrap 建库
+链路），`交付材料-源代码/src/docker-compose.yml` 是源码包随附版：
 
-| 服务 | 完整版 | 裁剪包版 |
+| 服务 | 完整仓库 | 源码包 |
 | --- | --- | --- |
 | `mysql` | 空库 + 快照恢复 + 迁移 + 从 XLSX 装载 | 直接导入随包快照 |
-| `restore` / `migrate` / `bootstrap` | 有 | 无（快照已是 head 结构；bootstrap 依赖 `tools/`，裁剪包中为桩） |
+| `restore` / `migrate` / `bootstrap` | 有 | 无（快照已是 head 结构；`bootstrap` 依赖 `tools/`，本版本未含其实现） |
 | `backend` | `build: ./backend` | 同 |
 | `frontend` | `build: ./frontend` | 同 |
 
 ## 两个必看的坑
 
 1. **Windows 保留端口**：Docker Desktop 重启后 `8043–8242`（含 8080）可能被系统划走，容器绑不上端口。查 `netsh int ipv4 show excludedportrange protocol=tcp`，避开该段改映射。
-2. **LLM 网关默认不开**：候选表达层与五维画像生成需要 LLM，未配置时降级为规则输出——功能不报错，但文案质量明显下降。密钥只从未入库的 `.env` 注入。（裁剪包中这两个功能本就返回 501，此坑只对完整代码适用。）
+2. **LLM 网关默认不开**：候选表达层与五维画像生成需要 LLM，未配置时降级为规则输出——功能不报错，但文案质量明显下降。密钥只从未入库的 `.env` 注入。
 
 细节与处理办法见 [`Docker部署说明.md`](Docker部署说明.md)。

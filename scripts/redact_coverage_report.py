@@ -35,13 +35,16 @@ COVERAGE = REPO / "交付材料-单元测试" / "coverage"
 # 裁剪清单里的路径以仓库为根，比对前去掉这层前缀。
 PREFIX = "backend/"
 
-TITLE_RE = re.compile(r"<title>Coverage for ([^:<]+)")
+# 只认路径本身：coverage 原始页的标题是 `Coverage for <path>: 98%`，而本脚本
+# 早期产出的说明页曾在标题后缀过中文，宽松匹配才能对已处理过的页面重复执行
+# （否则旧措辞会永远留在包里）。
+TITLE_RE = re.compile(r"<title>Coverage for ([^\s:<（(]+\.py)")
 
 STUB = """<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>Coverage for {path}（逐行标注已按交付裁剪移除）</title>
+<title>Coverage for {path}</title>
 <style>
   body {{ font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
          max-width: 46rem; margin: 3rem auto; padding: 0 1.5rem; line-height: 1.75;
@@ -59,9 +62,7 @@ STUB = """<!DOCTYPE html>
 <h1>{path}</h1>
 
 <div class="note">
-<strong>本文件的逐行覆盖率标注已按交付裁剪移除。</strong><br>
-该模块属于本作品的核心方法，交付源码包中已裁剪其实现；覆盖率报告逐行内嵌源码，
-若保留即等同于交付源码，故一并处理。
+本交付版本未包含该模块的实现，逐行标注一并省略。覆盖率数据不受影响。
 </div>
 
 <h2>覆盖率数据（不受影响）</h2>
@@ -73,13 +74,10 @@ STUB = """<!DOCTYPE html>
 <tr><td>覆盖率</td><td>{percent}</td></tr>
 </table>
 
-<p>本文件的覆盖率数字在汇总页上完整保留，全项目总计 <strong>78.79%</strong> 亦未改动——
-那是在<strong>完整代码</strong>上运行 161 项测试得出的，本处理只影响展示层，不影响任何统计。</p>
+<p>本文件的覆盖率数字在汇总页上完整保留，全项目总计 78.79% 亦未改动——
+该结果在完整代码上运行 161 项测试得出。</p>
 
-<h2>需要逐行标注时</h2>
-
-<p>完整实现与完整覆盖率报告保留在私有仓库，可按赛事要求向评审开放访问权限。
-裁剪范围、原因与获取途径见交付包根目录《源码裁剪说明.md》。</p>
+<p>完整实现与完整覆盖率报告保留在私有仓库，可按赛事要求向评审开放访问权限。</p>
 
 <p><a href="index.html">← 返回覆盖率汇总</a></p>
 </body>

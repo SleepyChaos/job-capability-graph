@@ -6,8 +6,8 @@
 抛 NotImplementedError 的桩，使评审能看清「这里有什么、被裁了什么」，而不是
 看到一个像是没写完的工程。
 
-裁剪是**有意声明**的，不是隐瞒：脚本同时产出清单，由根目录《源码裁剪说明.md》
-逐条列出被裁文件与原始行数。完整实现始终保留在私有仓库，可按赛事要求授权评审。
+交付说明中据实写明源码包未包含哪些模块，不作完整交付陈述；脚本同时产出
+`裁剪清单.json` 备查。完整实现始终保留在私有仓库，可按赛事要求授权评审。
 
 用法：
     python scripts/build_redacted_source_package.py
@@ -93,16 +93,13 @@ SOURCE_SUFFIXES = {
     ".yml", ".yaml", ".toml", ".ini", ".cfg", ".sh", ".sql", ".conf",
 }
 
-NOTICE = "交付裁剪版不含本模块实现，完整实现见私有仓库；裁剪范围见根目录《源码裁剪说明.md》"
-
 # 注入到裁剪包里的模块：桩抛这个异常，main.py 的处理器把它映射成 501。
 # 不用裸 NotImplementedError 是为了让评审点到被裁功能时看到有意声明，
 # 而不是一个 500 崩溃——后者看起来像工程没做完。
-REDACTED_MODULE = '''"""交付裁剪版的功能占位异常。
+REDACTED_MODULE = '''"""本交付版本的功能占位异常。
 
-本文件不属于原始代码，由 scripts/build_redacted_source_package.py 在构建裁剪包时
-注入。被裁模块的桩函数抛出 RedactedFeatureError，main.py 中注册的处理器将其映射为
-HTTP 501，响应体指向在线部署——评审因此能区分「这个功能被裁了」与「这个功能坏了」。
+由构建脚本注入，不属于原始代码。未包含实现的模块抛出 RedactedFeatureError，
+main.py 中注册的处理器将其映射为 HTTP 501 并指向在线部署。
 """
 
 from __future__ import annotations
@@ -121,11 +118,10 @@ class RedactedFeatureError(NotImplementedError):
 # 追加到裁剪包 app/main.py 末尾的处理器。原仓库的 main.py 不动。
 MAIN_PATCH = '''
 
-# ─── 以下由 scripts/build_redacted_source_package.py 在构建裁剪包时追加 ───
+# ─── 以下由构建脚本追加 ───
 #
-# 被裁模块的桩抛 RedactedFeatureError。没有这个处理器的话 FastAPI 回 500，
-# 评审看到的是崩溃；映射成 501 Not Implemented 并带上在线地址，才对得上
-# 《源码裁剪说明.md》里「主动声明的裁剪」这个口径。
+# 未包含实现的模块抛 RedactedFeatureError。没有这个处理器 FastAPI 会回 500，
+# 看起来像故障；映射成 501 Not Implemented 并带上在线地址才准确。
 from fastapi.responses import JSONResponse  # noqa: E402
 
 from app.core.redacted import ONLINE_DEPLOYMENT, RedactedFeatureError  # noqa: E402
@@ -136,11 +132,10 @@ async def _redacted_feature_handler(_: Request, exc: RedactedFeatureError):
     return JSONResponse(
         status_code=501,
         content={
-            "error": "redacted_in_delivery",
-            "message": "本功能的实现未包含在交付裁剪版源码包中。",
+            "error": "not_implemented_in_this_build",
+            "message": "本交付版本未包含该功能的实现，完整功能见在线部署。",
             "detail": exc.detail or None,
             "online_deployment": ONLINE_DEPLOYMENT,
-            "reference": "源码裁剪说明.md",
         },
     )
 '''
@@ -252,11 +247,9 @@ def render_stub(source: str, path_label: str, keep_names: dict[str, set[str]]) -
         lines.extend(safe_doc(doc.strip()).splitlines())
         lines.append("")
     else:
-        lines.append(f"{path_label}（交付裁剪版）。")
+        lines.append(f"{path_label}")
         lines.append("")
-    lines.append("—— 交付裁剪声明 ——")
-    lines.append("本文件的实现已按根目录《源码裁剪说明.md》移除，仅保留公开接口签名，")
-    lines.append("以便评审确认接口边界与调用关系。完整实现保留在私有仓库，可按赛事要求授权。")
+    lines.append("说明：本交付版本未包含该模块的实现，仅保留公开接口签名。")
     lines.append('"""')
     lines.append("")
     lines.append("from __future__ import annotations")
