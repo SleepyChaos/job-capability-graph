@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 700" width="1180" height="700" font-family="Source Han Sans SC, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7c"/>
+    </marker>
+    <style>
+      .bar{fill:#1b3a5c;rx:5}
+      .barT{font-size:14.5px;font-weight:600;fill:#ffffff}
+      .inCard{fill:#f7f9fb;stroke:#c3d0dd;stroke-width:1.3;rx:6}
+      .c1Box{fill:#f2f7fd;stroke:#3f7cc4;stroke-width:1.5;rx:7}
+      .c2Box{fill:#fdf6ee;stroke:#d08a35;stroke-width:1.5;rx:7}
+      .c1Step{fill:#ffffff;stroke:#b9d0ea;stroke-width:1.2;rx:5}
+      .c2Step{fill:#ffffff;stroke:#edc79a;stroke-width:1.2;rx:5}
+      .mgBox{fill:#eef3f9;stroke:#7d9cc0;stroke-width:1.5;rx:7}
+      .outCard{fill:#ffffff;stroke:#cfe0d3;stroke-width:1.3;rx:6}
+      .outBar{fill:#4b9a5c;rx:2}
+      .h1{font-size:13.5px;font-weight:600;fill:#1b4f8a}
+      .h2{font-size:13.5px;font-weight:600;fill:#9a5f14}
+      .ti{font-size:13px;font-weight:600;fill:#12202e}
+      .tiG{font-size:13px;font-weight:600;fill:#2f6b3d}
+      .t{font-size:11px;fill:#3d4c5c}
+      .s{font-size:10.5px;fill:#6b7a8a}
+      .num{font-size:10.5px;font-weight:600;fill:#ffffff}
+      .ico{fill:none;stroke:#5b8db8;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+      .ln{stroke:#5b6b7c;stroke-width:1.5;fill:none;marker-end:url(#ar)}
+    </style>
+  </defs>
+
+  <!-- 显式白底：不加的话浏览器深色模式与 Word 深色主题下会透出底色，
+       文字（深色）几乎不可读。同族的 4-1/4-2 是嵌进浅色版式里的，本图独立成页，
+       必须自带背景。 -->
+  <rect width="1180" height="700" fill="#ffffff"/>
+
+  <!-- ══════════ 三段表头 ══════════ -->
+  <rect x="20" y="20" width="182" height="34" class="bar"/>
+  <text x="111" y="42" class="barT" text-anchor="middle">输入（数据）</text>
+
+  <rect x="222" y="20" width="690" height="34" class="bar"/>
+  <text x="567" y="42" class="barT" text-anchor="middle">功能（两条并行链路，互不相同）</text>
+
+  <rect x="934" y="20" width="226" height="34" class="bar"/>
+  <text x="1047" y="42" class="barT" text-anchor="middle">输出（结果）</text>
+
+  <!-- ══════════ 左：输入 ══════════ -->
+  <rect x="20" y="72" width="182" height="118" class="inCard"/>
+  <g class="ico" transform="translate(38,90)">
+    <path d="M0 0 h14 l5 5 v17 h-19 z"/><path d="M14 0 v5 h5"/>
+    <path d="M4 11 h11 M4 16 h8"/>
+  </g>
+  <text x="72" y="103" class="ti">招聘文本</text>
+  <text x="38" y="132" class="t">3,718 条</text>
+  <text x="38" y="150" class="s">1,894 条含技术</text>
+
+  <rect x="20" y="210" width="182" height="134" class="inCard"/>
+  <g class="ico" transform="translate(38,228)">
+    <path d="M0 2 c6 -3 12 -3 18 0 v18 c-6 -3 -12 -3 -18 0 z"/>
+    <path d="M18 2 c-6 -3 -12 -3 -18 0"/><path d="M9 3 v18"/>
+  </g>
+  <text x="72" y="241" class="ti">研究与产权资料</text>
+  <text x="38" y="270" class="t">13,282 篇文献 / 专利</text>
+  <text x="38" y="290" class="t">4,206 件命中项</text>
+  <text x="38" y="310" class="s">≥ 2,536 个技术点</text>
+
+  <rect x="20" y="364" width="182" height="118" class="inCard"/>
+  <g class="ico" transform="translate(38,382)">
+    <path d="M2 22 v-9 M9 22 v-15 M16 22 v-20"/><path d="M0 22 h20"/>
+  </g>
+  <text x="72" y="395" class="ti">产业里程碑</text>
+  <text x="38" y="424" class="t">474 条（301 条）</text>
+  <text x="38" y="442" class="s">93 条挂上技术点</text>
+
+  <path d="M206 277 H 218" class="ln"/>
+
+  <!-- ══════════ 链路一 ══════════ -->
+  <rect x="222" y="72" width="690" height="176" class="c1Box"/>
+  <text x="242" y="97" class="h1">链路一：参考系 = 自有岗位库（查库的完整性）</text>
+
+  <rect x="242" y="110" width="146" height="120" class="c1Step"/>
+  <circle cx="258" cy="128" r="9" fill="#3f7cc4"/>
+  <text x="258" y="132" class="num" text-anchor="middle">1</text>
+  <text x="274" y="132" class="ti">频繁闭项集</text>
+  <text x="256" y="164" class="t">规模 ≥ 2</text>
+
+  <path d="M394 170 H 404" class="ln"/>
+
+  <rect x="410" y="110" width="146" height="120" class="c1Step"/>
+  <circle cx="426" cy="128" r="9" fill="#3f7cc4"/>
+  <text x="426" y="132" class="num" text-anchor="middle">2</text>
+  <text x="442" y="132" class="ti">与最近迭代</text>
+  <text x="442" y="149" class="ti">两轴比较</text>
+  <text x="424" y="178" class="t">覆盖率 ×</text>
+  <text x="424" y="195" class="t">范围重合度</text>
+
+  <path d="M562 170 H 572" class="ln"/>
+
+  <rect x="578" y="110" width="146" height="120" class="c1Step"/>
+  <circle cx="594" cy="128" r="9" fill="#3f7cc4"/>
+  <text x="594" y="132" class="num" text-anchor="middle">3</text>
+  <text x="610" y="132" class="ti">四类分类</text>
+  <text x="592" y="158" class="s">已被覆盖 / 岗位演化</text>
+  <text x="592" y="175" class="s">岗位库缺失</text>
+  <text x="592" y="192" class="s">潜在新岗位</text>
+
+  <path d="M730 170 H 740" class="ln"/>
+
+  <rect x="746" y="110" width="146" height="120" class="c1Step"/>
+  <circle cx="762" cy="128" r="9" fill="#3f7cc4"/>
+  <text x="762" y="132" class="num" text-anchor="middle">4</text>
+  <text x="778" y="132" class="ti">七维加权评分</text>
+  <text x="760" y="164" class="t">折算为百分制</text>
+
+  <path d="M916 160 H 928" class="ln"/>
+
+  <!-- ══════════ 链路二 ══════════ -->
+  <rect x="222" y="268" width="690" height="176" class="c2Box"/>
+  <text x="242" y="293" class="h2">链路二：参考系 = 整个招聘市场（查市场的空白）</text>
+
+  <rect x="242" y="306" width="146" height="120" class="c2Step"/>
+  <circle cx="258" cy="324" r="9" fill="#d08a35"/>
+  <text x="258" y="328" class="num" text-anchor="middle">1</text>
+  <text x="274" y="328" class="ti">缺口对</text>
+  <text x="256" y="356" class="t">外部资料中</text>
+  <text x="256" y="373" class="t">已反复可见</text>
+
+  <path d="M394 366 H 404" class="ln"/>
+
+  <rect x="410" y="306" width="146" height="120" class="c2Step"/>
+  <circle cx="426" cy="324" r="9" fill="#d08a35"/>
+  <text x="426" y="328" class="num" text-anchor="middle">2</text>
+  <text x="442" y="328" class="ti">团扩张</text>
+  <text x="424" y="354" class="s">组合内任意两个技术</text>
+  <text x="424" y="371" class="s">之间均构成缺口</text>
+
+  <path d="M562 366 H 572" class="ln"/>
+
+  <rect x="578" y="306" width="146" height="120" class="c2Step"/>
+  <circle cx="594" cy="324" r="9" fill="#d08a35"/>
+  <text x="594" y="328" class="num" text-anchor="middle">3</text>
+  <text x="610" y="328" class="ti">期望共现分级</text>
+  <text x="592" y="356" class="s">缺口显著 / 缺口存疑</text>
+  <text x="592" y="373" class="s">待核查</text>
+
+  <path d="M730 366 H 740" class="ln"/>
+
+  <rect x="746" y="306" width="146" height="120" class="c2Step"/>
+  <circle cx="762" cy="324" r="9" fill="#d08a35"/>
+  <text x="762" y="328" class="num" text-anchor="middle">4</text>
+  <text x="778" y="328" class="ti">缺口路径评分</text>
+  <text x="760" y="354" class="s">最弱边 × 时间衰减</text>
+  <text x="760" y="371" class="s">× 等级权重</text>
+
+  <path d="M916 356 H 928" class="ln"/>
+
+  <!-- ══════════ 汇合 ══════════ -->
+  <path d="M420 448 V 476" class="ln"/>
+  <path d="M714 448 V 476" class="ln"/>
+
+  <rect x="222" y="480" width="690" height="96" class="mgBox"/>
+  <text x="242" y="505" class="h1">汇合后的共同处理（两条链路在此汇合）</text>
+  <circle cx="248" cy="527" r="2.4" fill="#5b6b7c"/>
+  <text x="258" y="531" class="t">两套分数量纲不可比（百分制 vs 上限约 1.2）</text>
+  <circle cx="248" cy="551" r="2.4" fill="#5b6b7c"/>
+  <text x="258" y="555" class="t">通过不混排、分层传导与时滞先验，得到岗位涌现参考区间</text>
+
+  <path d="M916 528 H 928" class="ln"/>
+
+  <!-- ══════════ 右：输出 ══════════ -->
+  <rect x="934" y="72" width="226" height="104" class="outCard"/>
+  <rect x="934" y="72" width="3.5" height="104" class="outBar"/>
+  <text x="950" y="96" class="tiG">岗位候选 164 条</text>
+  <text x="950" y="119" class="s">库内 100 条</text>
+  <text x="950" y="136" class="s">（已被覆盖 73 / 岗位演化 27）</text>
+  <text x="950" y="157" class="s">研究侧 46 条、里程碑 18 条</text>
+
+  <rect x="934" y="192" width="226" height="104" class="outCard"/>
+  <rect x="934" y="192" width="3.5" height="104" class="outBar"/>
+  <text x="950" y="216" class="tiG">技术对层面互不相交</text>
+  <text x="950" y="239" class="s">68 对全部落在招聘文本</text>
+  <text x="950" y="256" class="s">已共现的集合内</text>
+  <text x="950" y="277" class="s">62 对无一落入、交集为空</text>
+
+  <rect x="934" y="312" width="226" height="104" class="outCard"/>
+  <rect x="934" y="312" width="3.5" height="104" class="outBar"/>
+  <text x="950" y="336" class="tiG">成熟度分档</text>
+  <text x="950" y="359" class="s">潜在 / 萌芽 / 新兴</text>
+  <text x="950" y="379" class="s">观察窗：一点 / 两点</text>
+  <text x="950" y="399" class="s">仅提供 2 个</text>
+
+  <rect x="934" y="432" width="226" height="104" class="outCard"/>
+  <rect x="934" y="432" width="3.5" height="104" class="outBar"/>
+  <text x="950" y="456" class="tiG">待核查缺口 90 对</text>
+  <text x="950" y="479" class="s">涉及 22 个技术点</text>
+  <text x="950" y="499" class="s">不生成候选，聚合后</text>
+  <text x="950" y="516" class="s">人工判定一次即可复用</text>
+
+  <rect x="934" y="552" width="226" height="104" class="outCard"/>
+  <rect x="934" y="552" width="3.5" height="104" class="outBar"/>
+  <text x="950" y="576" class="tiG">已入库正式岗位 5 条</text>
+  <text x="950" y="599" class="s">经审核合并并通过发布门控</text>
+  <text x="950" y="619" class="s">生成岗位、首版本与</text>
+  <text x="950" y="636" class="s">标准岗位说明</text>
+</svg>
