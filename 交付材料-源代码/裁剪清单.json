@@ -1,0 +1,394 @@
+{
+  "redacted_files": 93,
+  "redacted_lines": 24481,
+  "redacted": [
+    {
+      "path": "backend/app/modules/discovery/service.py",
+      "lines": 2568
+    },
+    {
+      "path": "backend/tools/build_job_ecosystem_graph.py",
+      "lines": 1976
+    },
+    {
+      "path": "backend/app/modules/clustering/service.py",
+      "lines": 1329
+    },
+    {
+      "path": "backend/tools/experiment_holdout_baselines.py",
+      "lines": 650
+    },
+    {
+      "path": "backend/tools/run_holdout_experiment.py",
+      "lines": 643
+    },
+    {
+      "path": "backend/tools/layer_a_splink_org_resolution.py",
+      "lines": 591
+    },
+    {
+      "path": "backend/app/modules/clustering/algorithm.py",
+      "lines": 569
+    },
+    {
+      "path": "backend/tools/layer_b_esco_external_agreement.py",
+      "lines": 551
+    },
+    {
+      "path": "backend/tools/build_upstream_candidates.py",
+      "lines": 521
+    },
+    {
+      "path": "backend/tools/audit_overbroad_terms.py",
+      "lines": 457
+    },
+    {
+      "path": "backend/tools/audit_l3_coverage_gaps.py",
+      "lines": 450
+    },
+    {
+      "path": "backend/tools/build_milestone_candidates.py",
+      "lines": 393
+    },
+    {
+      "path": "backend/tools/import_milestones.py",
+      "lines": 387
+    },
+    {
+      "path": "backend/tools/run_resume_experiment.py",
+      "lines": 354
+    },
+    {
+      "path": "backend/tools/experiment_lag_calibration.py",
+      "lines": 348
+    },
+    {
+      "path": "backend/tools/experiment_upstream_lead.py",
+      "lines": 348
+    },
+    {
+      "path": "backend/tools/build_capability_graph.py",
+      "lines": 341
+    },
+    {
+      "path": "backend/tools/layer_c_triple_audit.py",
+      "lines": 328
+    },
+    {
+      "path": "backend/app/modules/discovery/algorithm.py",
+      "lines": 320
+    },
+    {
+      "path": "backend/tools/merge_english_aliases.py",
+      "lines": 319
+    },
+    {
+      "path": "backend/app/modules/extraction/job_structure.py",
+      "lines": 318
+    },
+    {
+      "path": "backend/tools/export_discovery_to_job_graph.py",
+      "lines": 313
+    },
+    {
+      "path": "backend/tools/find_upstream_only_pairs.py",
+      "lines": 311
+    },
+    {
+      "path": "backend/tools/layer_a_splink_fill_org_table.py",
+      "lines": 296
+    },
+    {
+      "path": "backend/tools/experiment_sampling_stability.py",
+      "lines": 295
+    },
+    {
+      "path": "backend/tools/evaluate_jd_test_set_v1_1.py",
+      "lines": 285
+    },
+    {
+      "path": "backend/tools/profile_source_workbooks.py",
+      "lines": 275
+    },
+    {
+      "path": "backend/tools/run_evaluation.py",
+      "lines": 274
+    },
+    {
+      "path": "backend/tools/experiment_measure_ablation.py",
+      "lines": 248
+    },
+    {
+      "path": "backend/tools/evaluate_extraction_quality.py",
+      "lines": 245
+    },
+    {
+      "path": "backend/tools/propose_english_aliases.py",
+      "lines": 240
+    },
+    {
+      "path": "backend/tools/experiment_jobification_threshold.py",
+      "lines": 239
+    },
+    {
+      "path": "backend/tools/generate_synthetic_resumes.py",
+      "lines": 237
+    },
+    {
+      "path": "backend/tools/validate_job_import.py",
+      "lines": 233
+    },
+    {
+      "path": "backend/app/modules/discovery/foresight.py",
+      "lines": 232
+    },
+    {
+      "path": "backend/tools/validate_job_clustering.py",
+      "lines": 223
+    },
+    {
+      "path": "backend/tools/validate_job_parsing.py",
+      "lines": 223
+    },
+    {
+      "path": "backend/tools/audit_build_annotation_package.py",
+      "lines": 214
+    },
+    {
+      "path": "backend/tools/build_industry_job_graph.py",
+      "lines": 210
+    },
+    {
+      "path": "backend/tools/build_taxonomy_workbook.py",
+      "lines": 207
+    },
+    {
+      "path": "backend/tools/ingest_patent_corpus.py",
+      "lines": 202
+    },
+    {
+      "path": "backend/app/modules/extraction/occupation.py",
+      "lines": 200
+    },
+    {
+      "path": "backend/tools/build_job_graph_bridge.py",
+      "lines": 199
+    },
+    {
+      "path": "backend/tools/calibrate_domain_gate.py",
+      "lines": 199
+    },
+    {
+      "path": "backend/tools/fetch_arxiv_corpus.py",
+      "lines": 198
+    },
+    {
+      "path": "backend/tools/generate_governance_samples.py",
+      "lines": 198
+    },
+    {
+      "path": "backend/tools/prune_stale_candidates.py",
+      "lines": 196
+    },
+    {
+      "path": "backend/tools/import_release_milestones.py",
+      "lines": 185
+    },
+    {
+      "path": "backend/tools/import_arxiv_documents.py",
+      "lines": 178
+    },
+    {
+      "path": "backend/tools/validate_role_discovery.py",
+      "lines": 170
+    },
+    {
+      "path": "backend/tools/generate_graph_html.py",
+      "lines": 169
+    },
+    {
+      "path": "backend/tools/extract_milestone_technologies.py",
+      "lines": 168
+    },
+    {
+      "path": "backend/app/modules/discovery/itemsets.py",
+      "lines": 159
+    },
+    {
+      "path": "backend/tools/attach_discovery_role_cluster.py",
+      "lines": 158
+    },
+    {
+      "path": "backend/tools/refresh_annotation_extraction.py",
+      "lines": 150
+    },
+    {
+      "path": "backend/tools/reextract_requirements.py",
+      "lines": 145
+    },
+    {
+      "path": "backend/tools/validate_talent_matching.py",
+      "lines": 136
+    },
+    {
+      "path": "backend/tools/build_jd_annotation_batch.py",
+      "lines": 134
+    },
+    {
+      "path": "backend/tools/extract_upstream_technologies.py",
+      "lines": 134
+    },
+    {
+      "path": "backend/app/modules/extraction/near_duplicate.py",
+      "lines": 132
+    },
+    {
+      "path": "backend/tools/validate_graph_projection.py",
+      "lines": 131
+    },
+    {
+      "path": "backend/tools/export_layer_c_annotation_evidence.py",
+      "lines": 126
+    },
+    {
+      "path": "backend/tools/generate_graph_timeseries.py",
+      "lines": 124
+    },
+    {
+      "path": "backend/tools/perf_baseline.py",
+      "lines": 122
+    },
+    {
+      "path": "backend/tools/diagnose_specific_matches.py",
+      "lines": 114
+    },
+    {
+      "path": "backend/app/modules/extraction/technology.py",
+      "lines": 112
+    },
+    {
+      "path": "backend/tools/generate_candidate_expressions.py",
+      "lines": 108
+    },
+    {
+      "path": "backend/tools/audit_export_extraction_data.py",
+      "lines": 105
+    },
+    {
+      "path": "backend/tools/rematch_resume_experiment.py",
+      "lines": 103
+    },
+    {
+      "path": "backend/tools/build_graph_inference.py",
+      "lines": 99
+    },
+    {
+      "path": "backend/tools/pilot_calibrate_layer_c_from_workbook.py",
+      "lines": 88
+    },
+    {
+      "path": "backend/tools/generate_temporal_snapshot_inventory.py",
+      "lines": 87
+    },
+    {
+      "path": "backend/tools/apply_annotation_extension.py",
+      "lines": 82
+    },
+    {
+      "path": "backend/tools/prepare_layer_c_gold.py",
+      "lines": 82
+    },
+    {
+      "path": "backend/tools/build_role_inference.py",
+      "lines": 81
+    },
+    {
+      "path": "backend/app/modules/extraction/publish_gate.py",
+      "lines": 73
+    },
+    {
+      "path": "backend/tools/approve_all_role_reviews.py",
+      "lines": 73
+    },
+    {
+      "path": "backend/tools/prepare_jd_double_annotation.py",
+      "lines": 71
+    },
+    {
+      "path": "backend/tools/stage_workbook.py",
+      "lines": 69
+    },
+    {
+      "path": "backend/tools/evaluate_r_daea_pjf.py",
+      "lines": 64
+    },
+    {
+      "path": "backend/tools/backfill_upstream_review_tasks.py",
+      "lines": 59
+    },
+    {
+      "path": "backend/tools/backfill_support_job_count.py",
+      "lines": 54
+    },
+    {
+      "path": "backend/tools/cluster_jobs.py",
+      "lines": 53
+    },
+    {
+      "path": "backend/tools/import_taxonomy.py",
+      "lines": 51
+    },
+    {
+      "path": "backend/tools/audit_tsv.py",
+      "lines": 48
+    },
+    {
+      "path": "backend/tools/calibrate_layer_c_threshold.py",
+      "lines": 48
+    },
+    {
+      "path": "backend/tools/prepare_industry_geography.py",
+      "lines": 47
+    },
+    {
+      "path": "backend/tools/reassess_technologies_llm.py",
+      "lines": 46
+    },
+    {
+      "path": "backend/tools/import_jobs.py",
+      "lines": 45
+    },
+    {
+      "path": "backend/tools/seed_reviewers.py",
+      "lines": 43
+    },
+    {
+      "path": "backend/tools/discover_roles.py",
+      "lines": 41
+    },
+    {
+      "path": "backend/tools/parse_jobs.py",
+      "lines": 34
+    },
+    {
+      "path": "backend/tools/refresh_daily_metrics.py",
+      "lines": 27
+    }
+  ],
+  "oversize_excluded": [
+    {
+      "path": "frontend/public/job-ecosystem-graph.json",
+      "bytes": 39528020
+    },
+    {
+      "path": "backend/data/job_graph_bridge.json",
+      "bytes": 3252482
+    },
+    {
+      "path": "frontend/public/enterprise-industry-graph.json",
+      "bytes": 1750673
+    }
+  ],
+  "copied_files": 230,
+  "copied_lines": 59917
+}

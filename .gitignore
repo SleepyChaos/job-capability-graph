@@ -46,3 +46,6 @@ frontend/.env
 
 # 上游语料：批量抓取的原始文档，体积大且可重抓，不入库
 data/upstream/
+
+# 裁剪版源码包由 scripts/build_redacted_source_package.py 生成，随代码变化即失效，不入库
+交付材料-源代码/src/
