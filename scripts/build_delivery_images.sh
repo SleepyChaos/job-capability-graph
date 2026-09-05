@@ -10,20 +10,43 @@
 # mysql:8.0 对 /var/lib/mysql 声明了 VOLUME，commit 出来的镜像里那个目录是空的。
 #
 # 用法：
-#   SOURCE_MYSQL=<容器名> bash scripts/build_delivery_images.sh
+#   bash scripts/build_delivery_images.sh                  # 默认数据卷
+#   SOURCE_VOLUME=<卷名> bash scripts/build_delivery_images.sh
 #
-# SOURCE_MYSQL 是要导出数据的运行中 MySQL 容器，默认取演示环境那个。
+# 数据源认的是**卷**不是容器。容器会被 Docker Desktop 重启、清理带走（脚本第一版
+# 就因为写死容器名，在容器没了之后直接失败），而卷一直在。这里按需在卷上临时起一个
+# MySQL 导出，用完即删。
 
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORK="$REPO/.runtime/delivery-images"
 OUT="$REPO/交付材料-Docker部署/images"
-SOURCE_MYSQL="${SOURCE_MYSQL:-job-capability-graph-latest-mysql-1}"
+SOURCE_VOLUME="${SOURCE_VOLUME:-job-capability-graph-latest_mysql-data}"
 MYSQL_ROOT_PW="${MYSQL_ROOT_PW:-root_password_change_me}"
+DUMPER="jcg-dump-$$"
 
 mkdir -p "$WORK" "$OUT"
 
+docker volume inspect "$SOURCE_VOLUME" >/dev/null 2>&1 \
+  || { echo "找不到数据卷 $SOURCE_VOLUME；用 SOURCE_VOLUME=<卷名> 指定，docker volume ls 可查"; exit 1; }
+
+cleanup() { docker rm -f "$DUMPER" >/dev/null 2>&1 || true; }
+trap cleanup EXIT
+
+echo "==> 在卷 $SOURCE_VOLUME 上临时起 MySQL"
+docker run -d --name "$DUMPER" \
+  -e MYSQL_ROOT_PASSWORD="$MYSQL_ROOT_PW" \
+  -v "$SOURCE_VOLUME:/var/lib/mysql" \
+  mysql:8.0 >/dev/null
+
+for i in $(seq 1 60); do
+  docker exec "$DUMPER" mysqladmin ping -h 127.0.0.1 -uroot -p"$MYSQL_ROOT_PW" >/dev/null 2>&1 && break
+  [ "$i" = 60 ] && { echo "MySQL 未能在 5 分钟内就绪"; exit 1; }
+  sleep 5
+done
+
+SOURCE_MYSQL="$DUMPER"
 echo "==> 从 $SOURCE_MYSQL 导出运行库"
 docker exec "$SOURCE_MYSQL" sh -c \
   "MYSQL_PWD=$MYSQL_ROOT_PW mysqldump -uroot --single-transaction --routines --triggers \
@@ -45,6 +68,8 @@ echo "==> 导出归档"
 docker save jcg-mysql:delivery jcg-backend:delivery jcg-frontend:delivery \
   | gzip -6 > "$OUT/jcg-images.tar.gz"
 
+# 校验和只写文件名，不带路径：载入说明让评审在 images/ 目录里执行
+# `sha256sum -c jcg-images.tar.gz.sha256`，带上仓库相对路径会对不上。
 cd "$OUT"
 sha256sum jcg-images.tar.gz > jcg-images.tar.gz.sha256
 
