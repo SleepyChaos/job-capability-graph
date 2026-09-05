@@ -84,8 +84,15 @@ function parseHash(): { page: PageId; param: string | null } {
   }
 
   const page = rawPage as PageId
+  const resolved: PageId = page in pageTitles ? page : 'overview'
+  // 岗位画像图谱的定位信息一律走查询串（role/job/dimension 早就是这个形态），
+  // 候选编码跟着走 `?candidate=`，而不是路径段——否则下面那个同步 hash 的副作用
+  // 会把路径段抹掉、hashchange 再把 param 读回 null，跳转过去就定位不到了。
+  if (resolved === 'job-portrait-graph') {
+    return { page: resolved, param: new URLSearchParams(query).get('candidate') }
+  }
   return {
-    page: page in pageTitles ? page : 'overview',
+    page: resolved,
     param: rawParam ? decodeURIComponent(rawParam) : null,
   }
 }
@@ -109,7 +116,7 @@ export default function App() {
   useEffect(() => {
     // 岗位画像图谱保留其 role/job/dimension 查询串——从旧链接进来后若被抹掉，
     // 页面会丢失定位；其余页面统一写成路径段形态。
-    const [currentRoute, query = ''] = window.location.hash.replace('#/', '').split('?')
+    const [, query = ''] = window.location.hash.replace('#/', '').split('?')
     if (page === 'job-portrait-graph') {
       const legacy = new URLSearchParams(query)
       const kept = new URLSearchParams()
@@ -117,9 +124,12 @@ export default function App() {
         const value = legacy.get(key)
         if (value) kept.set(key, value)
       }
+      // 从候选数据卡跳来时带的候选编码写进查询串，页面据此定位；不写进去的话
+      // 这次改写 hash 触发的 hashchange 会把它读没。
+      if (param) kept.set('candidate', param)
       const suffix = kept.toString()
       const next = `/${page}${suffix ? `?${suffix}` : ''}`
-      if (currentRoute !== page) window.location.hash = next
+      if (window.location.hash !== `#${next}`) window.location.hash = next
     } else {
       const next = param ? `/${page}/${encodeURIComponent(param)}` : `/${page}`
       if (window.location.hash !== `#${next}`) window.location.hash = next
@@ -193,7 +203,9 @@ export default function App() {
     case 'job-graph': content = <JobEcosystemPage key="industry" fixedView="industry" />; break
     case 'industry-job-graph': content = <JobEcosystemPage key="industry" fixedView="industry" />; break
     case 'technology-job-graph': content = <JobEcosystemPage key="technology" fixedView="technology" />; break
-    case 'job-portrait-graph': content = <JobEcosystemPage key="portrait" fixedView="portrait" onNavigate={setPage} />; break
+    // param 是候选编码：从候选数据卡的「在岗位画像图谱中查看」跳来时带上，
+    // 页面据此把图钻到该候选的落位并高亮它。
+    case 'job-portrait-graph': content = <JobEcosystemPage key="portrait" fixedView="portrait" onNavigate={setPage} focusCandidateCode={param} />; break
     case 'job-discovery': content = <JobDiscoveryPage />; break
     case 'tech-to-role': content = <TechToRolePage />; break
     case 'graph-heatmap': content = <GraphHeatmapPage notify={notify} />; break

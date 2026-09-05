@@ -11,6 +11,15 @@
         "frontend"
       ],
       "port": 8080
+    },
+    {
+      "name": "frontend-dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "frontend/node_modules/vite/bin/vite.js",
+        "frontend"
+      ],
+      "port": 8080
     }
   ]
 }

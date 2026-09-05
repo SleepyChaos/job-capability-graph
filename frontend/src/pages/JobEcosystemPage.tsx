@@ -1,5 +1,5 @@
 import { AlertTriangle, ArrowLeft, BarChart3, BrainCircuit, BriefcaseBusiness, Building2, CheckCircle2, ChevronDown, ChevronRight, FileText, GitBranch, Landmark, Layers3, ListChecks, MapPinned, Network, RotateCcw, Search, ShieldCheck, Sparkles, Tags, UserRound, WalletCards, Workflow, Wrench } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { loadDiscoveryRolePortraits, loadJobEcosystemGraph, type EnterpriseRecord, type JobCategory, type JobCluster, type JobDirection, type JobEcosystemGraph, type JobPortrait, type JobRecord, type JobTechnologyNode, type RepresentativeJob, type StandardProfilePoint, type StandardRole } from '../api/jobGraph'
 import { MetricStrip, Panel, StatusTag } from '../components/ui'
 import { IndustryJobGraph } from '../components/IndustryJobGraph'
@@ -1039,7 +1039,7 @@ function PortraitDetail({ job, cluster, dimension }: { job: RepresentativeJob; c
   </div>
 }
 
-export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMode; onNavigate?: (page: PageId, param?: string | null) => void }) {
+export function JobEcosystemPage({ fixedView, onNavigate, focusCandidateCode }: { fixedView?: ViewMode; onNavigate?: (page: PageId, param?: string | null) => void; focusCandidateCode?: string | null }) {
   const routeParams = jobGraphRouteParams()
   const routeView = routeParams.get('view')
   const routeRoleId = routeParams.get('role')
@@ -1282,6 +1282,28 @@ export function JobEcosystemPage({ fixedView, onNavigate }: { fixedView?: ViewMo
     if (direction) { selectDirection(direction.id); return }
     selectDirection(null)
   }
+
+  /*
+    从候选数据卡带着候选编码跳进来时，直接把图落到这条候选上。
+
+    首选按 candidateCode 找到已并进 standardRoles 的推演岗位并选中它——那样右侧
+    直接就是它的五维圆图，正是按钮承诺的「查看画像」。找不到（画像还没并进来，
+    或该候选本就没落位）才退回 locateCandidateInPortrait 的层级定位。
+
+    只跑一次：跑完清掉 param，否则使用者在页内再点别的岗位会被这里拽回来。
+  */
+  const focusedCandidateRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!focusCandidateCode || !data || !discovery) return
+    if (focusedCandidateRef.current === focusCandidateCode) return
+    focusedCandidateRef.current = focusCandidateCode
+    setShowDiscovery(true)
+    setHighlightedCandidate(focusCandidateCode)
+    const role = data.standardRoles.find((item) => item.candidateCode === focusCandidateCode)
+    if (role) { selectStandardRole(role.id); return }
+    const item = discovery.candidates.find((entry) => entry.candidateCode === focusCandidateCode)
+    if (item) locateCandidateInPortrait(item)
+  }, [focusCandidateCode, data, discovery])
 
   const selectStandardRole = (id: string | null) => {
     const next = data?.standardRoles.find((item) => item.id === id)

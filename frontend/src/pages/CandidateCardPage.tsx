@@ -9,6 +9,7 @@ import {
   RefreshCw,
   ShieldAlert,
   Sparkles,
+  UserRound,
 } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import {
@@ -71,6 +72,8 @@ export function CandidateCardPage({
   const [evidence, setEvidence] = useState<CandidateEvidencePage | null>(null)
   const [evidenceLoading, setEvidenceLoading] = useState(false)
   const [portraitRunning, setPortraitRunning] = useState(false)
+  // 该候选是否已有五维画像。null = 还没问出结果，此时按钮不该先摆出一个可能说错的动作。
+  const [portraitReady, setPortraitReady] = useState<boolean | null>(null)
 
   const load = useCallback(
     (signal?: AbortSignal) => {
@@ -119,6 +122,30 @@ export function CandidateCardPage({
       })
     return () => controller.abort()
   }, [showEvidence, candidateCode])
+
+  /*
+    画像是否已生成，决定底部那个按钮这次是「跳过去看」还是「先生成」。
+
+    问的是已入库画像清单（几 KB，不是候选详情的一部分），因此单独取一次；取不到时
+    按「没有」处理——最坏结果是用户点了生成，而生成接口本身对已有画像是覆盖重算，
+    不会把数据搞坏。
+  */
+  useEffect(() => {
+    if (!candidateCode) return
+    const controller = new AbortController()
+    setPortraitReady(null)
+    discoveryApi
+      .rolePortraits(controller.signal)
+      .then((page) => {
+        if (controller.signal.aborted) return
+        setPortraitReady(page.items.some((item) => item.candidate_code === candidateCode))
+      })
+      .catch((reason: Error) => {
+        if (reason.name === 'AbortError') return
+        setPortraitReady(false)
+      })
+    return () => controller.abort()
+  }, [candidateCode])
 
   // 换一条候选时清掉上一条的支撑文本，避免展开后看到的是别人的证据。
   useEffect(() => {
@@ -713,30 +740,35 @@ export function CandidateCardPage({
       <div className="card-footer-actions">
         <button className="secondary-button" onClick={() => onNavigate('jobs')}>返回列表</button>
         {/*
-          图谱里的候选节点编号是 `candidate:` + 候选编码。跳过去会自动勾上
-          「叠加新岗位候选」并放开候选名额——图谱默认只取分数最高的 80 条，
-          不放开的话大多数候选跳过去都定位不到自己。
+          「在关联图谱中查看」与「生成五维画像」合并成一个按钮。
+
+          分成两个时，使用者要自己判断该点哪个——而这个判断本来就是系统知道的：
+          画像已生成就该直接去看，没生成就该先生成。合并后按钮只表达一个意图
+          （看这条候选的五维画像），存在与否由它自己解决，生成完接着跳过去，
+          不再要求使用者点两次、还得记住第二次该去哪个图。
+
+          未入库的候选走另一条分支：画像写在标准 JD 上，没入库就没有这个载体，
+          生成不了。此时保留原来的关联图谱入口——那是它唯一能露面的图，
+          也是「岗位—能力关联图」在导航下线后仅存的入口，不能一并合掉。
         */}
-        <button
-          className="secondary-button"
-          onClick={() => onNavigate('graph-relations', `candidate:${candidate.candidate_code}`)}
-        >
-          <Network size={15} /> 在关联图谱中查看
-        </button>
-        {/* 画像写在标准 JD 上，未入库的候选没有这个载体，按钮也就无处落脚。 */}
         {candidate.workflow_status_code === 'approved' ? (
           <button
             className="secondary-button"
-            disabled={portraitRunning}
+            disabled={portraitRunning || portraitReady === null}
             onClick={async () => {
+              if (portraitReady) {
+                onNavigate('job-portrait-graph', candidate.candidate_code)
+                return
+              }
               setPortraitRunning(true)
               try {
                 const portrait = await discoveryApi.autoPortrait(candidate.candidate_code, 'admin-demo')
+                setPortraitReady(true)
                 notify(
                   `五维画像已生成（${portrait.provenance.generated_by}）：技能 ${portrait.skills.length} · ` +
-                  `能力 ${portrait.abilities.length} · 场景 ${portrait.scenarios.length} · 条件 ${portrait.conditions.length}，` +
-                  '可在岗位画像图谱查看',
+                  `能力 ${portrait.abilities.length} · 场景 ${portrait.scenarios.length} · 条件 ${portrait.conditions.length}`,
                 )
+                onNavigate('job-portrait-graph', candidate.candidate_code)
               } catch (reason) {
                 notify(`画像生成失败：${(reason as Error).message}`)
               } finally {
@@ -744,9 +776,28 @@ export function CandidateCardPage({
               }
             }}
           >
-            <Sparkles size={15} /> {portraitRunning ? '生成中…' : '生成五维画像'}
+            {portraitReady ? <UserRound size={15} /> : <Sparkles size={15} />}{' '}
+            {portraitRunning
+              ? '生成中…'
+              : portraitReady === null
+                ? '读取画像状态…'
+                : portraitReady
+                  ? '在岗位画像图谱中查看'
+                  : '生成五维画像并查看'}
           </button>
-        ) : null}
+        ) : (
+          /*
+            图谱里的候选节点编号是 `candidate:` + 候选编码。跳过去会自动勾上
+            「叠加新岗位候选」并放开候选名额——图谱默认只取分数最高的 80 条，
+            不放开的话大多数候选跳过去都定位不到自己。
+          */
+          <button
+            className="secondary-button"
+            onClick={() => onNavigate('graph-relations', `candidate:${candidate.candidate_code}`)}
+          >
+            <Network size={15} /> 在关联图谱中查看
+          </button>
+        )}
         {detail.review_task_code && candidate.workflow_status_code === 'pending' ? (
           <button
             className="primary-button"
