@@ -53,3 +53,6 @@ data/upstream/
 # 交付镜像包由 scripts/build_delivery_images.sh 生成（405MB），不入库
 交付材料-Docker部署/images/jcg-images.tar.gz
 交付材料-Docker部署/images/jcg-images.tar.gz.sha256
+
+# 打包暂存目录（交付材料的副本，含 100MB+ 数据产物），不入库
+提交材料打包/

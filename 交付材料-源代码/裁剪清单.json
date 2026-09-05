@@ -375,20 +375,7 @@
       "lines": 27
     }
   ],
-  "oversize_excluded": [
-    {
-      "path": "frontend/public/job-ecosystem-graph.json",
-      "bytes": 39528020
-    },
-    {
-      "path": "backend/data/job_graph_bridge.json",
-      "bytes": 3252482
-    },
-    {
-      "path": "frontend/public/enterprise-industry-graph.json",
-      "bytes": 1750673
-    }
-  ],
-  "copied_files": 230,
-  "copied_lines": 59917
+  "oversize_excluded": [],
+  "copied_files": 233,
+  "copied_lines": 49878
 }
