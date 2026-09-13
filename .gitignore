@@ -38,6 +38,9 @@ output/
 .env.*.local
 backend/.env
 frontend/.env
+# 环境变量的手工备份同样含密钥，一律不入库
+.env.bak*
+*.env.bak*
 !backend/.env.example
 
 # 词表评估的中间产物（由 tools/refresh_annotation_extraction.py 从数据库重生成）
